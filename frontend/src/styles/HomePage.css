@@ -1,0 +1,80 @@
+/* Container tổng chia 50% trái, 50% phải */
+.homepage-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 100vh; /* Chiều cao toàn màn hình */
+    padding: 0 20px;
+  }
+  
+  .homepage-left {
+    width: 50%; /* Chiếm 50% bên trái */
+    padding-right: 20px;
+    box-sizing: border-box;
+  }
+  
+  .homepage-right {
+    width: 50%; /* Chiếm 50% bên phải */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .decorative-image {
+    max-width: 100%;
+    height: auto;
+  }
+  
+  .intro h1 {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 20px;
+    text-align: left; /* Căn lề trái */
+  }
+  
+  .intro p {
+    font-size: 1.1rem;
+    color: #555;
+    line-height: 1.6;
+    margin-bottom: 20px;
+    text-align: left;
+  }
+  
+  .cta-button {
+    background-color: #f58220;
+    color: white;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 5px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    margin-top: 10px;
+  }
+  
+  .cta-button:hover {
+    background-color: #e0730f;
+  }
+  
+  .service-icons {
+    display: flex;
+    justify-content: flex-start;
+    gap: 30px;
+    margin-top: 40px;
+  }
+  
+  .service-item {
+    text-align: center;
+  }
+  
+  .service-item img {
+    width: 50px;
+    height: 50px;
+  }
+  
+  .service-item p {
+    font-size: 0.9rem;
+    color: #333;
+    margin-top: 10px;
+  }
+  
