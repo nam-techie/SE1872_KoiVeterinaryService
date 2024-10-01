@@ -7,6 +7,7 @@ import ServicesPage from './public_pages/ServicesPage';
 import ContactPage from './public_pages/ContactPage';
 import Layout from './components/Layout.jsx';
 import ContactButton  from "./components/ContactButton.jsx";
+import AboutMe from "./public_pages/AboutMe.jsx";
 
 
 function App() {
@@ -17,11 +18,12 @@ function App() {
         <Layout>  {/* Bọc các Routes bên trong Layout */}
           <Routes>
             <Route path="/" element={<HomePage/>}/>
-            <Route path="/homepage" element={<HomePage />} />  {/* Trang chủ */}
-            <Route path="/login" element={<LoginPage />} />  {/* Trang đăng nhập */}
-            <Route path="/services" element={<ServicesPage />} />  {/* Trang dịch vụ */}
-            <Route path="/contact" element={<ContactPage />} />  {/* Trang liên hệ */}
-            <Route path="/register" element = {<RegisterPage/>}/>{/*Trang đăng kí*/}
+            <Route path="/homepage" element={<HomePage />} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/services" element={<ServicesPage />} />
+            <Route path="/AboutMe" element={<AboutMe />} />
+            <Route path="/contact" element={<ContactPage />} />
+            <Route path="/register" element = {<RegisterPage/>}/>
           </Routes>
           <ContactButton/>
         </Layout>

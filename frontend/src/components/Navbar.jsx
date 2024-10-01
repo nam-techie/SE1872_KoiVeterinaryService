@@ -11,7 +11,7 @@ function Navbar() {
       </div>
       <ul className="nav-links">
         <li><Link to="/homepage">Trang Chủ</Link></li>
-        <li><Link to="#">Về KoiCung</Link></li>
+        <li><Link to="/AboutMe">Về KoiCung</Link></li>
         <li>
           <Link to="#">Dịch vụ</Link>
           <ul className="dropdown">
