@@ -28,4 +28,9 @@ public class ValidationHandler {
     public ResponseEntity<String> handleEntityNotFound(EntityNotFoundException exception) {
         return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);
     }
+
+    @ExceptionHandler(DuplicateEntity.class)
+    public ResponseEntity<String> duplicaEntity(DuplicateEntity exception) {
+        return new ResponseEntity<>(exception.getMessage(), HttpStatus.CONFLICT);
+    }
 }
