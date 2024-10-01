@@ -3,20 +3,24 @@ package com.namtechie.org.service;
 import com.namtechie.org.entity.Account;
 import com.namtechie.org.entity.Role;
 import com.namtechie.org.exception.DuplicateEntity;
+import com.namtechie.org.exception.EntityNotFoundException;
 import com.namtechie.org.model.AccountResponse;
+import com.namtechie.org.model.LoginRequest;
 import com.namtechie.org.model.RegisterRequest;
 import com.namtechie.org.repository.AccountRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.security.core.Authentication;
 
 @Service
-public class AuthenticationService  implements UserDetailsService {
+public class AuthenticationService implements UserDetailsService {
     @Autowired
     AccountRepository accountRepository;
 
@@ -34,7 +38,8 @@ public class AuthenticationService  implements UserDetailsService {
 
     public AccountResponse register(RegisterRequest registerRequest) {
         Account account = modelMapper.map(registerRequest, Account.class);
-        try{
+
+        try {
             // Auto set role to CUSTOMER
             account.setRole(Role.CUSTOMER.name());
 
@@ -47,10 +52,10 @@ public class AuthenticationService  implements UserDetailsService {
 
             // Chuyển Account thành AccountResponse và trả về
             return modelMapper.map(newAccount, AccountResponse.class);
-        } catch (Exception e){
-            if(e.getMessage().contains(account.getEmail())){
+        } catch (Exception e) {
+            if (e.getMessage().contains(account.getEmail())) {
                 throw new DuplicateEntity("Email này đã được sử dụng!");
-            } else if(e.getMessage().contains(account.getUsername())){
+            } else if (e.getMessage().contains(account.getUsername())) {
                 throw new DuplicateEntity("USername này đã tồn tại!");
             }
             e.printStackTrace();
@@ -59,11 +64,27 @@ public class AuthenticationService  implements UserDetailsService {
         }
     }
 
+    public AccountResponse login(LoginRequest loginRequest){
+        try{
+            Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+                    loginRequest.getUsername(),
+                    loginRequest.getPassword()
+            ));
 
+            // tài khoản có tồn tại
+            Account account = (Account) authentication.getPrincipal();
+            AccountResponse accountResponse = modelMapper.map(account, AccountResponse.class);
+            accountResponse.setToken(tokenService.generateToken(account));
+            return accountResponse;
+        }catch (Exception e){
+            throw new EntityNotFoundException("Username or password invalid!");
+        }
+    }
 
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return accountRepository.findAccountByUsername(username);
     }
+
 }

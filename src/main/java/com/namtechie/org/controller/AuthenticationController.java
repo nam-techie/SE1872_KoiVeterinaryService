@@ -1,6 +1,7 @@
 package com.namtechie.org.controller;
 
 import com.namtechie.org.model.AccountResponse;
+import com.namtechie.org.model.LoginRequest;
 import com.namtechie.org.model.RegisterRequest;
 import com.namtechie.org.service.AuthenticationService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -23,5 +24,11 @@ public class AuthenticationController {
     public ResponseEntity register(@Valid @RequestBody RegisterRequest registerRequest) {
         AccountResponse newAccount = authenticationService.register(registerRequest);
         return ResponseEntity.ok(newAccount);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity login(@Valid @RequestBody LoginRequest loginRequest) {
+        AccountResponse accountResponse = authenticationService.login(loginRequest);
+        return ResponseEntity.ok(accountResponse);
     }
 }

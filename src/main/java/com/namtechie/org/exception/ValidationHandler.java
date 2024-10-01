@@ -23,8 +23,9 @@ public class ValidationHandler {
         return new ResponseEntity(message, HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(DuplicateEntity.class)
-    public ResponseEntity handleDuplicate(DuplicateEntity exception) {
-        return new ResponseEntity(exception.getMessage(), HttpStatus.BAD_REQUEST);
+    // Xử lý ngoại lệ EntityNotFoundException (lỗi không tìm thấy)
+    @ExceptionHandler(EntityNotFoundException.class)
+    public ResponseEntity<String> handleEntityNotFound(EntityNotFoundException exception) {
+        return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);
     }
 }
