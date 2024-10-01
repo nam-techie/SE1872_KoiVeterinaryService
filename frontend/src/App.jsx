@@ -1,11 +1,13 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from "./components/Navbar.jsx" 
-import HomePage from './pages/HomePage.jsx';
-import LoginPage from './pages/Login.jsx';
-import RegisterPage from './pages/Register.jsx'
-import ServicesPage from './pages/ServicesPage';
-import ContactPage from './pages/ContactPage';
-import Layout from './components/Layout.jsx';  
+import HomePage from './public_pages/HomePage.jsx';
+import LoginPage from './public_pages/Login.jsx';
+import RegisterPage from './public_pages/Register.jsx'
+import ServicesPage from './public_pages/ServicesPage';
+import ContactPage from './public_pages/ContactPage';
+import Layout from './components/Layout.jsx';
+import ContactButton  from "./components/ContactButton.jsx";
+
 
 function App() {
   return (
@@ -21,6 +23,7 @@ function App() {
             <Route path="/contact" element={<ContactPage />} />  {/* Trang liên hệ */}
             <Route path="/register" element = {<RegisterPage/>}/>{/*Trang đăng kí*/}
           </Routes>
+          <ContactButton/>
         </Layout>
       </div>
     </Router>
