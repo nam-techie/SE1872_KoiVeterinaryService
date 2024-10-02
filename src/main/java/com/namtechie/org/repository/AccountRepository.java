@@ -1,7 +1,10 @@
 package com.namtechie.org.repository;
 
 import com.namtechie.org.entity.Account;
+import com.namtechie.org.model.AccountResponse;
 import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.List;
 
 public interface AccountRepository extends JpaRepository<Account, Long> {
     Account findAccountByEmail(String email);
@@ -10,7 +13,5 @@ public interface AccountRepository extends JpaRepository<Account, Long> {
 
     Account findAccountById(Long id);
 
-    boolean existsByEmail(String email);
-
-    boolean existsByUsername(String username);
+    List<Account> findAccountByIsDeletedFalse();
 }

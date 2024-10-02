@@ -1,5 +1,6 @@
 package com.namtechie.org.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -43,6 +44,9 @@ public class Account implements UserDetails {
     @CreationTimestamp
     @Column(nullable = false, updatable = false)
     private Date created_at;
+
+    @JsonIgnore // Để nó k trả về và bắt mình nhập thông tin này
+    boolean isDeleted = false;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
