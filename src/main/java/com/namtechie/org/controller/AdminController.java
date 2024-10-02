@@ -52,8 +52,11 @@ public class AdminController {
         return ResponseEntity.ok(newAccount);
     }
 
-
-
+    @DeleteMapping
+    public ResponseEntity<String> deleteAccount(@RequestParam String email) {
+        adminService.deleteAccount(email);
+        return new ResponseEntity<>("Đã xóa thành công.", HttpStatus.ACCEPTED);
+    }
 
 }
 

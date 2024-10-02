@@ -100,6 +100,16 @@ public class AdminService implements UserDetailsService {
         return accounts;
     }
 
+    public void deleteAccount(String username) {
+        // Kiểm tra xem tài khoản có tồn tại hay không trước khi xóa
+        if (accountRepository.existsByUsername(username)) {
+            accountRepository.updateIsDeletedByUsername(true, username);
+        } else {
+            throw new EntityNotFoundException("Tài khoản với username: " + username + " không tồn tại.");
+        }
+    }
+
+
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
