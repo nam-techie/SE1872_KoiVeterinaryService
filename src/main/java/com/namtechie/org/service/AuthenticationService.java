@@ -73,10 +73,10 @@ public class AuthenticationService implements UserDetailsService {
         }
     }
 
-    public String generateUsername() {
-        // Đếm số lượng tài khoản bác sĩ hiện có
-        long count = accountRepository.countByRole(Role.VETERINARY.name());
-        int nextNumber = (int) count + 1;
+    private String generateUsername() {
+        // Tìm kiếm số lượng bác sĩ hiện có để tạo username tiếp theo
+        List<Account> veterinaryAccounts = accountRepository.findByRoleIgnoreCase(Role.VETERINARY.name());
+        int nextNumber = veterinaryAccounts.size() + 1;
         String generatedUsername = "veterinary" + String.format("%02d", nextNumber);
 
         // Kiểm tra xem username có tồn tại không để tránh trùng lặp
@@ -86,7 +86,6 @@ public class AuthenticationService implements UserDetailsService {
         }
         return generatedUsername;
     }
-
 
 
     public AccountResponse registerVeterinary(VeterinaryRequest veterinaryRequest) {

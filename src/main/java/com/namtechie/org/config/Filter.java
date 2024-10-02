@@ -35,14 +35,16 @@ public class Filter extends OncePerRequestFilter {
     @Qualifier("handlerExceptionResolver")
     HandlerExceptionResolver resolver;
 
-    //cấu hình các đường dẫn, api được phép truy câp mà không yêu cầu xác
+    //cấu hình các đường dẫn, api được phép truy câp mà không yêu cầu xác thực
     private final List<String> AUTH_PERMISSION = List.of(
             "/swagger-ui/**",
             "/v3/api-docs/**",
             "/swagger-resources/**",
             "/api/login",
             "/api/register",
+            "/api/registerVeterinary",
             "/admin",
+            "/admin/registerVeterinary",
             "/admin/setAccountVeterinary/**" ///////// NOTEEEEEEEEEEEEEEEEEEEEEE
     );
 

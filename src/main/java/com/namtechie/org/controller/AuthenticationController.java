@@ -39,19 +39,9 @@ public class AuthenticationController {
         return ResponseEntity.ok(accountResponse);
     }
 
-    @PostMapping(value = "/registerVeterinary", produces = "application/json")
-    public ResponseEntity registerVeterinary(@Valid @RequestBody VeterinaryRequest veterinaryRequest) {
-        AccountResponse newAccount = authenticationService.registerVeterinary(veterinaryRequest);
-        return ResponseEntity.ok(newAccount);
-    }
 
-    @GetMapping("/generateUsername")
-    public int generateUsername() {
-        // Gọi hàm findByRole thay vì findAccountByRole
-        List<Account> accounts = accountRepository.findByRoleIgnoreCase(Role.VETERINARY.name());
-        int num = accounts.size();
-        return num;
-    }
+
+
 
 
 
