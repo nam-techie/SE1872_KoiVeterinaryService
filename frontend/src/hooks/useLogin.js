@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { login } from '../services/apiLogin'; 
-import { auth, provider, signInWithPopup } from "../services/firebase-config"; 
+import { login } from '../services/apiLogin';
+import { auth, provider, signInWithPopup } from "../services/firebase-config";
 
 export const useLogin = () => {
   const [email, setEmail] = useState('');
@@ -11,30 +11,33 @@ export const useLogin = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setError(''); 
+    setError('');
 
     try {
-      const response = await login(email, password); 
+      const response = await login(email, password);
       console.log('Đăng nhập thành công:', response);
-        // eslint-disable-next-line no-unused-vars
+      // Xử lý sau khi đăng nhập thành công (như lưu thông tin người dùng, chuyển hướng, v.v.)
     } catch (error) {
-      console.error('Đã xảy ra lỗi.');
-      setError('Đăng nhập thất bại. Vui lòng kiểm tra lại thông tin.');
+      console.error('Đã xảy ra lỗi:', error);
+      setError(error.message || 'Đăng nhập thất bại. Vui lòng kiểm tra lại thông tin.');
     } finally {
-      setLoading(false); 
+      setLoading(false);
     }
   };
 
   const handleGoogleLogin = async () => {
     setLoading(true);
+    setError(''); // Xóa thông báo lỗi trước khi đăng nhập Google
+
     try {
       const result = await signInWithPopup(auth, provider);
       console.log('Đăng nhập Google thành công:', result.user);
+      // Xử lý sau khi đăng nhập Google thành công
     } catch (error) {
       console.error('Lỗi đăng nhập Google:', error);
       setError('Đăng nhập Google thất bại.');
     } finally {
-      setLoading(false); 
+      setLoading(false);
     }
   };
 

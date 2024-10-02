@@ -9,13 +9,13 @@ export const login = async (email, password) => {
     });
 
     if (!response.ok) {
-      throw new Error('Đăng nhập thất bại');
+      const errorData = await response.json();
+      throw new Error(errorData.message || 'Đăng nhập thất bại');
     }
 
-    const data = await response.json();
-    return data; 
+    return await response.json();
   } catch (error) {
     console.error('Lỗi đăng nhập:', error);
-    throw error; 
+    throw error;
   }
 };

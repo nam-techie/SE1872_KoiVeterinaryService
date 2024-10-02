@@ -1,4 +1,3 @@
-// useRegister.js
 import { useState } from 'react';
 import { register } from '../services/apiRegister.js'; // Service đăng ký
 
