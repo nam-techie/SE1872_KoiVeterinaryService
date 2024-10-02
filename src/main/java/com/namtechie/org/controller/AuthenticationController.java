@@ -39,13 +39,4 @@ public class AuthenticationController {
         return ResponseEntity.ok(accountResponse);
     }
 
-
-
-
-
-
-
-
-
-
 }

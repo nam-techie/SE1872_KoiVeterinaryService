@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
@@ -28,6 +29,14 @@ public class Account implements UserDetails {
     @Column(nullable = false, length = 50, unique = true)
     private String username;
 
+    @NotBlank(message = "Họ và Tên không được để trống")
+    @Size(min = 1, max = 100, message = "Họ và Tên phải từ 1 đến 100 ký tự")
+    @Pattern(regexp = "^[a-zA-Z ]+$",
+            message = "Họ và Tên chỉ được chứa chữ cái thường, chữ hoa và khoảng trắng, không bao gồm số hoặc ký tự đặc biệt")
+    @Column(nullable = false, length = 100)
+    private String fullName;
+
+
     @NotBlank(message = "Mật khẩu không được để trống")
     @Size(min = 6, message = "Mật khẩu phải có ít nhất 6 ký tự")
     @Column(nullable = false)
@@ -51,7 +60,7 @@ public class Account implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<SimpleGrantedAuthority> authorities = new ArrayList<>();
-        if(this.role != null) authorities.add(new SimpleGrantedAuthority(this.role.toString()));
+        if (this.role != null) authorities.add(new SimpleGrantedAuthority(this.role.toString()));
         return authorities;
     }
 

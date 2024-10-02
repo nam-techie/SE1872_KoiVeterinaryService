@@ -5,6 +5,7 @@ import com.namtechie.org.model.AccountResponse;
 import com.namtechie.org.model.RegisterRequest;
 import com.namtechie.org.model.VeterinaryRequest;
 import com.namtechie.org.repository.AccountRepository;
+import com.namtechie.org.service.AdminService;
 import com.namtechie.org.service.AuthenticationService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
@@ -27,24 +28,27 @@ public class AdminController {
     AuthenticationService authenticationService;
 
     @Autowired
+    AdminService adminService;
+
+    @Autowired
     private AccountRepository accountRepository;
 
 
     @PutMapping("/setAccountVeterinary/{email}")
     public ResponseEntity<String> setAccountVeterinary(@PathVariable String email) {
-        authenticationService.setVeterinaryAccount(email);
+        adminService.setVeterinaryAccount(email);
         return new ResponseEntity<>("Tài khoản bác sĩ đã được tạo thành công.", HttpStatus.ACCEPTED);
     }
 
     @GetMapping
     public ResponseEntity get() {
-        List<Account> accounts = authenticationService.getAllAccount();
+        List<Account> accounts = adminService.getAllAccount();
         return ResponseEntity.ok(accounts);
     }
 
     @PostMapping(value = "/registerVeterinary", produces = "application/json")
     public ResponseEntity registerVeterinary(@Valid @RequestBody VeterinaryRequest veterinaryRequest) {
-        AccountResponse newAccount = authenticationService.registerVeterinary(veterinaryRequest);
+        AccountResponse newAccount = adminService.registerVeterinary(veterinaryRequest);
         return ResponseEntity.ok(newAccount);
     }
 
