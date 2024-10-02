@@ -1,8 +1,11 @@
 package com.namtechie.org.controller;
 
+import com.namtechie.org.entity.Account;
+import com.namtechie.org.entity.Role;
 import com.namtechie.org.model.AccountResponse;
 import com.namtechie.org.model.LoginRequest;
 import com.namtechie.org.model.RegisterRequest;
+import com.namtechie.org.model.VeterinaryRequest;
 import com.namtechie.org.repository.AccountRepository;
 import com.namtechie.org.service.AuthenticationService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -10,6 +13,8 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RequestMapping("/api")
 @RestController
@@ -33,6 +38,23 @@ public class AuthenticationController {
         AccountResponse accountResponse = authenticationService.login(loginRequest);
         return ResponseEntity.ok(accountResponse);
     }
+
+    @PostMapping(value = "/registerVeterinary", produces = "application/json")
+    public ResponseEntity registerVeterinary(@Valid @RequestBody VeterinaryRequest veterinaryRequest) {
+        AccountResponse newAccount = authenticationService.registerVeterinary(veterinaryRequest);
+        return ResponseEntity.ok(newAccount);
+    }
+
+    @GetMapping("/generateUsername")
+    public int generateUsername() {
+        // Gọi hàm findByRole thay vì findAccountByRole
+        List<Account> accounts = accountRepository.findByRoleIgnoreCase(Role.VETERINARY.name());
+        int num = accounts.size();
+        return num;
+    }
+
+
+
 
 
 

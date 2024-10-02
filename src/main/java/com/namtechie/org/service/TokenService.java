@@ -1,6 +1,7 @@
 package com.namtechie.org.service;
 
 import com.namtechie.org.entity.Account;
+import com.namtechie.org.exception.ExpiredJwtException;
 import com.namtechie.org.repository.AccountRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -17,7 +18,7 @@ public class TokenService {
     @Autowired
     AccountRepository accountRepository;
 
-    public final String SECRET_KEY = "4bb6d1dfbafb64a681139d1586b6f1160d18159afd57c8c79136d7490630407nam";
+    public final String SECRET_KEY = "4bb6d1dfbafb64a681139d1586b6f1160d18159afd57c8c79136d7490630407d";
 
     private SecretKey getSignKey() {
         byte[] keyBytes = Decoders.BASE64.decode(SECRET_KEY);
@@ -29,23 +30,44 @@ public class TokenService {
         String token = Jwts.builder()
                 .subject(account.getId() + "")
                 .issuedAt(new Date((System.currentTimeMillis())))
-                .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 30))
+                .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 30))// dieTime is 30 minutes
                 .signWith(getSignKey())
                 .compact();
         return token;
     }
 
-    //verify Token
+//    //verify Token
+//    public Account getAccountByToken(String token) {
+//        Claims claims = Jwts.parser()
+//                .verifyWith(getSignKey())
+//                .build()
+//                .parseSignedClaims(token)
+//                .getPayload();
+//
+//        String idString = claims.getSubject();
+//        long id = Long.parseLong(idString);
+//
+//        return accountRepository.findAccountById(id);
+//    }
+
+    // Kiểm tra và lấy thông tin Account từ token
     public Account getAccountByToken(String token) {
-        Claims claims = Jwts.parser()
-                .verifyWith(getSignKey())
-                .build()
-                .parseSignedClaims(token)
-                .getPayload();
+        try {
+            Claims claims = Jwts.parser()
+                    .verifyWith(getSignKey())
+                    .build()
+                    .parseSignedClaims(token)
+                    .getPayload();
 
-        String idString = claims.getSubject();
-        long id = Long.parseLong(idString);
+            String idString = claims.getSubject();
+            long id = Long.parseLong(idString);
 
-        return accountRepository.findAccountById(id);
+            return accountRepository.findAccountById(id);
+
+        } catch (ExpiredJwtException e) {
+            throw new RuntimeException("Token đã hết hạn. Vui lòng đăng nhập lại.");
+        } catch (Exception e) {
+            throw new RuntimeException("Invalid token");
+        }
     }
 }

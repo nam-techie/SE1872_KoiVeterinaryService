@@ -53,6 +53,12 @@ public class SecurityConfig {
                                 .permitAll()
                                 .anyRequest()
                                 .authenticated()
+//                                .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/api/login", "/api/register")
+//                                .permitAll() // Cho phép truy cập không cần xác thực đối với các URL public
+//                                .requestMatchers("/admin/**")
+//                                .hasAuthority("ADMIN") // Chỉ cho phép ADMIN truy cập các URL /admin/**
+//                                .anyRequest()
+//                                .authenticated() // Các yêu cầu khác đều cần xác thực
 
                 )
                 .userDetailsService(authenticationService)

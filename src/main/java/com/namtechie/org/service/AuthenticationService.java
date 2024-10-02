@@ -8,6 +8,7 @@ import com.namtechie.org.exception.IllegalArgumentException;
 import com.namtechie.org.model.AccountResponse;
 import com.namtechie.org.model.LoginRequest;
 import com.namtechie.org.model.RegisterRequest;
+import com.namtechie.org.model.VeterinaryRequest;
 import com.namtechie.org.repository.AccountRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +40,7 @@ public class AuthenticationService implements UserDetailsService {
     @Autowired
     TokenService tokenService;
 
+
     public AccountResponse register(RegisterRequest registerRequest) {
         // Kiểm tra confirmPassword trước khi tiếp tục
         if (!registerRequest.getPassword().equals(registerRequest.getConfirmPassword())) {
@@ -66,8 +68,49 @@ public class AuthenticationService implements UserDetailsService {
             } else if (e.getMessage().contains(account.getUsername())) {
                 throw new DuplicateEntity("Username này đã tồn tại!");
             }
-            e.printStackTrace();
             // Log lỗi hoặc xử lý các exception khác nếu cần
+            throw new RuntimeException("Đã xảy ra lỗi trong quá trình đăng ký, vui lòng thử lại sau.");
+        }
+    }
+
+    public String generateUsername() {
+        // Đếm số lượng tài khoản bác sĩ hiện có
+        long count = accountRepository.countByRole(Role.VETERINARY.name());
+        int nextNumber = (int) count + 1;
+        String generatedUsername = "veterinary" + String.format("%02d", nextNumber);
+
+        // Kiểm tra xem username có tồn tại không để tránh trùng lặp
+        while (accountRepository.existsByUsername(generatedUsername)) {
+            nextNumber++;
+            generatedUsername = "veterinary" + String.format("%02d", nextNumber);
+        }
+        return generatedUsername;
+    }
+
+
+
+    public AccountResponse registerVeterinary(VeterinaryRequest veterinaryRequest) {
+        Account account = modelMapper.map(veterinaryRequest, Account.class);
+
+        try {
+            // Mật khẩu mặc định cho bác sĩ
+            String generatedUsername = generateUsername();
+            // Tạo account mới
+
+            account.setEmail(veterinaryRequest.getEmail());
+            account.setUsername(generatedUsername);
+            account.setPassword(passwordEncoder.encode("123456"));
+            account.setRole(Role.VETERINARY.name());
+
+            // Lưu tài khoản bác sĩ vào database
+            Account newAccount = accountRepository.save(account);
+
+            // Chuyển đổi thành AccountResponse và trả về
+            return modelMapper.map(newAccount, AccountResponse.class);
+        } catch (Exception e) {
+            if (e.getMessage().contains(account.getEmail())) {
+                throw new DuplicateEntity("Email này đã được sử dụng!");
+            }
             throw new RuntimeException("Đã xảy ra lỗi trong quá trình đăng ký, vui lòng thử lại sau.");
         }
     }
@@ -80,9 +123,11 @@ public class AuthenticationService implements UserDetailsService {
                     loginRequest.getPassword()
             ));
 
-            // tài khoản có tồn tại
+            // tài khoản có tồn tại -> Lấy tài khoản đã đăng nhập
             Account account = (Account) authentication.getPrincipal();
             AccountResponse accountResponse = modelMapper.map(account, AccountResponse.class);
+
+            // Tạo và gán JWT token vào AccountResponse
             accountResponse.setToken(tokenService.generateToken(account));
             return accountResponse;
         } catch (Exception e) {
@@ -110,10 +155,10 @@ public class AuthenticationService implements UserDetailsService {
         return accountResponse;
     }
 
-     public List<Account> getAllAccount(){
-        List<Account>  accounts = accountRepository.findAccountByIsDeletedFalse();
+    public List<Account> getAllAccount() {
+        List<Account> accounts = accountRepository.findAccountByIsDeletedFalse();
         return accounts;
-     }
+    }
 
 
     @Override
@@ -121,32 +166,5 @@ public class AuthenticationService implements UserDetailsService {
         return accountRepository.findAccountByUsername(username);
     }
 
-    public AccountResponse registerVeterinary(RegisterRequest registerRequest) {
-        Account account = modelMapper.map(registerRequest, Account.class);
-
-        try {
-            // Auto set role to CUSTOMER
-            account.setRole(Role.VETERINARY.name());
-
-            // Mã hóa mật khẩu
-            String originPassword = account.getPassword();
-            account.setPassword(passwordEncoder.encode(originPassword));
-
-            // Lưu tài khoản vào database
-            Account newAccount = accountRepository.save(account);
-
-            // Chuyển Account thành AccountResponse và trả về
-            return modelMapper.map(newAccount, AccountResponse.class);
-        } catch (Exception e) {
-            if (e.getMessage().contains(account.getEmail())) {
-                throw new DuplicateEntity("Email này đã được sử dụng!");
-            } else if (e.getMessage().contains(account.getUsername())) {
-                throw new DuplicateEntity("USername này đã tồn tại!");
-            }
-            e.printStackTrace();
-            // Log lỗi hoặc xử lý các exception khác nếu cần
-            throw new RuntimeException("Đã xảy ra lỗi trong quá trình đăng ký, vui lòng thử lại sau.");
-        }
-    }
 
 }

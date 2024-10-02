@@ -104,4 +104,55 @@ public class Filter extends OncePerRequestFilter {
         }
     }
 
+//    @Override
+//    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+//            throws ServerException, IOException, ServletException {
+//        //check xem cái api mà user gửi request có phải là 1 api hay không
+//
+//        boolean isPublicAPI = checkIsPublicAPI(request.getRequestURI());
+//        if (isPublicAPI) {
+//            filterChain.doFilter(request, response);
+//        } else {
+//            String token = getToken(request);
+//            if(token == null){
+//                //can not access
+//                resolver.resolveException(request, response, null, new AuthException("Empty token!!!"));
+//                return;
+//            }
+//
+//            // => has token
+//            //check the token is right? => get information account by token
+//            Account account;
+//            try{
+//                // Lấy tài khoản từ token
+//                account = tokenService.getAccountByToken(token);
+//                if (request.getRequestURI().startsWith("/admin") && !account.getRole().equals("ADMIN")) {
+//                    throw new AuthException("Access denied! Admin role required.");
+//                }
+//            } catch (ExpiredJwtException e){
+//                //response token hết hạn
+//                resolver.resolveException(request, response, null, new AuthException("Expired token!!!"));
+//                return;
+//            } catch(MalformedJwtException malformedJwtException){
+//                //response token is wrong
+//                resolver.resolveException(request, response, null, new AuthException("Invalid token!!!"));
+//                return;
+//            } catch (AuthException e){
+//                resolver.resolveException(request, response, null, e);
+//                return;
+//            }
+//
+//            // => token right
+//            // => can access web
+//            // => save information account
+//            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
+//                    account, token, account.getAuthorities()
+//            );
+//            authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+//            SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+//            //token ok, can access
+//            filterChain.doFilter(request, response);
+//        }
+//    }
+
 }
