@@ -6,9 +6,11 @@ import com.namtechie.org.exception.DuplicateEntity;
 import com.namtechie.org.exception.EntityNotFoundException;
 import com.namtechie.org.exception.IllegalArgumentException;
 import com.namtechie.org.model.AccountResponse;
+import com.namtechie.org.model.EmailDetail;
 import com.namtechie.org.model.LoginRequest;
 import com.namtechie.org.model.RegisterRequest;
 import com.namtechie.org.repository.AccountRepository;
+import jakarta.validation.constraints.Email;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -41,6 +43,10 @@ public class AuthenticationService implements UserDetailsService {
     @Autowired
     TokenService tokenService;
 
+    @Autowired
+    EmailService emailService;
+
+
 
     public AccountResponse register(RegisterRequest registerRequest) {
         // Kiểm tra confirmPassword trước khi tiếp tục
@@ -60,6 +66,13 @@ public class AuthenticationService implements UserDetailsService {
 
             // Lưu tài khoản vào database
             Account newAccount = accountRepository.save(account);
+
+            //gửi email thông báo đăng kí thành công về cho người dùng
+            EmailDetail emailDetail = new EmailDetail();
+            emailDetail.setReceiver(newAccount);
+            emailDetail.setSubject("Welcome to KoiKung Center!");
+            emailDetail.setLink("https://www.google.com/");
+            emailService.sendEmail(emailDetail);
 
             // Chuyển Account thành AccountResponse và trả về
             return modelMapper.map(newAccount, AccountResponse.class);
