@@ -33,128 +33,71 @@ public class Filter extends OncePerRequestFilter {
 
     @Autowired
     @Qualifier("handlerExceptionResolver")
-    HandlerExceptionResolver resolver;
+    HandlerExceptionResolver handlerExceptionResolver;
 
-    //cấu hình các đường dẫn, api được phép truy câp mà không yêu cầu xác thực
     private final List<String> AUTH_PERMISSION = List.of(
             "/swagger-ui/**",
             "/v3/api-docs/**",
             "/swagger-resources/**",
             "/api/login",
-            "/api/register",
-            "/api/registerVeterinary",
-            "/admin",
-            "/admin/registerVeterinary",
-            "/admin/setAccountVeterinary/**" ///////// NOTEEEEEEEEEEEEEEEEEEEEEE
+            "/api/register"
     );
 
-    public boolean checkIsPublicAPI(String uri) {
-        // uri: /api/register...
-        //nếu gặp những api trong líst ở trên => cho phép truy cập luôn => true
-        AntPathMatcher pathMatcher = new AntPathMatcher();
-        //check Token => false
-        return AUTH_PERMISSION.stream().anyMatch(pattern -> pathMatcher.match(pattern, uri));
+    public boolean checkIsPublicAPI(String uri){
+        // uri: /api/register
+        // nếu gặp những api trong list ở trên => cho phép truy cập luôn => true
+        AntPathMatcher pathMatch = new AntPathMatcher();
+        // check token => false
+        return AUTH_PERMISSION.stream().anyMatch(pattern -> pathMatch.match(pattern, uri));
     }
 
-    public String getToken(HttpServletRequest request) {
+    @Override
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        // check xem cái api mà người dùng yêu cầu có phải là 1 public api hay k
+
+        boolean isPublicAPI = checkIsPublicAPI(request.getRequestURI());
+        if(isPublicAPI){
+            filterChain.doFilter(request, response);
+        }else{
+            String token = getToken(request);
+            if(token == null){
+                //ko được phép truy cập
+                handlerExceptionResolver.resolveException(request, response, null, new AuthException("Empty token!"));
+                return;
+            }
+
+            // => có token
+            // check xem token có đúng hay ko => lấy thông tin account từ token
+            Account account;
+            try{
+                account = tokenService.getAccountByToken(token);
+            }catch (ExpiredJwtException e){
+                // response token hết hạn
+                handlerExceptionResolver.resolveException(request, response, null, new AuthException("Expired token!"));
+                return;
+            }catch (MalformedJwtException malformedJwtException){
+                // response token sai
+                handlerExceptionResolver.resolveException(request, response, null, new AuthException("Invalid token!"));
+                return;
+            }
+
+            // => token chuẩn
+            // => cho phép truy cập
+            // => lưu lại thông tin account
+            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
+                    account, token, account.getAuthorities());
+            authenticationToken .setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+            SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+            // token ok, cho vào
+            filterChain.doFilter(request, response);
+        }
+    }
+
+    public String getToken(HttpServletRequest request){
         String authHeader = request.getHeader("Authorization");
         if(authHeader == null) return null;
         return authHeader.substring(7);
     }
 
-    @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
-            throws ServerException, IOException, ServletException {
-        //check xem cái api mà user gửi request có phải là 1 api hay không
-
-        boolean isPublicAPI = checkIsPublicAPI(request.getRequestURI());
-        if (isPublicAPI) {
-            filterChain.doFilter(request, response);
-        } else {
-            String token = getToken(request);
-            if(token == null){
-                //can not access
-                resolver.resolveException(request, response, null, new AuthException("Empty token!!!"));
-                return;
-            }
-
-            // => has token
-            //check the token is right? => get information account by token
-            Account account;
-            try{
-                account = tokenService.getAccountByToken(token);
-            } catch (ExpiredJwtException e){
-                //response token hết hạn
-                resolver.resolveException(request, response, null, new AuthException("Expired token!!!"));
-                return;
-            } catch(MalformedJwtException malformedJwtException){
-                //response token is wrong
-                resolver.resolveException(request, response, null, new AuthException("Invalid token!!!"));
-                return;
-            }
-
-            // => token right
-            // => can access web
-            // => save information account
-            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
-                    account, token, account.getAuthorities()
-            );
-            authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-            SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-            //token ok, can access
-            filterChain.doFilter(request, response);
-        }
-    }
-
-//    @Override
-//    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
-//            throws ServerException, IOException, ServletException {
-//        //check xem cái api mà user gửi request có phải là 1 api hay không
-//
-//        boolean isPublicAPI = checkIsPublicAPI(request.getRequestURI());
-//        if (isPublicAPI) {
-//            filterChain.doFilter(request, response);
-//        } else {
-//            String token = getToken(request);
-//            if(token == null){
-//                //can not access
-//                resolver.resolveException(request, response, null, new AuthException("Empty token!!!"));
-//                return;
-//            }
-//
-//            // => has token
-//            //check the token is right? => get information account by token
-//            Account account;
-//            try{
-//                // Lấy tài khoản từ token
-//                account = tokenService.getAccountByToken(token);
-//                if (request.getRequestURI().startsWith("/admin") && !account.getRole().equals("ADMIN")) {
-//                    throw new AuthException("Access denied! Admin role required.");
-//                }
-//            } catch (ExpiredJwtException e){
-//                //response token hết hạn
-//                resolver.resolveException(request, response, null, new AuthException("Expired token!!!"));
-//                return;
-//            } catch(MalformedJwtException malformedJwtException){
-//                //response token is wrong
-//                resolver.resolveException(request, response, null, new AuthException("Invalid token!!!"));
-//                return;
-//            } catch (AuthException e){
-//                resolver.resolveException(request, response, null, e);
-//                return;
-//            }
-//
-//            // => token right
-//            // => can access web
-//            // => save information account
-//            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
-//                    account, token, account.getAuthorities()
-//            );
-//            authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-//            SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-//            //token ok, can access
-//            filterChain.doFilter(request, response);
-//        }
-//    }
-
+    // Bearer asdasdasdsadasdasd => lấy từ index 7 bỏ qua thằng bearer
 }

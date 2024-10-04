@@ -1,7 +1,7 @@
 package com.namtechie.org.entity;
 
 public enum Role {
-    STAFF,
+    ADMIN,
     VETERINARY,
     CUSTOMER
 }

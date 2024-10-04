@@ -57,30 +57,37 @@ public class Account implements UserDetails {
     @JsonIgnore // Để nó k trả về và bắt mình nhập thông tin này
     boolean isDeleted = false;
 
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<SimpleGrantedAuthority> authorities = new ArrayList<>();
-        if (this.role != null) authorities.add(new SimpleGrantedAuthority(this.role.toString()));
+        if(this.role != null) authorities.add(new SimpleGrantedAuthority(this.role.toString()));
         return authorities;
+    }
+
+
+    @Override
+    public String getUsername() {
+        return this.username;
     }
 
     @Override
     public boolean isAccountNonExpired() {
-        return true;
+        return UserDetails.super.isAccountNonExpired();
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return true;
+        return UserDetails.super.isAccountNonLocked();
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return true;
+        return UserDetails.super.isCredentialsNonExpired();
     }
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return UserDetails.super.isEnabled();
     }
 }
