@@ -12,16 +12,6 @@ import java.util.Date;
 
 @Data
 public class RegisterRequest {
-
-    @NotBlank(message = "Họ và Tên không được để trống")
-    @Size(min = 1, max = 100, message = "Họ và Tên phải từ 1 đến 100 ký tự")
-    @Pattern(regexp = "^[a-zA-Z ]+$",
-            message = "Họ và Tên chỉ được chứa chữ cái thường, chữ hoa và khoảng trắng, không bao gồm số hoặc ký tự đặc biệt")
-    @Column(nullable = false, length = 100)
-    String fullName;
-
-
-
     @NotBlank(message = "Tên đăng nhập không được để trống")
     @Size(min = 3, message = "Tên đăng nhập phải có từ 3 ký tự trở lên!!!")
     @Pattern(regexp = "^[^\\s]+$", message = "Tên đăng nhập không được chứa dấu cách")

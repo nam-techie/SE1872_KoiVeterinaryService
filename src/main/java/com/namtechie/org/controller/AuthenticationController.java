@@ -1,11 +1,7 @@
 package com.namtechie.org.controller;
 
 import com.namtechie.org.entity.Account;
-import com.namtechie.org.model.AccountResponse;
-import com.namtechie.org.model.LoginRequest;
-import com.namtechie.org.model.RegisterRequest;
-import com.namtechie.org.model.VeterinaryRequest;
-import com.namtechie.org.repository.AccountRepository;
+import com.namtechie.org.model.*;
 import com.namtechie.org.service.AuthenticationService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
@@ -25,6 +21,8 @@ public class AuthenticationController {
     @Autowired
     AuthenticationService authenticationService;
 
+    //API provide for CUSTOMER
+
     @PostMapping("/register")
     public ResponseEntity register(@Valid @RequestBody RegisterRequest registerRequest){
         // nhờ thằng AuthenticationService => tạo dùm cái account
@@ -38,6 +36,20 @@ public class AuthenticationController {
         AccountResponse newAccount = authenticationService.login(loginRequest);
         return ResponseEntity.ok(newAccount);
     }
+
+    @PostMapping("/forgot-password")
+    public ResponseEntity forgotPassword(@RequestBody @Valid ForgotPasswordRequest forgotPasswordRequest){
+        authenticationService.forgotPassword(forgotPasswordRequest);
+        return ResponseEntity.ok("Đã yêu cầu mục quên mật khẩu. Vui lòng kiểm tra hộp thư để xác nhận!");
+    }
+
+    @PostMapping("/reset-password")
+    public ResponseEntity resetPassword(@RequestBody OTPRequest otpRequest){
+        authenticationService.resetPassword(otpRequest);
+        return ResponseEntity.ok("Thay đổi mật khẩu thành công!");
+    }
+
+    //APi down is provide for ADMIN
 
     @PreAuthorize("hasAuthority('ADMIN')") // set từng thằng
     @PutMapping("/admin/setAccountVeterinary/{email}")

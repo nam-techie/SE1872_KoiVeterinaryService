@@ -3,10 +3,8 @@ package com.namtechie.org.service;
 import com.namtechie.org.entity.Account;
 import com.namtechie.org.entity.Role;
 import com.namtechie.org.exception.DuplicateEntity;
-import com.namtechie.org.model.AccountResponse;
-import com.namtechie.org.model.LoginRequest;
-import com.namtechie.org.model.RegisterRequest;
-import com.namtechie.org.model.VeterinaryRequest;
+import com.namtechie.org.exception.NotFoundException;
+import com.namtechie.org.model.*;
 import com.namtechie.org.repository.AccountRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.modelmapper.ModelMapper;
@@ -21,7 +19,10 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Random;
 
 @Service // đánh dấu cho thằng spring boot biết đây là lớp Service
 public class AuthenticationService implements UserDetailsService {
@@ -41,8 +42,8 @@ public class AuthenticationService implements UserDetailsService {
     @Autowired
     TokenService tokenService;
 
-//    @Autowired
-//    EmailService emailService;
+    @Autowired
+    EmailService emailService;
 
     // xử lí logic, nghiệp vụ
     public AccountResponse register(RegisterRequest registerRequest) {
@@ -64,12 +65,12 @@ public class AuthenticationService implements UserDetailsService {
             // Lưu tài khoản vào database
             Account newAccount = accountRepository.save(account);
 
-//            //gửi email thông báo đăng kí thành công về cho người dùng
-//            EmailDetail emailDetail = new EmailDetail();
-//            emailDetail.setReceiver(newAccount);
-//            emailDetail.setSubject("Welcome to KoiKung Center!");
-//            emailDetail.setLink("https://www.google.com/");
-//            emailService.sendEmail(emailDetail);
+            //gửi email thông báo đăng kí thành công về cho người dùng
+            EmailDetail emailDetail = new EmailDetail();
+            emailDetail.setReceiver(newAccount);
+            emailDetail.setSubject("Welcome to KoiKung Center!");
+            emailDetail.setLink("https://www.google.com/");
+            emailService.sendEmail(emailDetail);
 
             // Chuyển Account thành AccountResponse và trả về
             return modelMapper.map(newAccount, AccountResponse.class);
@@ -164,11 +165,7 @@ public class AuthenticationService implements UserDetailsService {
             // Nếu không phải ADMIN thì từ chối quyền truy cập
             throw new com.namtechie.org.exception.IllegalAccessException("Bạn không có quyền truy cập để đăng ký bác sĩ.");
         }
-
-
-
     }
-
 
     public AccountResponse setVeterinaryAccount(String email) {
         // Tìm tài khoản của bác sĩ thú y dựa trên email
@@ -195,6 +192,8 @@ public class AuthenticationService implements UserDetailsService {
         return accounts;
     }
 
+
+
     public void deleteAccount(String username) {
         // Kiểm tra xem tài khoản có tồn tại hay không trước khi xóa
         if (accountRepository.existsByUsername(username)) {
@@ -202,6 +201,85 @@ public class AuthenticationService implements UserDetailsService {
         } else {
             throw new EntityNotFoundException("Tài khoản với username: " + username + " không tồn tại.");
         }
+    }
+
+    public void forgotPassword(ForgotPasswordRequest forgotPasswordRequest) {
+        Account account = accountRepository.findAccountByEmail(forgotPasswordRequest.getEmail());
+
+        if (account == null) {
+            throw new NotFoundException("Email không tồn tại!");
+        } else {
+            // Tạo OTP và lưu vào map với email làm khóa
+            String otp = generateOTP();
+            otpMap.put(forgotPasswordRequest.getEmail(), otp);
+
+            // Gửi email chứa OTP
+            EmailResetPass emailResetPass = new EmailResetPass();
+            emailResetPass.setReceiver(account);
+            emailResetPass.setSubject("Thay đổi mật khẩu");
+            emailResetPass.setLink("https://www.google.com/"); // change url or api
+            emailResetPass.setOtp(otp);
+            emailService.resetPassword(emailResetPass);
+        }
+    }
+
+
+    public void resetPassword(OTPRequest otpRequest) {
+        // Kiểm tra confirmPassword trước khi tiếp tục
+        if (!otpRequest.getPassword().equals(otpRequest.getConfirmPassword())) {
+            throw new IllegalArgumentException("Mật khẩu mới và xác nhận mật khẩu không khớp!");
+        }
+
+        // Lấy email từ otpMap theo OTP người dùng đã nhập
+        String email = getEmailByOtp(otpRequest.getOtp());
+
+        if (email == null) {
+            throw new NotFoundException("OTP không hợp lệ hoặc đã hết hạn!");
+        }
+
+        // Lấy tài khoản theo email và cập nhật mật khẩu mới
+        Account account = accountRepository.findAccountByEmail(email);
+        if (account != null) {
+            account.setPassword(passwordEncoder.encode(otpRequest.getPassword()));
+            accountRepository.save(account);
+
+            // Xóa OTP sau khi hoàn tất
+            otpMap.remove(email);
+        } else {
+            throw new NotFoundException("Email không tồn tại!");
+        }
+    }
+
+
+
+    private Map<String, String> otpMap = new HashMap<>();
+
+    private String generateOTP() {
+        return String.format("%06d", new Random().nextInt(999999));
+    }
+
+    private String getEmailByOtp(String otp) {
+        // Lặp qua tất cả các mục trong otpMap để tìm OTP tương ứng
+        for (Map.Entry<String, String> entry : otpMap.entrySet()) {
+            if (entry.getValue().equals(otp)) {
+                return entry.getKey();  // Trả về email tương ứng với OTP
+            }
+        }
+        return null;  // Nếu không tìm thấy, trả về null
+    }
+
+    public void generateAndSendOTP(String email) {
+        String otp = generateOTP();
+        otpMap.put(email, otp);
+    }
+
+    public boolean verifyOTP(String email, String otp) {
+        String storedOtp = otpMap.get(email);
+        if (storedOtp != null && storedOtp.equals(otp)) {
+            otpMap.remove(email);
+            return true;
+        }
+        return false;
     }
 
 
