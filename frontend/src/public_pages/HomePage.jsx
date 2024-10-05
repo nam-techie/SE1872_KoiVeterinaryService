@@ -5,6 +5,7 @@ import tech from "../assets/images/Tech Icon.jpg"
 import expert from "../assets/images/Expert Icon.png"
 import quality from "../assets/images/Quality Icon.jpg"
 import qanda from "../assets/images/Q&A.jpg"
+import {Link} from "react-router-dom";
 
 function HomePage() {
     return (
@@ -20,7 +21,9 @@ function HomePage() {
                                 quy trình chăm sóc chuyên nghiệp và đội ngũ giàu kinh nghiệm, mang
                                 lại sự an tâm cho khách hàng.
                             </p>
-                            <button className="cta-button">Đặt Lịch Ngay</button>
+                            <Link to="/bookingpage">
+                                <button className="cta-button">Đặt Lịch Ngay</button>
+                            </Link>
                         </div>
                     </div>
                     <div className="homepage-right">

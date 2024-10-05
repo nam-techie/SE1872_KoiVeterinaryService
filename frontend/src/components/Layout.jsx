@@ -7,7 +7,9 @@ function Layout({ children }) {
   return (
     <>
       <div>{children}</div>  {}
-      {location.pathname !== '/login' && location.pathname !=='/register' && <Footer />}  {}
+      {location.pathname !== '/login' && location.pathname !=='/register' && location.pathname !=='/bookingpage'
+           && location.pathname !== '/forgot-password' && location.pathname !== '/reset-password'
+          && location.pathname !== '/verify-otp'&& <Footer />}  {}
     </>
   );
 }

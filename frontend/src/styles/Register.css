@@ -8,7 +8,7 @@
     margin-top: 80px;
   }
   
-  .register-form {
+.register-form {
     background-color: white;
     padding: 40px;
     border-radius: 8px;
@@ -16,7 +16,18 @@
     max-width: 400px;
     width: 100%;
   }
-  
+.register-form input {
+  border: 2px solid #000000;    /* Đặt viền dày 2px màu đen */
+  padding: 10px;                /* Khoảng cách bên trong input */
+  border-radius: 5px;           /* Làm bo tròn góc */
+  outline: none;                /* Xóa khung viền mặc định khi focus */
+}
+
+.register-form input:focus {
+  border-color: #4CAF50;        /* Đổi màu viền khi input đang được focus */
+  box-shadow: 0 0 5px #4CAF50;  /* Hiệu ứng đổ bóng khi focus */
+}
+
   h2 {
     text-align: center;
     margin-bottom: 20px;

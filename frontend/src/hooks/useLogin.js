@@ -1,9 +1,8 @@
 import { useState } from 'react';
-import { login } from '../services/apiLogin';
-import { auth, provider, signInWithPopup } from "../services/firebase-config";
+import { login } from '../services/apiLogin.js'; // Service đăng nhập
 
 export const useLogin = () => {
-  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState(''); // Sử dụng username thay vì email
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -13,13 +12,15 @@ export const useLogin = () => {
     setLoading(true);
     setError('');
 
+
     try {
-      const response = await login(email, password);
+      const response = await login(username, password); // Gọi API đăng nhập với username
       console.log('Đăng nhập thành công:', response);
-      // Xử lý sau khi đăng nhập thành công (như lưu thông tin người dùng, chuyển hướng, v.v.)
+      localStorage.setItem('authToken', response.token);
+      window.location.href = '/homepage'; // Chuyển hướng đến trang chính sau khi thành công
     } catch (error) {
-      console.error('Đã xảy ra lỗi:', error);
-      setError(error.message || 'Đăng nhập thất bại. Vui lòng kiểm tra lại thông tin.');
+      console.error('Đã xảy ra lỗi khi đăng nhập:', error);
+      setError(error.message || 'Đăng nhập thất bại. Vui lòng thử lại.');
     } finally {
       setLoading(false);
     }
@@ -27,12 +28,10 @@ export const useLogin = () => {
 
   const handleGoogleLogin = async () => {
     setLoading(true);
-    setError(''); // Xóa thông báo lỗi trước khi đăng nhập Google
+    setError('');
 
     try {
-      const result = await signInWithPopup(auth, provider);
-      console.log('Đăng nhập Google thành công:', result.user);
-      // Xử lý sau khi đăng nhập Google thành công
+      // Thực hiện đăng nhập với Google (nếu có)
     } catch (error) {
       console.error('Lỗi đăng nhập Google:', error);
       setError('Đăng nhập Google thất bại.');
@@ -42,12 +41,12 @@ export const useLogin = () => {
   };
 
   return {
-    email,
+    username,
+    setUsername,
     password,
+    setPassword,
     loading,
     error,
-    setEmail,
-    setPassword,
     handleSubmit,
     handleGoogleLogin
   };
