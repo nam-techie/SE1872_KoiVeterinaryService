@@ -28,7 +28,7 @@ function Register() {
             <label>Tên Đăng Kí: </label>
             <input
                 type="text"
-                placeholder="Tên đăng nhập"
+                placeholder="Tên đăng kí"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 required

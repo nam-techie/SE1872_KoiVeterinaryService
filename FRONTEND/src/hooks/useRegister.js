@@ -10,10 +10,33 @@ export const useRegister = () => {
   const [error, setError] = useState(''); // Trạng thái lỗi
   const [passwordsMatch, setPasswordsMatch] = useState(true); // Trạng thái mật khẩu có khớp không
 
-  const handleSubmit = async (e) => {
+  // State quản lý thông báo lỗi riêng cho từng trường
+  const [usernameError, setUsernameError] = useState('');
+  const [passwordError, setPasswordError] = useState('');
+
+  // Hàm kiểm tra form và xử lý submit
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
-    setError('');
+    let hasError = false;
+
+    // Kiểm tra độ dài username
+    if (username.length < 6) {
+      setUsernameError('Tên đăng ký phải có ít nhất 6 ký tự');
+      hasError = true;
+    } else {
+      setUsernameError('');
+    }
+
+    // Kiểm tra độ dài password
+    if (password.length < 6) {
+      setPasswordError('Mật khẩu phải có ít nhất 6 ký tự');
+      hasError = true;
+    } else {
+      setPasswordError('');
+    }
+
+    // Kiểm tra nếu có lỗi, ngừng thực hiện
+    if (hasError) return;
 
     // Kiểm tra xem mật khẩu và xác nhận mật khẩu có trùng khớp không
     if (password !== confirmPassword) {
@@ -21,6 +44,9 @@ export const useRegister = () => {
       setLoading(false);
       return;
     }
+
+    setLoading(true);
+    setError('');
 
     console.log('Đang gửi dữ liệu:', { username, email, password });
 
@@ -36,7 +62,7 @@ export const useRegister = () => {
     }
   };
 
-  // Kiểm tra sự thay đổi của trường confirmPassword ngay khi gõ
+  // Hàm xử lý thay đổi confirmPassword và kiểm tra khớp
   const handleConfirmPasswordChange = (value) => {
     setConfirmPassword(value);
     setPasswordsMatch(password === value); // Cập nhật trạng thái khớp của mật khẩu
@@ -54,6 +80,8 @@ export const useRegister = () => {
     passwordsMatch, // Trả về trạng thái mật khẩu có khớp không
     loading,
     error,
-    handleSubmit,
+    usernameError, // Trả về lỗi username
+    passwordError, // Trả về lỗi password
+    handleFormSubmit, // Hàm xử lý submit form
   };
 };

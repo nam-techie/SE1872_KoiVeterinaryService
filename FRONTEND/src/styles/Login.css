@@ -3,9 +3,9 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh; 
+  height: 100vh;
   background-color: #f8f8f8;
-  margin-top: 80px; 
+  margin-top: 80px;
 }
 
 .login-form {
@@ -39,10 +39,6 @@ h2 {
   outline: none;                /* Xóa khung viền mặc định khi focus */
 }
 
-.form-group input:focus {
-  border-color: #4CAF50;        /* Đổi màu viền khi input đang được focus */
-  box-shadow: 0 0 5px #4CAF50;  /* Hiệu ứng đổ bóng khi focus */
-}
 
 .form-group input {
   width: 100%;
@@ -95,8 +91,8 @@ h2 {
   padding: 10px;
   border-radius: 4px;
   cursor: pointer;
-  width: 100%; 
-  font-size: 16px; 
+  width: 100%;
+  font-size: 16px;
   text-align: center; /* Canh giữa nội dung trong nút */
 }
 

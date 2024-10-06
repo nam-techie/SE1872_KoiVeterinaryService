@@ -7,7 +7,7 @@
     background-color: #f8f8f8;
     margin-top: 80px;
   }
-  
+
 .register-form {
     background-color: white;
     padding: 40px;
@@ -23,25 +23,20 @@
   outline: none;                /* Xóa khung viền mặc định khi focus */
 }
 
-.register-form input:focus {
-  border-color: #4CAF50;        /* Đổi màu viền khi input đang được focus */
-  box-shadow: 0 0 5px #4CAF50;  /* Hiệu ứng đổ bóng khi focus */
-}
-
-  h2 {
+  .register-form h2 {
     text-align: center;
     margin-bottom: 20px;
   }
-  
+
   .form-group {
     margin-bottom: 15px;
   }
-  
+
   .form-group label {
     display: block;
     margin-bottom: 5px;
   }
-  
+
   .form-group input {
     width: 100%;
     padding: 10px;
@@ -49,7 +44,7 @@
     border: 1px solid #ddd;
     font-size: 16px;
   }
-  
+
   .register-button {
     background-color: #f58220;
     color: white;
@@ -60,19 +55,18 @@
     font-size: 16px;
     cursor: pointer;
   }
-  
+
   .register-button:hover {
     background-color: #e0730f;
   }
-  
+
   .login {
     text-align: center;
     margin-top: 15px;
   }
-  
+
   .error-message {
     color: red;
     text-align: center;
     margin-bottom: 15px;
   }
-  

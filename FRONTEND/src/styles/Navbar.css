@@ -8,10 +8,9 @@
   align-items: center;
   background-color: rgb(241, 120, 21);
   font-family: Arial, sans-serif;
-  position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
+
   color: white;
   z-index: 1000;
   box-sizing: border-box;

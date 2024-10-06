@@ -24,7 +24,7 @@ function Navbar() {
                   <li><Link to="/services">Dịch vụ</Link></li>
                   <li><Link to="#">Tìm Bác Sĩ</Link></li>
                   <li><Link to="/termandrefunds">Điều Khoản Và Dịch Vụ</Link></li>
-                  <li><Link to="/verify-otp">Cẩm Nang</Link></li>
+                  <li><Link to="#">Cẩm Nang</Link></li>
                   <li><Link to="#">FAQ</Link></li>
               </ul>
 

@@ -10,7 +10,7 @@ import AboutMe from "./public_pages/AboutMe.jsx";
 import BookingPage from "./public_pages/BookingPage.jsx"
 import TermAndRefund from "./public_pages/TermAndRefund.jsx";
 import ForgotPassword from "./public_pages/ForgotPassword.jsx";
-import VerifyOTP from "./public_pages/VerifyOTP.jsx";
+
 import ResetPassword from "./public_pages/ResetPassword.jsx";
 
 function App() {
@@ -29,7 +29,7 @@ function App() {
             <Route path="/bookingpage" element = {<BookingPage/>}/>
             <Route path="/termandrefunds" element={<TermAndRefund/>}/>
             <Route path="/forgot-password" element={<ForgotPassword/>}/>
-            <Route path="/verify-otp" element={<VerifyOTP/>}/>
+
             <Route path="/reset-password" element={<ResetPassword/>}/>
           </Routes>
           <ContactButton/>
