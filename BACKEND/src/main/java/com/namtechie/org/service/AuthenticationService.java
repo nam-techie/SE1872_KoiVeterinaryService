@@ -17,6 +17,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -283,4 +284,47 @@ public class AuthenticationService implements UserDetailsService {
     public void logout(String token) {
         tokenService.invalidateToken(token);
     }
+
+    public AccountResponse loginByGoogle() {
+        // Lấy thông tin từ SecurityContextHolder
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || !authentication.isAuthenticated()) {
+            throw new RuntimeException("Người dùng chưa được xác thực");
+        }
+
+        // Lấy OAuth2User từ Authentication
+        OAuth2User oauth2User = (OAuth2User) authentication.getPrincipal();
+
+        // Lấy email và tên từ OAuth2User
+        String email = oauth2User.getAttribute("email");
+        String name = oauth2User.getAttribute("name");
+
+        // Kiểm tra xem email đã tồn tại trong cơ sở dữ liệu hay chưa
+        Account account = accountRepository.findAccountByEmail(email);
+
+        if (account == null) {
+            // Nếu chưa tồn tại, tạo tài khoản mới
+            Account newAccount = new Account();
+            newAccount.setEmail(email);
+            newAccount.setUsername(email); // Sử dụng email làm username
+            newAccount.setPassword(null); // Đặt mật khẩu là null vì đăng nhập qua Google
+            newAccount.setRole(Role.CUSTOMER.name()); // Gán vai trò là CUSTOMER
+
+            // Lưu vào database
+            account = accountRepository.save(newAccount);
+        } else if (account.isDeleted()) {
+            throw new RuntimeException("Tài khoản đã bị xóa và không thể đăng nhập lại.");
+        }
+
+        // Tạo token cho người dùng
+        String token = tokenService.generateToken(account);
+
+        // Tạo AccountResponse để trả về thông tin người dùng và token
+        AccountResponse accountResponse = modelMapper.map(account, AccountResponse.class);
+        accountResponse.setToken(token);
+
+        return accountResponse;
+    }
+
+
 }

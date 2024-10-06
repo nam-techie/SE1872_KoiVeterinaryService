@@ -54,6 +54,10 @@ public class SecurityConfig {
 
 
                 )
+//                .oauth2Login(oauth2 -> oauth2
+//                        .loginPage("/oauth2/authorization/google")  // Tự động chuyển hướng đến trang đăng nhập Google OAuth2 khi người dùng chưa xác thực
+//                        .defaultSuccessUrl("/loginByGoogle", true)  // Chuyển hướng về Swagger sau khi đăng nhập thành công
+//                )// setup lai đường link của homePage ở đây
                 .userDetailsService(authenticationService)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class).build();

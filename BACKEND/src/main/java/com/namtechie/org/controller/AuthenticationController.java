@@ -9,6 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.core.user.OAuth2User;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -48,6 +51,31 @@ public class AuthenticationController {
         authenticationService.resetPassword(otpRequest);
         return ResponseEntity.ok("Thay đổi mật khẩu thành công!");
     }
+
+//    @GetMapping("/loginByGoogle")
+//    public String loginByGoogle(@AuthenticationPrincipal OAuth2User principal, Model model) {
+//        // Gọi hàm loginByGoogle trong service để thực hiện logic và lấy AccountResponse
+//        AccountResponse accountResponse = authenticationService.loginByGoogle();
+//
+//        // Thêm thông tin vào Model để hiển thị trên trang HTML
+//        model.addAttribute("name", accountResponse.getUsername());
+//        model.addAttribute("email", accountResponse.getEmail());
+//        model.addAttribute("token", accountResponse.getToken());
+//
+//        // Trả về trang loginSuccess.html
+//        return "loginSuccess";
+//    }
+
+
+
+
+
+
+
+
+
+
+
 
     //APi down is provide for ADMIN
 
