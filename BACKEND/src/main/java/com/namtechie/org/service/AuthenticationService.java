@@ -137,7 +137,7 @@ public class AuthenticationService implements UserDetailsService {
     public AccountResponse registerVeterinary(VeterinaryRequest veterinaryRequest) {
 
         Account account = getCurrentAccount();
-        if(account.getRole().equals(Role.ADMIN.name())) {
+        if (account.getRole().equals(Role.ADMIN.name())) {
             modelMapper.map(veterinaryRequest, Account.class);
             try {
                 // Mật khẩu mặc định cho bác sĩ
@@ -193,13 +193,12 @@ public class AuthenticationService implements UserDetailsService {
     }
 
 
-
-    public void deleteAccount(String username) {
+    public void deleteAccount(String email) {
         // Kiểm tra xem tài khoản có tồn tại hay không trước khi xóa
-        if (accountRepository.existsByUsername(username)) {
-            accountRepository.updateIsDeletedByUsername(true, username);
+        if (accountRepository.existsByEmail(email)) {
+            accountRepository.updateIsDeletedByEmail(true, email);
         } else {
-            throw new EntityNotFoundException("Tài khoản với username: " + username + " không tồn tại.");
+            throw new EntityNotFoundException("Tài khoản với email: " + email + " không tồn tại.");
         }
     }
 
@@ -251,7 +250,6 @@ public class AuthenticationService implements UserDetailsService {
     }
 
 
-
     private Map<String, String> otpMap = new HashMap<>();
 
     private String generateOTP() {
@@ -282,6 +280,7 @@ public class AuthenticationService implements UserDetailsService {
         return false;
     }
 
-
-
+    public void logout(String token) {
+        tokenService.invalidateToken(token);
+    }
 }

@@ -43,7 +43,7 @@ public class Filter extends OncePerRequestFilter {
             "/api/register"
     );
 
-    public boolean checkIsPublicAPI(String uri){
+    public boolean checkIsPublicAPI(String uri) {
         // uri: /api/register
         // nếu gặp những api trong list ở trên => cho phép truy cập luôn => true
         AntPathMatcher pathMatch = new AntPathMatcher();
@@ -56,11 +56,11 @@ public class Filter extends OncePerRequestFilter {
         // check xem cái api mà người dùng yêu cầu có phải là 1 public api hay k
 
         boolean isPublicAPI = checkIsPublicAPI(request.getRequestURI());
-        if(isPublicAPI){
+        if (isPublicAPI) {
             filterChain.doFilter(request, response);
-        }else{
+        } else {
             String token = getToken(request);
-            if(token == null){
+            if (token == null) {
                 //ko được phép truy cập
                 handlerExceptionResolver.resolveException(request, response, null, new AuthException("Empty token!"));
                 return;
@@ -69,13 +69,19 @@ public class Filter extends OncePerRequestFilter {
             // => có token
             // check xem token có đúng hay ko => lấy thông tin account từ token
             Account account;
-            try{
+            try {
+                // Kiểm tra token trong danh sách đen
+                if (tokenService.isTokenBlacklisted(token)) {
+                    handlerExceptionResolver.resolveException(request, response, null, new AuthException("Token này đã bị hủy!"));
+                    return;
+                }
+
                 account = tokenService.getAccountByToken(token);
-            }catch (ExpiredJwtException e){
+            } catch (ExpiredJwtException e) {
                 // response token hết hạn
                 handlerExceptionResolver.resolveException(request, response, null, new AuthException("Expired token!"));
                 return;
-            }catch (MalformedJwtException malformedJwtException){
+            } catch (MalformedJwtException malformedJwtException) {
                 // response token sai
                 handlerExceptionResolver.resolveException(request, response, null, new AuthException("Invalid token!"));
                 return;
@@ -86,18 +92,21 @@ public class Filter extends OncePerRequestFilter {
             // => lưu lại thông tin account
             UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
                     account, token, account.getAuthorities());
-            authenticationToken .setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+            authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
             SecurityContextHolder.getContext().setAuthentication(authenticationToken);
             // token ok, cho vào
             filterChain.doFilter(request, response);
         }
     }
 
-    public String getToken(HttpServletRequest request){
+    public String getToken(HttpServletRequest request) {
         String authHeader = request.getHeader("Authorization");
-        if(authHeader == null) return null;
-        return authHeader.substring(7);
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            return null;
+        }
+        return authHeader.substring(7); // Bỏ qua "Bearer "
     }
+
 
     // Bearer asdasdasdsadasdasd => lấy từ index 7 bỏ qua thằng bearer
 }

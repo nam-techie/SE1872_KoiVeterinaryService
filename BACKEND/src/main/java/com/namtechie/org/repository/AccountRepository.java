@@ -22,11 +22,13 @@ public interface AccountRepository extends JpaRepository<Account, Long> {
 
     boolean existsByUsername(String username);
 
+    boolean existsByEmail(String email);
+
     long countByRole(String role);
 
     @Transactional
     @Modifying
-    @Query("UPDATE Account a SET a.isDeleted = :isDeleted WHERE a.username = :username")
-    void updateIsDeletedByUsername(@Param("isDeleted") boolean isDeleted, @Param("username") String username);
+    @Query("UPDATE Account a SET a.isDeleted = :isDeleted WHERE a.email = :email")
+    void updateIsDeletedByEmail(@Param("isDeleted") boolean isDeleted, @Param("email") String email);
 
 }

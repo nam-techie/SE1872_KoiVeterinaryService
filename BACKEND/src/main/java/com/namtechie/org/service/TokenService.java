@@ -12,9 +12,16 @@ import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 @Service
 public class TokenService {
+
+    // Danh sách lưu token bị hủy cùng thời gian hết hạn
+    private Map<String, Date> blacklistedTokens = new HashMap<>();
+
     @Autowired
     AccountRepository accountRepository;
 
@@ -25,49 +32,71 @@ public class TokenService {
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
-    //generate Token
+    // Tạo token mới
     public String generateToken(Account account) {
-        String token = Jwts.builder()
+        return Jwts.builder()
                 .subject(account.getId() + "")
-                .issuedAt(new Date((System.currentTimeMillis())))
-                .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 30))// dieTime is 30 minutes
+                .issuedAt(new Date(System.currentTimeMillis()))
+                .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 30)) // Token sống trong 30 phút
                 .signWith(getSignKey())
                 .compact();
-        return token;
     }
 
-//    //verify Token
-//    public Account getAccountByToken(String token) {
-//        Claims claims = Jwts.parser()
-//                .verifyWith(getSignKey())
-//                .build()
-//                .parseSignedClaims(token)
-//                .getPayload();
-//
-//        String idString = claims.getSubject();
-//        long id = Long.parseLong(idString);
-//
-//        return accountRepository.findAccountById(id);
-//    }
+    // Đưa token vào danh sách đen với thời gian hết hạn
+    public void invalidateToken(String token) {
+        Claims claims = Jwts.parser()
+                .setSigningKey(getSignKey())
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
+
+        // Lưu token vào danh sách đen với thời gian hết hạn
+        blacklistedTokens.put(token, claims.getExpiration());
+    }
 
     // Kiểm tra và lấy thông tin Account từ token
     public Account getAccountByToken(String token) {
+        cleanUpBlacklistedTokens(); // Xóa các token đã hết hạn trước khi kiểm tra
+
+        if (blacklistedTokens.containsKey(token)) {
+            throw new RuntimeException("Token này đã bị hủy.");
+        }
+
         try {
             Claims claims = Jwts.parser()
-                    .verifyWith(getSignKey())
+                    .setSigningKey(getSignKey())
                     .build()
-                    .parseSignedClaims(token)
-                    .getPayload();
+                    .parseClaimsJws(token)
+                    .getBody();
 
             String idString = claims.getSubject();
             long id = Long.parseLong(idString);
 
             return accountRepository.findAccountById(id);
-
         } catch (ExpiredJwtException e) {
             throw new RuntimeException("Token đã hết hạn. Vui lòng đăng nhập lại.");
         } catch (Exception e) {
-            throw new RuntimeException("Invalid token");
+            throw new RuntimeException("Token không hợp lệ.");
         }
     }
+
+    // Xóa các token đã hết hạn khỏi danh sách đen
+    private void cleanUpBlacklistedTokens() {
+        Iterator<Map.Entry<String, Date>> iterator = blacklistedTokens.entrySet().iterator();
+        Date now = new Date();
+
+        while (iterator.hasNext()) {
+            Map.Entry<String, Date> entry = iterator.next();
+            // Nếu token đã hết hạn, loại bỏ nó khỏi danh sách đen
+            if (entry.getValue().before(now)) {
+                iterator.remove();
+            }
+        }
+    }
+
+    public boolean isTokenBlacklisted(String token) {
+        cleanUpBlacklistedTokens(); // Xóa các token đã hết hạn trước khi kiểm tra
+        return blacklistedTokens.containsKey(token);
+    }
+
 }

@@ -78,4 +78,16 @@ public class AuthenticationController {
         authenticationService.deleteAccount(email);
         return new ResponseEntity<>("Đã xóa thành công.", HttpStatus.ACCEPTED);
     }
+
+    @PostMapping("/logout")
+    public ResponseEntity<?> logout(@RequestHeader("Authorization") String token) {
+        // Cắt bỏ tiền tố "Bearer " nếu token có tiền tố
+        if (token.startsWith("Bearer ")) {
+            token = token.substring(7);
+        }
+
+        authenticationService.logout(token);
+        return ResponseEntity.ok("Đăng xuất thành công.");
+    }
+
 }
