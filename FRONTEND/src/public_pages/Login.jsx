@@ -1,5 +1,6 @@
 import { useLogin } from '../hooks/useLogin.js';
 import '../styles/Login.css';
+import GoogleLogo from "../assets/images/gmaillogo.png"
 
 function Login() {
   const {
@@ -61,7 +62,7 @@ function Login() {
 
           <div className="google-login">
             <button type="button" className="google-button" onClick={handleGoogleLogin} disabled={loading}>
-              <img src="src/assets/images/gmaillogo.png" alt="Google Logo" />
+              <img src={GoogleLogo} alt="Google Logo" />
               {loading ? 'Đang xử lý...' : 'Đăng nhập với Google'}
             </button>
           </div>
