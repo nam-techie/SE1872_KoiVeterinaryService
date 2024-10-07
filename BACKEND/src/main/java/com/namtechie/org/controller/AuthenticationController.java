@@ -1,5 +1,6 @@
 package com.namtechie.org.controller;
 
+import com.namtechie.org.model.UpdateDoctorLogin;
 import com.namtechie.org.model.request.ForgotPasswordRequest;
 import com.namtechie.org.model.request.LoginRequest;
 import com.namtechie.org.model.request.OTPRequest;
@@ -34,6 +35,12 @@ public class AuthenticationController {
         // nhờ thằng AuthenticationService => tạo dùm cái account
         AccountResponse newAccount = authenticationService.login(loginRequest);
         return ResponseEntity.ok(newAccount);
+    }
+
+    @PutMapping("/updateAccount")
+    public ResponseEntity updateAccount(UpdateDoctorLogin updateInfo) {
+        authenticationService.updateAccount(updateInfo);
+        return ResponseEntity.ok("Thay đổi thông tin tài khoản thành công!");
     }
 
     @PostMapping("/forgot-password")

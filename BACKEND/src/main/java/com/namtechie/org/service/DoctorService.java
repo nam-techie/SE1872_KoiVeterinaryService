@@ -40,26 +40,42 @@ public class DoctorService {
         try {
             // Lấy tài khoản hiện tại của người dùng đã xác thực
             Account currentAccount = getCurrentAccount();
-            // Kiểm tra nếu tài khoản hiện tại đã có bác sĩ nào được liên kết hay chưa
-            boolean existingDoctor = doctorRepository.existsByAccountId(currentAccount.getId());
-
             if (!currentAccount.getRole().equals(Role.VETERINARY.name())) {
                 throw new RuntimeException("Chỉ tài khoản của bác sĩ mới có thể thực hiện hành động này.");
-            } else if (existingDoctor) {
-                throw new IllegalArgumentException("Tài khoản này đã có thông tin bác sĩ.");
             }
 
-            // Tạo đối tượng Doctor mới và thiết lập các thuộc tính
-            Doctor doctor = new Doctor();
-            doctor.setFullname(doctorRequest.getFullName());
-            doctor.setSpecialty(doctorRequest.getSpecialty());
-            doctor.setPhone(doctorRequest.getPhone());
-            doctor.setIntroduction(doctorRequest.getIntroduction());
-            doctor.setTraining(doctorRequest.getTraining());
-            doctor.setWorkExperience(doctorRequest.getWorkExperience());
-            doctor.setAchievements(doctorRequest.getAchievements());
-            doctor.setResearchPapers(doctorRequest.getResearchPapers());
-            doctor.setAccount(currentAccount);
+            // Kiểm tra xem bác sĩ có tồn tại không, nếu không thì khởi tạo mới
+            Doctor doctor = doctorRepository.findByAccountId(currentAccount.getId());
+            if (doctor == null) {
+                doctor = new Doctor();  // Khởi tạo đối tượng Doctor mới
+                doctor.setAccount(currentAccount);  // Liên kết với tài khoản
+            }
+
+            // Xét trường hợp nếu user ko nhập gì thì ko update
+            if (doctorRequest.getFullName() != null && !doctorRequest.getFullName().isEmpty()) {
+                doctor.setFullname(doctorRequest.getFullName());
+            }
+            if (doctorRequest.getPhone() != null && !doctorRequest.getPhone().isEmpty()) {
+                doctor.setPhone(doctorRequest.getPhone());
+            }
+            if (doctorRequest.getSpecialty() != null && !doctorRequest.getSpecialty().isEmpty()) {
+                doctor.setSpecialty(doctorRequest.getSpecialty());
+            }
+            if (doctorRequest.getIntroduction() != null && !doctorRequest.getIntroduction().isEmpty()) {
+                doctor.setIntroduction(doctorRequest.getIntroduction());
+            }
+            if (doctorRequest.getTraining() != null && !doctorRequest.getTraining().isEmpty()) {
+                doctor.setTraining(doctorRequest.getTraining());
+            }
+            if (doctorRequest.getWorkExperience() != null && !doctorRequest.getWorkExperience().isEmpty()) {
+                doctor.setWorkExperience(doctorRequest.getWorkExperience());
+            }
+            if (doctorRequest.getAchievements() != null && !doctorRequest.getAchievements().isEmpty()) {
+                doctor.setAchievements(doctorRequest.getAchievements());
+            }
+            if (doctorRequest.getResearchPapers() != null && !doctorRequest.getResearchPapers().isEmpty()) {
+                doctor.setResearchPapers(doctorRequest.getResearchPapers());
+            }
 
             // Lưu đối tượng Doctor vào cơ sở dữ liệu
             return doctorRepository.save(doctor);
@@ -73,23 +89,4 @@ public class DoctorService {
             throw new RuntimeException("Đã xảy ra lỗi trong quá trình thêm thông tin bác sĩ. Vui lòng thử lại sau.");
         }
     }
-
-    public void updateAccount(UpdateDoctorLogin updateInfo) {
-        try {
-            Account currentAccount = getCurrentAccount();
-            if (!currentAccount.getRole().equals(Role.VETERINARY.name())) {
-                throw new RuntimeException("Chỉ tài khoản của bác sĩ mới có thể thực hiện hành động này.");
-            } else if (!updateInfo.getPassword().equals(updateInfo.getConfirmPassword())) {
-                throw new IllegalArgumentException("Mật khẩu mới và xác nhận mật khẩu không khớp!");
-            }
-            currentAccount.setUsername(updateInfo.getUsername());
-            currentAccount.setPassword(passwordEncoder.encode(updateInfo.getPassword()));
-            accountRepository.save(currentAccount);
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new RuntimeException("Đã xảy ra lỗi trong quá trình cập nhật tài khoản. Vui lòng thử lại sau.");
-        }
-    }
-
-
 }

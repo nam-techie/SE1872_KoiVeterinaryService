@@ -27,11 +27,7 @@ public class DoctorController {
         return ResponseEntity.ok(updateDoctor);
     }
 
-    @PutMapping("/updateAccount")
-    public ResponseEntity updateAccount(UpdateDoctorLogin updateInfo) {
-        doctorService.updateAccount(updateInfo);
-        return ResponseEntity.ok("Thay đổi thông tin tài khoản bác sĩ thành công!");
-    }
+
 
 
 

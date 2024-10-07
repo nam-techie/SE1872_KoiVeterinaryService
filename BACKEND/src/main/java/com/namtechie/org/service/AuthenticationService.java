@@ -325,5 +325,20 @@ public class AuthenticationService implements UserDetailsService {
         return accountResponse;
     }
 
+    public void updateAccount(UpdateDoctorLogin updateInfo) {
+        try {
+            Account currentAccount = getCurrentAccount();
+            if (!updateInfo.getPassword().equals(updateInfo.getConfirmPassword())) {
+                throw new IllegalArgumentException("Mật khẩu mới và xác nhận mật khẩu không khớp!");
+            }
+            currentAccount.setUsername(updateInfo.getUsername());
+            currentAccount.setPassword(passwordEncoder.encode(updateInfo.getPassword()));
+            accountRepository.save(currentAccount);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("Đã xảy ra lỗi trong quá trình cập nhật tài khoản. Vui lòng thử lại sau.");
+        }
+    }
+
 
 }
