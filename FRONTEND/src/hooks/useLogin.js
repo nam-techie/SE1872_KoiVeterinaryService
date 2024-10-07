@@ -32,7 +32,7 @@ export const useLogin = () => {
 
     try {
       // Lấy dữ liệu từ file JSON
-      const response = await axios.get('/data.json');
+      const response = await axios.get('/users.json');
       const data = response.data;
 
       // Kiểm tra dữ liệu trả về

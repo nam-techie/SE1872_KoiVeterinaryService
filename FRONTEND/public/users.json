@@ -1,0 +1,14 @@
+[
+  {
+    "id": 1,
+    "serviceName": "Khám tại trung tâm",
+    "description": "Dịch vụ khám tại trung tâm với bác sĩ chuyên khoa.",
+    "image": "https://example.com/image1.jpg"
+  },
+  {
+    "id": 2,
+    "serviceName": "Khám tại nhà",
+    "description": "Dịch vụ khám bệnh tại nhà.",
+    "image": "https://example.com/image2.jpg"
+  }
+]

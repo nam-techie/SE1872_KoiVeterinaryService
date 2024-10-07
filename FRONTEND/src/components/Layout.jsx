@@ -9,7 +9,7 @@ function Layout({ children }) {
       <div>{children}</div>  {}
       {location.pathname !== '/login' && location.pathname !=='/register' && location.pathname !=='/bookingpage'
            && location.pathname !== '/forgot-password' && location.pathname !== '/reset-password'
-          && location.pathname !== '/verify-otp'&& <Footer />}  {}
+          && location.pathname !== '/verify-otp' && location.pathname !== '/booking-service-history' && <Footer />}  {}
     </>
   );
 }
