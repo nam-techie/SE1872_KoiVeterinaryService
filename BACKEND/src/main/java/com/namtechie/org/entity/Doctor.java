@@ -17,10 +17,12 @@ public class Doctor {
 
     private String fullname;
     private String specialty;
-    private Integer experience;
-
-    @OneToOne(mappedBy = "doctor", cascade = CascadeType.ALL)
-    private DoctorsInfo doctorInfo;
+    private String phone;
+    private String introduction;
+    private String training;
+    private String workExperience;
+    private String achievements;
+    private String researchPapers;
 
     @OneToMany(mappedBy = "doctor", cascade = CascadeType.ALL)
     private Set<DoctorsSchedules> schedules;

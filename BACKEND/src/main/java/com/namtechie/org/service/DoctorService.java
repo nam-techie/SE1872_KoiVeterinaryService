@@ -52,16 +52,21 @@ public class DoctorService {
             // Tạo đối tượng Doctor mới và thiết lập các thuộc tính
             Doctor doctor = new Doctor();
             doctor.setFullname(doctorRequest.getFullName());
-            doctor.setExperience(doctorRequest.getExperience());
             doctor.setSpecialty(doctorRequest.getSpecialty());
+            doctor.setPhone(doctorRequest.getPhone());
+            doctor.setIntroduction(doctorRequest.getIntroduction());
+            doctor.setTraining(doctorRequest.getTraining());
+            doctor.setWorkExperience(doctorRequest.getWorkExperience());
+            doctor.setAchievements(doctorRequest.getAchievements());
+            doctor.setResearchPapers(doctorRequest.getResearchPapers());
             doctor.setAccount(currentAccount);
 
             // Lưu đối tượng Doctor vào cơ sở dữ liệu
             return doctorRepository.save(doctor);
 
         } catch (IllegalArgumentException e) {
-            // Xử lý trường hợp tài khoản đã có bác sĩ
-            throw new RuntimeException("Tài khoản này đã có thông tin của bác sĩ.");
+            e.printStackTrace();
+            throw new IllegalArgumentException("Tài khoản này đã có thông tin bác sĩ.");
         } catch (Exception e) {
             // Log lỗi hoặc xử lý các ngoại lệ khác nếu cần
             e.printStackTrace();
@@ -85,5 +90,6 @@ public class DoctorService {
             throw new RuntimeException("Đã xảy ra lỗi trong quá trình cập nhật tài khoản. Vui lòng thử lại sau.");
         }
     }
+
 
 }

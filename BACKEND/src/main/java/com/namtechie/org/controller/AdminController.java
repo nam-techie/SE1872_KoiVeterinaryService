@@ -36,7 +36,7 @@ public class AdminController {
         return ResponseEntity.ok(accounts);
     }
 
-    @PostMapping(value = "//registerVeterinary")
+    @PostMapping(value = "/registerVeterinary")
     public ResponseEntity registerVeterinary(@Valid @RequestBody VeterinaryRequest veterinaryRequest) {
         AccountResponse newAccount = authenticationService.registerVeterinary(veterinaryRequest);
         return ResponseEntity.ok(newAccount);

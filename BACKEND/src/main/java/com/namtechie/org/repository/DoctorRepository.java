@@ -7,4 +7,5 @@ public interface DoctorRepository extends JpaRepository<Doctor, Long> {
     Doctor findByAccountId(Long accountId);
 
     boolean existsByAccountId(Long accountId);
+
 }

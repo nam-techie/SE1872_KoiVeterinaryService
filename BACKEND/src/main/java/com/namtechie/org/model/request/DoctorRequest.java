@@ -5,7 +5,12 @@ import lombok.Data;
 @Data
 public class DoctorRequest {
     String fullName;
-    int experience;
     String specialty;
+    String phone;
+    String introduction;
+    String training;
+    String workExperience;
+    String achievements;
+    String researchPapers;
 
 }
