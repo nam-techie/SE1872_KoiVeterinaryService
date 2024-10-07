@@ -1,3 +1,34 @@
+.top-navbar {
+  position: fixed;
+  width: 100%;
+  top: 0;
+  background-color: white; 
+  padding: 12px 0px;
+  margin-left: -20px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  font-size: 14px;
+  color: black;
+  font-family: Arial, sans-serif;
+  z-index: 1001; /* Đảm bảo top-navbar nằm trên navbar */
+}
+
+.contact-info {
+  display: flex;
+  gap: 20px;
+}
+
+.contact-info span {
+  display: flex;
+  align-items: center;
+}
+
+.contact-info span svg {
+  margin-right: 5px; /* Khoảng cách giữa icon và text */
+}
+
+
 .navbar {
   position: fixed;
   height: 50px;
@@ -8,7 +39,7 @@
   align-items: center;
   background-color: rgb(241, 120, 21);
   font-family: Arial, sans-serif;
-  top: 0;
+  top: 40px;
   left: 0;
 
   color: white;
