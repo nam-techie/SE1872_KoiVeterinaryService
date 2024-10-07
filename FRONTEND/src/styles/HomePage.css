@@ -1,9 +1,9 @@
 .homepage-container {
+  padding-top: 50px;
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
-  padding: 0 2%;
   box-sizing: border-box;
 }
 

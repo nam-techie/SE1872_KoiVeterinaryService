@@ -27,9 +27,9 @@ function Footer() {
         <div className="footer-section links-section">
           <h3>Dịch vụ</h3>
           <ul>
-            <li><a href="#">Đặt khám tại trung tâm</a></li>
-            <li><a href="#">Đặt khám theo chuyên gia</a></li>
-            <li><a href="#">Tư vấn trực tuyến</a></li>
+            <li><a href="#">Tư vấn trực tuyến </a></li>
+            <li><a href="#">Khảo sát tại tại nhà</a></li>
+            <li><a href="#">Đặt lịch tại trung tâm</a></li>
             <li><a href="#">Y tế tại nhà</a></li>
           </ul>
         </div>

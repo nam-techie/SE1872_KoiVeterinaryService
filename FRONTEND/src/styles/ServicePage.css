@@ -1,7 +1,7 @@
 .service-container {
+    padding-top: 50px;
     display: flex;
     flex-direction: column; /* Chia thành các hàng */
-    padding: 20px;
     margin: 0 50px; /* Thêm margin hai bên */
     background-color: #f8f9fa;
     text-align: left;
@@ -37,7 +37,7 @@
     text-decoration: underline;
 }
 
-h1 {
+.service-content h1 {
     text-align: center;
     color: #F53838; /* Màu đỏ */
 }
