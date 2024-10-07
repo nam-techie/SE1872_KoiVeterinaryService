@@ -2,10 +2,15 @@ import { Link } from "react-router-dom";
 import logo from "../assets/images/logo.png";
 import "../styles/Navbar.css";
 import { useNavbar } from "../hooks/useNavbar.js";
-import { FaMapMarkerAlt, FaPhoneAlt, FaClock, FaUser } from 'react-icons/fa';
+import { FaMapMarkerAlt, FaPhoneAlt, FaClock, FaUser, FaRegFileAlt } from 'react-icons/fa';
 
 function Navbar() {
   const { isLoggedIn, showDropdown, setShowDropdown, handleLogout } = useNavbar();
+
+  // Hàm xử lý khi bấm vào biểu tượng người dùng
+  const handleUserIconClick = () => {
+    setShowDropdown(!showDropdown);
+  };
 
   return (
       <>
@@ -47,26 +52,31 @@ function Navbar() {
             </li>
           </ul>
 
-          <div
-              className="auth-buttons"
-              onMouseEnter={() => setShowDropdown(true)}
-              onMouseLeave={() => setShowDropdown(false)}
-          >
+          <div className="auth-buttons">
             {isLoggedIn ? (
                 <div className="user-icon-container">
-                  <FaUser
-                      size={30}
-                      className="user-icon"
-                      style={{ cursor: 'pointer' }}
-                  />
-                  {showDropdown && (
-                      <div className="dropdown-menu">
-                        <Link to="/profile">Thông tin cá nhân</Link>
-                        <Link to="/booking-history">Lịch sử đặt dịch vụ</Link>
-                        <hr />
-                        <button onClick={handleLogout} className="logout-button">Đăng xuất</button>
-                      </div>
-                  )}
+                  <Link to="/booking-service-history">
+                    <FaRegFileAlt
+                        size={30}
+                        className="file-icon"
+                        style={{ cursor: 'pointer', marginRight: '25px', color: 'white' }}
+                    />
+                  </Link>
+                  <div onClick={handleUserIconClick} className="user-icon-wrapper">
+                    <FaUser
+                        size={30}
+                        className="user-icon"
+                        style={{ cursor: 'pointer' }}
+                    />
+                    {showDropdown && (
+                        <div className="dropdown-menu">
+                          <Link to="/profile">Thông tin cá nhân</Link>
+                          <Link to="/booking-service-history">Lịch sử đặt dịch vụ</Link>
+                          <hr/>
+                          <button onClick={handleLogout} className="logout-button">Đăng xuất</button>
+                        </div>
+                    )}
+                  </div>
                 </div>
             ) : (
                 <>
