@@ -49,7 +49,7 @@ export const useLogin = () => {
           console.log('Đăng nhập thành công:', foundUser);
           // Giả lập việc lưu token vào localStorage (vì không có API thực)
           localStorage.setItem('authToken', 'fakeAuthToken123');
-          window.location.href = '/homepage';
+          //window.location.href = '/homepage';
         } else {
           throw new Error('Tên đăng nhập hoặc mật khẩu không đúng');
         }
