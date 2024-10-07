@@ -1,20 +1,16 @@
 package com.namtechie.org.controller;
 
-import com.namtechie.org.entity.Account;
-import com.namtechie.org.model.*;
+import com.namtechie.org.model.request.ForgotPasswordRequest;
+import com.namtechie.org.model.request.LoginRequest;
+import com.namtechie.org.model.request.OTPRequest;
+import com.namtechie.org.model.request.RegisterRequest;
+import com.namtechie.org.model.response.AccountResponse;
 import com.namtechie.org.service.AuthenticationService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.oauth2.core.user.OAuth2User;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RequestMapping("/api")
 @RestController
@@ -52,6 +48,16 @@ public class AuthenticationController {
         return ResponseEntity.ok("Thay đổi mật khẩu thành công!");
     }
 
+    @PostMapping("/logout")
+    public ResponseEntity<?> logout(@RequestHeader("Authorization") String token) {
+        // Cắt bỏ tiền tố "Bearer " nếu token có tiền tố
+        if (token.startsWith("Bearer ")) {
+            token = token.substring(7);
+        }
+        authenticationService.logout(token);
+        return ResponseEntity.ok("Đăng xuất thành công.");
+    }
+
 //    @GetMapping("/loginByGoogle")
 //    public String loginByGoogle(@AuthenticationPrincipal OAuth2User principal, Model model) {
 //        // Gọi hàm loginByGoogle trong service để thực hiện logic và lấy AccountResponse
@@ -66,56 +72,4 @@ public class AuthenticationController {
 //        return "loginSuccess";
 //    }
 
-
-
-
-
-
-
-
-
-
-
-
-    //APi down is provide for ADMIN
-
-    @PreAuthorize("hasAuthority('ADMIN')") // set từng thằng
-    @PutMapping("/admin/setAccountVeterinary/{email}")
-    public ResponseEntity<String> setAccountVeterinary(@PathVariable String email) {
-        authenticationService.setVeterinaryAccount(email);
-        return new ResponseEntity<>("Tài khoản bác sĩ đã được tạo thành công.", HttpStatus.ACCEPTED);
     }
-
-    @PreAuthorize("hasAuthority('ADMIN')") // set từng thằng
-    @GetMapping("/admin")
-    public ResponseEntity get() {
-        List<Account> accounts = authenticationService.getAllAccount();
-        return ResponseEntity.ok(accounts);
-    }
-
-    @PreAuthorize("hasAuthority('ADMIN')") // set từng thằng
-    @PostMapping(value = "/admin/registerVeterinary")
-    public ResponseEntity registerVeterinary(@Valid @RequestBody VeterinaryRequest veterinaryRequest) {
-        AccountResponse newAccount = authenticationService.registerVeterinary(veterinaryRequest);
-        return ResponseEntity.ok(newAccount);
-    }
-
-    @PreAuthorize("hasAuthority('ADMIN')") // set từng thằng
-    @DeleteMapping("/admin")
-    public ResponseEntity<String> deleteAccount(@RequestParam String email) {
-        authenticationService.deleteAccount(email);
-        return new ResponseEntity<>("Đã xóa thành công.", HttpStatus.ACCEPTED);
-    }
-
-    @PostMapping("/logout")
-    public ResponseEntity<?> logout(@RequestHeader("Authorization") String token) {
-        // Cắt bỏ tiền tố "Bearer " nếu token có tiền tố
-        if (token.startsWith("Bearer ")) {
-            token = token.substring(7);
-        }
-
-        authenticationService.logout(token);
-        return ResponseEntity.ok("Đăng xuất thành công.");
-    }
-
-}

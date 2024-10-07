@@ -5,6 +5,8 @@ import com.namtechie.org.entity.Role;
 import com.namtechie.org.exception.DuplicateEntity;
 import com.namtechie.org.exception.NotFoundException;
 import com.namtechie.org.model.*;
+import com.namtechie.org.model.request.*;
+import com.namtechie.org.model.response.AccountResponse;
 import com.namtechie.org.repository.AccountRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.modelmapper.ModelMapper;
@@ -137,35 +139,32 @@ public class AuthenticationService implements UserDetailsService {
 
     public AccountResponse registerVeterinary(VeterinaryRequest veterinaryRequest) {
 
-        Account account = getCurrentAccount();
-        if (account.getRole().equals(Role.ADMIN.name())) {
-            modelMapper.map(veterinaryRequest, Account.class);
-            try {
-                // Mật khẩu mặc định cho bác sĩ
-                String generatedUsername = generateUsername();
-                // Tạo account mới
+        Account account = new Account();
+        modelMapper.map(veterinaryRequest, Account.class);
+        try {
+            // Mật khẩu mặc định cho bác sĩ
+            String generatedUsername = generateUsername();
+            // Tạo account mới
 
-                account.setEmail(veterinaryRequest.getEmail());
-                account.setUsername(generatedUsername);
-                account.setPassword(passwordEncoder.encode("123456"));
-                account.setRole(Role.VETERINARY.name());
+            account.setEmail(veterinaryRequest.getEmail());
+            account.setUsername(generatedUsername);
+            account.setPassword(passwordEncoder.encode("123456"));
+            account.setRole(Role.VETERINARY.name());
 
-                // Lưu tài khoản bác sĩ vào database
-                Account newAccount = accountRepository.save(account);
+            // Lưu tài khoản bác sĩ vào database
+            Account newAccount = accountRepository.save(account);
 
-                // Chuyển đổi thành AccountResponse và trả về
-                return modelMapper.map(newAccount, AccountResponse.class);
-            } catch (Exception e) {
-                if (e.getMessage().contains(account.getEmail())) {
-                    throw new DuplicateEntity("Email này đã được sử dụng!");
-                } else {
-                    throw new RuntimeException("Đã xảy ra lỗi trong quá trình đăng ký, vui lòng thử lại sau.");
-                }
+            // Chuyển đổi thành AccountResponse và trả về
+            return modelMapper.map(newAccount, AccountResponse.class);
+        } catch (Exception e) {
+            if (e.getMessage().contains(account.getEmail())) {
+                throw new DuplicateEntity("Email này đã được sử dụng!");
+            } else {
+                throw new RuntimeException("Đã xảy ra lỗi trong quá trình đăng ký, vui lòng thử lại sau.");
             }
-        } else {
-            // Nếu không phải ADMIN thì từ chối quyền truy cập
-            throw new com.namtechie.org.exception.IllegalAccessException("Bạn không có quyền truy cập để đăng ký bác sĩ.");
         }
+
+
     }
 
     public AccountResponse setVeterinaryAccount(String email) {
@@ -267,19 +266,19 @@ public class AuthenticationService implements UserDetailsService {
         return null;  // Nếu không tìm thấy, trả về null
     }
 
-    public void generateAndSendOTP(String email) {
-        String otp = generateOTP();
-        otpMap.put(email, otp);
-    }
-
-    public boolean verifyOTP(String email, String otp) {
-        String storedOtp = otpMap.get(email);
-        if (storedOtp != null && storedOtp.equals(otp)) {
-            otpMap.remove(email);
-            return true;
-        }
-        return false;
-    }
+//    public void generateAndSendOTP(String email) {
+//        String otp = generateOTP();
+//        otpMap.put(email, otp);
+//    }
+//
+//    public boolean verifyOTP(String email, String otp) {
+//        String storedOtp = otpMap.get(email);
+//        if (storedOtp != null && storedOtp.equals(otp)) {
+//            otpMap.remove(email);
+//            return true;
+//        }
+//        return false;
+//    }
 
     public void logout(String token) {
         tokenService.invalidateToken(token);

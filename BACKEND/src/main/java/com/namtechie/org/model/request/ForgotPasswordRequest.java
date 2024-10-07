@@ -1,4 +1,4 @@
-package com.namtechie.org.model;
+package com.namtechie.org.model.request;
 
 import jakarta.validation.constraints.Email;
 import lombok.Data;
