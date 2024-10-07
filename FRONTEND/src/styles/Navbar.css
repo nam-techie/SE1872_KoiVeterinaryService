@@ -41,7 +41,6 @@
   font-family: Arial, sans-serif;
   top: 40px;
   left: 0;
-
   color: white;
   z-index: 1000;
   box-sizing: border-box;
@@ -61,11 +60,12 @@
   color: white;
   font-weight: normal;
   font-size: 14px;
-  transition: color 0.3s ease; /* Hiệu ứng chuyển đổi màu mượt mà */
+  transition: color 0.3s ease, text-decoration 0.3s ease; /* Hiệu ứng chuyển đổi màu và gạch chân */
 }
 
 .nav-links li a:hover {
-  color: #ff6347; /* Màu khi hover, bạn có thể thay đổi màu này */
+  color: white; /* Giữ màu trắng */
+  text-decoration: underline; /* Thêm gạch chân khi hover */
 }
 
 .auth-buttons .btn {
@@ -116,29 +116,57 @@
   color: black;
 }
 
-.dropdown {
+
+.user-icon-container {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-menu {
   display: none;
   position: absolute;
-  top: 100%;
-  left: 0;
+  top: 35px; /* Đặt vị trí xuất hiện ngay bên dưới biểu tượng */
+  right: 0;
   background-color: white;
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  min-width: 150px;
+  border: 1px solid #ddd;
   border-radius: 5px;
+  width: 200px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 1001;
+  padding: 10px;
+  box-sizing: border-box;
 }
 
-.dropdown li {
-  padding: 8px 10px;
+.user-icon-container:hover .dropdown-menu,
+.dropdown-menu:hover {
+  display: block;
 }
 
-.dropdown li a {
-  font-size: 12px;
+.dropdown-menu a, .dropdown-menu button {
+  display: block;
+  width: 90%;
+  padding: 10px;
+  font-size: 14px;
   color: gray;
+  text-decoration: none;
+  cursor: pointer;
+  background: none;
+  border: none;
+  text-align: left;
 }
 
-.dropdown li a:hover {
-  background-color: #eee;
+.dropdown-menu a:hover, .dropdown-menu button:hover {
+  background-color: #f0f0f0;
+}
+
+.dropdown-menu hr {
+  margin: 10px 0;
+  border: none;
+  border-top: 1px solid #ddd;
+}
+
+.logout-button {
+  color: gray;
+  width: 100%;
+  text-align: left;
 }

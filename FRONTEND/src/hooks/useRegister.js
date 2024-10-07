@@ -5,14 +5,40 @@ export const useRegister = () => {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState(''); // Thêm confirmPassword
-  const [loading, setLoading] = useState(false); // Trạng thái loading
-  const [error, setError] = useState(''); // Trạng thái lỗi
-  const [passwordsMatch, setPasswordsMatch] = useState(true); // Trạng thái mật khẩu có khớp không
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+  const [passwordsMatch, setPasswordsMatch] = useState(true);
 
   // State quản lý thông báo lỗi riêng cho từng trường
   const [usernameError, setUsernameError] = useState('');
   const [passwordError, setPasswordError] = useState('');
+
+  // Hàm kiểm tra độ dài username khi thay đổi
+  const handleUsernameChange = (value) => {
+    setUsername(value);
+    if (value.length < 6) {
+      setUsernameError('Tên đăng ký phải có ít nhất 6 ký tự');
+    } else {
+      setUsernameError('');
+    }
+  };
+
+  // Hàm kiểm tra độ dài password khi thay đổi
+  const handlePasswordChange = (value) => {
+    setPassword(value);
+    if (value.length < 6) {
+      setPasswordError('Mật khẩu phải có ít nhất 6 ký tự');
+    } else {
+      setPasswordError('');
+    }
+  };
+
+  // Hàm xử lý thay đổi confirmPassword và kiểm tra khớp
+  const handleConfirmPasswordChange = (value) => {
+    setConfirmPassword(value);
+    setPasswordsMatch(password === value);
+  };
 
   // Hàm kiểm tra form và xử lý submit
   const handleFormSubmit = async (e) => {
@@ -23,37 +49,29 @@ export const useRegister = () => {
     if (username.length < 6) {
       setUsernameError('Tên đăng ký phải có ít nhất 6 ký tự');
       hasError = true;
-    } else {
-      setUsernameError('');
     }
 
     // Kiểm tra độ dài password
     if (password.length < 6) {
       setPasswordError('Mật khẩu phải có ít nhất 6 ký tự');
       hasError = true;
-    } else {
-      setPasswordError('');
     }
 
     // Kiểm tra nếu có lỗi, ngừng thực hiện
     if (hasError) return;
 
-    // Kiểm tra xem mật khẩu và xác nhận mật khẩu có trùng khớp không
     if (password !== confirmPassword) {
-      setError('Mật khẩu và Xác nhận mật khẩu không trùng khớp.');
-      setLoading(false);
+      setError('Mật khẩu  không trùng khớp.');
       return;
     }
 
     setLoading(true);
     setError('');
 
-    console.log('Đang gửi dữ liệu:', { username, email, password });
-
     try {
-      const response = await register(username, email, password); // Gọi API đăng ký
+      const response = await register(username, email, password);
       console.log('Đăng ký thành công:', response);
-      window.location.href = '/login'; // Chuyển hướng đến trang đăng nhập sau khi thành công
+      window.location.href = '/login';
     } catch (error) {
       console.error('Đã xảy ra lỗi khi đăng ký:', error);
       setError(error.message || 'Đăng ký thất bại. Vui lòng thử lại.');
@@ -62,26 +80,20 @@ export const useRegister = () => {
     }
   };
 
-  // Hàm xử lý thay đổi confirmPassword và kiểm tra khớp
-  const handleConfirmPasswordChange = (value) => {
-    setConfirmPassword(value);
-    setPasswordsMatch(password === value); // Cập nhật trạng thái khớp của mật khẩu
-  };
-
   return {
     username,
-    setUsername,
+    setUsername: handleUsernameChange,
     email,
     setEmail,
     password,
-    setPassword,
+    setPassword: handlePasswordChange,
     confirmPassword,
-    setConfirmPassword: handleConfirmPasswordChange, // Thay đổi hàm setConfirmPassword
-    passwordsMatch, // Trả về trạng thái mật khẩu có khớp không
+    setConfirmPassword: handleConfirmPasswordChange,
+    passwordsMatch,
     loading,
     error,
-    usernameError, // Trả về lỗi username
-    passwordError, // Trả về lỗi password
-    handleFormSubmit, // Hàm xử lý submit form
+    usernameError,
+    passwordError,
+    handleFormSubmit,
   };
 };

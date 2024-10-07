@@ -11,18 +11,30 @@ function Register() {
     setPassword,
     confirmPassword,
     setConfirmPassword,
-    passwordsMatch, // Nhận trạng thái kiểm tra mật khẩu có khớp không
+    passwordsMatch,
     loading,
     error,
-    handleSubmit,
+    usernameError,
+    passwordError,
+    handleFormSubmit,
   } = useRegister();
+
+  // Kiểm tra xem trường hợp input hợp lệ hay không
+  const getInputClass = (hasError, value) => {
+    if (hasError) {
+      return 'error-input';
+    } else if (value && !hasError) {
+      return 'valid-input';
+    }
+    return '';
+  };
 
   return (
       <div className="register-container">
-        <form className="register-form" onSubmit={handleSubmit}>
+        <form className="register-form" onSubmit={handleFormSubmit}>
           <h2>Đăng ký</h2>
 
-          {error && <p className="error-message">{error}</p>} {/* Hiển thị lỗi nếu có */}
+          {error && <p className="error-message">{error}</p>}
 
           <div className="form-group">
             <label>Tên Đăng Kí: </label>
@@ -31,8 +43,10 @@ function Register() {
                 placeholder="Tên đăng kí"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
+                className={getInputClass(usernameError, username)}
                 required
             />
+            {usernameError && <p className="error-message">{usernameError}</p>}
           </div>
 
           <div className="form-group">
@@ -42,6 +56,7 @@ function Register() {
                 placeholder="Email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                className={getInputClass(false, email)}
                 required
             />
           </div>
@@ -53,8 +68,10 @@ function Register() {
                 placeholder="Mật khẩu"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                className={getInputClass(passwordError, password)}
                 required
             />
+            {passwordError && <p className="error-message">{passwordError}</p>}
           </div>
 
           <div className="form-group">
@@ -63,13 +80,13 @@ function Register() {
                 type="password"
                 placeholder="Xác nhận mật khẩu"
                 value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)} // Thay đổi confirmPassword khi gõ
-                className={!passwordsMatch && confirmPassword ? 'error-input' : ''} // Thêm class error khi không khớp
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                className={getInputClass(!passwordsMatch, confirmPassword)}
                 required
             />
             {!passwordsMatch && confirmPassword && (
                 <p className="error-message">Mật khẩu không khớp</p>
-            )} {/* Hiển thị lỗi nếu mật khẩu không khớp */}
+            )}
           </div>
 
           <button type="submit" className="register-button" disabled={loading}>

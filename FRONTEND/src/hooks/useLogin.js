@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { login } from '../services/apiLogin.js'; // Service đăng nhập
+import axios from "axios";
+// import { login } from '../services/apiLogin.js'; // Service đăng nhập
 
 export const useLogin = () => {
   const [username, setUsername] = useState(''); // Sử dụng username thay vì email
@@ -8,22 +9,60 @@ export const useLogin = () => {
   const [error, setError] = useState('');
 
   const handleSubmit = async (e) => {
+    // e.preventDefault();
+    // setLoading(true);
+    // setError('');
+    //
+    //
+    // try {
+    //   const response = await login(username, password); // Gọi API đăng nhập với username
+    //   console.log('Đăng nhập thành công:', response);
+    //   localStorage.setItem('authToken', response.token);
+    //   window.location.href = '/homepage'; // Chuyển hướng đến trang chính sau khi thành công
+    // } catch (error) {
+    //   console.error('Đã xảy ra lỗi khi đăng nhập:', error);
+    //   setError(error.message || 'Đăng nhập thất bại. Vui lòng thử lại.');
+    // } finally {
+    //   setLoading(false);
+    // }
+
     e.preventDefault();
     setLoading(true);
     setError('');
 
-
     try {
-      const response = await login(username, password); // Gọi API đăng nhập với username
-      console.log('Đăng nhập thành công:', response);
-      localStorage.setItem('authToken', response.token);
-      window.location.href = '/homepage'; // Chuyển hướng đến trang chính sau khi thành công
+      // Lấy dữ liệu từ file JSON
+      const response = await axios.get('/data.json');
+      const data = response.data;
+
+      // Kiểm tra dữ liệu trả về
+      console.log('Dữ liệu trả về:', data);
+
+      // Kiểm tra nếu data là một mảng
+      if (Array.isArray(data)) {
+        // Tìm kiếm người dùng với username và password khớp
+        const foundUser = data.find(
+            (user) => user.username === username && user.password === password
+        );
+
+        if (foundUser) {
+          console.log('Đăng nhập thành công:', foundUser);
+          // Giả lập việc lưu token vào localStorage (vì không có API thực)
+          localStorage.setItem('authToken', 'fakeAuthToken123');
+          window.location.href = '/homepage';
+        } else {
+          throw new Error('Tên đăng nhập hoặc mật khẩu không đúng');
+        }
+      } else {
+        throw new Error('Dữ liệu người dùng không hợp lệ.');
+      }
     } catch (error) {
       console.error('Đã xảy ra lỗi khi đăng nhập:', error);
       setError(error.message || 'Đăng nhập thất bại. Vui lòng thử lại.');
     } finally {
       setLoading(false);
     }
+
   };
 
   const handleGoogleLogin = async () => {
@@ -39,6 +78,8 @@ export const useLogin = () => {
       setLoading(false);
     }
   };
+
+
 
   return {
     username,
