@@ -1,6 +1,6 @@
 package com.namtechie.org.config;
 
-import com.namtechie.org.entity.Customer;
+import com.namtechie.org.entity.Account;
 import com.namtechie.org.service.TokenService;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
@@ -64,9 +64,9 @@ public class Filter extends OncePerRequestFilter {
 
             // => có token
             // check xem token có đúng hay ko => lấy thông tin account từ token
-            Customer customer;
+            Account account;
             try{
-                customer = tokenService.getAccountByToken(token);
+                account = tokenService.getAccountByToken(token);
             }catch (ExpiredJwtException e){
                 // response token hết hạn
                 handlerExceptionResolver.resolveException(request, response, null, new AuthException("Expired token!"));
@@ -81,7 +81,7 @@ public class Filter extends OncePerRequestFilter {
             // => cho phép truy cập
             // => lưu lại thông tin account
             UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
-                    customer, token, customer.getAuthorities()
+                    account, token, account.getAuthorities()
             );
             authenticationToken .setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
             SecurityContextHolder.getContext().setAuthentication(authenticationToken);

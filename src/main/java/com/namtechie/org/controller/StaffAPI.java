@@ -14,12 +14,18 @@ import java.util.List;
 public class StaffAPI {
     @Autowired
     ServiceRequestService serviceRequestService;
-     @PostMapping("/request_service")
+
+    @PostMapping("/request_service")
     public ResponseEntity createServiceRequests(@RequestBody ServiceRequestDTO serviceRequestDTO) {
-         ServiceRequest serviceRequest = serviceRequestService.convertDTOtoEntity(serviceRequestDTO);
-         ServiceRequest request = serviceRequestService.createServiceRequests(serviceRequest);
-                 return ResponseEntity.ok(request);
-     }
+        ServiceRequest serviceRequest = serviceRequestService.createServiceRequests(serviceRequestDTO);
+        return ResponseEntity.ok(serviceRequest);
+    }
+
+    @GetMapping("/request_service")
+    public List<ServiceRequest> getServiceRequests() {
+        List<ServiceRequest> list = serviceRequestService.getAllRequestServices();
+        return list;
+    }
 
 
 }

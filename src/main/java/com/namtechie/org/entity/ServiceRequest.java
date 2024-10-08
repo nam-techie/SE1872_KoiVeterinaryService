@@ -23,7 +23,7 @@ public class ServiceRequest {
     private Customer customer;
 
     @ManyToOne
-    @JoinColumn(name = "veterianID")
+    @JoinColumn(name = "veterianID", nullable = false)
     private Veterian veterian;
 
     @Column(nullable = false)
@@ -33,7 +33,7 @@ public class ServiceRequest {
     @Column(nullable = false)
     private Date requestDate;
 
-    @Temporal(TemporalType.DATE)
+
     @Column(nullable = false)
     private Date preferredDate;
 

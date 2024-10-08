@@ -4,4 +4,5 @@ import com.namtechie.org.entity.Veterian;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface VeterianRepository extends JpaRepository<Veterian, Long> {
+    Veterian findVeterianByVeterianID(long id);
 }

@@ -1,6 +1,8 @@
 package com.namtechie.org.service;
 
+import com.namtechie.org.entity.Account;
 import com.namtechie.org.entity.Customer;
+import com.namtechie.org.repository.AccountRepository;
 import com.namtechie.org.repository.CustomerRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -17,11 +19,12 @@ import java.util.Date;
 
 public class TokenService {
         @Autowired
-        CustomerRepository customerRepository;
+        AccountRepository accountRepository;
 
         public final String SECRET_KEY = "4bb6d1dfbafb64a681139d1586b6f1160d18159afd57c8c79136d7490630407d";
 
-        private SecretKey getSignKey() {
+
+    private SecretKey getSignKey() {
             byte[] keyBytes = Decoders.BASE64.decode(SECRET_KEY);
             return Keys.hmacShaKeyFor(keyBytes);
         }
@@ -52,7 +55,7 @@ public class TokenService {
 //    }
 
         // Kiểm tra và lấy thông tin Account từ token
-        public Customer getAccountByToken(String token) {
+        public Account getAccountByToken(String token) {
             try {
                 Claims claims = Jwts.parser()
                         .verifyWith(getSignKey())
@@ -63,7 +66,7 @@ public class TokenService {
                 String idString = claims.getSubject();
                 long id = Long.parseLong(idString);
 
-                return customerRepository.findCustomerByCustomerID(id);
+                return accountRepository.findAccountById(id);
 
             } catch (ExpiredJwtException e) {
                 throw new RuntimeException("Token đã hết hạn. Vui lòng đăng nhập lại.");

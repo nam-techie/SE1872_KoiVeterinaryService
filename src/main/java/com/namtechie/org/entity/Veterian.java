@@ -14,15 +14,14 @@ public class Veterian {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long veterianID;
 
+    @OneToOne
+    @JoinColumn(name = "account_id", referencedColumnName = "id") // Liên kết với cột 'id' trong bảng Account
+    private Account account;
+
     @Column(nullable = false)
     private String fullname;
 
     @Column(nullable = false)
-    private String email;
-
-    @Column(nullable = false)
     private String phone;
 
-    @Column(nullable = false)
-    private String role;
 }
