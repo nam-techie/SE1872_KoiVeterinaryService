@@ -98,10 +98,17 @@ public class AuthenticationService implements UserDetailsService {
 
             // tài khoản có tồn tại
             Account account = (Account) authentication.getPrincipal();
+            if(account.isDeleted()){
+                throw new NotFoundException("Tài khoản đã bị vô hiệu hóa!");
+            }
             AccountResponse accountResponse = modelMapper.map(account, AccountResponse.class);
             accountResponse.setToken(tokenService.generateToken(account));
             return accountResponse;
+        }catch (NotFoundException e) {
+            // Báo lỗi tài khoản bị vô hiệu hóa
+            throw e;
         } catch (Exception e) {
+            // Báo lỗi tài khoản hoặc mật khẩu sai
             throw new EntityNotFoundException("Tài khoản hoặc mật khẩu sai!");
         }
     }

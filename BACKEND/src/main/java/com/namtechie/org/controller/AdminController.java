@@ -1,9 +1,11 @@
 package com.namtechie.org.controller;
 
 import com.namtechie.org.entity.Account;
+import com.namtechie.org.entity.Doctor;
 import com.namtechie.org.model.response.AccountResponse;
 import com.namtechie.org.model.request.VeterinaryRequest;
 import com.namtechie.org.service.AuthenticationService;
+import com.namtechie.org.service.DoctorService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,11 +19,13 @@ import java.util.List;
 @RequestMapping("/api/admin")
 @RestController
 @PreAuthorize("hasAuthority('ADMIN')") // set từng thằng
-
 @SecurityRequirement(name = "api")
 public class AdminController {
     @Autowired
     AuthenticationService authenticationService;
+
+    @Autowired
+    private DoctorService doctorService;
 
     //APi down is provide for ADMIN
     @PutMapping("/setAccountVeterinary/{email}")
@@ -30,22 +34,34 @@ public class AdminController {
         return new ResponseEntity<>("Tài khoản bác sĩ đã được tạo thành công.", HttpStatus.ACCEPTED);
     }
 
-    @GetMapping
-    public ResponseEntity get() {
-        List<Account> accounts = authenticationService.getAllAccount();
-        return ResponseEntity.ok(accounts);
-    }
-
     @PostMapping(value = "/registerVeterinary")
     public ResponseEntity registerVeterinary(@Valid @RequestBody VeterinaryRequest veterinaryRequest) {
         AccountResponse newAccount = authenticationService.registerVeterinary(veterinaryRequest);
         return ResponseEntity.ok(newAccount);
     }
 
-    @DeleteMapping
+    @GetMapping("/listAccount")
+    public ResponseEntity get() {
+        List<Account> accounts = authenticationService.getAllAccount();
+        return ResponseEntity.ok(accounts);
+    }
+
+    @DeleteMapping("/deleteAccount")
     public ResponseEntity<String> deleteAccount(@RequestParam String email) {
         authenticationService.deleteAccount(email);
         return new ResponseEntity<>("Đã xóa thành công.", HttpStatus.ACCEPTED);
+    }
+
+    @GetMapping("/listVeterinaryInfo")
+    public ResponseEntity getDoctor(long id) {
+        Doctor findDoctor = doctorService.getDoctorById(id);
+        return ResponseEntity.ok(findDoctor);
+    }
+
+    @DeleteMapping("/deleteVeterinaryInfo")
+    public ResponseEntity deleteDoctor(long id) {
+        doctorService.deleteDoctor(id);
+        return ResponseEntity.ok("Xóa thông tin bác sĩ thành công!");
     }
 
 

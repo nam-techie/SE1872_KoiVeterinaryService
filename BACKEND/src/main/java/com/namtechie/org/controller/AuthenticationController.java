@@ -1,5 +1,6 @@
 package com.namtechie.org.controller;
 
+import com.namtechie.org.entity.Account;
 import com.namtechie.org.model.UpdateDoctorLogin;
 import com.namtechie.org.model.request.ForgotPasswordRequest;
 import com.namtechie.org.model.request.LoginRequest;
@@ -63,6 +64,12 @@ public class AuthenticationController {
         }
         authenticationService.logout(token);
         return ResponseEntity.ok("Đăng xuất thành công.");
+    }
+
+    @GetMapping("/getInfoAccount")
+    public Account getInfoCurruntAccount(){
+        Account infoAccount = authenticationService.getCurrentAccount();
+        return infoAccount;
     }
 
 //    @GetMapping("/loginByGoogle")

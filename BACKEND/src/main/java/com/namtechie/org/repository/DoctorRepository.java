@@ -8,4 +8,7 @@ public interface DoctorRepository extends JpaRepository<Doctor, Long> {
 
     boolean existsByAccountId(Long accountId);
 
+    Doctor findDoctorById(Long id);
+
+
 }

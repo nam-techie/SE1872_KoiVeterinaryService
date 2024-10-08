@@ -14,6 +14,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class DoctorService {
     @Autowired
@@ -36,6 +38,34 @@ public class DoctorService {
         return accountRepository.findAccountById(account.getId());
     }
 
+    public List<Doctor> getDoctors() {
+        return doctorRepository.findAll();
+    }
+
+    public void deleteDoctor(long id) {
+        try {
+            Doctor deleteDoctor = doctorRepository.findDoctorById(id);
+            if (deleteDoctor == null) {
+                throw new RuntimeException("Không có thông tin của bác sĩ bạn cần tìm!");
+            }
+            doctorRepository.delete(deleteDoctor);
+        } catch (Exception e) {
+            throw new RuntimeException("Đã xảy ra lỗi trong quá trình xóa thông tin bác sĩ. Vui lòng thử lại sau.");
+        }
+    }
+
+    public Doctor getDoctorById(long id) {
+        try {
+            Doctor doctor = doctorRepository.findDoctorById(id);
+            if (doctor == null) {
+                throw new RuntimeException("Không có thông tin của bác sĩ bạn cần tìm!");
+            }
+            return doctor;
+        } catch (Exception e) {
+            throw new RuntimeException("Đã xảy ra lỗi trong quá trình tìm kiếm thông tin bác sĩ. Vui lòng thử lại sau.");
+        }
+    }
+
     public Doctor addInfoVeterinary(DoctorRequest doctorRequest) {
         try {
             // Lấy tài khoản hiện tại của người dùng đã xác thực
@@ -52,28 +82,28 @@ public class DoctorService {
             }
 
             // Xét trường hợp nếu user ko nhập gì thì ko update
-            if (doctorRequest.getFullName() != null && !doctorRequest.getFullName().isEmpty()) {
+            if (!doctorRequest.getFullName().equals(doctor.getFullname())) {
                 doctor.setFullname(doctorRequest.getFullName());
             }
-            if (doctorRequest.getPhone() != null && !doctorRequest.getPhone().isEmpty()) {
+            if (!doctorRequest.getPhone().equals(doctor.getPhone())) {
                 doctor.setPhone(doctorRequest.getPhone());
             }
-            if (doctorRequest.getSpecialty() != null && !doctorRequest.getSpecialty().isEmpty()) {
+            if (!doctorRequest.getSpecialty().equals(doctor.getSpecialty())) {
                 doctor.setSpecialty(doctorRequest.getSpecialty());
             }
-            if (doctorRequest.getIntroduction() != null && !doctorRequest.getIntroduction().isEmpty()) {
+            if (!doctorRequest.getIntroduction().equals(doctor.getIntroduction())) {
                 doctor.setIntroduction(doctorRequest.getIntroduction());
             }
-            if (doctorRequest.getTraining() != null && !doctorRequest.getTraining().isEmpty()) {
+            if (!doctorRequest.getTraining().equals(doctor.getTraining())) {
                 doctor.setTraining(doctorRequest.getTraining());
             }
-            if (doctorRequest.getWorkExperience() != null && !doctorRequest.getWorkExperience().isEmpty()) {
+            if (!doctorRequest.getWorkExperience().equals(doctor.getWorkExperience())) {
                 doctor.setWorkExperience(doctorRequest.getWorkExperience());
             }
-            if (doctorRequest.getAchievements() != null && !doctorRequest.getAchievements().isEmpty()) {
+            if (!doctorRequest.getAchievements().equals(doctor.getAchievements())) {
                 doctor.setAchievements(doctorRequest.getAchievements());
             }
-            if (doctorRequest.getResearchPapers() != null && !doctorRequest.getResearchPapers().isEmpty()) {
+            if (!doctorRequest.getResearchPapers().equals(doctor.getResearchPapers())) {
                 doctor.setResearchPapers(doctorRequest.getResearchPapers());
             }
 
