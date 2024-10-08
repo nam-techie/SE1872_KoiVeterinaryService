@@ -38,7 +38,7 @@ public class DoctorService {
         return accountRepository.findAccountById(account.getId());
     }
 
-    public List<Doctor> getDoctors() {
+    public List<Doctor> getAllDoctors() {
         return doctorRepository.findAll();
     }
 
@@ -54,25 +54,18 @@ public class DoctorService {
         }
     }
 
-    public Doctor getDoctorById(long id) {
-        try {
-            Doctor doctor = doctorRepository.findDoctorById(id);
-            if (doctor == null) {
-                throw new RuntimeException("Không có thông tin của bác sĩ bạn cần tìm!");
-            }
-            return doctor;
-        } catch (Exception e) {
-            throw new RuntimeException("Đã xảy ra lỗi trong quá trình tìm kiếm thông tin bác sĩ. Vui lòng thử lại sau.");
-        }
+    public Doctor getDoctorById() {
+        Account curruntAccount = getCurrentAccount();
+        return doctorRepository.findDoctorById(curruntAccount.getId());
     }
 
     public Doctor addInfoVeterinary(DoctorRequest doctorRequest) {
         try {
             // Lấy tài khoản hiện tại của người dùng đã xác thực
             Account currentAccount = getCurrentAccount();
-            if (!currentAccount.getRole().equals(Role.VETERINARY.name())) {
-                throw new RuntimeException("Chỉ tài khoản của bác sĩ mới có thể thực hiện hành động này.");
-            }
+//            if (!currentAccount.getRole().equals(Role.VETERINARY.name())) {
+//                throw new RuntimeException("Chỉ tài khoản của bác sĩ mới có thể thực hiện hành động này.");
+//            } check tài khỏan hiện tại thì có token và role VETERINARY rồi nên ko cần check lại
 
             // Kiểm tra xem bác sĩ có tồn tại không, nếu không thì khởi tạo mới
             Doctor doctor = doctorRepository.findByAccountId(currentAccount.getId());
@@ -110,9 +103,6 @@ public class DoctorService {
             // Lưu đối tượng Doctor vào cơ sở dữ liệu
             return doctorRepository.save(doctor);
 
-        } catch (IllegalArgumentException e) {
-            e.printStackTrace();
-            throw new IllegalArgumentException("Tài khoản này đã có thông tin bác sĩ.");
         } catch (Exception e) {
             // Log lỗi hoặc xử lý các ngoại lệ khác nếu cần
             e.printStackTrace();

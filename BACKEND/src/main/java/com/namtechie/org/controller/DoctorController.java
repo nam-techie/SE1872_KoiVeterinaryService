@@ -25,11 +25,9 @@ public class DoctorController {
         return ResponseEntity.ok(updateDoctor);
     }
 
-
-
-
-
-
-
-
+    @GetMapping("/listVeterinaryInfo")
+    public ResponseEntity getDoctor() {
+        Doctor findDoctor = doctorService.getDoctorById();
+        return ResponseEntity.ok(findDoctor);
+    }
 }

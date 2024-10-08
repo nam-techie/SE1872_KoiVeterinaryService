@@ -1,13 +1,12 @@
 package com.namtechie.org.controller;
 
 import com.namtechie.org.entity.Account;
+import com.namtechie.org.entity.Customers;
 import com.namtechie.org.model.UpdateDoctorLogin;
-import com.namtechie.org.model.request.ForgotPasswordRequest;
-import com.namtechie.org.model.request.LoginRequest;
-import com.namtechie.org.model.request.OTPRequest;
-import com.namtechie.org.model.request.RegisterRequest;
+import com.namtechie.org.model.request.*;
 import com.namtechie.org.model.response.AccountResponse;
 import com.namtechie.org.service.AuthenticationService;
+import com.namtechie.org.service.CustomerService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,17 +21,20 @@ public class AuthenticationController {
     @Autowired
     AuthenticationService authenticationService;
 
+    @Autowired
+    CustomerService customerService;
+
     //API provide for CUSTOMER
 
     @PostMapping("/register")
-    public ResponseEntity register(@Valid @RequestBody RegisterRequest registerRequest){
+    public ResponseEntity register(@Valid @RequestBody RegisterRequest registerRequest) {
         // nhờ thằng AuthenticationService => tạo dùm cái account
         AccountResponse newAccount = authenticationService.register(registerRequest);
         return ResponseEntity.ok(newAccount);
     }
 
     @PostMapping("/login")
-    public ResponseEntity login(@Valid @RequestBody LoginRequest loginRequest){
+    public ResponseEntity login(@Valid @RequestBody LoginRequest loginRequest) {
         // nhờ thằng AuthenticationService => tạo dùm cái account
         AccountResponse newAccount = authenticationService.login(loginRequest);
         return ResponseEntity.ok(newAccount);
@@ -45,13 +47,13 @@ public class AuthenticationController {
     }
 
     @PostMapping("/forgot-password")
-    public ResponseEntity forgotPassword(@RequestBody @Valid ForgotPasswordRequest forgotPasswordRequest){
+    public ResponseEntity forgotPassword(@RequestBody @Valid ForgotPasswordRequest forgotPasswordRequest) {
         authenticationService.forgotPassword(forgotPasswordRequest);
         return ResponseEntity.ok("Đã yêu cầu mục quên mật khẩu. Vui lòng kiểm tra hộp thư để xác nhận!");
     }
 
     @PostMapping("/reset-password")
-    public ResponseEntity resetPassword(@RequestBody OTPRequest otpRequest){
+    public ResponseEntity resetPassword(@RequestBody OTPRequest otpRequest) {
         authenticationService.resetPassword(otpRequest);
         return ResponseEntity.ok("Thay đổi mật khẩu thành công!");
     }
@@ -67,7 +69,7 @@ public class AuthenticationController {
     }
 
     @GetMapping("/getInfoAccount")
-    public Account getInfoCurruntAccount(){
+    public Account getInfoCurruntAccount() {
         Account infoAccount = authenticationService.getCurrentAccount();
         return infoAccount;
     }
@@ -86,4 +88,16 @@ public class AuthenticationController {
 //        return "loginSuccess";
 //    }
 
+    @GetMapping("/getInfoCustomer")
+    public ResponseEntity getInfoCustomer() {
+        Customers curruntCutomer = customerService.getCustomerById();
+        return ResponseEntity.ok(curruntCutomer);
     }
+
+    @PutMapping("/updateInfoCustomer")
+    public ResponseEntity updateInfoCustomer(@Valid @RequestBody CustomerInfoRequest customerInfo) {
+        CustomerInfoRequest newUpdate = customerService.updateCustomerInfo(customerInfo);
+        return ResponseEntity.ok(newUpdate);
+    }
+
+}

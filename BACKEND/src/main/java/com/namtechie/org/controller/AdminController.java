@@ -1,10 +1,12 @@
 package com.namtechie.org.controller;
 
 import com.namtechie.org.entity.Account;
+import com.namtechie.org.entity.Customers;
 import com.namtechie.org.entity.Doctor;
 import com.namtechie.org.model.response.AccountResponse;
 import com.namtechie.org.model.request.VeterinaryRequest;
 import com.namtechie.org.service.AuthenticationService;
+import com.namtechie.org.service.CustomerService;
 import com.namtechie.org.service.DoctorService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
@@ -25,7 +27,10 @@ public class AdminController {
     AuthenticationService authenticationService;
 
     @Autowired
-    private DoctorService doctorService;
+    DoctorService doctorService;
+
+    @Autowired
+    CustomerService customerService;
 
     //APi down is provide for ADMIN
     @PutMapping("/setAccountVeterinary/{email}")
@@ -52,10 +57,10 @@ public class AdminController {
         return new ResponseEntity<>("Đã xóa thành công.", HttpStatus.ACCEPTED);
     }
 
-    @GetMapping("/listVeterinaryInfo")
-    public ResponseEntity getDoctor(long id) {
-        Doctor findDoctor = doctorService.getDoctorById(id);
-        return ResponseEntity.ok(findDoctor);
+    @GetMapping("/listAllVeterinary")
+    public ResponseEntity getAllDoctor(){
+        List<Doctor> doctors = doctorService.getAllDoctors();
+        return ResponseEntity.ok(doctors);
     }
 
     @DeleteMapping("/deleteVeterinaryInfo")
@@ -63,6 +68,13 @@ public class AdminController {
         doctorService.deleteDoctor(id);
         return ResponseEntity.ok("Xóa thông tin bác sĩ thành công!");
     }
+
+    @GetMapping("/listInfoCustomer")
+    public List<Customers> getAllInfoCustomer(){
+        return customerService.getAllCustomers();
+    }
+
+
 
 
 }
