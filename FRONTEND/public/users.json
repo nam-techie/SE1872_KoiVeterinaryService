@@ -1,14 +1,14 @@
 [
   {
-    "id": 1,
-    "serviceName": "Khám tại trung tâm",
-    "description": "Dịch vụ khám tại trung tâm với bác sĩ chuyên khoa.",
-    "image": "https://example.com/image1.jpg"
+    "username": "user123456",
+    "email": "giabao@gmail.com",
+    "password": "password123",
+    "role": "CUSTOMER"
   },
   {
-    "id": 2,
-    "serviceName": "Khám tại nhà",
-    "description": "Dịch vụ khám bệnh tại nhà.",
-    "image": "https://example.com/image2.jpg"
+    "username": "user23456",
+    "email": "giabao1@gmail.com",
+    "password": "password456",
+    "role": "CUSTOMER"
   }
 ]

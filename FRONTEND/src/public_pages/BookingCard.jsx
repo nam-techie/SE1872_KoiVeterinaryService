@@ -1,6 +1,6 @@
 import "../styles/BookingServiceHistory.css";
 
-function Card({ serviceName, description, image, date, time, status }) {
+function BookingCard({ serviceName, description, image, date, time, status }) {
     return (
         <div className="card-booking-service">
             <img className="card-image-booking-service" src={image} alt={serviceName} />
@@ -13,4 +13,5 @@ function Card({ serviceName, description, image, date, time, status }) {
     );
 }
 
-export default Card;
+export default BookingCard;
+

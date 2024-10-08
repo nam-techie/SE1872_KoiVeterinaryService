@@ -9,9 +9,9 @@ import ContactButton  from "./components/ContactButton.jsx";
 import AboutMe from "./public_pages/AboutMe.jsx";
 import BookingPage from "./public_pages/BookingPage.jsx"
 import TermAndRefund from "./public_pages/TermAndRefund.jsx";
-import ForgotPassword from "./public_pages/ForgotPassword.jsx";
+// import ForgotPassword from "./public_pages/ForgotPassword.jsx";
 import BookingServiceHistory from "./public_pages/BookingServiceHistory.jsx";
-import ResetPassword from "./public_pages/ResetPassword.jsx";
+// import ResetPassword from "./public_pages/ResetPassword.jsx";
 
 function App() {
   return (
@@ -28,9 +28,9 @@ function App() {
             <Route path="/register" element = {<RegisterPage/>}/>
             <Route path="/bookingpage" element = {<BookingPage/>}/>
             <Route path="/termandrefunds" element={<TermAndRefund/>}/>
-            <Route path="/forgot-password" element={<ForgotPassword/>}/>
+            {/*<Route path="/forgot-password" element={<ForgotPassword/>}/>*/}
             <Route path="/booking-service-history" element={<BookingServiceHistory/>}/>
-            <Route path="/reset-password" element={<ResetPassword/>}/>
+            {/*<Route path="/reset-password" element={<ResetPassword/>}/>*/}
           </Routes>
           <ContactButton/>
         </Layout>

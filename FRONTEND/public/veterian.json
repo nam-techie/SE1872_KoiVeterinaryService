@@ -1,0 +1,42 @@
+[
+  {
+    "id": "dr1",
+    "account_id": 101,
+    "fullname": "Bác Sĩ A",
+    "sex": true,
+    "phone": "0123456789",
+    "experience": 10
+  },
+  {
+    "id": "dr2",
+    "account_id": 102,
+    "fullname": "Bác Sĩ B",
+    "sex": false,
+    "phone": "0987654321",
+    "experience": 8
+  },
+  {
+    "id": "dr3",
+    "account_id": 103,
+    "fullname": "Bác Sĩ C",
+    "sex": true,
+    "phone": "0112233445",
+    "experience": 12
+  },
+  {
+    "id": "dr4",
+    "account_id": 104,
+    "fullname": "Bác Sĩ D",
+    "sex": false,
+    "phone": "0223344556",
+    "experience": 5
+  },
+  {
+    "id": "dr5",
+    "account_id": 105,
+    "fullname": "Bác Sĩ E",
+    "sex": true,
+    "phone": "0334455667",
+    "experience": 15
+  }
+]

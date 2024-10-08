@@ -1,8 +1,9 @@
 
 .appointment-form {
+    margin-top: 100px;
     max-width: 600px;
     width: 100%;
-    position: fixed; /* Giữ form cố định trên màn hình */
+    position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%); /* Canh giữa theo chiều ngang và dọc */
