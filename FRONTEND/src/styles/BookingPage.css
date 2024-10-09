@@ -1,0 +1,87 @@
+
+.appointment-form {
+    margin-top: 100px;
+    max-width: 600px;
+    width: 100%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* Canh giữa theo chiều ngang và dọc */
+    padding: 30px;
+    background-color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+/* Khoảng cách giữa các phần tử trong form */
+.form-group {
+    margin-bottom: 20px;
+}
+
+label {
+    font-weight: bold;
+    display: block;
+}
+
+select, input[type="checkbox"], input[type="text"], textarea {
+    margin-top: 10px;
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+/* Định dạng cho các nút chọn ngày */
+.date-options {
+    display: flex;
+    gap: 10px;
+}
+
+.date-options button {
+    padding: 10px;
+    background-color: #f5f5f5;
+    border: 1px solid #ccc;
+    cursor: pointer;
+    border-radius: 4px;
+    flex: 1; /* Đảm bảo các nút có cùng kích thước */
+}
+
+.date-options button.active {
+    background-color: #00aaff;
+    color: #fff;
+}
+
+.submit-button {
+    padding: 15px;
+    background-color: #ff9800; /* Màu cam */
+    color: white;
+    border: none;
+    cursor: pointer;
+    width: 100%; /* Độ dài nút ngang bằng với form */
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    border-radius: 4px;
+    margin-top: 20px; /* Tạo khoảng cách trên nút */
+    transition: background-color 0.3s ease;
+}
+
+.submit-button:hover {
+    background-color: #e68a00; /* Màu cam đậm hơn khi hover */
+}
+
+/* Định dạng cho các thiết bị di động */
+@media (max-width: 768px) {
+    .appointment-form {
+        width: 90%; /* Đảm bảo form không quá lớn trên màn hình nhỏ */
+        padding: 20px;
+    }
+
+    .submit-button {
+        font-size: 14px;
+        padding: 10px; /* Giảm kích thước nút trên màn hình nhỏ */
+    }
+}
