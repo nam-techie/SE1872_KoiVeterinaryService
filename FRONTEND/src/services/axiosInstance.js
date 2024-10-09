@@ -11,14 +11,18 @@ axiosInstance.interceptors.request.use(
     (config) => {
         // Lấy token từ localStorage
         const token = localStorage.getItem('authToken');
+        console.log("Token from localStorage:", token); // Kiểm tra token
         if (token) {
             config.headers.Authorization = `Bearer ${token}`;
+            console.log("Authorization Header Set:", config.headers.Authorization); // Kiểm tra header
         }
         return config;
     },
     (error) => {
+        console.error("Interceptor Error:", error);
         return Promise.reject(error);
     }
 );
 
+// Xuất `axiosInstance` để sử dụng ở các file khác
 export default axiosInstance;
