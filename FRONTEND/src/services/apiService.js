@@ -1,10 +1,9 @@
-import "../services/axiosInstance.js"
-import axios from "axios";
+import axiosInstance from "./axiosInstance.js"; // Sử dụng axiosInstance thay vì axios
 
 export const ServiceList = async () => {
     try {
-        // const response = await axios.get('https://localhost:8080/api/servicesList');
-        const response = await axios('service.json');
+        // Sử dụng axiosInstance để gọi API
+        const response = await axiosInstance.get('/service-types');
         return response.data;
     } catch (error) {
         console.error('Error fetching services:', error);
@@ -12,24 +11,22 @@ export const ServiceList = async () => {
     }
 };
 
-export  const  ServiceBookingData  = async () => {
-    try{
-        //const response = await axios('https://localhost:8080/api/servicesBookingData');
-        const response = await axios('serviceBookingData.json');
+export const ServiceBookingData = async () => {
+    try {
+        const response = await axiosInstance.get('/servicesBookingData');
         return response.data;
     } catch (error) {
-        console.error('Error fetching services:',error);
+        console.error('Error fetching services:', error);
         return [];
     }
 }
 
-export  const  getDistrict = async () => {
-    try{
-        // const response = await axios('http://localhost:8080/api/zone');
-        const response = await  axios("district.json")
+export const getDistrict = async () => {
+    try {
+        const response = await axiosInstance.get('/zones'); // Sử dụng axiosInstance
         return response.data;
-    }catch (error) {
-        console.error('Error fetching services:',error);
+    } catch (error) {
+        console.error('Error fetching services:', error);
         return [];
     }
 }

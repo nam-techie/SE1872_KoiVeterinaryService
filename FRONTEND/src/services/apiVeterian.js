@@ -1,9 +1,10 @@
 import axios from "axios";
+import axiosInstance from "./axiosInstance.js";
 
 export const VeterianList = async () =>{
     try{
-        // const response = await axios("http://localhost:8080/api/VeterianList");
-        const  response =  await  axios("veterian.json");
+        const response = await axiosInstance.get('/getVeterians');
+        // const  response =  await  axios("veterian.json");
         return response.data;
     } catch (error){
         console.error('Error fetching veterian list:', error);
@@ -13,7 +14,8 @@ export const VeterianList = async () =>{
 
 export const VeterianScheduleTimeSlot = async () =>{
     try{
-        // const response = await  axios("https://localhost:8080/api/VeterianTimeSlot");
+        // const response = await axiosInstance().get("/testFreeScheduleByVeterianId")
+        // const response = await  axios("http://localhost:8080/api/VeterianTimeSlot");
         const response = await  axios("timeSlot.json");
         return response.data;
     }catch (error){
@@ -24,7 +26,8 @@ export const VeterianScheduleTimeSlot = async () =>{
 
 export const VeterianScheduleTimePeriods = async () =>{
     try{
-        // const response = await  axios("https://localhost:8080/api/VeterianTimePeriods");
+        // const response = await axiosInstance().get("/testFreeSchedule")
+        // const response = await  axios("http://localhost:8080/api/VeterianTimePeriods");
         const response = await  axios("timePeriods.json");
         return response.data;
     }catch (error){

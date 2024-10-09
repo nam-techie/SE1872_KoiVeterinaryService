@@ -10,11 +10,11 @@ const axiosInstance = axios.create({
 axiosInstance.interceptors.request.use(
     (config) => {
         // Lấy token từ localStorage
-        const token = localStorage.getItem('authToken');
-        console.log("Token from localStorage:", token); // Kiểm tra token
-        if (token) {
-            config.headers.Authorization = `Bearer ${token}`;
-            console.log("Authorization Header Set:", config.headers.Authorization); // Kiểm tra header
+        const autoken = localStorage.getItem('authToken');
+        console.log("Token from localStorage:", autoken); // Kiểm tra token
+        if (autoken) {
+            config.headers.autoken = `Bearer ${autoken}`;
+            console.log("autoken Header Set:", config.headers.autoken); // Kiểm tra header
         }
         return config;
     },
