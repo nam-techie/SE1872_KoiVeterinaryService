@@ -5,8 +5,97 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d2cec660-9bd4-4c6d-9559-8cd458d3cf90" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/entity/Zone.java" beforeDir="false" afterPath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/entity/Zone.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FRONTEND/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FRONTEND/.vite/deps/_metadata.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FRONTEND/.vite/deps/package.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FRONTEND/.vite/deps_temp_380f32b8/package.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FRONTEND/.vite/deps_temp_4c96df8e/package.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FRONTEND/.vite/deps_temp_5e1e34fd/package.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FRONTEND/.vite/deps_temp_7ac13127/package.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FRONTEND/.vite/deps_temp_82c74f71/package.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FRONTEND/.vite/deps_temp_e7f69c34/package.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FRONTEND/README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FRONTEND/eslint.config.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FRONTEND/index.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FRONTEND/package-lock.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FRONTEND/package.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FRONTEND/public/district.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FRONTEND/public/service.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FRONTEND/public/serviceBookingData.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FRONTEND/public/timePeriods.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FRONTEND/public/timeSlot.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FRONTEND/public/users.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FRONTEND/public/veterian.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FRONTEND/public/vite.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FRONTEND/src/App.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FRONTEND/src/assets/images/Expert Icon.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FRONTEND/src/assets/images/Inovation Icon.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FRONTEND/src/assets/images/Location.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FRONTEND/src/assets/images/Q&amp;A.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FRONTEND/src/assets/images/Quality Icon.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FRONTEND/src/assets/images/Tech Icon.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FRONTEND/src/assets/images/gmaillogo.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FRONTEND/src/assets/images/koi_fish_icon.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FRONTEND/src/assets/images/logo.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FRONTEND/src/assets/images/service1.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FRONTEND/src/assets/images/service2.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FRONTEND/src/assets/images/service3.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FRONTEND/src/assets/images/service4.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FRONTEND/src/assets/images/telephone_icon.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FRONTEND/src/assets/images/veterian.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FRONTEND/src/assets/images/zalo_icon.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FRONTEND/src/assets/react.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FRONTEND/src/components/ContactButton.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FRONTEND/src/components/Footer.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FRONTEND/src/components/Layout.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FRONTEND/src/components/Navbar.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FRONTEND/src/hooks/useBookingPage.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FRONTEND/src/hooks/useLogin.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FRONTEND/src/hooks/useNavbar.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FRONTEND/src/hooks/useRegister.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FRONTEND/src/hooks/useResetPassword.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FRONTEND/src/hooks/useService.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FRONTEND/src/main.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FRONTEND/src/public_pages/AboutMe.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FRONTEND/src/public_pages/BookingCard.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FRONTEND/src/public_pages/BookingPage.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FRONTEND/src/public_pages/BookingServiceHistory.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FRONTEND/src/public_pages/CenterAppointment.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FRONTEND/src/public_pages/ForgotPassword.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FRONTEND/src/public_pages/HomePage.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FRONTEND/src/public_pages/HomeSurvey.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FRONTEND/src/public_pages/HomeTreatment.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FRONTEND/src/public_pages/Login.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FRONTEND/src/public_pages/OnlineConsultation.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FRONTEND/src/public_pages/Register.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FRONTEND/src/public_pages/ResetPassword.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FRONTEND/src/public_pages/ServicesPage.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FRONTEND/src/public_pages/TermAndRefund.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FRONTEND/src/services/apiLogin.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FRONTEND/src/services/apiRegister.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FRONTEND/src/services/apiService.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FRONTEND/src/services/apiVeterian.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FRONTEND/src/services/axiosInstance.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FRONTEND/src/services/firebase-config.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FRONTEND/src/styles/AboutMe.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FRONTEND/src/styles/App.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FRONTEND/src/styles/BookingPage.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FRONTEND/src/styles/BookingServiceHistory.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FRONTEND/src/styles/ContactButton.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FRONTEND/src/styles/Footer.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FRONTEND/src/styles/ForgotPassword.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FRONTEND/src/styles/HomePage.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FRONTEND/src/styles/Login.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FRONTEND/src/styles/Navbar.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FRONTEND/src/styles/Register.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FRONTEND/src/styles/ResetPassword.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FRONTEND/src/styles/ServicePage.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FRONTEND/src/styles/TermAndRefund.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FRONTEND/vite.config.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BACKEND/src/main/resources/templates/login.html" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -16,11 +105,17 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="khiemdt" />
+        <entry key="$PROJECT_DIR$" value="ricon" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN",
+    "assignee": "nam-techie"
+  }
+}]]></component>
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
     &quot;url&quot;: &quot;https://github.com/nam-techie/Group03_SE1872_KoiVeterinaryServiceCenter.git&quot;,
@@ -34,23 +129,31 @@
       </MavenGeneralSettings>
     </option>
   </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 1
+}]]></component>
+  <component name="ProjectId" id="2nC3Z4R5Qhhk94hOTObX7T7AeSu" />
   <component name="ProjectLevelVcsManager">
     <ConfirmationsSetting value="1" id="Add" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
-    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
-    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
-    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
-    &quot;Spring Boot.KoiVeterinaryServiceCenterApplication.executor&quot;: &quot;Run&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;nam&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/Phuong Nam/Desktop/SWP391/Group03_SE1872_KoiVeterinaryServiceCenter/.idea&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RequestMappingsPanelOrder0": "0",
+    "RequestMappingsPanelOrder1": "1",
+    "RequestMappingsPanelWidth0": "75",
+    "RequestMappingsPanelWidth1": "75",
+    "Spring Boot.KoiVeterinaryServiceCenterApplication.executor": "Run",
+    "git-widget-placeholder": "Merging nam",
+    "last_opened_file_path": "C:/Users/Phuong Nam/Desktop/SWP391/Group03_SE1872_KoiVeterinaryServiceCenter/.idea",
+    "node.js.detected.package.eslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\Phuong Nam\Desktop\SWP391\Group03_SE1872_KoiVeterinaryServiceCenter\.idea" />
@@ -71,7 +174,19 @@
       </method>
     </configuration>
   </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9823dce3aa75-b114ca120d71-intellij.indexing.shared.core-IU-242.21829.142" />
+        <option value="bundled-js-predefined-d6986cc7102b-7c0b70fcd90d-JavaScript-IU-242.21829.142" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
   </component>
 </project>
