@@ -1,12 +1,11 @@
-
-import OnlineConsultation from './OnlineConsultation';
-import HomeSurvey from './HomeSurvey';
-import CenterAppointment from './CenterAppointment';
-import HomeTreatment from './HomeTreatment';
+import { OnlineConsultation, HomeService, CenterAppointment } from "./BookingPageDetail.jsx";
 import { useBookingPage } from '../hooks/useBookingPage';
 
-function ServicePage() {
+function BookingPage() {
     const {
+        services,
+        districts,
+        doctors,
         specialty,
         setSpecialty,
         phoneNumber,
@@ -15,21 +14,18 @@ function ServicePage() {
         setDescription,
         address,
         setAddress,
-        district,
-        setDistrict,
         doctor,
         setDoctor,
+        availableDates,
         selectedDate,
         setSelectedDate,
-        timePeriod,
-        setTimePeriod,
         availableTimes,
         selectedTime,
         setSelectedTime,
-        handleSubmit,
-        doctors,
-        periods,
-        districts
+        periods,  // periods được giữ nguyên
+        timePeriod,  // Thêm lại timePeriod
+        setTimePeriod,  // Thêm lại setTimePeriod
+        handleSubmit
     } = useBookingPage();
 
     return (
@@ -43,10 +39,11 @@ function ServicePage() {
                     onChange={(e) => setSpecialty(e.target.value)}
                 >
                     <option value="">Chọn loại dịch vụ</option>
-                    <option value="online-consultation">Tư Vấn Trực Tuyến</option>
-                    <option value="home-survey">Khảo Sát Tại Nhà</option>
-                    <option value="center-appointment">Đặt lịch Khám Tại Trung Tâm</option>
-                    <option value="home-treatment">Điều Trị Tại Nhà</option>
+                    {services.map(service => (
+                        <option key={service.id} value={service.id}>
+                            {service.name}
+                        </option>
+                    ))}
                 </select>
             </div>
 
@@ -60,19 +57,17 @@ function ServicePage() {
             )}
 
             {specialty === 'home-survey' && (
-                <HomeSurvey
+                <HomeService
                     phoneNumber={phoneNumber}
                     setPhoneNumber={setPhoneNumber}
                     description={description}
                     setDescription={setDescription}
-                    district={district}
-                    setDistrict={setDistrict}
                     address={address}
                     setAddress={setAddress}
                     selectedDate={selectedDate}
                     setSelectedDate={setSelectedDate}
-                    timePeriod={timePeriod}
-                    setTimePeriod={setTimePeriod}
+                    timePeriod={timePeriod}  // Truyền timePeriod vào HomeService
+                    setTimePeriod={setTimePeriod}  // Truyền setTimePeriod vào HomeService
                     periods={periods}
                     districts={districts}
                 />
@@ -87,28 +82,27 @@ function ServicePage() {
                     doctor={doctor}
                     setDoctor={setDoctor}
                     doctors={doctors}
+                    availableDates={availableDates}
                     selectedDate={selectedDate}
                     setSelectedDate={setSelectedDate}
+                    availableTimes={availableTimes}
                     selectedTime={selectedTime}
                     setSelectedTime={setSelectedTime}
-                    availableTimes={availableTimes}
                 />
             )}
 
             {specialty === 'home-treatment' && (
-                <HomeTreatment
+                <HomeService
                     phoneNumber={phoneNumber}
                     setPhoneNumber={setPhoneNumber}
                     description={description}
                     setDescription={setDescription}
-                    district={district}
-                    setDistrict={setDistrict}
                     address={address}
                     setAddress={setAddress}
                     selectedDate={selectedDate}
                     setSelectedDate={setSelectedDate}
-                    timePeriod={timePeriod}
-                    setTimePeriod={setTimePeriod}
+                    timePeriod={timePeriod}  // Truyền timePeriod vào HomeService
+                    setTimePeriod={setTimePeriod}  // Truyền setTimePeriod vào HomeService
                     periods={periods}
                     districts={districts}
                 />
@@ -121,4 +115,4 @@ function ServicePage() {
     );
 }
 
-export default ServicePage;
+export default BookingPage;

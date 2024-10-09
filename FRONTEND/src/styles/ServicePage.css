@@ -1,5 +1,5 @@
 .service-container {
-    padding-top: 50px;
+    padding-top: 70px;
     display: flex;
     flex-direction: column; /* Chia thành các hàng */
     margin: 0 50px; /* Thêm margin hai bên */
@@ -15,25 +15,27 @@
     margin-left: 10em;
 }
 
-.breadcrumb {
+.service-content .breadcrumb {
     text-align: center;
-    margin-top: 50px;
+    margin-top: 100px;
     margin-bottom: 20px; /* Thêm khoảng cách dưới breadcrumb */
 }
-
-.red-line {
+.service-content .breadcrumb span{
+    color: orange;
+}
+.service-content .red-line {
     width: 80%;
     height: 0;
     border: 0.1rem solid #F53838;
     margin: 2rem auto;
 }
 
-.breadcrumb a {
+.service-content.breadcrumb a {
     color: #ffa500;
     text-decoration: none;
 }
 
-.breadcrumb a:hover {
+.service-content.breadcrumb a:hover {
     text-decoration: underline;
 }
 

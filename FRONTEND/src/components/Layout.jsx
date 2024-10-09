@@ -1,4 +1,4 @@
-// src/components/Layout.jsx
+
 import { useLocation, Navigate } from 'react-router-dom';
 import Footer from './Footer.jsx';
 

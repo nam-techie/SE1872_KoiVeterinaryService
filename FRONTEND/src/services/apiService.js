@@ -1,5 +1,6 @@
 import "../services/axiosInstance.js"
 import axios from "axios";
+import axiosInstance from "./axiosInstance.js";
 
 export const ServiceList = async () => {
     try {
@@ -24,12 +25,12 @@ export  const  ServiceBookingData  = async () => {
 }
 
 export  const  getDistrict = async () => {
-    try{
-        // const response = await axios('http://localhost:8080/api/zone');
-        const response = await  axios("district.json")
+    try {
+        // Đường dẫn tới file JSON trong thư mục public
+        const response = await axiosInstance.get("/district.json");
         return response.data;
-    }catch (error) {
-        console.error('Error fetching services:',error);
+    } catch (error) {
+        console.error('Error fetching district data:', error);
         return [];
     }
 }
