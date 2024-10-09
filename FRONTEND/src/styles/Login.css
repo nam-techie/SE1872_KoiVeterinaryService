@@ -24,30 +24,30 @@ h2 {
 }
 
 .form-group {
-  margin-bottom: 15px;
+  margin-bottom: 20px;
 }
 
 .form-group label {
   display: block;
   margin-bottom: 5px;
+  font-size: 14px;
+  font-weight: bold;
 }
 
 .form-group input {
-  border: 2px solid #000000;    /* Đặt viền dày 2px màu đen */
-  padding: 10px;                /* Khoảng cách bên trong input */
-  border-radius: 5px;           /* Làm bo tròn góc */
-  outline: none;                /* Xóa khung viền mặc định khi focus */
-}
-
-
-.form-group input {
-  width: 100%;
-  padding: 10px;
-  border-radius: 4px;
-  border: 1px solid #ddd;
+  width: 100%;  /* Đảm bảo input có chiều rộng bằng với form */
+  padding: 12px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
   font-size: 16px;
+  box-sizing: border-box;  /* Đảm bảo padding không ảnh hưởng đến chiều rộng */
+  transition: all 0.3s ease-in-out;
 }
 
+.form-group input:focus {
+  border-color: #f58220;
+  box-shadow: 0 0 5px rgba(245, 130, 32, 0.2);
+}
 .forgot-password {
   color: #f58220;
   text-decoration: none;
@@ -104,7 +104,22 @@ h2 {
 }
 
 .error-message {
-  color: red;
-  text-align: center;
-  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+  color: #721c24; /* Màu chữ đỏ */
+  background-color: #f8d7da; /* Nền hồng nhạt */
+  border: 1px solid #f5c6cb; /* Viền đỏ nhạt */
+  padding: 10px;
+  border-radius: 8px; /* Bo tròn viền */
+  font-size: 16px; /* Kích thước chữ */
+  font-weight: normal; /* Chữ bình thường */
+  text-align: left;
+  margin-bottom: 20px;
+}
+
+.error-icon {
+  width: 24px;
+  height: 24px;
+  color: #721c24; /* Màu biểu tượng */
+  margin-right: 10px; /* Khoảng cách giữa biểu tượng và văn bản */
 }

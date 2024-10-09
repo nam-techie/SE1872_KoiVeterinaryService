@@ -1,94 +1,62 @@
 import { useState } from 'react';
-import axios from "axios";
-// import { login } from '../services/apiLogin.js'; // Service đăng nhập
+import { login } from '../services/apiLogin.js'; // Service đăng nhập
 
 export const useLogin = () => {
-  const [username, setUsername] = useState(''); // Sử dụng username thay vì email
-  const [password, setPassword] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
+    const [username, setUsername] = useState('');  // Sử dụng username thay vì email
+    const [password, setPassword] = useState('');
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState('');
 
-  const handleSubmit = async (e) => {
-    // e.preventDefault();
-    // setLoading(true);
-    // setError('');
-    //
-    //
-    // try {
-    //   const response = await login(username, password); // Gọi API đăng nhập với username
-    //   console.log('Đăng nhập thành công:', response);
-    //   localStorage.setItem('authToken', response.token);
-    //   window.location.href = '/homepage'; // Chuyển hướng đến trang chính sau khi thành công
-    // } catch (error) {
-    //   console.error('Đã xảy ra lỗi khi đăng nhập:', error);
-    //   setError(error.message || 'Đăng nhập thất bại. Vui lòng thử lại.');
-    // } finally {
-    //   setLoading(false);
-    // }
+    const handleSubmit = async (e) => {
+        e.preventDefault();  // Ngăn chặn hành vi mặc định của form
+        console.log("Form submitted with:", { username, password });  // Log kiểm tra form
 
-    e.preventDefault();
-    setLoading(true);
-    setError('');
+        setLoading(true);
+        setError('');  // Reset lỗi trước khi thực hiện đăng nhập
 
-    try {
-      // Lấy dữ liệu từ file JSON
-      const response = await axios.get('/users.json');
-      const data = response.data;
+        try {
+            // Gọi API đăng nhập thực sự
+            const response = await login(username, password);  // Gọi API từ apiLogin.js
+            console.log('Đăng nhập thành công, dữ liệu trả về:', response);  // Hiển thị dữ liệu trả về từ server
 
-      // Kiểm tra dữ liệu trả về
-      console.log('Dữ liệu trả về:', data);
+            // Lưu token vào localStorage nếu cần thiết
+            localStorage.setItem('authToken', response.token);
 
-      // Kiểm tra nếu data là một mảng
-      if (Array.isArray(data)) {
-        // Tìm kiếm người dùng với username và password khớp
-        const foundUser = data.find(
-            (user) => user.username === username && user.password === password
-        );
-
-        if (foundUser) {
-          console.log('Đăng nhập thành công:', foundUser);
-          // Giả lập việc lưu token vào localStorage (vì không có API thực)
-          localStorage.setItem('authToken', 'fakeAuthToken123');
-          window.location.href = '/homepage';
-        } else {
-          throw new Error('Tên đăng nhập hoặc mật khẩu không đúng');
+            // Chuyển hướng sau khi đăng nhập thành công
+            window.location.href = '/homepage';
+        }  catch (error) {
+            // Hiển thị thông báo lỗi trực tiếp từ backend
+            setError(error.message || 'Đăng nhập thất bại. Vui lòng thử lại.');
+        } finally {
+            setLoading(false);  // Tắt trạng thái loading
         }
-      } else {
-        throw new Error('Dữ liệu người dùng không hợp lệ.');
-      }
-    } catch (error) {
-      console.error('Đã xảy ra lỗi khi đăng nhập:', error);
-      setError(error.message || 'Đăng nhập thất bại. Vui lòng thử lại.');
-    } finally {
-      setLoading(false);
-    }
-
-  };
-
-  const handleGoogleLogin = async () => {
-    setLoading(true);
-    setError('');
-
-    try {
-      // Thực hiện đăng nhập với Google (nếu có)
-    } catch (error) {
-      console.error('Lỗi đăng nhập Google:', error);
-      setError('Đăng nhập Google thất bại.');
-    } finally {
-      setLoading(false);
-    }
-  };
+    };
 
 
+    // Hàm đăng nhập bằng Google (nếu cần thêm logic sau này)
+    const handleGoogleLogin = async () => {
+        setLoading(true);
+        setError('');  // Reset lỗi trước khi thực hiện
 
-  return {
-    username,
-    setUsername,
-    password,
-    setPassword,
-    loading,
-    error,
-    handleSubmit,
-    handleGoogleLogin
-  };
+        try {
+            // Logic đăng nhập Google (nếu có)
+            console.log("Google login logic chưa được triển khai");
+        } catch (error) {
+            console.error('Lỗi đăng nhập Google:', error);
+            setError('Đăng nhập Google thất bại.');
+        } finally {
+            setLoading(false);  // Tắt trạng thái loading
+        }
+    };
+
+    return {
+        username,
+        setUsername,
+        password,
+        setPassword,
+        loading,
+        error,
+        handleSubmit,
+        handleGoogleLogin,
+    };
 };
