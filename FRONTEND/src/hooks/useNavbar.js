@@ -9,7 +9,7 @@ export const useNavbar = () => {
 
     // Kiểm tra token khi component được render
     useEffect(() => {
-        const token = localStorage.getItem('token'); // hoặc sessionStorage.getItem('token')
+        const token = localStorage.getItem('authToken'); // hoặc sessionStorage.getItem('token')
         if (token) {
             setIsLoggedIn(true);
         }
@@ -17,8 +17,9 @@ export const useNavbar = () => {
 
     // Hàm xử lý khi bấm logout
     const handleLogout = () => {
-        localStorage.removeItem('token'); // Xóa token khi logout
+        localStorage.removeItem('authToken'); // Xóa token khi logout
         setIsLoggedIn(false); // Cập nhật trạng thái
+        window.location.href ="/homepage";
     };
 
     return {
