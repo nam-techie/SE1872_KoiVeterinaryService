@@ -1,5 +1,6 @@
-import { useState } from 'react';
-import { login } from '../services/apiLogin.js'; // Service đăng nhập
+import { useState, useEffect } from 'react';
+import { login } from '../services/apiLogin.js';
+import {jwtDecode} from "jwt-decode";
 
 export const useLogin = () => {
   const [username, setUsername] = useState(''); // Sử dụng username thay vì email
@@ -7,24 +8,24 @@ export const useLogin = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
+  // Google login state (optional, depending on what data you need)
+  const [googleUser, setGoogleUser] = useState(null);
+
+  // Traditional login submit handler
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError('');
     try {
-      // Sử dụng hàm đã tách để lấy dữ liệu từ file JSON
       const data = await login();
 
-      // Kiểm tra nếu data là một mảng
       if (Array.isArray(data)) {
-        // Tìm kiếm người dùng với username và password khớp
         const foundUser = data.find(
             (user) => user.username === username && user.password === password
         );
 
         if (foundUser) {
           console.log('Đăng nhập thành công:', foundUser);
-          // Giả lập việc lưu token vào localStorage
           localStorage.setItem('authToken', 'fakeAuthToken123');
           window.location.href = '/homepage';
         } else {
@@ -41,21 +42,30 @@ export const useLogin = () => {
     }
   };
 
-  const handleGoogleLogin = async () => {
-    setLoading(true);
-    setError('');
-
-    try {
-      // Thực hiện đăng nhập với Google (nếu có)
-    } catch (error) {
-      console.error('Lỗi đăng nhập Google:', error);
-      setError('Đăng nhập Google thất bại.');
-    } finally {
-      setLoading(false);
-    }
+  // Google Login: Callback function to handle the response from Google login
+  const handleCallbackResponse = (response) => {
+    console.log('Encoded JWT ID token: ' + response.credential);
+    var userObject = jwtDecode(response.credential);
+    console.log(userObject);
+    setGoogleUser(userObject);
   };
 
+  // Initialize Google Login when component mounts
+  useEffect(() => {
+    /*global google*/
+    google.accounts.id.initialize({
+      client_id: "1007903005549-31vue9ajdjrkgqftlavdov2h5v76kq33.apps.googleusercontent.com",
+      callback: handleCallbackResponse
+    });
 
+    google.accounts.id.renderButton(
+        document.getElementById('signInDiv'), // Render Google Sign-In Button
+        { theme: 'outline', size: 'large' }
+    );
+
+    // Optionally: Auto sign-in the user if they are already signed in
+    google.accounts.id.prompt(); // Automatically shows the One Tap prompt
+  }, []);
 
   return {
     username,
@@ -64,7 +74,8 @@ export const useLogin = () => {
     setPassword,
     loading,
     error,
-    handleSubmit,
-    handleGoogleLogin
+    googleUser, // Optional: Google User object, in case you need to display user info
+    handleSubmit, // Traditional login handler
+    handleCallbackResponse // This can be exposed if needed for further control
   };
 };

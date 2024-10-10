@@ -1,4 +1,3 @@
-/* Đảm bảo container có chiều cao 100vh và căn giữa */
 .login-container {
   display: flex;
   justify-content: center;
@@ -6,6 +5,7 @@
   height: 100vh;
   background-color: #f8f8f8;
   margin-top: 80px;
+  position: relative; /* To ensure proper positioning of the google button */
 }
 
 .login-form {
@@ -15,10 +15,11 @@
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
   max-width: 400px;
   width: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
-
-h2 {
+.login-container h2 {
   text-align: center;
   margin-bottom: 20px;
 }
@@ -33,19 +34,11 @@ h2 {
 }
 
 .form-group input {
-  border: 2px solid #000000;    /* Đặt viền dày 2px màu đen */
-  padding: 10px;                /* Khoảng cách bên trong input */
-  border-radius: 5px;           /* Làm bo tròn góc */
-  outline: none;                /* Xóa khung viền mặc định khi focus */
-}
-
-
-.form-group input {
-  width: 100%;
+  border: 2px solid #000000;
   padding: 10px;
-  border-radius: 4px;
-  border: 1px solid #ddd;
-  font-size: 16px;
+  border-radius: 5px;
+  outline: none;
+  width: 100%;
 }
 
 .forgot-password {
@@ -80,12 +73,15 @@ h2 {
 }
 
 .google-login {
+  position: relative;
   display: flex;
   justify-content: center;
   margin-top: 10px;
 }
 
 .google-button {
+  display: flex;
+  align-items: center;
   background-color: white;
   border: 1px solid #ddd;
   padding: 10px;
@@ -93,18 +89,28 @@ h2 {
   cursor: pointer;
   width: 100%;
   font-size: 16px;
-  text-align: center; /* Canh giữa nội dung trong nút */
+  text-align: center;
+  justify-content: center;
+  transition: background-color 0.3s ease;
+  height: 44px; /* Match height of login button */
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1); /* Optional shadow */
 }
 
-.google-button img {
-  width: 40px;
-  height: 20px;
-  vertical-align: middle; /* Canh giữa hình ảnh */
-  margin-right: 10px; /* Tạo khoảng cách giữa ảnh và text */
+.google-button:hover {
+  background-color: #f0f0f0;
+}
+
+.google-button span {
+  margin-left: 8px;
 }
 
 .error-message {
   color: red;
   text-align: center;
   margin-bottom: 15px;
+}
+
+.form-group, .google-login {
+  width: 100%;
+  margin-bottom: 20px; /* Ensures spacing between input fields and the Google button */
 }
