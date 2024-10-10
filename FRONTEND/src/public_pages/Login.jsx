@@ -1,6 +1,6 @@
 import {useLogin} from '../hooks/useLogin.js';
 import '../styles/Login.css';
-import { GoogleLogin } from 'react-google-login';
+
 import GoogleLogo from "../assets/images/gmaillogo.png"
 
 
@@ -92,14 +92,12 @@ function Login() {
                     <span>Hoặc đăng nhập</span>
                 </div>
 
+
                 <div className="google-login">
-                    <GoogleLogin
-                        clientId="668356659947-0q6d47ndh1fjcqhp461k2uibhm81cquq.apps.googleusercontent.com"  // Thay bằng Google Client ID của bạn
-                        buttonText="Đăng nhập bằng Google"
-                        onSuccess={handleGoogleSuccess}
-                        onFailure={handleGoogleFailure}
-                        cookiePolicy={'single_host_origin'}
-                    />
+                    <button type="button" className="google-button" onClick={handleGoogleLogin} disabled={loading}>
+                        <img src={GoogleLogo} alt="Google Logo"/>
+                        {loading ? 'Đang xử lý...' : 'Đăng nhập với Google'}
+                    </button>
                 </div>
             </form>
         </div>

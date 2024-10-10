@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from "./components/Navbar.jsx" 
 import HomePage from './public_pages/HomePage.jsx';
 import LoginPage from './public_pages/Login.jsx';
+import GoogleLoginSuccess from './public_pages/GoogleLoginSuccess.jsx';
 import RegisterPage from './public_pages/Register.jsx'
 import ServicesPage from './public_pages/ServicesPage';
 import Layout from './components/Layout.jsx';
@@ -23,6 +24,7 @@ function App() {
             <Route path="/" element={<HomePage/>}/>
             <Route path="/homepage" element={<HomePage />} />
             <Route path="/login" element={<LoginPage />} />
+            <Route path="/login/success" element={<GoogleLoginSuccess />} />
             <Route path="/services" element={<ServicesPage />} />
             <Route path="/AboutMe" element={<AboutMe />} />
             <Route path="/register" element = {<RegisterPage/>}/>

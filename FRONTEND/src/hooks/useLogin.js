@@ -1,5 +1,6 @@
-import { useState } from 'react';
-import { login } from '../services/apiLogin.js'; // Service đăng nhập
+import {useState} from 'react';
+import {login} from '../services/apiLogin.js'; // Service đăng nhập
+
 import axios from 'axios';  // Sử dụng cho Google Login
 
 export const useLogin = () => {
@@ -10,7 +11,7 @@ export const useLogin = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();  // Ngăn chặn hành vi mặc định của form
-        console.log("Form submitted with:", { username, password });  // Log kiểm tra form
+        console.log("Form submitted with:", {username, password});  // Log kiểm tra form
 
         setLoading(true);
         setError('');  // Reset lỗi trước khi thực hiện đăng nhập
@@ -25,7 +26,7 @@ export const useLogin = () => {
 
             // Chuyển hướng sau khi đăng nhập thành công
             window.location.href = '/homepage';
-        }  catch (error) {
+        } catch (error) {
             // Hiển thị thông báo lỗi trực tiếp từ backend
             setError(error.message || 'Đăng nhập thất bại. Vui lòng thử lại.');
         } finally {
@@ -34,27 +35,12 @@ export const useLogin = () => {
     };
 
 
-    // Hàm đăng nhập bằng Google (nếu cần thêm logic sau này)
-    const handleGoogleLogin = async (tokenId) => {
-        setLoading(true);
-        setError('');
-
-        try {
-            // Gửi tokenId lên backend để xác thực
-            const response = await axios.post('http://localhost:8080/api/google-login', { tokenId });
-
-            // Lưu token trả về từ server vào localStorage
-            localStorage.setItem('authToken', response.data.token);
-
-            // Chuyển hướng sau khi đăng nhập thành công
-            window.location.href = '/homepage';
-        } catch (error) {
-            console.error('Lỗi đăng nhập Google:', error);
-            setError('Đăng nhập Google thất bại.');
-        } finally {
-            setLoading(false);
-        }
+    const handleGoogleLogin = () => {
+        // Chuyển hướng người dùng tới backend để bắt đầu quá trình đăng nhập Google
+        window.location.href = 'http://localhost:8080/oauth2/authorization/google';
     };
+
+
 
     return {
         username,
