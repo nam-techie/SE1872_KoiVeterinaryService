@@ -1,7 +1,6 @@
 import {useState} from 'react';
 import {login} from '../services/apiLogin.js'; // Service đăng nhập
 
-import axios from 'axios';  // Sử dụng cho Google Login
 
 export const useLogin = () => {
     const [username, setUsername] = useState('');  // Sử dụng username thay vì email
