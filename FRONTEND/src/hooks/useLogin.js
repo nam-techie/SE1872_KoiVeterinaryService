@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { login } from '../services/apiLogin.js'; // Service đăng nhập
+import axios from 'axios';  // Sử dụng cho Google Login
 
 export const useLogin = () => {
     const [username, setUsername] = useState('');  // Sử dụng username thay vì email
@@ -34,18 +35,24 @@ export const useLogin = () => {
 
 
     // Hàm đăng nhập bằng Google (nếu cần thêm logic sau này)
-    const handleGoogleLogin = async () => {
+    const handleGoogleLogin = async (tokenId) => {
         setLoading(true);
-        setError('');  // Reset lỗi trước khi thực hiện
+        setError('');
 
         try {
-            // Logic đăng nhập Google (nếu có)
-            console.log("Google login logic chưa được triển khai");
+            // Gửi tokenId lên backend để xác thực
+            const response = await axios.post('http://localhost:8080/api/google-login', { tokenId });
+
+            // Lưu token trả về từ server vào localStorage
+            localStorage.setItem('authToken', response.data.token);
+
+            // Chuyển hướng sau khi đăng nhập thành công
+            window.location.href = '/homepage';
         } catch (error) {
             console.error('Lỗi đăng nhập Google:', error);
             setError('Đăng nhập Google thất bại.');
         } finally {
-            setLoading(false);  // Tắt trạng thái loading
+            setLoading(false);
         }
     };
 
