@@ -23,7 +23,7 @@ export function CenterAppointment({ phoneNumber, setPhoneNumber, description, se
                 />
             </div>
             <div className="form-group">
-                <label htmlFor="doctor">Chọn Bác Sĩ</label>
+                <label htmlFor="doctor">Chọn Bác Sĩ (Không bắt buộc)</label>
                 <select
                     id="doctor"
                     value={doctor}
@@ -38,6 +38,7 @@ export function CenterAppointment({ phoneNumber, setPhoneNumber, description, se
                 </select>
             </div>
 
+            {/* Luôn hiển thị phần chọn ngày nếu có availableDates, kể cả khi không chọn bác sĩ */}
             {availableDates.length > 0 && (
                 <div className="form-group">
                     <label htmlFor="selectedDate">Chọn Ngày</label>
@@ -56,6 +57,7 @@ export function CenterAppointment({ phoneNumber, setPhoneNumber, description, se
                 </div>
             )}
 
+            {/* Luôn hiển thị phần chọn thời gian nếu có availableTimes, kể cả khi không chọn bác sĩ */}
             {availableTimes.length > 0 && (
                 <div className="form-group">
                     <label htmlFor="selectedTime">Chọn Thời Gian</label>
