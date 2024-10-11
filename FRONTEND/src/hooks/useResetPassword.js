@@ -12,6 +12,10 @@ export const useResetPassword = () => {
         setError('');
         try {
             // Kiểm tra mật khẩu và xác nhận mật khẩu có khớp không trước khi gửi
+            if (password.length <= 6) {
+                setError('Mật khẩu phải trên 6 kí tự!');
+                return false;
+            }
             if (password !== confirmPassword) {
                 setError('Mật khẩu và xác nhận mật khẩu không khớp!');
                 return false;

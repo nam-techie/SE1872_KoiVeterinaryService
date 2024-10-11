@@ -84,7 +84,7 @@ function Navbar() {
                     Đăng nhập
                   </Link>
                   <Link to="/register" className="btn register-btn">
-                    Đăng Kí
+                    Đăng ký
                   </Link>
                 </>
             )}

@@ -34,7 +34,7 @@ function ForgotPassword() {
                 </div>
                 <div className="form-group">
                     <button type="submit" disabled={loading}>
-                        {loading ? 'Vui lòng kiểm tra email của bạn.' : 'Gửi email xác nhận'}
+                        {loading ? 'Vui lòng kiểm tra email của bạn' : 'Gửi email xác nhận'}
                     </button>
                 </div>
 

@@ -38,6 +38,7 @@ h2 {
   border: 1px solid #ddd;
   font-size: 16px;
   box-sizing: border-box; /* Đảm bảo padding không ảnh hưởng đến kích thước */
+  margin-top: 10px;
 }
 
 .forgot-password {

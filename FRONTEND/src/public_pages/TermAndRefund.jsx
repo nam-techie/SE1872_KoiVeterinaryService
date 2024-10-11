@@ -1,9 +1,12 @@
 import "../styles/TermAndRefund.css"
-function  TermAndRefund() {
+
+function TermAndRefund() {
     return (
         <>
             <div className="terms-container">
-                <h1>Điều khoản dịch vụ và Chính sách hoàn tiền</h1>
+                <div className="header">
+                    <h1>Điều khoản dịch vụ và Chính sách hoàn tiền</h1>
+                </div>
 
                 <div className="terms-section">
                     <h2>1. Chính sách bảo mật</h2>
@@ -74,4 +77,5 @@ function  TermAndRefund() {
         </>
     );
 }
-    export default TermAndRefund
+
+export default TermAndRefund
