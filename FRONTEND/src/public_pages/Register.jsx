@@ -1,5 +1,6 @@
 import '../styles/Register.css';
 import { useRegister } from '../hooks/useRegister.js';
+import { FcGoogle } from "react-icons/fc";
 
 function Register() {
   const {
@@ -17,6 +18,7 @@ function Register() {
     usernameError,
     passwordError,
     handleFormSubmit,
+    handleGoogleLogin // Thêm hàm đăng nhập Google từ hook useRegister
   } = useRegister();
 
   // Kiểm tra xem trường hợp input hợp lệ hay không
@@ -97,6 +99,7 @@ function Register() {
             <span>Bạn đã có tài khoản? </span>
             <a href="/login">Đăng nhập</a>
           </div>
+
         </form>
       </div>
   );
