@@ -1,48 +1,76 @@
-.terms-container {
-    padding-top: 70px;
+/*.terms-container {*/
+/*    padding-top: 70px;*/
+/*    max-width: 800px;*/
+/*    margin: 0 auto;*/
+/*    font-family: 'Arial', sans-serif;*/
+/*    line-height: 1.6;*/
+/*    background-color: #f9f9f9;*/
+/*    border-radius: 10px;*/
+/*    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);*/
+/*}*/
+
+/*.terms-header h1 {*/
+/*    text-align: center;*/
+/*    color: #2c3e50;*/
+/*    margin-bottom: 20px;*/
+/*}*/
+
+/*.terms-section h2 {*/
+/*    color: orangered;*/
+/*    margin-top: 20px;*/
+/*    text-align: left;*/
+/*    padding-left: 20px;*/
+/*}*/
+
+/*.terms-section {*/
+/*    margin-bottom: 20px;*/
+/*}*/
+
+/*.terms-list ul {*/
+/*    list-style-type: disc;*/
+/*    padding-left: 40px;*/
+/*}*/
+
+/*.terms-paragraph p, .terms-list ul {*/
+/*    color: #333;*/
+/*    font-size: 16px;*/
+/*    padding-left: 40px;*/
+/*    padding-right: 20px;*/
+/*}*/
+
+/*.terms-bold-text b {*/
+/*    color: #2c3e50;*/
+/*}*/
+
+/*.terms-list ul li {*/
+/*    margin-bottom: 10px;*/
+/*    margin-left: 30px;*/
+/*}*/
+
+
+.accordion {
+    width: 100%;
     max-width: 800px;
     margin: 0 auto;
-    font-family: 'Arial', sans-serif;
-    line-height: 1.6;
-    background-color: #f9f9f9;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    overflow: hidden;
 }
 
-.terms-header h1 {
-    text-align: center;
-    color: #2c3e50;
-    margin-bottom: 20px;
+.accordion-item {
+    border-bottom: 1px solid #ddd;
 }
 
-.terms-section h2 {
-    color: orangered;
-    margin-top: 20px;
-    text-align: left;
-    padding-left: 20px;
+.accordion-title {
+    padding: 15px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #f8f8f8;
 }
 
-.terms-section {
-    margin-bottom: 20px;
-}
-
-.terms-list ul {
-    list-style-type: disc;
-    padding-left: 40px;
-}
-
-.terms-paragraph p, .terms-list ul {
-    color: #333;
-    font-size: 16px;
-    padding-left: 40px;
-    padding-right: 20px;
-}
-
-.terms-bold-text b {
-    color: #2c3e50;
-}
-
-.terms-list ul li {
-    margin-bottom: 10px;
-    margin-left: 30px;
+.accordion-content {
+    padding: 15px;
+    background-color: #fff;
 }
