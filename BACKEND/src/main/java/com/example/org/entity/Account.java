@@ -1,5 +1,6 @@
 package com.example.org.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
@@ -44,6 +45,10 @@ public class Account implements UserDetails {
     @CreationTimestamp
     @Column(nullable = false, updatable = false)
     private Date created_at;
+
+    @JsonIgnore // Để nó k trả về và bắt mình nhập thông tin này
+    boolean isDeleted = false;
+
 
     @OneToOne(mappedBy = "account", cascade = CascadeType.ALL)
     @JsonManagedReference

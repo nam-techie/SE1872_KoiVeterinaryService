@@ -40,10 +40,10 @@ public class Appointment {
     @JsonManagedReference
     private AppointmentDetail appointmentDetail;
 
-    //Quan he hai chieu voi appointmentstatus
+    //Quan he hai chieu voi appointmentdetail
     @OneToMany(mappedBy = "appointment", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonManagedReference
-    private List<AppointmentStatus> appointmentStatuses;
+    private List<AppointmentStatus> appointmentStatus;
 
     @Column(nullable = false)
     private boolean isVeterianAssigned;

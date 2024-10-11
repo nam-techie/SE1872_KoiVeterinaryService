@@ -23,12 +23,8 @@ public class VeterianInfo {
     @Column(columnDefinition = "TEXT")
     private String specialty;
 
-    @Column
-    private int expYear;
-
     @Column(columnDefinition = "TEXT")
     private String qualification;
 
-    @Column(columnDefinition = "TEXT")
-    private String imgUrl;
+
 }
