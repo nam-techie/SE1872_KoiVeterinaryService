@@ -1,8 +1,10 @@
 package com.example.org.service;
 
 import com.example.org.entity.*;
+import com.example.org.model.AppointmentResponse;
 import com.example.org.model.ScheduleRequest;
 import com.example.org.repository.*;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,9 +13,11 @@ import java.sql.Time;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class AppointmentService {
+
 
     @Autowired
     private ServiceTypeRepository serviceTypeRepository;
@@ -28,7 +32,15 @@ public class AppointmentService {
     private AppointmentRepository appointmentRepository;
 
     @Autowired
+    private AppointmentDetailRepository appointmentDetailRepository;
+
+    @Autowired
+    private AppointmentStatusRepository appointmentStatusRepository;
+
+    @Autowired
     private VeterianRepository veterianRepository;
+    @Autowired
+    private ModelMapper modelMapper;
 
     public List<Veterian> findAllVeterian() {
         return veterianRepository.findAll();
@@ -128,4 +140,63 @@ public class AppointmentService {
         }
         return sevendayschedules;
     }
+
+//    public List<AppointmentResponse> getAllAppointments() {
+//        List<Appointment> appointments = appointmentRepository.findAll();
+//
+//        // Map danh sách từ Appointment sang AppointmentResponse
+//        List<AppointmentResponse> appointmentResponses = appointments.stream()
+//                .map(appointment -> {
+//                    AppointmentResponse response = modelMapper.map(appointment, AppointmentResponse.class);
+//
+//                    // Map các trường bổ sung nếu cần
+//                    response.setId(appointment.getId());
+//                    response.setCustomerName(appointment.getCustomer().getFullname());
+//                    response.setVeterianName(appointment.getVeterian().getFullname());
+//                    response.setServiceName(appointment.getServiceType().getName());
+//                    AppointmentDetail detail = appointmentDetailRepository.findByAppointmentId(appointment.getId());
+//                    AppointmentStatus status = appointmentStatusRepository.findByAppointmentId(appointment.getId());
+//                    response.setAppointmentDate(detail.getAppointmentBookingDate());
+//                    response.setAppointmentTime(detail.getAppointmentBookingTime());
+//                    response.setCreateDate(status.getCreate_date());
+//                    response.setStatus(status.getStatus());
+//
+//                    return response;
+//                })
+//                .collect(Collectors.toList());
+//
+//        return appointmentResponses;
+//
+//    }
+
+
+    public AppointmentResponse convertEntityToDTO(Appointment appointment) {
+        AppointmentResponse appointmentResponse = new AppointmentResponse();
+        appointmentResponse.setId(appointment.getId());
+        appointmentResponse.setCustomerID(appointment.getCustomer().getId());
+        appointmentResponse.setVeterianID(appointment.getVeterian().getId());
+        appointmentResponse.setServiceID(appointment.getServiceType().getId());
+        appointmentResponse.setAppointmentDetailID(appointment.getAppointmentDetail().getId());
+        AppointmentStatus status = appointmentStatusRepository.findByAppointmentId(appointment.getId());
+        appointmentResponse.setAppointmentStatusID(status.getId());
+        appointmentResponse.setZoneID(appointment.getZone().getId());
+        appointmentResponse.setCancel(appointment.isCancel());
+        appointmentResponse.setDoctorAssigned(appointment.isVeterianAssigned());
+        return appointmentResponse;
+    }
+
+//    public List<AppointmentResponse> getAllAppointments() {
+//        List<Appointment> appointments = appointmentRepository.findAll(); // Lấy danh sách tất cả các Appointment
+//        List<AppointmentResponse> appointmentResponseList = appointments.stream()
+//                .map(this::convertEntityToDTO) // Chuyển đổi từng Appointment sang AppointmentResponse
+//                .collect(Collectors.toList()); // Thu thập tất cả các đối tượng vào danh sách
+//
+//        return appointmentResponseList;
+//    }
+
+    public List<Appointment> getAllAppointments(){
+        List<Appointment> appointments = appointmentRepository.findAll();
+        return appointments;
+    }
+
 }
