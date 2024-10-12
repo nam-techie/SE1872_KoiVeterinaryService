@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class OTPRequest {
-    String otp;
+    String email;
     String password;
     String confirmPassword;
 }

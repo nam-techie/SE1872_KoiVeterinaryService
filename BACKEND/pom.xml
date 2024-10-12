@@ -115,6 +115,27 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
         </dependency>
+        <!-- Google OAuth2 Client Library -->
+        <dependency>
+            <groupId>com.google.oauth-client</groupId>
+            <artifactId>google-oauth-client</artifactId>
+            <version>1.34.1</version>
+        </dependency>
+
+        <!-- Google HTTP Client for Java -->
+        <dependency>
+            <groupId>com.google.http-client</groupId>
+            <artifactId>google-http-client-jackson2</artifactId>
+            <version>1.42.2</version>
+        </dependency>
+        <!-- Jackson Databind -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>2.15.3</version>
+        </dependency>
+
+
     </dependencies>
 
     <!-- Thêm plugin compiler để đảm bảo Maven sử dụng đúng phiên bản Java -->

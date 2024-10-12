@@ -56,10 +56,10 @@ function Register() {
 
 
                 <div className="form-group">
-                    <label>Tên đăng nhập: </label>
+                    <label>Username: </label>
                     <input
                         type="text"
-                        placeholder="Tên đăng nhập"
+                        placeholder="Username"
                         value={username}
                         onChange={(e) => setUsername(e.target.value)}
                         className={getInputClass(usernameError, username)}

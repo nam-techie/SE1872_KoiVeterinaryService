@@ -42,6 +42,15 @@ public class TokenService {
                 .compact();
     }
 
+    public String generateTokenByEmail(String email) {
+        return Jwts.builder()
+                .setSubject(email)
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 30)) // Token sống trong 30 phút
+                .signWith(getSignKey())
+                .compact();
+    }
+
     // Đưa token vào danh sách đen với thời gian hết hạn
     public void invalidateToken(String token) {
         Claims claims = Jwts.parser()

@@ -63,7 +63,7 @@ public class EmailService {
             MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage);
 
             // Thiết lập các thông tin cần thiết cho email
-            mimeMessageHelper.setFrom("CentralCircus@gmail.com");
+            mimeMessageHelper.setFrom("namdpse180259@fpt.edu.vn");
             mimeMessageHelper.setTo(emailResetPass.getReceiver().getEmail());
             mimeMessageHelper.setText(template, true);  // Gửi email dạng HTML
             mimeMessageHelper.setSubject(emailResetPass.getSubject());

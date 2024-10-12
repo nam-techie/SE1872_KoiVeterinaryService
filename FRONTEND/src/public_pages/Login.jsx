@@ -54,10 +54,10 @@ function Login() {
                 )}
 
                 <div className="form-group">
-                    <label>Tên Đăng Nhập: </label>
+                    <label>Username: </label>
                     <input
                         type="text"
-                        placeholder="Tên Đăng Nhập"
+                        placeholder="Username"
                         value={username}
                         onChange={(e) => setUsername(e.target.value)}
                         required

@@ -27,7 +27,7 @@ function ResetPassword() {
                     </div>
                 )}
                 <div className="form-group">
-                    <label htmlFor="password">Mật khẩu:</label>
+                    <label  htmlFor="password">Mật khẩu:</label>
                     <input
                         type="password"
                         id="password"

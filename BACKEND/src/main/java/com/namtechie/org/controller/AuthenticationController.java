@@ -10,12 +10,16 @@ import com.namtechie.org.service.CustomerService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+
 
 @RequestMapping("/api")
 @RestController
 @SecurityRequirement(name = "api")
+@CrossOrigin(origins = "http://localhost:5741")
 public class AuthenticationController {
     // DI: Dependency Injection
     @Autowired
@@ -47,15 +51,25 @@ public class AuthenticationController {
     }
 
     @PostMapping("/forgot-password")
-    public ResponseEntity forgotPassword(@RequestBody @Valid ForgotPasswordRequest forgotPasswordRequest) {
-        authenticationService.forgotPassword(forgotPasswordRequest);
-        return ResponseEntity.ok("Đã yêu cầu mục quên mật khẩu. Vui lòng kiểm tra hộp thư để xác nhận!");
+    public ResponseEntity<String> sendResetPasswordEmail(@RequestBody @Valid ForgotPasswordRequest forgotPasswordRequest) {
+        authenticationService.sendResetPasswordEmail(forgotPasswordRequest);
+        return ResponseEntity.ok("Yêu cầu đặt lại mật khẩu đã được gửi. Vui lòng kiểm tra email của bạn.");
+    }
+
+    @PostMapping("/validate-otp")
+    public ResponseEntity<String> validateOtp(@RequestParam String email, @RequestParam String otp) {
+        boolean isValid = authenticationService.validateOtp(email, otp);
+        if (isValid) {
+            return ResponseEntity.ok("OTP hợp lệ.");
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("OTP không hợp lệ hoặc đã hết hạn.");
+        }
     }
 
     @PostMapping("/reset-password")
-    public ResponseEntity resetPassword(@RequestBody OTPRequest otpRequest) {
+    public ResponseEntity<String> resetPassword(@RequestBody @Valid OTPRequest otpRequest) {
         authenticationService.resetPassword(otpRequest);
-        return ResponseEntity.ok("Thay đổi mật khẩu thành công!");
+        return ResponseEntity.ok("Mật khẩu của bạn đã được cập nhật thành công.");
     }
 
     @PostMapping("/logout")
@@ -74,19 +88,32 @@ public class AuthenticationController {
         return infoAccount;
     }
 
-//    @GetMapping("/loginByGoogle")
-//    public String loginByGoogle(@AuthenticationPrincipal OAuth2User principal, Model model) {
-//        // Gọi hàm loginByGoogle trong service để thực hiện logic và lấy AccountResponse
-//        AccountResponse accountResponse = authenticationService.loginByGoogle();
+
+//    @PostMapping("/loginByGoogle")
+//    public AccountResponse loginByGoogle(@RequestBody String idTokenString) throws Exception {
+//        // Thiết lập GoogleIdTokenVerifier để xác minh token
+//        GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(
+//                GoogleNetHttpTransport.newTrustedTransport(), JacksonFactory.getDefaultInstance())
+//                .setAudience(Collections.singletonList("YOUR_GOOGLE_CLIENT_ID"))  // Thay bằng Google Client ID của bạn
+//                .build();
 //
-//        // Thêm thông tin vào Model để hiển thị trên trang HTML
-//        model.addAttribute("name", accountResponse.getUsername());
-//        model.addAttribute("email", accountResponse.getEmail());
-//        model.addAttribute("token", accountResponse.getToken());
+//        // Xác minh token ID từ Google
+//        GoogleIdToken idToken = verifier.verify(idTokenString);
 //
-//        // Trả về trang loginSuccess.html
-//        return "loginSuccess";
+//        if (idToken != null) {
+//            GoogleIdToken.Payload payload = idToken.getPayload();
+//
+//            // Lấy thông tin người dùng từ payload
+//            String email = payload.getEmail();
+//            String name = (String) payload.get("name");
+//
+//            // Gửi thông tin email và name đến service để xử lý đăng nhập hoặc đăng ký
+//            return authenticationService.loginByGoogle(email, name);
+//        } else {
+//            throw new IllegalArgumentException("Invalid ID token.");
+//        }
 //    }
+
 
     @GetMapping("/getInfoCustomer")
     public ResponseEntity getInfoCustomer() {
@@ -99,5 +126,27 @@ public class AuthenticationController {
         CustomerInfoRequest newUpdate = customerService.updateCustomerInfo(customerInfo);
         return ResponseEntity.ok(newUpdate);
     }
+
+//    @PostMapping("/google-login")
+//    public ResponseEntity<?> googleLogin(@RequestBody Map<String, String> body) {
+//        String tokenId = body.get("tokenId");
+//
+//        try {
+//            // Sử dụng Google TokenVerifier để xác minh tokenId
+//            TokenVerifier tokenVerifier = TokenVerifier.newBuilder().setAudience("YOUR_GOOGLE_CLIENT_ID").build();
+//            tokenVerifier.verify(tokenId);
+//
+//            // Nếu xác thực thành công
+//            String email = tokenVerifier.getPayload().getSubject(); // Lấy thông tin email
+//
+//            // Ở đây, bạn có thể tạo token JWT cho người dùng
+//            String token = jwtTokenProvider.createToken(email);
+//
+//            // Trả về token cho frontend
+//            return ResponseEntity.ok(new AuthResponse(token));
+//        } catch (TokenVerifier.VerificationException e) {
+//            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Xác thực Google thất bại.");
+//        }
+//    }
 
 }
