@@ -185,13 +185,18 @@ public class AppointmentService {
         return appointmentResponse;
     }
 
-    public List<AppointmentResponse> getAllAppointments() {
-        List<Appointment> appointments = appointmentRepository.findAll(); // Lấy danh sách tất cả các Appointment
-        List<AppointmentResponse> appointmentResponseList = appointments.stream()
-                .map(this::convertEntityToDTO) // Chuyển đổi từng Appointment sang AppointmentResponse
-                .collect(Collectors.toList()); // Thu thập tất cả các đối tượng vào danh sách
+//    public List<AppointmentResponse> getAllAppointments() {
+//        List<Appointment> appointments = appointmentRepository.findAll(); // Lấy danh sách tất cả các Appointment
+//        List<AppointmentResponse> appointmentResponseList = appointments.stream()
+//                .map(this::convertEntityToDTO) // Chuyển đổi từng Appointment sang AppointmentResponse
+//                .collect(Collectors.toList()); // Thu thập tất cả các đối tượng vào danh sách
+//
+//        return appointmentResponseList;
+//    }
 
-        return appointmentResponseList;
+    public List<Appointment> getAllAppointments(){
+        List<Appointment> appointments = appointmentRepository.findAll();
+        return appointments;
     }
 
 }

@@ -67,7 +67,7 @@ public class AppointmentController {
     @GetMapping("/getAppointment")
     @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity getAppointments() {
-        List<AppointmentResponse> appointmentResponses = appointmentService.getAllAppointments();
+        List<Appointment> appointmentResponses = appointmentService.getAllAppointments();
         return ResponseEntity.ok(appointmentResponses);
     }
 }
