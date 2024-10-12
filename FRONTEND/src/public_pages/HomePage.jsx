@@ -1,11 +1,12 @@
 import "../styles/HomePage.css";
 import veterian from "../assets/images/veterian.jpg";
-import innovation from "../assets/images/Inovation Icon.png"
-import tech from "../assets/images/Tech Icon.jpg"
-import expert from "../assets/images/Expert Icon.png"
-import quality from "../assets/images/Quality Icon.jpg"
-import qanda from "../assets/images/Q&A.jpg"
-import {Link} from "react-router-dom";
+import innovation from "../assets/images/Inovation Icon.png";
+import tech from "../assets/images/Tech Icon.jpg";
+import expert from "../assets/images/Expert Icon.png";
+import quality from "../assets/images/Quality Icon.jpg";
+import qanda from "../assets/images/Q&A.jpg";
+import camnangImage from "../assets/images/camnang.jpg"; // Import hình ảnh
+import { Link } from "react-router-dom";
 
 function HomePage() {
     return (
@@ -27,7 +28,7 @@ function HomePage() {
                         </div>
                     </div>
                     <div className="homepage-right">
-                        <img src={veterian} alt="Veterian"/>
+                        <img src={veterian} alt="Veterian" />
                     </div>
                 </div>
             </div>
@@ -37,52 +38,44 @@ function HomePage() {
                 <div className="content-container">
                     <div className="info-box">
                         <div className="info-item">
-                            <img src={expert} alt="Expert Icon" className="info-icon"/>
+                            <img src={expert} alt="Expert Icon" className="info-icon" />
                             <h3>Chuyên gia hàng đầu</h3>
                             <p>
                                 Trung tâm chúng tôi sở hữu đội ngũ chuyên gia cá Koi giàu kinh nghiệm, kết hợp cùng các
-                                kỹ thuật
-                                viên chuyên chăm sóc cá bài bản. Luôn tận tâm trong từng khâu chăm sóc và điều trị.
-                                Chúng tôi
-                                cam kết mang lại dịch vụ chất lượng cao và sự hài lòng cho khách hàng.
+                                kỹ thuật viên chuyên chăm sóc cá bài bản. Luôn tận tâm trong từng khâu chăm sóc và điều trị.
+                                Chúng tôi cam kết mang lại dịch vụ chất lượng cao và sự hài lòng cho khách hàng.
                             </p>
                         </div>
                         <div className="info-item">
-                            <img src={quality} alt="Quality Icon" className="info-icon"/>
+                            <img src={quality} alt="Quality Icon" className="info-icon" />
                             <h3>Chất lượng xứng tầm</h3>
                             <p>
                                 Trung tâm KoiKung được quản lý và vận hành bởi sự giám sát của những nhà quản lý giàu
-                                kinh
-                                nghiệm, cùng với sự hỗ trợ của phương tiện kỹ thuật hiện đại, mang lại cho quý khách
-                                dịch vụ
-                                chăm sóc cá Koi toàn diện và hiệu quả.
+                                kinh nghiệm, cùng với sự hỗ trợ của phương tiện kỹ thuật hiện đại, mang lại cho quý khách
+                                dịch vụ chăm sóc cá Koi toàn diện và hiệu quả.
                             </p>
                         </div>
                         <div className="info-item">
-                            <img src={tech} alt="Technology Icon" className="info-icon"/>
+                            <img src={tech} alt="Technology Icon" className="info-icon" />
                             <h3>Công nghệ tiên tiến</h3>
                             <p>
                                 Trung tâm chúng tôi cung cấp cơ sở vật chất hiện đại và dịch vụ chuyên nghiệp, ứng dụng
-                                công
-                                nghệ tiên tiến trong chăm sóc cá Koi. Đội ngũ kỹ thuật giàu kinh nghiệm bảo đảm mang lại
-                                sự tối
-                                ưu và hiệu quả cao, giúp cá Koi luôn phát triển toàn diện.
+                                công nghệ tiên tiến trong chăm sóc cá Koi. Đội ngũ kỹ thuật giàu kinh nghiệm bảo đảm mang lại
+                                sự tối ưu và hiệu quả cao, giúp cá Koi luôn phát triển toàn diện.
                             </p>
                         </div>
                         <div className="info-item">
-                            <img src={innovation} alt="Innovation Icon" className="info-icon"/>
+                            <img src={innovation} alt="Innovation Icon" className="info-icon" />
                             <h3>Nghiên cứu & Đổi mới</h3>
                             <p>
                                 Chúng tôi không ngừng nâng cao kiến thức và cập nhật những nghiên cứu mới nhất để đào
-                                tạo đội
-                                ngũ chuyên gia cá Koi. Luôn tìm kiếm những phương pháp mới và sáng tạo để mang đến tiêu
-                                chuẩn
-                                chăm sóc tốt nhất.
+                                tạo đội ngũ chuyên gia cá Koi. Luôn tìm kiếm những phương pháp mới và sáng tạo để mang đến tiêu
+                                chuẩn chăm sóc tốt nhất.
                             </p>
                         </div>
                     </div>
                     <div className="image-container">
-                        <img src={qanda} alt="Question and Check" className="main-image"/>
+                        <img src={qanda} alt="Question and Check" className="main-image" />
                     </div>
                 </div>
             </div>
@@ -90,10 +83,32 @@ function HomePage() {
                 <h1>Đội ngũ y bác sĩ tại trung tâm</h1>
                 <div className="red-line"></div>
             </div>
-            </>
 
+            {/* Phần "Cẩm nang về cá Koi" */}
+            <div className="guide-section">
+                <div className="guide-container">
+                    <div className="guide-image">
+                        <img src={camnangImage} alt="Guide" />
+                    </div>
 
-            );
-            }
+                    <div className="guide-content">
+                        <h2>Cẩm nang về cá Koi</h2>
+                        <p>
+                            Cẩm Nang Cá Koi – nơi chia sẻ những kiến thức, mẹo chăm sóc, và kinh nghiệm nuôi dưỡng cá
+                            Koi từ cơ bản đến nâng cao. Tại đây, bạn sẽ tìm thấy mọi thông tin hữu ích từ cách chọn
+                            giống, xây dựng hồ nuôi chuẩn, đến cách phòng và điều trị các bệnh thường gặp ở cá Koi. Được
+                            viết bởi các chuyên gia và người chơi cá Koi giàu kinh nghiệm, “Cẩm Nang Cá Koi” là nguồn
+                            tài liệu đáng tin cậy giúp bạn tạo dựng một môi trường sống lý tưởng và chăm sóc tốt nhất
+                            cho những chú cá Koi yêu quý của mình.
+                        </p>
+                        <Link to="/guidepage">
+                            <button className="cta-button">Xem chi tiết</button>
+                        </Link>
+                    </div>
+                </div>
+            </div>
+        </>
+    );
+}
 
-            export default HomePage;
+export default HomePage;

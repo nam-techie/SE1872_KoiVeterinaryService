@@ -28,11 +28,10 @@
   margin-right: 5px; /* Khoảng cách giữa icon và text */
 }
 
-
 .navbar {
   position: fixed;
   height: 50px;
-  width: 100%;
+  width: calc(100% - 14px); /* Điều chỉnh chiều rộng để phù hợp với padding */
   padding: 10px 20px;
   display: flex;
   justify-content: space-between;
@@ -44,7 +43,9 @@
   color: white;
   z-index: 1000;
   box-sizing: border-box;
+  overflow: hidden;
 }
+
 
 .nav-links {
   list-style: none;
