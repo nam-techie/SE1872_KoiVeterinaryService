@@ -22,6 +22,7 @@ export const useLogin = () => {
 
             // Lưu token vào localStorage nếu cần thiết
             localStorage.setItem('authToken', response.token);
+            localStorage.setItem('username', response.username);
 
             // Chuyển hướng sau khi đăng nhập thành công
             window.location.href = '/homepage';
