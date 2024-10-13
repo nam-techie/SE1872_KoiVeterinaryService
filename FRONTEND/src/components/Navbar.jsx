@@ -33,7 +33,7 @@ function Navbar() {
               <Link to="/homepage">Trang Chủ</Link>
             </li>
             <li>
-              <Link to="/aboutme">Về KoiCung</Link>
+              <Link to="/aboutme">Về KoiKung</Link>
             </li>
             <li>
               <Link to="/services">Dịch vụ</Link>
@@ -84,7 +84,7 @@ function Navbar() {
                     Đăng nhập
                   </Link>
                   <Link to="/register" className="btn register-btn">
-                    Đăng Kí
+                    Đăng ký
                   </Link>
                 </>
             )}

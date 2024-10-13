@@ -1,0 +1,29 @@
+.google-login-success-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f4f4f4;
+    text-align: center;
+}
+
+.loading-spinner {
+    border: 8px solid #f3f3f3;  /* Màu nền */
+    border-top: 8px solid #f58220;  /* Màu của vòng quay */
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    animation: spin 1s linear infinite;  /* Hiệu ứng xoay */
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.google-login-success-container p {
+    margin-top: 20px;
+    font-size: 18px;
+    color: #333;
+}
