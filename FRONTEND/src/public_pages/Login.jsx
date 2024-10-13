@@ -1,7 +1,7 @@
 import {useLogin} from '../hooks/useLogin.js';
 import '../styles/Login.css';
 
-import GoogleLogo from "../assets/images/gmaillogo.png"
+import { FcGoogle } from "react-icons/fc";
 
 
 function Login() {
@@ -94,8 +94,16 @@ function Login() {
 
 
                 <div className="google-login">
-                    <button type="button" className="google-button" onClick={handleGoogleLogin} disabled={loading}>
-                        <img src={GoogleLogo} alt="Google Logo"/>
+                    <button
+                        type="button"
+                        className="google-button"
+                        onClick={handleGoogleLogin}
+                        disabled={loading}
+                    >
+                        <FcGoogle
+                            size={24}
+                            style={{ marginRight: '10px' }}
+                        /> {/* Kích thước icon Google */}
                         {loading ? 'Đang xử lý...' : 'Đăng nhập với Google'}
                     </button>
                 </div>
