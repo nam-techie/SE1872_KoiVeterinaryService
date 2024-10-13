@@ -4,28 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d2cec660-9bd4-4c6d-9559-8cd458d3cf90" name="Changes" comment="">
+    <list default="true" id="d2cec660-9bd4-4c6d-9559-8cd458d3cf90" name="Changes" comment="push all because forgot">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BACKEND/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/BACKEND/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/config/Filter.java" beforeDir="false" afterPath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/config/Filter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/config/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/config/SecurityConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/controller/AuthenticationController.java" beforeDir="false" afterPath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/controller/AuthenticationController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/exception/ValidationHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/exception/ValidationHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/model/request/OTPRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/model/request/OTPRequest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/model/request/RegisterRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/model/request/RegisterRequest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/service/AuthenticationService.java" beforeDir="false" afterPath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/service/AuthenticationService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/service/EmailService.java" beforeDir="false" afterPath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/service/EmailService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/service/TokenService.java" beforeDir="false" afterPath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/service/TokenService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BACKEND/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/BACKEND/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BACKEND/src/main/resources/templates/welcome-template.html" beforeDir="false" afterPath="$PROJECT_DIR$/BACKEND/src/main/resources/templates/welcome-template.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FRONTEND/src/components/Navbar.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/FRONTEND/src/components/Navbar.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FRONTEND/src/hooks/useResetPassword.js" beforeDir="false" afterPath="$PROJECT_DIR$/FRONTEND/src/hooks/useResetPassword.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FRONTEND/src/public_pages/Login.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/FRONTEND/src/public_pages/Login.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FRONTEND/src/public_pages/Register.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/FRONTEND/src/public_pages/Register.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FRONTEND/src/public_pages/ResetPassword.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/FRONTEND/src/public_pages/ResetPassword.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FRONTEND/src/services/apiLoginGoogle.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/FRONTEND/src/styles/AboutMe.css" beforeDir="false" afterPath="$PROJECT_DIR$/FRONTEND/src/styles/AboutMe.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FRONTEND/src/styles/HomePage.css" beforeDir="false" afterPath="$PROJECT_DIR$/FRONTEND/src/styles/HomePage.css" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -35,12 +15,12 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Class" />
         <option value="Exception" />
         <option value="JavaScript File" />
         <option value="TypeScript File" />
         <option value="JSX File" />
         <option value="CSS File" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -142,11 +122,25 @@
       <updated>1728568308126</updated>
       <workItem from="1728568315617" duration="8919000" />
       <workItem from="1728605162020" duration="10337000" />
-      <workItem from="1728691569022" duration="8105000" />
+      <workItem from="1728691569022" duration="9578000" />
+      <workItem from="1728735479717" duration="1615000" />
     </task>
+    <task id="LOCAL-00001" summary="push all because forgot">
+      <option name="closed" value="true" />
+      <created>1728708357027</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1728708357027</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="push all because forgot" />
+    <option name="LAST_COMMIT_MESSAGE" value="push all because forgot" />
   </component>
 </project>
