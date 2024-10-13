@@ -1,3 +1,4 @@
+/* Đảm bảo container có chiều cao 100vh và căn giữa */
 .login-container {
   display: flex;
   justify-content: center;
@@ -5,7 +6,6 @@
   height: 100vh;
   background-color: #f8f8f8;
   margin-top: 80px;
-  position: relative; /* To ensure proper positioning of the google button */
 }
 
 .login-form {
@@ -15,17 +15,15 @@
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
   max-width: 400px;
   width: 100%;
-  display: flex;
-  flex-direction: column;
 }
 
-.login-container h2 {
+h2 {
   text-align: center;
   margin-bottom: 20px;
 }
 
 .form-group {
-  margin-bottom: 15px;
+  margin-bottom: 20px; /* Tăng khoảng cách giữa các form-group */
 }
 
 .form-group label {
@@ -34,11 +32,13 @@
 }
 
 .form-group input {
-  border: 2px solid #000000;
-  padding: 10px;
-  border-radius: 5px;
-  outline: none;
   width: 100%;
+  padding: 12px; /* Tăng khoảng cách padding cho đều */
+  border-radius: 4px;
+  border: 1px solid #ddd;
+  font-size: 16px;
+  box-sizing: border-box; /* Đảm bảo padding không ảnh hưởng đến kích thước */
+  margin-top: 10px;
 }
 
 .forgot-password {
@@ -49,12 +49,13 @@
 .login-button {
   background-color: #f58220;
   color: white;
-  padding: 10px;
+  padding: 12px; /* Đồng nhất padding với input */
   border: none;
   border-radius: 4px;
   width: 100%;
   font-size: 16px;
   cursor: pointer;
+  margin-top: 10px; /* Thêm khoảng cách giữa input và nút */
 }
 
 .login-button:hover {
@@ -72,45 +73,27 @@
   color: #999;
 }
 
-.google-login {
-  position: relative;
-  display: flex;
-  justify-content: center;
-  margin-top: 10px;
-}
 
 .google-button {
-  display: flex;
-  align-items: center;
+  display: flex; /* Sử dụng Flexbox để căn giữa nội dung */
+  justify-content: center; /* Căn giữa theo chiều ngang */
+  align-items: center; /* Căn giữa theo chiều dọc */
   background-color: white;
   border: 1px solid #ddd;
-  padding: 10px;
   border-radius: 4px;
   cursor: pointer;
-  width: 100%;
+  width: 100%; /* Đảm bảo nút có chiều rộng đầy đủ */
   font-size: 16px;
-  text-align: center;
-  justify-content: center;
-  transition: background-color 0.3s ease;
-  height: 44px; /* Match height of login button */
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1); /* Optional shadow */
+  padding: 12px; /* Đảm bảo padding đều cho nút */
+  transition: background-color 0.3s; /* Hiệu ứng chuyển tiếp màu nền */
 }
 
 .google-button:hover {
-  background-color: #f0f0f0;
-}
-
-.google-button span {
-  margin-left: 8px;
+  background-color: #f1f1f1; /* Màu nền khi hover */
 }
 
 .error-message {
   color: red;
   text-align: center;
   margin-bottom: 15px;
-}
-
-.form-group, .google-login {
-  width: 100%;
-  margin-bottom: 20px; /* Ensures spacing between input fields and the Google button */
 }

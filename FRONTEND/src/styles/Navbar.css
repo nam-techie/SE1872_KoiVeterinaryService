@@ -100,7 +100,9 @@
 }
 
 .register-btn:hover {
-  background-color: #0056b3; /* Màu nền khi hover cho nút Đăng Kí */
+  background-color: orangered;
+  color: white;
+  text-decoration: none/* Màu nền khi hover cho nút Đăng Kí */
 }
 
 .logo img {

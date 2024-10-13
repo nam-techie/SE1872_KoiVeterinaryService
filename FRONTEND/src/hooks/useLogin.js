@@ -1,81 +1,55 @@
-import { useState, useEffect } from 'react';
-import { login } from '../services/apiLogin.js';
-import {jwtDecode} from "jwt-decode";
+import {useState} from 'react';
+import {login} from '../services/apiLogin.js'; // Service đăng nhập
+
 
 export const useLogin = () => {
-  const [username, setUsername] = useState(''); // Sử dụng username thay vì email
-  const [password, setPassword] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
+    const [username, setUsername] = useState('');  // Sử dụng username thay vì email
+    const [password, setPassword] = useState('');
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState('');
 
-  // Google login state (optional, depending on what data you need)
-  const [googleUser, setGoogleUser] = useState(null);
+    const handleSubmit = async (e) => {
+        e.preventDefault();  // Ngăn chặn hành vi mặc định của form
+        console.log("Form submitted with:", {username, password});  // Log kiểm tra form
 
-  // Traditional login submit handler
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    setError('');
-    try {
-      const data = await login();
+        setLoading(true);
+        setError('');  // Reset lỗi trước khi thực hiện đăng nhập
 
-      if (Array.isArray(data)) {
-        const foundUser = data.find(
-            (user) => user.username === username && user.password === password
-        );
+        try {
+            // Gọi API đăng nhập thực sự
+            const response = await login(username, password);  // Gọi API từ apiLogin.js
+            console.log('Đăng nhập thành công, dữ liệu trả về:', response);  // Hiển thị dữ liệu trả về từ server
 
-        if (foundUser) {
-          console.log('Đăng nhập thành công:', foundUser);
-          localStorage.setItem('authToken', 'fakeAuthToken123');
-          window.location.href = '/homepage';
-        } else {
-          throw new Error('Tên đăng nhập hoặc mật khẩu không đúng');
+            // Lưu token vào localStorage nếu cần thiết
+            localStorage.setItem('authToken', response.token);
+            localStorage.setItem('username', response.username);
+
+            // Chuyển hướng sau khi đăng nhập thành công
+            window.location.href = '/homepage';
+        } catch (error) {
+            // Hiển thị thông báo lỗi trực tiếp từ backend
+            setError(error.message || 'Đăng nhập thất bại. Vui lòng thử lại.');
+        } finally {
+            setLoading(false);  // Tắt trạng thái loading
         }
-      } else {
-        throw new Error('Dữ liệu người dùng không hợp lệ.');
-      }
-    } catch (error) {
-      console.error('Đã xảy ra lỗi khi đăng nhập:', error);
-      setError(error.message || 'Đăng nhập thất bại. Vui lòng thử lại.');
-    } finally {
-      setLoading(false);
-    }
-  };
+    };
 
-  // Google Login: Callback function to handle the response from Google login
-  const handleCallbackResponse = (response) => {
-    console.log('Encoded JWT ID token: ' + response.credential);
-    var userObject = jwtDecode(response.credential);
-    console.log(userObject);
-    setGoogleUser(userObject);
-  };
 
-  // Initialize Google Login when component mounts
-  useEffect(() => {
-    /*global google*/
-    google.accounts.id.initialize({
-      client_id: "1007903005549-31vue9ajdjrkgqftlavdov2h5v76kq33.apps.googleusercontent.com",
-      callback: handleCallbackResponse
-    });
+    const handleGoogleLogin = () => {
+        // Chuyển hướng người dùng tới backend để bắt đầu quá trình đăng nhập Google
+        window.location.href = 'http://localhost:8080/oauth2/authorization/google';
+    };
 
-    google.accounts.id.renderButton(
-        document.getElementById('signInDiv'), // Render Google Sign-In Button
-        { theme: 'outline', size: 'large' }
-    );
 
-    // Optionally: Auto sign-in the user if they are already signed in
-    google.accounts.id.prompt(); // Automatically shows the One Tap prompt
-  }, []);
 
-  return {
-    username,
-    setUsername,
-    password,
-    setPassword,
-    loading,
-    error,
-    googleUser, // Optional: Google User object, in case you need to display user info
-    handleSubmit, // Traditional login handler
-    handleCallbackResponse // This can be exposed if needed for further control
-  };
+    return {
+        username,
+        setUsername,
+        password,
+        setPassword,
+        loading,
+        error,
+        handleSubmit,
+        handleGoogleLogin,
+    };
 };
