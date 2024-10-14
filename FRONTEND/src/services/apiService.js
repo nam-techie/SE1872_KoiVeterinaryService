@@ -35,3 +35,13 @@ export  const  getDistrict = async () => {
         return [];
     }
 }
+
+export const  FeedbackService = async () =>{
+    try{
+        const reponse = await axios.get("feedback_service.json");
+        return reponse.data;
+    }catch (error){
+        console.error("'Error fetching district data:", error);
+        return [];
+    }
+}

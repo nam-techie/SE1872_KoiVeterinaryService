@@ -37,7 +37,7 @@ export const VeterianScheduleTimePeriods = async () =>{
 export const VeterianScheduleAvailableDay = async (doctorId) =>{
     try {
         //const response = await axiosInstance().get('/api/doctorday');
-        const response = await axios('/dataDemo.json');
+        const response = await axios('/veterianSchedule.json');
         const data = response.data;
         console.log('Data from JSON:', data);  // Log toàn bộ dữ liệu để xem có dữ liệu không
 
@@ -57,7 +57,7 @@ export const VeterianScheduleAvailableDay = async (doctorId) =>{
 export const VeterianScheduleAvailableSlots = async (doctorId, selectedDay) =>{
     try {
         //const response = await axiosInstance().get('/api/doctorslot');
-        const response = await axios('/dataDemo.json');
+        const response = await axios('/veterianSchedule.json');
         const data = response.data;
         console.log('Data from JSON:', data);  // Kiểm tra toàn bộ dữ liệu
 

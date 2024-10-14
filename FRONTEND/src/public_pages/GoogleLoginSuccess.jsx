@@ -18,7 +18,7 @@ const GoogleLoginSuccess = () => {
             localStorage.setItem('authToken', token);
 
             // Chuyển hướng người dùng đến trang chính (homepage)
-            navigate('/homepage');
+            // navigate('/homepage');
         } else {
             // Xử lý khi không có token trong query string
             console.error('Không có token trong query string');

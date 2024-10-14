@@ -13,9 +13,20 @@ export function BookingHistoryDataCard({ serviceName, description, image, date, 
     );
 }
 
-// export function VeterianCard(){
-//     return();
-// }
+export function VeterianCard({ fullname, sex, phone, experience, profilePic }) {
+    return (
+        <div className="veterian-card">
+            <img src={profilePic} alt={fullname} className="veterian-image" />
+            <div className="veterian-info">
+                <h3 className="veterian-name">{fullname}</h3>
+                <p className="veterian-detail"><strong>Giới tính:</strong> {sex ? "Nam" : "Nữ"}</p>
+                <p className="veterian-detail"><strong>Số điện thoại:</strong> {phone}</p>
+                <p className="veterian-detail"><strong>Kinh nghiệm:</strong> {experience} năm</p>
+            </div>
+        </div>
+    );
+}
+
 
 
 

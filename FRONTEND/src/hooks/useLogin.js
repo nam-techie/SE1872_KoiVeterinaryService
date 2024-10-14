@@ -22,10 +22,10 @@ export const useLogin = () => {
 
             // Lưu token vào localStorage nếu cần thiết
             localStorage.setItem('authToken', response.token);
-            localStorage.setItem('username', response.username);
+            console.log(response.token);
 
             // Chuyển hướng sau khi đăng nhập thành công
-            window.location.href = '/homepage';
+            // window.location.href = '/homepage';
         } catch (error) {
             // Hiển thị thông báo lỗi trực tiếp từ backend
             setError(error.message || 'Đăng nhập thất bại. Vui lòng thử lại.');
