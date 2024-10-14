@@ -2,7 +2,7 @@ import "../services/axiosInstance.js"
 import axios from "axios";
 import axiosInstance from "./axiosInstance.js";
 
-export const ServiceList = async () => {
+export const getVeterianInf = async () => {
     try {
         // const response = await axios.get('http://localhost:8080/api/servicesList');
         const response = await axios('service.json');

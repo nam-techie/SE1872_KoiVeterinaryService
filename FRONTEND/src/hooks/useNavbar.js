@@ -25,7 +25,7 @@ export const useNavbar = () => {
 
     // Hàm xử lý khi bấm logout
     const handleLogout = () => {
-        localStorage.removeItem('authToken'); // Xóa token khi logout
+        localStorage.clear(); // Xóa token khi logout
         setIsLoggedIn(false); // Cập nhật trạng thái
         window.location.href ="/homepage";
     };

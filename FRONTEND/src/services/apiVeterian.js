@@ -3,7 +3,7 @@ import axios from "axios";
 
 export const VeterianList = async () =>{
     try{
-        // const response = await axios("http://localhost:8080/api/VeterianList");
+        // const response = await axios("http://localhost:8080/api/listVeterinaryInfo");
         const  response =  await  axios("veterian.json");
         return response.data;
     } catch (error){

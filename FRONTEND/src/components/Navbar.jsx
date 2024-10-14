@@ -5,7 +5,7 @@ import { useNavbar } from "../hooks/useNavbar.js";
 import { FaMapMarkerAlt, FaPhoneAlt, FaClock, FaUser, FaRegFileAlt } from 'react-icons/fa';
 
 function Navbar() {
-  const { isLoggedIn, showDropdown, setShowDropdown, handleLogout,username } = useNavbar();
+  const { isLoggedIn, showDropdown, setShowDropdown, handleLogout, username } = useNavbar();
 
   // Hàm xử lý khi bấm vào biểu tượng người dùng
   const handleUserIconClick = () => {
@@ -15,7 +15,12 @@ function Navbar() {
   return (
       <>
         <div className="top-navbar">
-          <span>Xin chào ${username}</span>
+          <span className="welcome-tittle"> {isLoggedIn ? (
+              <>
+                Chào mừng <span style={{ color: 'orangered' }}>{username}</span> đã đến với KoiCung
+              </>
+          ) : ''}
+          </span>
           <div className="contact-info">
             <span><FaMapMarkerAlt /> Lô E2a-7, Đường D1, Đ. D1, Long Thạnh Mỹ, TP.Thủ Đức, HCM</span>
             <span><FaPhoneAlt /> 1800.999 (Miễn phí)</span>
@@ -58,21 +63,26 @@ function Navbar() {
                 <div className="user-icon-container">
                   <Link to="/booking-service-history">
                     <FaRegFileAlt
-                        size={30}
+                        size={29}
                         className="file-icon"
                         style={{ cursor: 'pointer', marginRight: '25px', color: 'white' }}
                     />
                   </Link>
                   <div onClick={handleUserIconClick} className="user-icon-wrapper">
                     <FaUser
-                        size={30}
+                        size={29}
                         className="user-icon"
                         style={{ cursor: 'pointer' }}
                     />
                     {showDropdown && (
                         <div className="dropdown-menu">
-                          <Link to="/profile">Thông tin cá nhân</Link>
+                          <Link to="#">Thông Báo</Link>
                           <Link to="/booking-service-history">Lịch sử đặt dịch vụ</Link>
+                          <Link to="#">Quản Lí Lịch Đặt</Link>
+                          <Link to="#">Phản Hồi Và Đánh Giá Dịch Vụ</Link>
+                          <Link to="/forgot-password">Đổi Mật Khẩu</Link>
+                          <hr/>
+                          <Link to="/profile">Thông tin cá nhân</Link>
                           <hr/>
                           <button onClick={handleLogout} className="logout-button">Đăng xuất</button>
                         </div>

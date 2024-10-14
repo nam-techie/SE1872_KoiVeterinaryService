@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { ServiceList, getDistrict } from "../services/apiService.js";
+import { getVeterianInf, getDistrict } from "../services/apiService.js";
 import { VeterianList, VeterianScheduleTimePeriods, VeterianScheduleAvailableSlots, VeterianScheduleAvailableDay } from "../services/apiVeterian.js";
 
 export const useBookingPage = () => {
@@ -22,7 +22,7 @@ export const useBookingPage = () => {
         const fetchData = async () => {
             try {
                 const [servicesData, districtsData, doctorsData, periodsData] = await Promise.all([
-                    ServiceList(),
+                    getVeterianInf(),
                     getDistrict(),
                     VeterianList(),
                     VeterianScheduleTimePeriods()
