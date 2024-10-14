@@ -1,11 +1,10 @@
-package com.example.org.entity;
+package com.namtechie.org.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
-
-import java.util.List;
 
 @Entity
 @Data
@@ -16,14 +15,14 @@ public class Appointment {
     private long id;
 
     @ManyToOne
-    @JoinColumn(name = "customer_id", nullable = false)
+    @JoinColumn(name = "customers_id", nullable = false)
     @JsonBackReference
-    private Customer customer;
+    private Customers customers;
 
     @ManyToOne
-    @JoinColumn(name = "veterian_id", nullable = false)
+    @JoinColumn(name = "doctor_id", nullable = false)
     @JsonBackReference
-    private Veterian veterian;
+    private Doctor doctor;
 
     @ManyToOne
     @JoinColumn(name = "service_type_id", nullable = false)
@@ -39,11 +38,6 @@ public class Appointment {
     @OneToOne(mappedBy = "appointment", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonManagedReference
     private AppointmentDetail appointmentDetail;
-
-    //Quan he hai chieu voi appointmentdetail
-    @OneToMany(mappedBy = "appointment", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JsonManagedReference
-    private List<AppointmentStatus> appointmentStatus;
 
     @Column(nullable = false)
     private boolean isVeterianAssigned;

@@ -1,7 +1,10 @@
 package com.namtechie.org.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
+
+import java.util.Set;
 
 @Entity
 @Data
@@ -13,6 +16,10 @@ public class Customers {
     @ManyToOne
     @JoinColumn(name = "account_id", nullable = false)
     private Account account;
+
+    @OneToMany(mappedBy = "customers", cascade = CascadeType.ALL)
+    @JsonManagedReference
+    private Set<Appointment> appointments;
 
     @Column(name = "fullname", length = 255)
     private String fullname;

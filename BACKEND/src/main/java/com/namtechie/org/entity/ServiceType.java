@@ -1,10 +1,10 @@
 package com.namtechie.org.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import jakarta.persistence.*;
 import lombok.Data;
+
+import java.util.Set;
 
 @Data
 @Entity
@@ -19,5 +19,8 @@ public class ServiceType {
 
     private long base_price;
 
+    @OneToMany(mappedBy = "serviceType", cascade = CascadeType.ALL)
+    @JsonManagedReference
+    private Set<Appointment> appointments;
 
 }

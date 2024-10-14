@@ -1,6 +1,6 @@
-package com.example.org.repository;
+package com.namtechie.org.repository;
 
-import com.example.org.entity.AppointmentDetail;
+import com.namtechie.org.entity.AppointmentDetail;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

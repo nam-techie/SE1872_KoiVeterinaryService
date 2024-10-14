@@ -1,10 +1,11 @@
 import axios from "axios";
+import axiosInstance from "./axiosInstance.js";
 // import axiosInstance from "./axiosInstance.js";
 
 export const VeterianList = async () =>{
     try{
-        // const response = await axios("/api/VeterianList");
-        const  response =  await  axios("veterian.json");
+        const response = await axiosInstance.get("http://localhost:8080/api/getAllDoctor");
+        // const  response =  await  axios("veterian.json");
         return response.data;
     } catch (error){
         console.error('Error fetching veterian list:', error);
@@ -36,8 +37,8 @@ export const VeterianScheduleTimePeriods = async () =>{
 //api de lay ngay lam viec cua bac si
 export const VeterianScheduleAvailableDay = async (doctorId) =>{
     try {
-        //const response = await axiosInstance().get('/api/doctorday');
-        const response = await axios('/dataDemo.json');
+        const response = await axiosInstance.get('http://localhost:8080/api/getFreeScheduleByDoctorId');
+        // const response = await axios('/dataDemo.json');
         const data = response.data;
         console.log('Data from JSON:', data);  // Log toàn bộ dữ liệu để xem có dữ liệu không
 

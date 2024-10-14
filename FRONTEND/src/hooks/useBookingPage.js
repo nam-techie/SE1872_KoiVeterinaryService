@@ -44,20 +44,23 @@ export const useBookingPage = () => {
     useEffect(() => {
         const loadAvailableDates = async () => {
             if (doctor) {
-                // Nếu chọn bác sĩ, chỉ lấy ngày khả dụng của bác sĩ đó
                 const dates = await VeterianScheduleAvailableDay(doctor);
-                setAvailableDates(dates);  // Cập nhật danh sách ngày khả dụng của bác sĩ
-                setSelectedDate('');  // Xóa ngày đã chọn khi đổi bác sĩ
-                setAvailableTimes([]); // Xóa các slot thời gian khi đổi bác sĩ
+                setAvailableDates(dates);
+                setSelectedDate('');
+                setAvailableTimes([]);
             } else {
-                // Nếu không chọn bác sĩ, hợp nhất ngày của tất cả bác sĩ
                 let allDates = [];
                 const promises = doctors.map(async (doc) => {
                     const dates = await VeterianScheduleAvailableDay(doc.id);
-                    allDates = [...new Set([...allDates, ...dates])]; // Hợp nhất và loại bỏ trùng lặp
+                    dates.forEach(dateObj => {
+                        const existingDate = allDates.find(d => d.date === dateObj.date && d.startTime === dateObj.startTime && d.endTime === dateObj.endTime);
+                        if (!existingDate) {
+                            allDates.push(dateObj); // Thêm nếu chưa tồn tại
+                        }
+                    });
                 });
                 await Promise.all(promises);
-                setAvailableDates(allDates);  // Cập nhật danh sách ngày của tất cả bác sĩ
+                setAvailableDates(allDates);
             }
         };
 

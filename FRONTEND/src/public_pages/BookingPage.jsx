@@ -47,7 +47,7 @@ function BookingPage() {
                 </select>
             </div>
 
-            {specialty === 'online-consultation' && (
+            {specialty === '1' && ( // online-consultation
                 <OnlineConsultation
                     phoneNumber={phoneNumber}
                     setPhoneNumber={setPhoneNumber}
@@ -56,7 +56,7 @@ function BookingPage() {
                 />
             )}
 
-            {specialty === 'home-survey' && (
+            {specialty === '2' && ( // home-survey
                 <HomeService
                     phoneNumber={phoneNumber}
                     setPhoneNumber={setPhoneNumber}
@@ -73,7 +73,7 @@ function BookingPage() {
                 />
             )}
 
-            {specialty === 'center-appointment' && (
+            {specialty === '3' && ( // center-appointment
                 <CenterAppointment
                     phoneNumber={phoneNumber}
                     setPhoneNumber={setPhoneNumber}
@@ -91,7 +91,7 @@ function BookingPage() {
                 />
             )}
 
-            {specialty === 'home-treatment' && (
+            {specialty === '4' && ( // home-treatment
                 <HomeService
                     phoneNumber={phoneNumber}
                     setPhoneNumber={setPhoneNumber}

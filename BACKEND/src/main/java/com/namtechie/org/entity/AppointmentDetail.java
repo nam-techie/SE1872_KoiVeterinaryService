@@ -1,4 +1,4 @@
-package com.example.org.entity;
+package com.namtechie.org.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
@@ -21,7 +21,6 @@ public class AppointmentDetail {
     @JsonBackReference
     private Appointment appointment;
 
-    @Column
     private String address;
 
     @Column(nullable = false)
@@ -32,5 +31,7 @@ public class AppointmentDetail {
 
     @Column(nullable = false)
     private Timestamp createdDate;
+
+    private String note;
 
 }
