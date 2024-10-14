@@ -5,7 +5,7 @@ import { useNavbar } from "../hooks/useNavbar.js";
 import { FaMapMarkerAlt, FaPhoneAlt, FaClock, FaUser, FaRegFileAlt } from 'react-icons/fa';
 
 function Navbar() {
-  const { isLoggedIn, showDropdown, setShowDropdown, handleLogout } = useNavbar();
+  const { isLoggedIn, showDropdown, setShowDropdown, handleLogout,username } = useNavbar();
 
   // Hàm xử lý khi bấm vào biểu tượng người dùng
   const handleUserIconClick = () => {
@@ -15,6 +15,7 @@ function Navbar() {
   return (
       <>
         <div className="top-navbar">
+          <span>Xin chào ${username}</span>
           <div className="contact-info">
             <span><FaMapMarkerAlt /> Lô E2a-7, Đường D1, Đ. D1, Long Thạnh Mỹ, TP.Thủ Đức, HCM</span>
             <span><FaPhoneAlt /> 1800.999 (Miễn phí)</span>

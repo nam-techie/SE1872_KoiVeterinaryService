@@ -4,7 +4,7 @@ import axiosInstance from "./axiosInstance.js";
 
 export const ServiceList = async () => {
     try {
-        // const response = await axios.get('/api/servicesList');
+        // const response = await axios.get('http://localhost:8080/api/servicesList');
         const response = await axios('service.json');
         return response.data;
     } catch (error) {
@@ -15,7 +15,7 @@ export const ServiceList = async () => {
 
 export  const  ServiceBookingData  = async () => {
     try{
-        //const response = await axios('/api/servicesBookingData');
+        //const response = await axios('http://localhost:8080/api/servicesBookingData');
         const response = await axios('serviceBookingData.json');
         return response.data;
     } catch (error) {

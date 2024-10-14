@@ -1,4 +1,5 @@
-import {useState} from 'react';
+import {useState,useEffect} from 'react';
+import {useNavigate} from "react-router-dom";
 import {login} from '../services/apiLogin.js'; // Service đăng nhập
 
 
@@ -23,9 +24,10 @@ export const useLogin = () => {
             // Lưu token vào localStorage nếu cần thiết
             localStorage.setItem('authToken', response.token);
             console.log(response.token);
+            localStorage.setItem('username',response.username)
 
             // Chuyển hướng sau khi đăng nhập thành công
-            // window.location.href = '/homepage';
+            window.location.href = '/homepage';
         } catch (error) {
             // Hiển thị thông báo lỗi trực tiếp từ backend
             setError(error.message || 'Đăng nhập thất bại. Vui lòng thử lại.');
@@ -52,4 +54,28 @@ export const useLogin = () => {
         handleSubmit,
         handleGoogleLogin,
     };
+};
+
+export const useTokenHandler = () => {
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        // Lấy token từ query string
+        const params = new URLSearchParams(window.location.search);
+        const token = params.get('token');
+
+        console.log("Query String:", window.location.search);
+        console.log("Token:", token);
+
+        if (token) {
+            // Lưu token vào localStorage
+            localStorage.setItem('authToken', token);
+
+            // Chuyển hướng người dùng đến trang chính (homepage)
+            navigate('/homepage'); // Bỏ comment nếu muốn điều hướng người dùng
+        } else {
+            // Xử lý khi không có token trong query string
+            console.error('Không có token trong query string');
+        }
+    }, [navigate]);
 };

@@ -3,7 +3,7 @@ import axios from "axios";
 
 export const VeterianList = async () =>{
     try{
-        // const response = await axios("/api/VeterianList");
+        // const response = await axios("http://localhost:8080/api/VeterianList");
         const  response =  await  axios("veterian.json");
         return response.data;
     } catch (error){
@@ -14,7 +14,7 @@ export const VeterianList = async () =>{
 
 export const VeterianScheduleTimeSlot = async () =>{
     try{
-        // const response = await  axios("/api/VeterianTimeSlot");
+        // const response = await  axios("http://localhost:8080/api/VeterianTimeSlot");
         const response = await  axios("timeSlot.json");
         return response.data;
     }catch (error){
@@ -25,7 +25,7 @@ export const VeterianScheduleTimeSlot = async () =>{
 //api để lấy thoi gian sang chieu cho cac ca lam viec
 export const VeterianScheduleTimePeriods = async () =>{
     try{
-        // const response = await  axios("/api/VeterianTimePeriods");
+        // const response = await  axios("http://localhost:8080/api/VeterianTimePeriods");
         const response = await  axios("timePeriods.json");
         return response.data;
     }catch (error){
@@ -36,7 +36,7 @@ export const VeterianScheduleTimePeriods = async () =>{
 //api de lay ngay lam viec cua bac si
 export const VeterianScheduleAvailableDay = async (doctorId) =>{
     try {
-        //const response = await axiosInstance().get('/api/doctorday');
+        //const response = await axiosInstance().get('http://localhost:8080/api/doctorday');
         const response = await axios('/veterianSchedule.json');
         const data = response.data;
         console.log('Data from JSON:', data);  // Log toàn bộ dữ liệu để xem có dữ liệu không
@@ -56,7 +56,7 @@ export const VeterianScheduleAvailableDay = async (doctorId) =>{
 //Ham Lay cac gio giac cu the cua dat lich tai trung tam
 export const VeterianScheduleAvailableSlots = async (doctorId, selectedDay) =>{
     try {
-        //const response = await axiosInstance().get('/api/doctorslot');
+        //const response = await axiosInstance().get('http://localhost:8080/api/doctorslot');
         const response = await axios('/veterianSchedule.json');
         const data = response.data;
         console.log('Data from JSON:', data);  // Kiểm tra toàn bộ dữ liệu

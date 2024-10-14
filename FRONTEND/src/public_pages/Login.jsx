@@ -15,19 +15,6 @@ function Login() {
         handleSubmit,
         handleGoogleLogin
     } = useLogin();
-
-    // // Xử lý khi đăng nhập Google thành công
-    // const handleGoogleSuccess = async (response) => {
-    //     const { tokenId } = response;
-    //     handleGoogleLogin(tokenId);  // Gửi tokenId để xử lý bên backend
-    // };
-    //
-    // // Xử lý khi đăng nhập Google thất bại
-    // const handleGoogleFailure = (response) => {
-    //     console.error('Lỗi khi đăng nhập Google:', response);
-    //     setError('Đăng nhập Google thất bại.');
-    // };
-
     return (
         <div className="login-container">
             <form className="login-form" onSubmit={handleSubmit}>

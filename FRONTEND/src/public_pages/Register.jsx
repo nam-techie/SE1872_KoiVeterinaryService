@@ -19,7 +19,6 @@ function Register() {
         handleFormSubmit,
     } = useRegister();
 
-    // Kiểm tra xem trường hợp input hợp lệ hay không
     const getInputClass = (hasError, value) => {
         if (hasError) {
             return 'error-input';
