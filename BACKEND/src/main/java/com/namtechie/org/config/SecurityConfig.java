@@ -24,6 +24,7 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 
+import java.net.URLEncoder;
 import java.util.List;
 
 
@@ -93,16 +94,19 @@ public class SecurityConfig {
         return (request, response, authentication) -> {
             OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal();
             String email = oAuth2User.getAttribute("email");
+            String name = oAuth2User.getAttribute("name");
 
             // Gọi service để xử lý logic đăng nhập và tạo token
-            AccountResponse accountResponse = authenticationService.loginByGoogle(email, oAuth2User.getAttribute("name"));
+            AccountResponse accountResponse = authenticationService.loginByGoogle(email, name);
 
-            // Chuyển hướng về frontend với token qua query string
-            String redirectUrl = "http://localhost:5741/login/success?token=" + accountResponse.getToken();
-            response.sendRedirect(redirectUrl);  // Chuyển hướng người dùng về frontend với token
+            // Mã hóa các thông tin để gửi qua URL
+            String encodedToken = URLEncoder.encode(accountResponse.getToken(), "UTF-8");
+            String encodedUsername = URLEncoder.encode(accountResponse.getUsername(), "UTF-8");
+            String redirectUrl = "http://localhost:5741/login/success?token=" + encodedToken + "&username=" + encodedUsername;
+            response.sendRedirect(redirectUrl);
+
         };
     }
-
 
     @Bean
     public OAuth2UserService<OAuth2UserRequest, OAuth2User> oauth2UserService() {
