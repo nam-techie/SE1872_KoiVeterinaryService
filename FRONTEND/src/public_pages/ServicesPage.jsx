@@ -4,7 +4,7 @@ import service2 from "../assets/images/service2.jpg"
 import service3 from "../assets/images/service3.jpg"
 import service4 from "../assets/images/service4.jpg"
 import {Link} from "react-router-dom";
-import BookingPage from "../public_pages/BookingPage.jsx"
+
 
 function ServicesPage() {
   return (

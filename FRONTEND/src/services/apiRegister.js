@@ -2,7 +2,7 @@ import axios from 'axios';
 
 export const register = async (username, email, password, confirmPassword) => {
     try {
-        const response = await axios.post('http://localhost:8080/api/register', { // Sử dụng đường dẫn proxy
+        const response = await axios.post('http://localhost:8080/api/register', {
             username,
             email,
             password,

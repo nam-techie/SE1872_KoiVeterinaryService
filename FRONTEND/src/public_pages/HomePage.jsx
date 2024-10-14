@@ -6,8 +6,39 @@ import expert from "../assets/images/Expert Icon.png"
 import quality from "../assets/images/Quality Icon.jpg"
 import qanda from "../assets/images/Q&A.jpg"
 import {Link} from "react-router-dom";
+import {VeterianCard} from "./Card.jsx";
+import {useVeterianList} from "../hooks/useService.js";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+import Slider from "react-slick";
+import Masonry from 'react-masonry-css';
 
 function HomePage() {
+    const { doctors, loading, error } = useVeterianList();
+    const images = [
+        "src/assets/images/some-activites-1.jpg",
+        "src/assets/images/some-activites-2.jpg",
+        "src/assets/images/some-activites-6.jpg",
+        "src/assets/images/some-activities-3.jpg",
+        "src/assets/images/some-activities-4.jpg",
+        "src/assets/images/some-activities-5.jpg",
+    ];
+
+    const breakpointColumnsObj = {
+        default: 3,
+        1100: 2,
+        700: 1
+    };
+
+    const settings = {
+        dots: true, // Hiển thị các chấm để di chuyển giữa các slide
+        infinite: true,
+        speed: 500,
+        slidesToShow: 5, // Số lượng bác sĩ hiển thị cùng một lúc
+        slidesToScroll: 2,
+        autoplay: true,
+        autoplaySpeed: 1500,
+    };
     return (
         <>
             <div className="homepage-container">
@@ -89,11 +120,45 @@ function HomePage() {
             <div className="veterian-information-list">
                 <h1>Đội ngũ y bác sĩ tại trung tâm</h1>
                 <div className="red-line"></div>
+                {loading && <p>Đang tải danh sách bác sĩ...</p>}
+                {error && <p>{error}</p>}
+                <Slider {...settings}>
+                    {doctors.map((doctor) => (
+                        <div key={doctor.id}>
+                            <VeterianCard
+                                fullname={doctor.fullname}
+                                sex={doctor.sex}
+                                phone={doctor.phone}
+                                experience={doctor.experience}
+                                profilePic={doctor.profilePic}
+                            />
+                        </div>
+                    ))}
+                </Slider>
+
             </div>
-            </>
+
+            <div className="some-activities-center">
+                <h1>Một số hình ảnh về hoạt động trung tâm của chúng tôi</h1>
+                <div className="red-line"></div>
+                <Masonry
+                    breakpointCols={breakpointColumnsObj}
+                    className="my-masonry-grid"
+                    columnClassName="my-masonry-grid_column"
+                >
+                    {images.map((image, index) => (
+                        <img key={index} src={image} alt={`image-${index}`} />
+                    ))}
+                </Masonry>
+            </div>
+
+            <div className="feedback-service">
+
+            </div>
+
+        </>
 
 
-            );
-            }
-
-            export default HomePage;
+    );
+}
+export default HomePage

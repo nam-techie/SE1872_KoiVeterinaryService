@@ -74,29 +74,22 @@ h2 {
 }
 
 
-.google-login {
-  display: flex;
-  justify-content: center;
-  margin-top: 10px;
-}
-
 .google-button {
+  display: flex; /* Sử dụng Flexbox để căn giữa nội dung */
+  justify-content: center; /* Căn giữa theo chiều ngang */
+  align-items: center; /* Căn giữa theo chiều dọc */
   background-color: white;
-  margin-top: 10px;
   border: 1px solid #ddd;
-  padding: 10px;
   border-radius: 4px;
   cursor: pointer;
-  width: 100%;
+  width: 100%; /* Đảm bảo nút có chiều rộng đầy đủ */
   font-size: 16px;
-  text-align: center; /* Canh giữa nội dung trong nút */
+  padding: 12px; /* Đảm bảo padding đều cho nút */
+  transition: background-color 0.3s; /* Hiệu ứng chuyển tiếp màu nền */
 }
 
-.google-button img {
-  width: 40px;
-  height: 20px;
-  vertical-align: middle; /* Canh giữa hình ảnh */
-  margin-right: 10px; /* Tạo khoảng cách giữa ảnh và text */
+.google-button:hover {
+  background-color: #f1f1f1; /* Màu nền khi hover */
 }
 
 .error-message {

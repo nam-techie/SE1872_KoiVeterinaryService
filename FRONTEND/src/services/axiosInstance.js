@@ -1,20 +1,23 @@
-// src/api/axiosInstance.js
 import axios from "axios";
 
 // Tạo một instance Axios với cấu hình mặc định
 const axiosInstance = axios.create({
-    baseURL: "http://localhost:8080/api", // URL gốc cho tất cả các API của bạn
+    // URL gốc cho tất cả các API của bạn
+    baseURL: "http://localhost:8080/api",
 });
 
 // Thêm một interceptor để tự động thêm token vào tất cả các yêu cầu
 axiosInstance.interceptors.request.use(
     (config) => {
-        // Lấy token từ localStorage
-        const token = localStorage.getItem('authToken');
-        console.log("Token from localStorage:", token); // Kiểm tra token
-        if (token) {
-            config.headers.Authorization = `Bearer ${token}`;
-            console.log("Authorization Header Set:", config.headers.Authorization); // Kiểm tra header
+        // Kiểm tra nếu URL là file JSON, bỏ qua việc thêm token
+        if (!config.url.endsWith('.json')) {
+            // Lấy token từ localStorage
+            const token = localStorage.getItem('authToken');
+            console.log("Token from localStorage:", token); // Kiểm tra token
+            if (token) {
+                config.headers.Authorization = `Bearer ${token}`;
+                console.log("Authorization Header Set:", config.headers.Authorization); // Kiểm tra header
+            }
         }
         return config;
     },

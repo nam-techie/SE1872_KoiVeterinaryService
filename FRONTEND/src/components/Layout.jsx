@@ -1,4 +1,3 @@
-// src/components/Layout.jsx
 import { useLocation, Navigate } from 'react-router-dom';
 import Footer from './Footer.jsx';
 
@@ -12,16 +11,26 @@ function Layout({ children }) {
         '/booking-service-history'
     ];
 
+    // Danh sách các đường dẫn không cho phép truy cập nếu đã đăng nhập
+    const restrictedPaths = [
+        '/login',
+        '/register'
+    ];
+
     // Kiểm tra nếu đường dẫn hiện tại nằm trong danh sách cần bảo vệ mà không có token
     const isProtectedPath = protectedPaths.includes(location.pathname);
     if (isProtectedPath && !token) {
         return <Navigate to="/login" />;
     }
 
+    // Kiểm tra nếu người dùng đã đăng nhập và cố gắng truy cập vào các trang hạn chế
+    const isRestrictedPath = restrictedPaths.includes(location.pathname);
+    if (isRestrictedPath && token) {
+        return <Navigate to="/homepage" />; // Hoặc đường dẫn bạn muốn chuyển hướng đến
+    }
+
     // Danh sách các đường dẫn không hiển thị footer
     const pathsWithoutFooter = [
-        '/login',
-        '/register',
         '/forgot-password',
         '/reset-password',
         '/verify-otp',

@@ -1,6 +1,7 @@
 // useService.js
 import { useState, useEffect } from 'react';
 import {ServiceBookingData} from "../services/apiService.js"
+import {VeterianList} from "../services/apiVeterian.js";
 
 
 export const useServiceBookingData = () => {
@@ -27,3 +28,30 @@ export const useServiceBookingData = () => {
 
     return { services, loading, error };
 };
+
+export const useVeterianList = () => {
+    const [doctors, setDoctors] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+    useEffect(() => {
+        const fetchDoctors = async () => {
+            try {
+                setLoading(true);
+                const data = await VeterianList(); // Gọi hàm VeterianList để lấy dữ liệu
+                setDoctors(data); // Đặt dữ liệu vào state
+            } catch (err) {
+                setError("Đã xảy ra lỗi khi lấy dữ liệu bác sĩ.");
+                console.error(err);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchDoctors();
+    }, []);
+
+    return { doctors, loading, error };
+};
+
+

@@ -1,7 +1,7 @@
 import {useLogin} from '../hooks/useLogin.js';
 import '../styles/Login.css';
 
-import GoogleLogo from "../assets/images/gmaillogo.png"
+import { FcGoogle } from "react-icons/fc";
 
 
 function Login() {
@@ -15,19 +15,6 @@ function Login() {
         handleSubmit,
         handleGoogleLogin
     } = useLogin();
-
-    // // Xử lý khi đăng nhập Google thành công
-    // const handleGoogleSuccess = async (response) => {
-    //     const { tokenId } = response;
-    //     handleGoogleLogin(tokenId);  // Gửi tokenId để xử lý bên backend
-    // };
-    //
-    // // Xử lý khi đăng nhập Google thất bại
-    // const handleGoogleFailure = (response) => {
-    //     console.error('Lỗi khi đăng nhập Google:', response);
-    //     setError('Đăng nhập Google thất bại.');
-    // };
-
     return (
         <div className="login-container">
             <form className="login-form" onSubmit={handleSubmit}>
@@ -94,8 +81,16 @@ function Login() {
 
 
                 <div className="google-login">
-                    <button type="button" className="google-button" onClick={handleGoogleLogin} disabled={loading}>
-                        <img src={GoogleLogo} alt="Google Logo"/>
+                    <button
+                        type="button"
+                        className="google-button"
+                        onClick={handleGoogleLogin}
+                        disabled={loading}
+                    >
+                        <FcGoogle
+                            size={24}
+                            style={{ marginRight: '10px' }}
+                        /> {/* Kích thước icon Google */}
                         {loading ? 'Đang xử lý...' : 'Đăng nhập với Google'}
                     </button>
                 </div>
