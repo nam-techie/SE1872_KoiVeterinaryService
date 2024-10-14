@@ -12,64 +12,30 @@ export const VeterianList = async () =>{
     }
 }
 
-export const VeterianScheduleTimeSlot = async () =>{
-    try{
-        // const response = await  axios("http://localhost:8080/api/VeterianTimeSlot");
-        const response = await  axios("timeSlot.json");
-        return response.data;
-    }catch (error){
-        console.error('Error fetching veterian list:', error);
-        return [];
-    }
-}
-//api để lấy thoi gian sang chieu cho cac ca lam viec
-export const VeterianScheduleTimePeriods = async () =>{
-    try{
-        // const response = await  axios("http://localhost:8080/api/VeterianTimePeriods");
-        const response = await  axios("timePeriods.json");
-        return response.data;
-    }catch (error){
-        console.error('Error fetching veterian list:', error);
-        return [];
-    }
-}
-//api de lay ngay lam viec cua bac si
-export const VeterianScheduleAvailableDay = async (doctorId) =>{
+export const VeterianScheduleCenter = async (doctorId) => {
     try {
-        //const response = await axiosInstance().get('http://localhost:8080/api/doctorday');
-        const response = await axios('/veterianSchedule.json');
+        // const response = await axios("http://localhost:8080/api/VeterianScheduleCenter");
+        const response = await axios(`/veterianScheduleCenter.json`); // Giả sử đây là dữ liệu từ backend hoặc file JSON
         const data = response.data;
-        console.log('Data from JSON:', data);  // Log toàn bộ dữ liệu để xem có dữ liệu không
-
-        // Kiểm tra doctorId
-        console.log('Doctor ID:', doctorId);
-
-        // Kiểm tra availableTimes cho doctorId
-        const availableDays = data.availableTimes[doctorId] ? Object.keys(data.availableTimes[doctorId]) : [];
-
-        return availableDays;
-    } catch (error) {
-        console.error('Error fetching available days:', error);
-        return [];
-    }
-}
-//Ham Lay cac gio giac cu the cua dat lich tai trung tam
-export const VeterianScheduleAvailableSlots = async (doctorId, selectedDay) =>{
-    try {
-        //const response = await axiosInstance().get('http://localhost:8080/api/doctorslot');
-        const response = await axios('/veterianSchedule.json');
-        const data = response.data;
-        console.log('Data from JSON:', data);  // Kiểm tra toàn bộ dữ liệu
 
         console.log('Doctor ID:', doctorId);
-        console.log('Selected Day:', selectedDay);
+        console.log('Data from JSON:', data);  // Kiểm tra dữ liệu
 
-        const availableTimes = data.availableTimes[doctorId]?.[selectedDay] || [];
-        console.log('Available times:', availableTimes);  // Log danh sách thời gian
-
-        return availableTimes;
+        // Trả về dữ liệu cần thiết dựa trên ID bác sĩ
+        return data.availableTimes[doctorId] || [];
     } catch (error) {
-        console.error('Error fetching available times:', error);
+        console.error('Error fetching available times from center:', error);
         return [];
     }
-}
+};
+
+export const VeterianScheduleHome = async () => {
+    try {
+        const response = await axios("http://localhost:8080/api/VeterianScheduleHome");
+        // const response =await axios(`/veterianScheduleHome.json`); //
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching schedule for home service:', error);
+        return [];
+    }
+};
