@@ -1,4 +1,3 @@
-
 import useBookingPage from '../hooks/useBookingPage.js';
 import '../styles/BookingPage.css'; // Nhớ import file CSS này
 
@@ -95,14 +94,16 @@ export function BookingPage() {
                 </div>
             )}
 
-            {/* Chọn ngày */}
-            <div className="form-group">
-                <label>Chọn ngày:</label>
-                <input type="date" value={selectedDate} onChange={(e) => setSelectedDate(e.target.value)} />
-            </div>
+            {/* Chọn ngày (không hiển thị cho tư vấn trực tuyến) */}
+            {serviceType !== 'onlineConsultation' && (
+                <div className="form-group">
+                    <label>Chọn ngày:</label>
+                    <input type="date" value={selectedDate} onChange={(e) => setSelectedDate(e.target.value)} />
+                </div>
+            )}
 
-            {/* Chọn giờ dựa trên ngày và bác sĩ đã chọn */}
-            {availableTimes.length > 0 && (
+            {/* Chọn giờ (không hiển thị cho tư vấn trực tuyến) */}
+            {serviceType !== 'onlineConsultation' && availableTimes.length > 0 && (
                 <div className="form-group">
                     <label>Chọn giờ:</label>
                     <select value={selectedTime} onChange={(e) => setSelectedTime(e.target.value)}>
