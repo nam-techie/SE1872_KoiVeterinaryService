@@ -30,7 +30,7 @@ export function CenterAppointment({ phoneNumber, setPhoneNumber, description, se
                     onChange={(e) => setDoctor(e.target.value)}
                 >
                     <option value="">Chọn Bác Sĩ</option>
-                    {doctors && doctors.map((doc) => (
+                    {doctors.map((doc) => (
                         <option key={doc.id} value={doc.id}>
                             {doc.fullname}
                         </option>
@@ -38,14 +38,13 @@ export function CenterAppointment({ phoneNumber, setPhoneNumber, description, se
                 </select>
             </div>
 
-            {/* Luôn hiển thị phần chọn ngày nếu có availableDates, kể cả khi không chọn bác sĩ */}
             {availableDates.length > 0 && (
                 <div className="form-group">
                     <label htmlFor="selectedDate">Chọn Ngày</label>
                     <select
                         id="selectedDate"
                         value={selectedDate}
-                        onChange={(e) => setSelectedDate(e.target.value)}  // Cập nhật ngày được chọn
+                        onChange={(e) => setSelectedDate(e.target.value)}
                     >
                         <option value="">Chọn ngày</option>
                         {availableDates.map((date, index) => (
@@ -57,14 +56,13 @@ export function CenterAppointment({ phoneNumber, setPhoneNumber, description, se
                 </div>
             )}
 
-            {/* Luôn hiển thị phần chọn thời gian nếu có availableTimes, kể cả khi không chọn bác sĩ */}
             {availableTimes.length > 0 && (
                 <div className="form-group">
                     <label htmlFor="selectedTime">Chọn Thời Gian</label>
                     <select
                         id="selectedTime"
                         value={selectedTime}
-                        onChange={(e) => setSelectedTime(e.target.value)}  // Cập nhật thời gian được chọn
+                        onChange={(e) => setSelectedTime(e.target.value)}
                     >
                         <option value="">Chọn thời gian</option>
                         {availableTimes.map((time, index) => (
@@ -79,8 +77,22 @@ export function CenterAppointment({ phoneNumber, setPhoneNumber, description, se
     );
 }
 
-
-export function HomeService({ phoneNumber, setPhoneNumber, description, setDescription, district, setDistrict, address, setAddress, selectedDate, setSelectedDate, timePeriod, setTimePeriod, periods, districts }){
+export function HomeService({
+                                phoneNumber,
+                                setPhoneNumber,
+                                description,
+                                setDescription,
+                                district,
+                                setDistrict,
+                                address,
+                                setAddress,
+                                selectedDate,
+                                setSelectedDate,
+                                timePeriod,
+                                setTimePeriod,
+                                periods,
+                                districts
+                            }) {
     return (
         <>
             <div className="form-group">
@@ -129,13 +141,23 @@ export function HomeService({ phoneNumber, setPhoneNumber, description, setDescr
             </div>
             <div className="form-group">
                 <label htmlFor="selectedDate">Chọn Ngày *</label>
-                <input
-                    type="date"
+                <select
                     id="selectedDate"
                     value={selectedDate}
                     onChange={(e) => setSelectedDate(e.target.value)}
                     required
-                />
+                >
+                    <option value="">Chọn ngày</option>
+                    {periods && periods.length > 0 ? (
+                        periods.map((period, index) => (
+                            <option key={index} value={period.date}>
+                                {period.date}
+                            </option>
+                        ))
+                    ) : (
+                        <option disabled>Không có ngày nào khả dụng</option>
+                    )}
+                </select>
             </div>
             <div className="form-group">
                 <label htmlFor="timePeriod">Chọn Thời Gian *</label>
@@ -145,18 +167,22 @@ export function HomeService({ phoneNumber, setPhoneNumber, description, setDescr
                     onChange={(e) => setTimePeriod(e.target.value)}
                 >
                     <option value="">Chọn thời gian</option>
-                    {periods.map((period) => (
-                        <option key={period.id} value={period.id}>
-                            {period.period} ({period.startTime} - {period.endTime})
-                        </option>
-                    ))}
+                    {periods && periods.length > 0 ? (
+                        periods.map((period) => (
+                            <option key={period.id} value={period.id}>
+                                {period.period} ({period.startTime} - {period.endTime})
+                            </option>
+                        ))
+                    ) : (
+                        <option disabled>Không có thời gian nào khả dụng</option>
+                    )}
                 </select>
             </div>
         </>
     );
 }
 
-export function OnlineConsultation ({ phoneNumber, setPhoneNumber, description, setDescription }){
+export function OnlineConsultation({phoneNumber, setPhoneNumber, description, setDescription}) {
     return (
         <>
             <div className="form-group">

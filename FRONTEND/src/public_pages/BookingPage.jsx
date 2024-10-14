@@ -1,31 +1,32 @@
-import { OnlineConsultation, HomeService, CenterAppointment } from "./BookingPageDetail.jsx";
+import { OnlineConsultation, HomeService, CenterAppointment } from './BookingPageDetail';
 import { useBookingPage } from '../hooks/useBookingPage';
 
 function BookingPage() {
     const {
-        services,
-        districts,
-        doctors,
         specialty,
         setSpecialty,
+        services,
         phoneNumber,
         setPhoneNumber,
         description,
         setDescription,
         address,
         setAddress,
-        doctor,
-        setDoctor,
-        availableDates,
         selectedDate,
         setSelectedDate,
-        availableTimes,
         selectedTime,
         setSelectedTime,
-        periods,  // periods được giữ nguyên
-        timePeriod,  // Thêm lại timePeriod
-        setTimePeriod,  // Thêm lại setTimePeriod
-        handleSubmit
+        timePeriod,
+        setTimePeriod,
+        periods, // Periods được sử dụng cho dịch vụ tại nhà
+        districtList,
+        doctor,
+        setDoctor,
+        setDistrictList,
+        doctorList,
+        availableDates, // Ngày có sẵn cho dịch vụ tại trung tâm
+        availableTimes, // Thời gian theo ngày cho dịch vụ tại trung tâm
+        handleSubmit,
     } = useBookingPage();
 
     return (
@@ -39,11 +40,15 @@ function BookingPage() {
                     onChange={(e) => setSpecialty(e.target.value)}
                 >
                     <option value="">Chọn loại dịch vụ</option>
-                    {services.map(service => (
-                        <option key={service.id} value={service.id}>
-                            {service.name}
-                        </option>
-                    ))}
+                    {services.length > 0 ? (
+                        services.map(service => (
+                            <option key={service.id} value={service.id}>
+                                {service.name}
+                            </option>
+                        ))
+                    ) : (
+                        <option value="" disabled>Không có dịch vụ khả dụng</option>
+                    )}
                 </select>
             </div>
 
@@ -56,7 +61,7 @@ function BookingPage() {
                 />
             )}
 
-            {specialty === 'home-survey' && (
+            {(specialty === 'home-survey' || specialty === 'home-treatment') && (
                 <HomeService
                     phoneNumber={phoneNumber}
                     setPhoneNumber={setPhoneNumber}
@@ -66,10 +71,11 @@ function BookingPage() {
                     setAddress={setAddress}
                     selectedDate={selectedDate}
                     setSelectedDate={setSelectedDate}
-                    timePeriod={timePeriod}  // Truyền timePeriod vào HomeService
-                    setTimePeriod={setTimePeriod}  // Truyền setTimePeriod vào HomeService
-                    periods={periods}
-                    districts={districts}
+                    timePeriod={timePeriod}
+                    setTimePeriod={setTimePeriod}
+                    periods={periods} // periods lấy từ useBookingPage để hiển thị thời gian
+                    districts={districtList}
+                    setDistrict={setDistrictList}
                 />
             )}
 
@@ -81,30 +87,13 @@ function BookingPage() {
                     setDescription={setDescription}
                     doctor={doctor}
                     setDoctor={setDoctor}
-                    doctors={doctors}
-                    availableDates={availableDates}
+                    doctors={doctorList} // Danh sách bác sĩ để chọn
+                    availableDates={availableDates} // Ngày có sẵn
                     selectedDate={selectedDate}
                     setSelectedDate={setSelectedDate}
-                    availableTimes={availableTimes}
+                    availableTimes={selectedDate ? availableTimes[selectedDate] || [] : []} // Thời gian sẵn có cho ngày đã chọn
                     selectedTime={selectedTime}
                     setSelectedTime={setSelectedTime}
-                />
-            )}
-
-            {specialty === 'home-treatment' && (
-                <HomeService
-                    phoneNumber={phoneNumber}
-                    setPhoneNumber={setPhoneNumber}
-                    description={description}
-                    setDescription={setDescription}
-                    address={address}
-                    setAddress={setAddress}
-                    selectedDate={selectedDate}
-                    setSelectedDate={setSelectedDate}
-                    timePeriod={timePeriod}  // Truyền timePeriod vào HomeService
-                    setTimePeriod={setTimePeriod}  // Truyền setTimePeriod vào HomeService
-                    periods={periods}
-                    districts={districts}
                 />
             )}
 
