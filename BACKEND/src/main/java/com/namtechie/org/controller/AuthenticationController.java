@@ -121,10 +121,31 @@ public class AuthenticationController {
     }
 
     @PutMapping("/updateInfoCustomer")
-    public ResponseEntity updateInfoCustomer(@Valid @RequestBody CustomerInfoRequest customerInfo) {
+    public ResponseEntity updateInfoCustomer(@ModelAttribute CustomerInfoRequest customerInfo) {
         CustomerInfoRequest newUpdate = customerService.updateCustomerInfo(customerInfo);
         return ResponseEntity.ok(newUpdate);
     }
+
+    //khi nao xong thì xử lí đoạn image sau
+//    @PutMapping("/updateInfoCustomer")
+//    public ResponseEntity updateInfoCustomer(
+//            @RequestPart("fullName") String fullName,
+//            @RequestPart("phoneNumber") String phoneNumber,
+//            @RequestPart("address") String address,
+//            @RequestPart(value = "image", required = false) MultipartFile image) {
+//
+//        // Tạo một đối tượng CustomerInfoRequest từ các phần của multipart form
+//        CustomerInfoRequest customerInfo = new CustomerInfoRequest();
+//        customerInfo.setFullName(fullName);
+//        customerInfo.setPhoneNumber(phoneNumber);
+//        customerInfo.setAddress(address);
+//
+//        // Gọi service để xử lý cập nhật
+//        CustomerInfoRequest newUpdate = customerService.updateCustomerInfo(customerInfo);
+//
+//        return ResponseEntity.ok(newUpdate);
+//    }
+
 
 //    @PostMapping("/google-login")
 //    public ResponseEntity<?> googleLogin(@RequestBody Map<String, String> body) {

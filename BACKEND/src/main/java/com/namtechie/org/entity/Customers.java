@@ -14,11 +14,11 @@ public class Customers {
     @JoinColumn(name = "account_id", nullable = false)
     private Account account;
 
-    @Column(name = "fullname", length = 255)
-    private String fullname;
+    @Column(name = "fullName", length = 255)
+    private String fullName;
 
-    @Column(name = "phone", length = 50)
-    private String phone;
+    @Column(name = "phoneNumber", length = 50)
+    private String phoneNumber;
 
     @Column(name = "address", length = 255)
     private String address;

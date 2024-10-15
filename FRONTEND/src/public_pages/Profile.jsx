@@ -1,14 +1,21 @@
+// eslint-disable-next-line no-unused-vars
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import '../styles/Profile.css';
 import { useCustomerInfo } from '../hooks/useCustomerInfo';
 
 function Profile() {
     // Sử dụng custom hook để lấy thông tin người dùng
     const { user, loading, error } = useCustomerInfo();
+    const navigate = useNavigate();
 
     if (loading) {
         return <div className="profile-container">Đang tải thông tin...</div>;
     }
+
+    const handleUpdateClick = () => {
+        navigate('/update-profile');
+    };
 
     return (
         <div className="profile-container">
@@ -70,7 +77,7 @@ function Profile() {
                 </div>
 
                 {/* Nút cập nhật thông tin */}
-                <button className="update-button">
+                <button className="update-button" onClick={handleUpdateClick}>
                     Cập nhật thông tin
                 </button>
             </div>

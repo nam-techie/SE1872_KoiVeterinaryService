@@ -10,7 +10,7 @@ public class CustomerInfoRequest {
     String fullName;
 
     @Pattern(regexp = "\\d+", message = "Chỉ được phép sử dụng chữ số!")
-    String phone;
+    String phoneNumber;
 
     String address;
 }

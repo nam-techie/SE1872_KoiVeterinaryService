@@ -1,0 +1,107 @@
+.profile-container {
+    display: flex;
+    max-width: 1000px;
+    width: 90%;
+    margin: 100px auto 10px;
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.1);
+    overflow: hidden;
+}
+
+.profile-avatar {
+    flex: 0 0 40%;
+    padding: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f8f8f8;
+}
+
+.profile-avatar img {
+    width: 250px;
+    height: 250px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 5px solid #fff;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.profile-info {
+    flex: 1;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+}
+
+.profile-info h2 {
+    color: #ff8c00;
+    font-size: 28px;
+    margin-bottom: 30px;
+}
+
+.info-item {
+    margin-bottom: 20px;
+    margin-left: 20px;
+    font-size: 20px;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.info-item label {
+    font-weight: bold;
+    display: inline-block;
+    width: 150px;
+    color: #555;
+}
+
+.info-item span {
+    color: #333;
+}
+
+/* Thêm responsive design */
+@media (max-width: 768px) {
+    .profile-container {
+        flex-direction: column;
+        width: 95%;
+    }
+
+    .profile-avatar {
+        padding: 20px;
+    }
+
+    .profile-info {
+        padding: 20px;
+    }
+
+    .info-item label {
+        width: 100%;
+        margin-bottom: 5px;
+    }
+}
+
+.update-button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #ff8c00;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.update-button:hover {
+    background-color: #e67e00;
+}
+
+/* Cập nhật phần responsive */
+@media (max-width: 768px) {
+    /* ... giữ nguyên các styles responsive cũ ... */
+
+    .update-button {
+        width: 100%;
+        margin-top: 15px;
+    }
+}

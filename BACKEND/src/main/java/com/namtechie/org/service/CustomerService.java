@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class CustomerService {
@@ -38,8 +39,8 @@ public class CustomerService {
             InfoCustomerResponse response = new InfoCustomerResponse();
             response.setUsername(currentAccount.getUsername());
             response.setEmail(currentAccount.getEmail());
-            response.setPhone(currentCustomer.getPhone());
-            response.setFullName(currentCustomer.getFullname());
+            response.setPhone(currentCustomer.getPhoneNumber());
+            response.setFullName(currentCustomer.getFullName());
             response.setAddress(currentCustomer.getAddress());
 
             return response;
@@ -60,29 +61,30 @@ public class CustomerService {
             // Lấy tài khoản hiện tại của người dùng đã xác thực
             Account curruntAccount = authenticationService.getCurrentAccount();
 
-            // Kiểm tra xem bác sĩ có tồn tại không, nếu không thì khởi tạo mới
+            // Kiểm tra xem khách hàng có tồn tại không, nếu không thì khởi tạo mới
             Customers customer = customerRepository.findByAccountId(curruntAccount.getId());
             if (customer == null) {
-                customer = new Customers();  // Khởi tạo đối tượng Doctor mới
+                customer = new Customers();  // Khởi tạo đối tượng Customer mới
                 customer.setAccount(curruntAccount);  // Liên kết với tài khoản
             }
 
-            if (!customerInfo.getFullName().equals(customer.getFullname())) {
-                customer.setFullname(customerInfo.getFullName());
+            // So sánh và cập nhật các giá trị
+            if (!Objects.equals(customerInfo.getFullName(), customer.getFullName())){
+                customer.setFullName(customerInfo.getFullName());
             }
-            if (!customerInfo.getPhone().equals(customer.getPhone())) {
-                customer.setPhone(customerInfo.getPhone());
+            if (!Objects.equals(customerInfo.getPhoneNumber(), customer.getPhoneNumber())) {
+                customer.setPhoneNumber(customerInfo.getPhoneNumber());
             }
-            if (!customerInfo.getAddress().equals(customer.getAddress())) {
+            if (!Objects.equals(customerInfo.getAddress(), customer.getAddress())) {
                 customer.setAddress(customerInfo.getAddress());
             }
 
+            // Lưu thông tin cập nhật vào database
             customerRepository.save(customer);
             return modelMapper.map(customer, CustomerInfoRequest.class);
         } catch (Exception e) {
-            // Log lỗi hoặc xử lý các ngoại lệ khác nếu cần
             e.printStackTrace();
-            throw new RuntimeException("Đã xảy ra lỗi trong quá trình thêm thông tin bác sĩ. Vui lòng thử lại sau.");
+            throw new RuntimeException("Đã xảy ra lỗi trong quá trình cập nhật thông tin khách hàng.");
         }
     }
 
