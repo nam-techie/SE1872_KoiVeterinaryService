@@ -10,5 +10,5 @@ import java.util.List;
 public interface ZoneRepository extends JpaRepository<Zone, Long> {
 
     List<Zone> findAll();
-
+    Zone findById(long id);
 }

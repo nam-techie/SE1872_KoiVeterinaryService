@@ -1,11 +1,15 @@
 package com.example.org.service;
 
 import com.example.org.entity.*;
+import com.example.org.model.AppointmentRequest;
 import com.example.org.model.AppointmentResponse;
 import com.example.org.model.ScheduleRequest;
+import com.example.org.model.VeterianConfirmRequest;
 import com.example.org.repository.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
@@ -41,6 +45,10 @@ public class AppointmentService {
     private VeterianRepository veterianRepository;
     @Autowired
     private ModelMapper modelMapper;
+    @Autowired
+    private AccountRepository accountRepository;
+    @Autowired
+    private CustomerRepository customerRepository;
 
     public List<Veterian> findAllVeterian() {
         return veterianRepository.findAll();
@@ -194,9 +202,150 @@ public class AppointmentService {
 //        return appointmentResponseList;
 //    }
 
-    public List<Appointment> getAllAppointments(){
-        List<Appointment> appointments = appointmentRepository.findAll();
-        return appointments;
+
+    public Appointment createAppointment(AppointmentRequest appointmentRequest) {
+        Appointment appointment = new Appointment();
+        try {
+            System.out.println("Found -1: ");
+            Account account = (Account) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            appointment.setCustomer(account.getCustomer());
+
+
+
+
+            // Step 3: Tìm ServiceType từ serviceID trong AppointmentRequest
+            ServiceType serviceType = serviceTypeRepository.findById(appointmentRequest.getServiceTypeId());
+            appointment.setServiceType(serviceType);
+            System.out.println("Found -2: ");
+
+
+            // Step 4: Tìm Zone từ zoneName nếu có
+
+            Zone zone = zoneRepository.findById(appointmentRequest.getZoneId());
+            appointment.setZone(zone);
+            System.out.println("Found 10: ");
+
+
+
+            // Step 5: Tạo mới AppointmentDetail từ dữ liệu chi tiết
+            AppointmentDetail appointmentDetail = new AppointmentDetail();
+            appointmentDetail.setAppointment(appointment);
+            appointmentDetail.setAddress(appointmentRequest.getAddress());
+            appointmentDetail.setAppointmentBookingDate(appointmentRequest.getBookingDate());
+
+            System.out.println("Found 11: ");
+
+            Optional<Veterian> optionalVeterian = veterianRepository.findById(appointmentRequest.getVeterianId());
+            Veterian veterian = optionalVeterian.orElse(null);
+            System.out.println("Found 12: ");
+
+
+
+            //khám tại trung tam
+            if(appointmentRequest.getServiceTypeId() == 3) {
+                System.out.println("Found 0: " + veterian);
+
+                //khách hàng chọn bác sĩ
+                if(veterian != null) {
+                    System.out.println("Found 1243: " + veterian);
+
+                    appointment.setVeterianAssigned(true); // đánh dấu khách hàng có chọn bác sĩ
+                    appointment.setVeterian(veterian);
+                }else { //khách hàng ko chọn bác sĩ
+                    appointmentDetail.setAppointmentBookingTime(appointmentRequest.getBookingTime());
+                    veterian = findAvailableVeterian(appointmentRequest.getBookingDate(), Time.valueOf("13:00:00"));
+                    System.out.println("Found Veterian: " + veterian);
+                    appointment.setVeterianAssigned(false);
+                    appointment.setVeterian(veterian);
+                }
+                appointmentDetail.setAppointmentBookingTime(appointmentRequest.getBookingTime());
+            }else if(appointmentRequest.getServiceTypeId() == 2 || appointmentRequest.getServiceTypeId() == 4) { // khám tại nhà
+                if(veterian == null) {
+                    Time bookingTime = null;
+                    if (appointmentRequest.getTimeSlot().equals("Buoi sang")) {
+                        bookingTime = Time.valueOf("07:00:00");
+                    } else if(appointmentRequest.getTimeSlot().equals("Buoi chieu")) {
+                        bookingTime = Time.valueOf("13:00:00");
+                    }
+                    veterian = findAvailableVeterian(appointmentRequest.getBookingDate(), bookingTime);
+                    appointment.setVeterianAssigned(false);
+                    appointment.setVeterian(veterian);
+                    appointmentDetail.setAppointmentBookingTime(appointmentRequest.getBookingTime());
+                }
+            }else{
+                if(veterian == null) {
+                    Time appointmentTime = new Time(System.currentTimeMillis() + 15 * 60 * 1000); // 15 phút sau
+                    appointmentDetail.setAppointmentBookingTime(appointmentTime);
+                    veterian = findAvailableVeterian(appointmentRequest.getBookingDate(), appointmentTime);
+                    appointment.setVeterianAssigned(false);
+                    appointment.setVeterian(veterian);
+                }
+            }
+            appointmentDetail.setDescriptions(appointmentRequest.getDescription());
+            appointment.setAppointmentDetail(appointmentDetail);
+
+
+
+            List<AppointmentStatus> list = new ArrayList<>();
+            AppointmentStatus appointmentStatus = new AppointmentStatus();
+            appointmentStatus.setAppointment(appointment);
+            appointmentStatus.setStatus("Waiting veterian confirm");
+            appointmentStatus.setNotes("");
+            list.add(appointmentStatus);
+
+
+            appointment.setAppointmentStatus(list);
+
+            // Step 6: Lưu Appointment vào cơ sở dữ liệu
+            return appointmentRepository.save(appointment);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
+    public Veterian findAvailableVeterian(Date bookingDate, Time bookingTime) {
+        // Lấy danh sách tất cả các bác sĩ
+        List<Veterian> allVeterians = veterianRepository.findAll();
+
+        for (Veterian v : allVeterians) {
+            Map<Date, List<ScheduleRequest>> freeschedules = findFreeScheduleByVeterianId(v.getId());
+
+            List<ScheduleRequest> schedulesForDay = freeschedules.get(bookingDate);
+            if (schedulesForDay != null) {
+                for (ScheduleRequest schedule : schedulesForDay) {
+                    // Kiểm tra xem thời gian đặt có nằm trong khoảng trống không
+                    if (schedule.getStartTime().equals(bookingTime) && schedule.isAvailable()) {
+                        return v;  // Trả về bác sĩ có lịch trống
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+
+    public List<Appointment> getAllAppointments() {
+        return appointmentRepository.findAll();
+    }
+
+    public AppointmentStatus confirmVeterianAppointment(VeterianConfirmRequest veterianConfirmRequest) {
+        try {
+            AppointmentStatus updateAppointmentStatus = appointmentStatusRepository.findByAppointmentId(veterianConfirmRequest.getId());
+
+            AppointmentStatus status = new AppointmentStatus();
+            status.setAppointment(updateAppointmentStatus.getAppointment());
+            if (veterianConfirmRequest.isConfirmed() == true) {
+                status.setNotes(veterianConfirmRequest.getNote());
+                status.setStatus("Confirmed");
+            } else {
+                status.setNotes(veterianConfirmRequest.getNote());
+                status.setStatus("Canceled");
+            }
+            return appointmentStatusRepository.save(status);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+
+    }
 }

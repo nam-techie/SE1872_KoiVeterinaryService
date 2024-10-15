@@ -44,7 +44,8 @@ public class Filter extends OncePerRequestFilter {
             "/api/zones",
             "/api/free-schedule",
             "/api/testFreeSchedule",
-            "/api/getVeterians"
+            "/api/getVeterians",
+            "/api/getVeterianAuto"
     );
 
     public boolean checkIsPublicAPI(String uri) {

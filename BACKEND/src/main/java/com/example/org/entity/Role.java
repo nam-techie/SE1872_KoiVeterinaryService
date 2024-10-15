@@ -1,7 +1,7 @@
 package com.example.org.entity;
 
 public enum Role {
-    STAFF,
-    VETERINARY,
+    ADMIN,
+    VETERIAN,
     CUSTOMER
 }

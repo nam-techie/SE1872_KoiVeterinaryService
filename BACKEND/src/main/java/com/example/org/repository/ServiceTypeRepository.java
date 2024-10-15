@@ -9,5 +9,6 @@ import java.util.List;
 @Repository
 public interface ServiceTypeRepository extends JpaRepository<ServiceType, Long> {
     List<ServiceType>  findAll();
+    ServiceType findById(long id);
 
 }

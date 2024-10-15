@@ -1,5 +1,6 @@
 package com.example.org.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -24,6 +25,6 @@ public class ServiceType {
     private String description;
 
     @OneToMany(mappedBy = "serviceType", cascade = CascadeType.ALL)
-    @JsonManagedReference
-    private List<Appointment> appointments;
+    @JsonIgnoreProperties({"serviceType"})
+    private List<Appointment> appointment;
 }

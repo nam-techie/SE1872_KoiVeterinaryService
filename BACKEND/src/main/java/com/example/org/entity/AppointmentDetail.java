@@ -3,6 +3,7 @@ package com.example.org.entity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Data;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.sql.Date;
 import java.sql.Time;
@@ -31,6 +32,9 @@ public class AppointmentDetail {
     private Time appointmentBookingTime;
 
     @Column(nullable = false)
+    @CreationTimestamp
     private Timestamp createdDate;
 
+    @Column(nullable = false)
+    private String descriptions;
 }

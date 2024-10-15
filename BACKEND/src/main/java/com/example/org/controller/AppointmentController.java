@@ -2,17 +2,24 @@ package com.example.org.controller;
 
 import com.example.org.entity.Account;
 import com.example.org.entity.Appointment;
+import com.example.org.entity.AppointmentStatus;
+import com.example.org.entity.Veterian;
+import com.example.org.model.AppointmentRequest;
 import com.example.org.model.AppointmentResponse;
 import com.example.org.model.ServiceRequest;
+import com.example.org.model.VeterianConfirmRequest;
 import com.example.org.service.AppointmentService;
 import com.example.org.service.TokenService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Date;
+import java.sql.Time;
 import java.util.List;
 
 @RequestMapping("/api")
@@ -64,10 +71,33 @@ public class AppointmentController {
     }
 
 
+    @PostMapping("/createAppointment")
+    @PreAuthorize("hasAuthority('CUSTOMER')")
+    public ResponseEntity createAppointment(@Valid @RequestBody AppointmentRequest appointmentRequest) {
+        Appointment appointment = appointmentService.createAppointment(appointmentRequest);
+        return ResponseEntity.ok(appointment);
+    }
+
+
     @GetMapping("/getAppointment")
     @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity getAppointments() {
         List<Appointment> appointmentResponses = appointmentService.getAllAppointments();
         return ResponseEntity.ok(appointmentResponses);
     }
+
+
+    @PutMapping("/isVeterianConfirm")
+    @PreAuthorize("hasAuthority('VETERIAN')")
+    public ResponseEntity isConfirm(@Valid @RequestBody VeterianConfirmRequest veterianConfirmRequest) {
+        AppointmentStatus appointmentStatus = appointmentService.confirmVeterianAppointment(veterianConfirmRequest);
+        return ResponseEntity.ok(appointmentStatus);
+    }
+
+    @GetMapping("/getVeterianAuto")
+    public ResponseEntity getVeterianAuto(@Param("BookingDate")Date bookingDate) {
+        Veterian veterian = appointmentService.findAvailableVeterian(bookingDate, Time.valueOf("13:00:00"));
+        return ResponseEntity.ok(veterian);
+    }
+
 }

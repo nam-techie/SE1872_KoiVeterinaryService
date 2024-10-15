@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.sql.Date;
 import java.util.List;
@@ -28,6 +29,7 @@ public class AppointmentStatus {
     private String status;
 
     @Column
+    @CreationTimestamp
     private Date create_date;
 
     @Column

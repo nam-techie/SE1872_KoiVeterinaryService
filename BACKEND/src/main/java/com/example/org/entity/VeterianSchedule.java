@@ -2,7 +2,7 @@ package com.example.org.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
-import lombok.CustomLog;
+
 import lombok.Data;
 
 import java.sql.Time;
@@ -28,4 +28,5 @@ public class VeterianSchedule {
 
     @Column(nullable = false)
     private Time endTime;
+
 }

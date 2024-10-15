@@ -1,6 +1,8 @@
 package com.example.org.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -17,22 +19,23 @@ public class Appointment {
 
     @ManyToOne
     @JoinColumn(name = "customer_id", nullable = false)
-    @JsonBackReference
+    @JsonIgnoreProperties({"appointment"})
     private Customer customer;
 
     @ManyToOne
     @JoinColumn(name = "veterian_id", nullable = false)
-    @JsonBackReference
+    @JsonIgnoreProperties({"appointment"})
+    @JsonIgnore
     private Veterian veterian;
 
     @ManyToOne
     @JoinColumn(name = "service_type_id", nullable = false)
-    @JsonBackReference
+    @JsonIgnoreProperties({"appointment"})
     private ServiceType serviceType;
 
     @ManyToOne
     @JoinColumn(name = "zone_id")
-    @JsonBackReference
+    @JsonIgnoreProperties({"appointment"})
     private Zone zone;
 
     //Quan he hai chieu voi appointmentdetail
@@ -50,5 +53,6 @@ public class Appointment {
 
     @Column(nullable = false)
     private boolean isCancel;
+
 
 }

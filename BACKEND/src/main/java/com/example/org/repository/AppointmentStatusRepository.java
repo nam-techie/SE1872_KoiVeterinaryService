@@ -6,4 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface AppointmentStatusRepository extends JpaRepository<AppointmentStatus, Long> {
     AppointmentStatus findByAppointmentId(Long appointmentId);
+
 }

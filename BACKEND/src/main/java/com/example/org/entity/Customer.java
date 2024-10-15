@@ -1,6 +1,7 @@
 package com.example.org.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -20,7 +21,7 @@ public class Customer {
     private Account account;
 
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
-    @JsonManagedReference
+    @JsonIgnoreProperties({"customer"})
     private List<Appointment> appointment;
 
     @Column(length = 255)
