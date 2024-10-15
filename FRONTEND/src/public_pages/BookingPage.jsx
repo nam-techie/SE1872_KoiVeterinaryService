@@ -1,6 +1,6 @@
 import React from 'react';
 import useBookingPage from '../hooks/useBookingPage.js';
-import {useDistrictList, useService} from '../hooks/useService.js'; // Hook để lấy danh sách dịch vụ
+import {useDistrictList, useService, useVeterianList, useVeterianScheduleHome} from '../hooks/useService.js'; // Hook để lấy danh sách dịch vụ
 import '../styles/BookingPage.css';
 
 export function BookingPage() {
@@ -21,11 +21,13 @@ export function BookingPage() {
         setDetailedAddress,
         selectedDistrict,
         setSelectedDistrict, // Quận/huyện được chọn
-        dateOptions, // Ngày khả dụng cho dịch vụ tại nhà
+        // dateOptions, // Ngày khả dụng cho dịch vụ tại nhà
     } = useBookingPage();
 
     const { service, serviceLoading, serviceError } = useService(); // Lấy danh sách dịch vụ từ hook
     const {districts} = useDistrictList();
+    const {doctors} = useVeterianList();
+    const {veterianScheduleHome} = useVeterianScheduleHome();
     return (
         <div className="appointment-form">
             <h1>Đặt lịch dịch vụ</h1>
@@ -61,24 +63,26 @@ export function BookingPage() {
                 <textarea value={description} onChange={(e) => setDescription(e.target.value)} />
             </div>
 
-            {/* Chọn ngày và giờ cho khảo sát tại nhà và chữa bệnh tại nhà */}
-            {(serviceType === 'home-survey' || serviceType === 'home-treatment') && (
+            {/* Chọn ngày, giờ, địa chỉ chi tiết và quận/huyện cho dịch vụ tại nhà */}
+            {(serviceType === '2' || serviceType === '4') && (
                 <>
+                    {/* Chọn ngày */}
                     <div className="form-group">
                         <label>Chọn ngày:</label>
                         <select value={selectedDate} onChange={(e) => setSelectedDate(e.target.value)}>
                             <option value="">Chọn ngày</option>
-                            {dateOptions.map((date) => (
+                            {veterianScheduleHome.map((date) => (
                                 <option key={date} value={date}>{date}</option>
                             ))}
                         </select>
                     </div>
 
+                    {/* Chọn giờ */}
                     {availableTimes.length > 0 && (
                         <div className="form-group">
                             <label>Chọn giờ:</label>
                             <select value={selectedTime} onChange={(e) => setSelectedTime(e.target.value)}>
-                                {availableTimes.map((time, index) => (
+                                {veterianScheduleHome.map((time, index) => (
                                     <option key={index} value={`${time.startTime}-${time.endTime}`}>
                                         {time.startTime} - {time.endTime}
                                     </option>
@@ -86,60 +90,56 @@ export function BookingPage() {
                             </select>
                         </div>
                     )}
+
+                    {/* Nhập địa chỉ chi tiết */}
+                    <div className="form-group">
+                        <label>Địa chỉ chi tiết:</label>
+                        <input type="text" value={detailedAddress} onChange={(e) => setDetailedAddress(e.target.value)} />
+                    </div>
+
+                    {/* Chọn quận/huyện */}
+                    <div className="form-group">
+                        <label>Chọn quận/huyện:</label>
+                        <select value={selectedDistrict} onChange={(e) => setSelectedDistrict(e.target.value)}>
+                            <option value="">Chọn quận/huyện</option>
+                            {districts.map((district) => (
+                                <option key={district.id} value={district.name}>
+                                    {district.name}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
                 </>
             )}
 
-            {/* Nhập địa chỉ chi tiết cho dịch vụ tại nhà */}
-            {(serviceType === 'home-survey' || serviceType === 'home-treatment') && (
-                <div className="form-group">
-                    <label>Địa chỉ chi tiết:</label>
-                    <input type="text" value={detailedAddress} onChange={(e) => setDetailedAddress(e.target.value)} />
-                </div>
-            )}
-
-            {/* Chọn quận/huyện cho dịch vụ tại nhà */}
-            {(serviceType === 'home-survey' || serviceType === 'home-treatment') && (
-                <div className="form-group">
-                    <label>Chọn quận/huyện:</label>
-                    <select value={selectedDistrict} onChange={(e) => setSelectedDistrict(e.target.value)}>
-                        <option value="">Chọn quận/huyện</option>
-                        {districts.map((district) => (
-                            <option key={district.id} value={district.name}>
-                                {district.name}
-                            </option>
-                        ))}
-                    </select>
-                </div>
-            )}
 
             {/* Chọn bác sĩ và giờ cho dịch vụ điều trị tại trung tâm */}
-            {serviceType === 'center-appointment' && (
+            {serviceType === '3' && (
                 <>
                     <div className="form-group">
                         <label>Chọn bác sĩ:</label>
                         <select onChange={(e) => handleDoctorSelect(e.target.value)}>
                             <option value="">Không chọn</option>
-                            {/* Giả sử bạn có danh sách bác sĩ */}
-                            {/* {doctors.map((doctor) => ( */}
-                            {/* <option key={doctor.id} value={doctor.id}> */}
-                            {/* {doctor.name} */}
-                            {/* </option> */}
-                            {/* ))} */}
+                             {doctors.map((doctor) => (
+                             <option key={doctor.id} value={doctor.id}>
+                             {doctor.fullname}
+                             </option>
+                             ))}
                         </select>
                     </div>
 
-                    {availableTimes.length > 0 && (
-                        <div className="form-group">
-                            <label>Chọn giờ:</label>
-                            <select value={selectedTime} onChange={(e) => setSelectedTime(e.target.value)}>
-                                {availableTimes.map((time, index) => (
-                                    <option key={index} value={`${time.startTime}-${time.endTime}`}>
-                                        {time.startTime} - {time.endTime}
-                                    </option>
-                                ))}
-                            </select>
-                        </div>
-                    )}
+                    {/*{availableTimes.length > 0 && (*/}
+                    {/*    <div className="form-group">*/}
+                    {/*        <label>Chọn giờ:</label>*/}
+                    {/*        <select value={selectedTime} onChange={(e) => setSelectedTime(e.target.value)}>*/}
+                    {/*            {availableTimes.map((time, index) => (*/}
+                    {/*                <option key={index} value={`${time.startTime}-${time.endTime}`}>*/}
+                    {/*                    {time.startTime} - {time.endTime}*/}
+                    {/*                </option>*/}
+                    {/*            ))}*/}
+                    {/*        </select>*/}
+                    {/*    </div>*/}
+                    {/*)}*/}
                 </>
             )}
 

@@ -1,5 +1,6 @@
 package com.namtechie.org.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -21,6 +22,7 @@ public class ServiceType {
 
     @OneToMany(mappedBy = "serviceType", cascade = CascadeType.ALL)
     @JsonManagedReference
+    @JsonIgnore
     private Set<Appointment> appointments;
 
 }

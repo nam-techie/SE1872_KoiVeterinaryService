@@ -32,7 +32,7 @@ public class ScheduleService {
         return doctorsSchedulesRepository.findDoctorsSchedulesByDoctorIdAndWorkDay(doctorId, workDay);
     }
 
-    //Lấy lịch làm việc theo buổi trống trong 7 ngày làm việc tiếp theo
+    //Lấy lịch làm việc theo buổi trống trong 7 ngày làm việc tiếp theo theo buổi và tại nhà
     public Map<String, List<Schedule>> findFreeScheduleOfSession() {
         Map<String, List<Schedule>> freeSchedules = new HashMap<>();
         List<Doctor> doctors = doctorService.getAllDoctors();
@@ -70,7 +70,49 @@ public class ScheduleService {
         return freeSchedules;
     }
 
-    // Lấy lịch làm việc trống trong 7 ngày tiếp theo của bác sĩ theo giờ
+    //Lấy lịch làm việc trống trong 7 ngày tiếp theo của bác sĩ theo giờ
+
+    public Map<String, List<Schedule>> findFreeSchedule() {
+        Map<String, List<Schedule>> freeSchedules = new HashMap<>();
+        List<Doctor> doctors = doctorService.getAllDoctors();
+        LocalDate today = LocalDate.now();
+// Nooo
+        int workDaysCount = 0;
+        while (workDaysCount < 7) {
+            today = today.plusDays(1);
+            DayOfWeek dayOfWeek = today.getDayOfWeek();
+
+            if (dayOfWeek != DayOfWeek.SATURDAY && dayOfWeek != DayOfWeek.SUNDAY) {
+                List<Schedule> schedules = new ArrayList<>();
+
+                List<Integer> timeSlots = Arrays.asList(7, 8, 9, 10, 13, 14, 15, 16);
+
+                for (Integer timeSlot : timeSlots) {
+                    boolean isFreeThisTime = false;
+                    for (Doctor doctor : doctors) {
+                        // Nếu có ít nhất một bác sĩ trống lịch vào thời gian này, đánh dấu nó là trống á
+                        if (appointmentService.findAppointmentWithBookingTime(doctor.getId(), Date.valueOf(today), Time.valueOf(timeSlot + ":00:00")) == null) {
+                            schedules.add(new Schedule(Date.valueOf(today), Time.valueOf(timeSlot + ":00:00"), Time.valueOf((timeSlot + 1) + ":00:00"), true));
+                            isFreeThisTime = true;
+                            break;
+                        }
+
+
+                    }
+                    if (!isFreeThisTime) { // Nếu đéo có lịch trống thì cho bận luôn
+                        schedules.add(new Schedule(Date.valueOf(today), Time.valueOf(timeSlot + ":00:00"), Time.valueOf((timeSlot + 1) + ":00:00"), false));
+                    }
+                }
+
+                freeSchedules.put(String.valueOf(today), schedules);
+                workDaysCount++;
+            }
+        }
+
+        return freeSchedules;
+    }
+
+    // Lấy lịch làm việc trống trong 7 ngày tiếp theo của bác sĩ theo giờ và id bác sĩ
     public Map<String, List<Schedule>> findFreeScheduleByVeterianId(Long veterianId) {
         Map<Date, List<DoctorsSchedules>> veterianSchedules = findNextSevenDayScheduleByVeterianId(veterianId);
         Map<String, List<Schedule>> freeSchedules = new HashMap<>();
@@ -79,7 +121,6 @@ public class ScheduleService {
             Date date = entry.getKey();
             List<DoctorsSchedules> schedules = entry.getValue();
             List<Schedule> scheduleRequests = new ArrayList<>(); // Cái này là lịch theo ngày nà
-
 
             for (DoctorsSchedules schedule : schedules) {
                 boolean isMorning = schedule.getStartTime().before(NOON);

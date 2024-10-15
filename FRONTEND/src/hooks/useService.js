@@ -1,7 +1,7 @@
 // useService.js
 import { useState, useEffect } from 'react';
-import {getDistrict, getService, ServiceBookingData} from "../services/apiService.js"
-import {VeterianList} from "../services/apiVeterian.js";
+import {getDistrict, ServiceList, ServiceBookingData} from "../services/apiService.js"
+import {VeterianList, VeterianScheduleHome} from "../services/apiVeterian.js";
 
 
 export const useServiceBookingData = () => {
@@ -87,7 +87,7 @@ export const useService = () =>{
         const fetchService = async () =>{
             try{
                 setServiceLoading(true);
-                const data = await getService();
+                const data = await ServiceList();
                 setService(data);
             } catch (err){
                 setServiceError("Lỗi khi lấy dữ liệu dịch vụ");
@@ -102,4 +102,29 @@ export const useService = () =>{
     return{service,serviceLoading,serviceError};
 
 };
+export const useVeterianScheduleHome =() => {
+    const [veterianScheduleHome, setveterianScheduleHome] = useState('');
+    const [veterianScheduleHomeLoading, setveterianScheduleHomeLoading] = useState(true);
+    const [veterianScheduleHomeError, setveterianScheduleHomeError] = useState(null);
+
+    useEffect(() => {
+        const fetchHomeSchedule = async () =>{
+            try{
+                setveterianScheduleHomeLoading(true);
+                const data = await VeterianScheduleHome;
+                setveterianScheduleHome(data);
+            } catch (err){
+                setveterianScheduleHomeError("Lỗi khi lấy dữ liệu dịch vụ");
+                console.error(err);
+            } finally {
+                setveterianScheduleHomeLoading(false);
+            }
+        }
+        fetchHomeSchedule();
+    }, []);
+
+    return{veterianScheduleHome,veterianScheduleHomeLoading,veterianScheduleHomeError};
+
+}
+
 

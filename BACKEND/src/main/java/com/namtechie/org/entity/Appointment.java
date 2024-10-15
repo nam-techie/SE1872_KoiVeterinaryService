@@ -17,21 +17,25 @@ public class Appointment {
     @ManyToOne
     @JoinColumn(name = "customers_id", nullable = false)
     @JsonBackReference
+    @JsonIgnore
     private Customers customers;
 
     @ManyToOne
     @JoinColumn(name = "doctor_id", nullable = false)
     @JsonBackReference
+    @JsonIgnore
     private Doctor doctor;
 
     @ManyToOne
     @JoinColumn(name = "service_type_id", nullable = false)
     @JsonBackReference
+    @JsonIgnore
     private ServiceType serviceType;
 
     @ManyToOne
     @JoinColumn(name = "zone_id")
     @JsonBackReference
+    @JsonIgnore
     private Zone zone;
 
     //Quan he hai chieu voi appointmentdetail

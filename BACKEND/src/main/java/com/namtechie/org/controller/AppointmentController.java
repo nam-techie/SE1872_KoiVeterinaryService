@@ -13,6 +13,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Date;
+import java.sql.Time;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Map;
 
@@ -37,6 +40,9 @@ public class AppointmentController {
     @Autowired
     DoctorService doctorService;
 
+    @Autowired
+    AppointmentService appointmentService;
+
     @GetMapping(value = "/getFreeScheduleByDoctorId", produces = "application/json")
     public ResponseEntity<Map<String, List<Schedule>>> getFreeScheduleByDoctorId(@Valid @RequestHeader("AuthenticationToken") String authorizationHeader, @RequestParam long doctorId) {
         String token = tokenService.getToken(authorizationHeader);
@@ -44,6 +50,20 @@ public class AppointmentController {
             return ResponseEntity.ok(scheduleService.findFreeScheduleByVeterianId(doctorId));
         }
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+    }
+
+    @GetMapping(value = "/getFreeScheduleWithTime", produces = "application/json")
+    public ResponseEntity<Map<String, List<Schedule>>> getFreeScheduleWithTime(@Valid @RequestHeader("AuthenticationToken") String authorizationHeader) {
+        String token = tokenService.getToken(authorizationHeader);
+        if (tokenService.getAccountByToken(token) != null) {
+            return ResponseEntity.ok(scheduleService.findFreeSchedule());
+        }
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+    }
+
+    @GetMapping(value = "/testFreeScheduleWithTime", produces = "application/json")
+    public ResponseEntity testFreeScheduleWithTime() {
+        return ResponseEntity.ok(appointmentService.findAppointmentByDoctorIdAndBookingDateAndBookingTime((long)1, Date.valueOf("2024-10-16"), Time.valueOf("14:00:00")));
     }
 
     @GetMapping(value = "/getFreeSchedule", produces = "application/json")
