@@ -1,4 +1,4 @@
-import { useForgotPassword } from '../hooks/useForgotPassword.js';
+import { useForgotPassword } from '../hooks/useResetPassword.js';
 import '../styles/ForgotPassword.css';
 import { useNavigate } from 'react-router-dom';
 

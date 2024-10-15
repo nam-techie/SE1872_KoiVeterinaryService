@@ -14,6 +14,8 @@ import ForgotPassword from "./public_pages/ForgotPassword.jsx";
 import BookingServiceHistory from "./public_pages/BookingServiceHistory.jsx";
 import VerifyOTP from './public_pages/VerifyOTP.jsx';
 import ResetPassword from "./public_pages/ResetPassword.jsx";
+import Profile from "./public_pages/Profile.jsx";
+
 
 function App() {
     return (
@@ -35,6 +37,7 @@ function App() {
                         <Route path="/booking-service-history" element={<BookingServiceHistory/>}/>
                         <Route path="/verify-otp" element={<VerifyOTP />} />
                         <Route path="/reset-password" element={<ResetPassword/>}/>
+                        <Route path="/profile" element={<Profile/>}/>
                     </Routes>
                     <ContactButton/>
                 </Layout>

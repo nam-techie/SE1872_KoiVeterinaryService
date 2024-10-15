@@ -15,7 +15,7 @@ export const ServiceList = async () => {
 
 export  const  ServiceBookingData  = async () => {
     try{
-        //const response = await axios('/api/servicesBookingData');
+        //const response = await axios('http://localhost:8080/api/servicesBookingData');
         const response = await axios('serviceBookingData.json');
         return response.data;
     } catch (error) {
@@ -32,6 +32,16 @@ export  const  getDistrict = async () => {
         return response.data;
     } catch (error) {
         console.error('Error fetching district data:', error);
+        return [];
+    }
+}
+
+export const  FeedbackService = async () =>{
+    try{
+        const reponse = await axios.get("feedback_service.json");
+        return reponse.data;
+    }catch (error){
+        console.error("'Error fetching district data:", error);
         return [];
     }
 }

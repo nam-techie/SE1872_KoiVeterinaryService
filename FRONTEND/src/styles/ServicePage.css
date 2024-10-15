@@ -1,5 +1,5 @@
 .service-container {
-    padding-top: 70px;
+    padding-top: 30px;
     display: flex;
     flex-direction: column; /* Chia thành các hàng */
     margin: 0 50px; /* Thêm margin hai bên */
