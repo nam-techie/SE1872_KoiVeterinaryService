@@ -1,18 +1,18 @@
 [
   {
-    "id": "online-consultation",
+    "id": "1",
     "name": "Tư Vấn Trực Tuyến"
   },
   {
-    "id": "home-survey",
+    "id": "2",
     "name": "Khảo Sát Tại Nhà"
   },
   {
-    "id": "center-appointment",
+    "id": "3",
     "name": "Đặt lịch Khám Tại Trung Tâm"
   },
   {
-    "id": "home-treatment",
+    "id": "4",
     "name": "Điều Trị Tại Nhà"
   }
 ]

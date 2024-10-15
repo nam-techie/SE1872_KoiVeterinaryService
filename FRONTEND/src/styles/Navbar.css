@@ -13,6 +13,7 @@
   font-family: Arial, sans-serif;
   z-index: 1001;
   box-sizing: border-box; /* Đảm bảo padding không làm tăng kích thước */
+
 }
 
 .welcome-tittle {

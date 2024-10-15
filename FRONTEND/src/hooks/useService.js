@@ -31,27 +31,27 @@ export const useServiceBookingData = () => {
 
 export const useVeterianList = () => {
     const [doctors, setDoctors] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
+    const [doctorLoading, setDoctorLoading] = useState(true);
+    const [doctorError, setDoctorError] = useState(null);
 
     useEffect(() => {
         const fetchDoctors = async () => {
             try {
-                setLoading(true);
+                setDoctorLoading(true);
                 const data = await VeterianList(); // Gọi hàm VeterianList để lấy dữ liệu
                 setDoctors(data); // Đặt dữ liệu vào state
             } catch (err) {
-                setError("Đã xảy ra lỗi khi lấy dữ liệu bác sĩ.");
+                setDoctorError("Đã xảy ra lỗi khi lấy dữ liệu bác sĩ.");
                 console.error(err);
             } finally {
-                setLoading(false);
+                setDoctorLoading(false);
             }
         };
 
         fetchDoctors();
     }, []);
 
-    return { doctors, loading, error };
+    return { doctors, doctorLoading, doctorError };
 };
 
 export const useDistrictList = () => {

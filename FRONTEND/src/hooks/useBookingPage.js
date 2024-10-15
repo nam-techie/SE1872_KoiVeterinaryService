@@ -1,57 +1,114 @@
 import { useState, useEffect } from 'react';
-import { VeterianScheduleCenter, VeterianScheduleHome } from "../services/apiVeterian.js";
+import { VeterianScheduleHome, VeterianScheduleCenter } from '../services/apiVeterian.js'; // Các API để lấy dữ liệu thời gian
 
-const useBookingPage = () => {
-    const [serviceType, setServiceType] = useState('onlineConsultation');
-    const [phoneNumber, setPhoneNumber] = useState('');
-    const [description, setDescription] = useState('');
-    const [selectedDoctor, setSelectedDoctor] = useState(null); // ID của bác sĩ
-    const [availableTimes, setAvailableTimes] = useState([]);
-    const [selectedDate, setSelectedDate] = useState('');
-    const [selectedTime, setSelectedTime] = useState('');
-    const [detailedAddress, setDetailedAddress] = useState(''); // Địa chỉ chi tiết
-    const [dateOptions, setDateOptions] = useState([]); // Danh sách các ngày khả dụng
+export default function useBookingPage() {
+    const [serviceType, setServiceType] = useState('');  // Loại dịch vụ
+    const [phoneNumber, setPhoneNumber] = useState('');  // Số điện thoại
+    const [description, setDescription] = useState('');  // Mô tả
+    const [selectedDate, setSelectedDate] = useState('');  // Ngày đã chọn
+    const [selectedTime, setSelectedTime] = useState('');  // Giờ đã chọn
+    const [detailedAddress, setDetailedAddress] = useState('');  // Địa chỉ chi tiết
+    const [selectedDistrict, setSelectedDistrict] = useState('');  // Quận/Huyện
+    const [selectedDoctor, setSelectedDoctor] = useState('');  // Bác sĩ đã chọn
+    const [availableTimes, setAvailableTimes] = useState([]);  // Danh sách giờ khả dụng
+    const [dateOptions, setDateOptions] = useState([]);  // Danh sách ngày khả dụng
 
-    // Lấy giờ có sẵn dựa trên ngày và dịch vụ được chọn
+    // Hàm sắp xếp ngày theo thứ tự tăng dần
+    const sortDates = (dates) => {
+        return dates.sort((a, b) => new Date(a) - new Date(b));  // Sắp xếp ngày theo thứ tự tăng dần
+    };
+
+    // Gọi API lấy danh sách ngày và giờ khả dụng cho dịch vụ tại nhà
+    const fetchHomeServiceTimes = async () => {
+        try {
+            const data = await VeterianScheduleHome();
+
+            // Lọc các ngày có lịch rảnh
+            let filteredDates = Object.keys(data).filter((date) => {
+                return data[date].some(slot => slot.available);
+            });
+
+            // Sắp xếp ngày theo thứ tự tăng dần
+            filteredDates = sortDates(filteredDates);
+
+            // Cập nhật danh sách ngày khả dụng
+            setDateOptions(filteredDates);
+
+            // Nếu đã chọn ngày, lấy các giờ có sẵn cho ngày đó
+            const availableTimesData = data[selectedDate]?.filter(time => time.available) || [];
+            setAvailableTimes(availableTimesData);
+
+            console.log('Available Times for Home Service:', availableTimesData);
+        } catch (error) {
+            console.error('Error fetching home service times:', error);
+        }
+    };
+
+    // Gọi API lấy danh sách ngày và giờ khả dụng cho dịch vụ tại trung tâm
+    const fetchCenterServiceTimes = async () => {
+        try {
+            const data = await VeterianScheduleCenter(selectedDoctor);
+
+            // Lưu toàn bộ object ngày và giờ vào availableTimes
+            const availableTimesData = data[selectedDate]?.filter(time => time.available) || [];
+            setAvailableTimes(availableTimesData);
+
+            // Lấy danh sách ngày từ dữ liệu trả về và sắp xếp
+            let dateList = Object.keys(data);
+            dateList = sortDates(dateList);
+
+            // Cập nhật danh sách ngày
+            setDateOptions(dateList);
+
+            console.log('Available Times for Center Service:', availableTimesData);
+        } catch (error) {
+            console.error('Error fetching center service times:', error);
+        }
+    };
+
     useEffect(() => {
         const fetchAvailableTimes = async () => {
-            let availableTimesData = [];
-            if (serviceType === 'homeSurvey' || serviceType === 'homeTreatment') {
-                const data = await VeterianScheduleHome();
-                const filteredDates = Object.keys(data).filter((date) => {
-                    // Loại bỏ ngày trùng
-                    return data[date].some(slot => slot.available);
-                });
-                setDateOptions(filteredDates);
-                availableTimesData = data[selectedDate]?.filter(time => time.available) || [];
-            } else if (serviceType === 'centerTreatment' && selectedDoctor && selectedDate) {
-                const data = await VeterianScheduleCenter(selectedDoctor); // Truyền doctorId
-                const filteredTimes = data[selectedDate]?.filter(time => time.available) || [];
-                availableTimesData = removeOverlappingTimes(filteredTimes);
+            if (serviceType === '2' || serviceType === '4') { // Dịch vụ tại nhà
+                await fetchHomeServiceTimes();
+            } else if (serviceType === '3' && selectedDoctor) { // Dịch vụ trung tâm
+                await fetchCenterServiceTimes();
             }
-            setAvailableTimes(availableTimesData);
+
+            console.log('Selected Date:', selectedDate);
+            console.log('Available Times:', availableTimes);
+            console.log('Date Options:', dateOptions);
         };
 
-        if (selectedDate || (serviceType === 'centerTreatment' && selectedDoctor)) {
+        // Chỉ gọi API khi đã chọn dịch vụ hoặc bác sĩ
+        if ((serviceType === '2' || serviceType === '4') || (serviceType === '3' && selectedDoctor)) {
             fetchAvailableTimes();
         }
     }, [selectedDate, selectedDoctor, serviceType]);
 
-    // Xử lý chọn bác sĩ (cập nhật ID của bác sĩ)
+    // Xử lý chọn bác sĩ (chỉ cho dịch vụ trung tâm)
     const handleDoctorSelect = (doctorId) => {
-        setSelectedDoctor(doctorId); // Lưu doctorId vào state
+        setSelectedDoctor(doctorId);  // Lưu doctorId vào state
+        setSelectedDate('');          // Reset selected date
+        setAvailableTimes([]);        // Reset available times
+        setDateOptions([]);           // Reset date options
     };
 
-    // Hàm loại bỏ các khoảng thời gian trùng lặp
-    const removeOverlappingTimes = (timeSlots) => {
-        const uniqueTimes = [];
-        timeSlots.forEach(slot => {
-            const exists = uniqueTimes.some(ut => ut.startTime === slot.startTime && ut.endTime === slot.endTime);
-            if (!exists) {
-                uniqueTimes.push(slot);
-            }
-        });
-        return uniqueTimes;
+    // Xử lý submit
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        const bookingData = {
+            serviceType,
+            phoneNumber,
+            description,
+            selectedDate,
+            selectedTime,
+            detailedAddress,
+            selectedDistrict,
+            selectedDoctor,
+        };
+
+        // Xử lý gửi dữ liệu booking đến backend
+        console.log('Booking data submitted:', bookingData);
     };
 
     return {
@@ -61,18 +118,18 @@ const useBookingPage = () => {
         setPhoneNumber,
         description,
         setDescription,
-        selectedDoctor,
-        setSelectedDoctor,
-        handleDoctorSelect,
-        availableTimes,
         selectedDate,
         setSelectedDate,
         selectedTime,
         setSelectedTime,
         detailedAddress,
         setDetailedAddress,
-        dateOptions, // Ngày khả dụng cho dịch vụ tại nhà
+        selectedDistrict,
+        setSelectedDistrict,
+        selectedDoctor,
+        availableTimes,
+        dateOptions,
+        handleDoctorSelect,
+        handleSubmit,
     };
-};
-
-export default useBookingPage;
+}
