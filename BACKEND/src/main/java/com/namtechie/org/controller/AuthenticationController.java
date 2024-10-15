@@ -1,10 +1,10 @@
 package com.namtechie.org.controller;
 
 import com.namtechie.org.entity.Account;
-import com.namtechie.org.entity.Customers;
 import com.namtechie.org.model.UpdateDoctorLogin;
 import com.namtechie.org.model.request.*;
 import com.namtechie.org.model.response.AccountResponse;
+import com.namtechie.org.model.response.InfoCustomerResponse;
 import com.namtechie.org.service.AuthenticationService;
 import com.namtechie.org.service.CustomerService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 
 
 @RequestMapping("/api")
@@ -117,8 +116,8 @@ public class AuthenticationController {
 
     @GetMapping("/getInfoCustomer")
     public ResponseEntity getInfoCustomer() {
-        Customers curruntCutomer = customerService.getCustomerById();
-        return ResponseEntity.ok(curruntCutomer);
+        InfoCustomerResponse customerInfo = customerService.getInfoCustomer();
+        return ResponseEntity.ok(customerInfo);
     }
 
     @PutMapping("/updateInfoCustomer")

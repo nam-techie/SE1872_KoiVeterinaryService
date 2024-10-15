@@ -16,6 +16,9 @@ import VerifyOTP from './public_pages/VerifyOTP.jsx';
 import ResetPassword from "./public_pages/ResetPassword.jsx";
 import Profile from "./public_pages/Profile.jsx";
 
+import AdminDashboard from './public_pages/dashboard/Dashboard.jsx';
+
+
 
 function App() {
     return (
@@ -38,6 +41,7 @@ function App() {
                         <Route path="/verify-otp" element={<VerifyOTP />} />
                         <Route path="/reset-password" element={<ResetPassword/>}/>
                         <Route path="/profile" element={<Profile/>}/>
+                        <Route path="/dashboard" element={<AdminDashboard/>} />
                     </Routes>
                     <ContactButton/>
                 </Layout>

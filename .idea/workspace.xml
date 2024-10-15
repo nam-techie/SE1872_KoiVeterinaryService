@@ -4,11 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d2cec660-9bd4-4c6d-9559-8cd458d3cf90" name="Changes" comment="update before merge ricon branch">
+    <list default="true" id="d2cec660-9bd4-4c6d-9559-8cd458d3cf90" name="Changes" comment="update view username when login success">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/config/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/config/SecurityConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/controller/AuthenticationController.java" beforeDir="false" afterPath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/controller/AuthenticationController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/service/CustomerService.java" beforeDir="false" afterPath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/service/CustomerService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FRONTEND/src/App.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/FRONTEND/src/App.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/FRONTEND/src/hooks/useLogin.js" beforeDir="false" afterPath="$PROJECT_DIR$/FRONTEND/src/hooks/useLogin.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FRONTEND/src/styles/Navbar.css" beforeDir="false" afterPath="$PROJECT_DIR$/FRONTEND/src/styles/Navbar.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FRONTEND/src/public_pages/Profile.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/FRONTEND/src/public_pages/Profile.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -21,8 +23,8 @@
         <option value="Exception" />
         <option value="JavaScript File" />
         <option value="TypeScript File" />
-        <option value="JSX File" />
         <option value="CSS File" />
+        <option value="JSX File" />
         <option value="Class" />
       </list>
     </option>
@@ -96,6 +98,9 @@
       <recent name="C:\Users\Phuong Nam\Desktop\SWP391\Group03_SE1872_KoiVeterinaryServiceCenter\.idea" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Phuong Nam\Desktop\SWP391\DEMO\Group03_SE1872_KoiVeterinaryServiceCenter\FRONTEND\src" />
+      <recent name="C:\Users\Phuong Nam\Desktop\SWP391\DEMO\Group03_SE1872_KoiVeterinaryServiceCenter\FRONTEND\src\styles" />
+      <recent name="C:\Users\Phuong Nam\Desktop\SWP391\DEMO\Group03_SE1872_KoiVeterinaryServiceCenter\FRONTEND\src\public_pages\dashboard" />
       <recent name="C:\Users\Phuong Nam\Desktop\SWP391\Group03_SE1872_KoiVeterinaryServiceCenter\.idea" />
       <recent name="C:\Users\Phuong Nam\Desktop\SWP391\Group03_SE1872_KoiVeterinaryServiceCenter" />
     </key>
@@ -149,7 +154,15 @@
       <option name="project" value="LOCAL" />
       <updated>1728788339161</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="update view username when login success">
+      <option name="closed" value="true" />
+      <created>1728916092055</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1728916092055</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -159,6 +172,7 @@
     <MESSAGE value="push all because forgot" />
     <MESSAGE value="update" />
     <MESSAGE value="update before merge ricon branch" />
-    <option name="LAST_COMMIT_MESSAGE" value="update before merge ricon branch" />
+    <MESSAGE value="update view username when login success" />
+    <option name="LAST_COMMIT_MESSAGE" value="update view username when login success" />
   </component>
 </project>

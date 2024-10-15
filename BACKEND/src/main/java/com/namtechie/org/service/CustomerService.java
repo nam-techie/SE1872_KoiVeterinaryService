@@ -3,6 +3,7 @@ package com.namtechie.org.service;
 import com.namtechie.org.entity.Account;
 import com.namtechie.org.entity.Customers;
 import com.namtechie.org.model.request.CustomerInfoRequest;
+import com.namtechie.org.model.response.InfoCustomerResponse;
 import com.namtechie.org.repository.CustomerRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,10 +22,38 @@ public class CustomerService {
     @Autowired
     ModelMapper modelMapper;
 
-    public Customers getCustomerById() {
-        Account curruntAccount = authenticationService.getCurrentAccount();
-        return customerRepository.findByAccountId(curruntAccount.getId());
+    public InfoCustomerResponse getInfoCustomer() {
+        try {
+            // Lấy tài khoản hiện tại
+            Account currentAccount = authenticationService.getCurrentAccount();
+
+            // Tìm khách hàng dựa trên tài khoản
+            Customers currentCustomer = customerRepository.findByAccountId(currentAccount.getId());
+
+            // Kiểm tra nếu không tìm thấy khách hàng
+            if (currentCustomer == null) {
+                throw new RuntimeException("Không tìm thấy thông tin khách hàng cho tài khoản này.");
+            }
+
+            InfoCustomerResponse response = new InfoCustomerResponse();
+            response.setUsername(currentAccount.getUsername());
+            response.setEmail(currentAccount.getEmail());
+            response.setPhone(currentCustomer.getPhone());
+            response.setFullName(currentCustomer.getFullname());
+            response.setAddress(currentCustomer.getAddress());
+
+            return response;
+        } catch (RuntimeException e) {
+            // Bắt lỗi RuntimeException và ném lại với thông tin lỗi rõ ràng hơn
+            e.printStackTrace();
+            throw new RuntimeException("Đã xảy ra lỗi trong quá trình lấy thông tin khách hàng: " + e.getMessage());
+        } catch (Exception e) {
+            // Bắt các lỗi khác và ném lỗi với mã 500 (Internal Server Error)
+            e.printStackTrace();
+            throw new RuntimeException("Lỗi hệ thống: " + e.getMessage());
+        }
     }
+
 
     public CustomerInfoRequest updateCustomerInfo(CustomerInfoRequest customerInfo) {
         try {
