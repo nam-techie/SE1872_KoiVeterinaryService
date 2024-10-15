@@ -54,7 +54,7 @@ export function TimeSelector({ selectedTime, setSelectedTime, availableTimes }) 
 export function DoctorSelector({ selectedDoctor, handleDoctorSelect, doctors }) {
     return (
         <div className="form-group">
-            <label>Chọn bác sĩ:</label>
+            <label>Chọn bác sĩ( không bắt buộc):</label>
             <select value={selectedDoctor} onChange={(e) => handleDoctorSelect(e.target.value)}>
                 <option value="">Không chọn</option>
                 {doctors && doctors.map((doctor) => (

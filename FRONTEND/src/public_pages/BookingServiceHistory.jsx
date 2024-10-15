@@ -1,6 +1,6 @@
 
 import { useServiceBookingData } from '../hooks/useService.js';
-import {BookingHistoryDataCard} from './Card.jsx';
+import {BookingHistoryDataCard} from '../components/Card.jsx';
 import '../styles/BookingServiceHistory.css';
 
 function BookingServiceHistory() {

@@ -6,7 +6,7 @@ import expert from "../assets/images/Expert Icon.png"
 import quality from "../assets/images/Quality Icon.jpg"
 import qanda from "../assets/images/Q&A.jpg"
 import {Link} from "react-router-dom";
-import {VeterianCard} from "./Card.jsx";
+import {VeterianCard} from "../components/Card.jsx";
 import {useVeterianList} from "../hooks/useService.js";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
