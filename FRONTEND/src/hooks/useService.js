@@ -1,6 +1,6 @@
 // useService.js
 import { useState, useEffect } from 'react';
-import {ServiceBookingData} from "../services/apiService.js"
+import {getDistrict, getService, ServiceBookingData} from "../services/apiService.js"
 import {VeterianList} from "../services/apiVeterian.js";
 
 
@@ -54,4 +54,52 @@ export const useVeterianList = () => {
     return { doctors, loading, error };
 };
 
+export const useDistrictList = () => {
+    const [districts, setDistricts] = useState([]);
+    const [districtsLoading, setDistrictsLoading] = useState(true);
+    const [districtsError, setDistrictsError] = useState(null);
+
+    useEffect(() => {
+        const fetchDistricts = async () => {
+            try {
+                setDistrictsLoading(true);
+                const data = await getDistrict(); // Gọi API để lấy danh sách quận/huyện
+                setDistricts(data); // Lưu danh sách vào state
+            } catch (err) {
+                setDistrictsError("Đã xảy ra lỗi khi lấy dữ liệu quận/huyện.");
+                console.error(err);
+            } finally {
+                setDistrictsLoading(false);
+            }
+        };
+
+        fetchDistricts();
+    }, []);
+
+    return { districts, districtsLoading, districtsError };
+};
+
+export const useService = () =>{
+    const[service,setService] = useState([]);
+    const [serviceLoading, setServiceLoading] = useState(true);
+    const [serviceError, setServiceError] = useState(null);
+    useEffect(() => {
+        const fetchService = async () =>{
+            try{
+                setServiceLoading(true);
+                const data = await getService();
+                setService(data);
+            } catch (err){
+                setServiceError("Lỗi khi lấy dữ liệu dịch vụ");
+                console.error(err);
+            } finally {
+                setServiceLoading(false);
+            }
+        }
+       fetchService();
+    }, []);
+
+    return{service,serviceLoading,serviceError};
+
+};
 

@@ -1,5 +1,7 @@
+import React from 'react';
 import useBookingPage from '../hooks/useBookingPage.js';
-import '../styles/BookingPage.css'; // Nhớ import file CSS này
+import {useDistrictList, useService} from '../hooks/useService.js'; // Hook để lấy danh sách dịch vụ
+import '../styles/BookingPage.css';
 
 export function BookingPage() {
     const {
@@ -15,105 +17,130 @@ export function BookingPage() {
         setSelectedDate,
         selectedTime,
         setSelectedTime,
-        districts,
-        selectedDistrict,
-        setSelectedDistrict,
         detailedAddress,
         setDetailedAddress,
-        veterians, // Danh sách bác sĩ
+        selectedDistrict,
+        setSelectedDistrict, // Quận/huyện được chọn
+        dateOptions, // Ngày khả dụng cho dịch vụ tại nhà
     } = useBookingPage();
 
+    const { service, serviceLoading, serviceError } = useService(); // Lấy danh sách dịch vụ từ hook
+    const {districts} = useDistrictList();
     return (
         <div className="appointment-form">
             <h1>Đặt lịch dịch vụ</h1>
 
+            {/* Xử lý trạng thái khi đang tải hoặc gặp lỗi */}
+            {serviceLoading && <p>Đang tải danh sách dịch vụ...</p>}
+            {serviceError && <p>{serviceError}</p>}
+
             {/* Chọn loại dịch vụ */}
-            <div className="form-group">
-                <label>Chọn loại dịch vụ:</label>
-                <select value={serviceType} onChange={(e) => setServiceType(e.target.value)}>
-                    <option value="onlineConsultation">Tư vấn trực tuyến</option>
-                    <option value="homeSurvey">Khảo sát tại nhà</option>
-                    <option value="homeTreatment">Chữa bệnh tại nhà</option>
-                    <option value="centerTreatment">Đặt lịch tại trung tâm</option>
-                </select>
-            </div>
-
-            {/* Nhập số điện thoại */}
-            <div className="form-group">
-                <label>Số điện thoại:</label>
-                <input type="text" value={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)} />
-            </div>
-
-            {/* Miêu tả vấn đề (nếu không phải dịch vụ tại trung tâm) */}
-            {(serviceType !== 'centerTreatment') && (
+            {!serviceLoading && !serviceError && (
                 <div className="form-group">
-                    <label>Miêu tả vấn đề:</label>
-                    <textarea value={description} onChange={(e) => setDescription(e.target.value)} />
-                </div>
-            )}
-
-            {/* Chọn bác sĩ cho dịch vụ tại trung tâm */}
-            {serviceType === 'centerTreatment' && (
-                <div className="form-group">
-                    <label>Chọn bác sĩ:</label>
-                    <select onChange={(e) => handleDoctorSelect(e.target.value)}>
-                        <option value="">Không chọn</option>
-                        {veterians.map((doctor) => (
-                            <option key={doctor.id} value={doctor.id}>
-                                {doctor.name}
+                    <label>Chọn loại dịch vụ:</label>
+                    <select value={serviceType} onChange={(e) => setServiceType(e.target.value)}>
+                        <option value="">Chọn dịch vụ</option>
+                        {service && service.length > 0 && service.map((s) => (
+                            <option key={s.id} value={s.id}>
+                                {s.name}
                             </option>
                         ))}
                     </select>
                 </div>
             )}
 
-            {/* Chọn quận/huyện cho dịch vụ tại nhà */}
-            {(serviceType === 'homeSurvey' || serviceType === 'homeTreatment') && (
-                <div className="form-group">
-                    <label>Chọn quận/huyện:</label>
-                    <select value={selectedDistrict} onChange={(e) => setSelectedDistrict(e.target.value)}>
-                        <option value="">Chọn quận/huyện</option>
-                        {Array.isArray(districts) && districts.length > 0 ? (
-                            districts.map((district) => (
-                                <option key={district.id} value={district.name}>
-                                    {district.name}
-                                </option>
-                            ))
-                        ) : (
-                            <option value="" disabled>Không có quận/huyện khả dụng</option>
-                        )}
-                    </select>
-                </div>
+            {/* Nhập số điện thoại (dành cho tất cả dịch vụ) */}
+            <div className="form-group">
+                <label>Số điện thoại:</label>
+                <input type="text" value={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)} />
+            </div>
+
+            {/* Miêu tả nội dung (dành cho tất cả dịch vụ) */}
+            <div className="form-group">
+                <label>Miêu tả vấn đề:</label>
+                <textarea value={description} onChange={(e) => setDescription(e.target.value)} />
+            </div>
+
+            {/* Chọn ngày và giờ cho khảo sát tại nhà và chữa bệnh tại nhà */}
+            {(serviceType === 'home-survey' || serviceType === 'home-treatment') && (
+                <>
+                    <div className="form-group">
+                        <label>Chọn ngày:</label>
+                        <select value={selectedDate} onChange={(e) => setSelectedDate(e.target.value)}>
+                            <option value="">Chọn ngày</option>
+                            {dateOptions.map((date) => (
+                                <option key={date} value={date}>{date}</option>
+                            ))}
+                        </select>
+                    </div>
+
+                    {availableTimes.length > 0 && (
+                        <div className="form-group">
+                            <label>Chọn giờ:</label>
+                            <select value={selectedTime} onChange={(e) => setSelectedTime(e.target.value)}>
+                                {availableTimes.map((time, index) => (
+                                    <option key={index} value={`${time.startTime}-${time.endTime}`}>
+                                        {time.startTime} - {time.endTime}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+                    )}
+                </>
             )}
 
-            {/* Nhập địa chỉ chi tiết */}
-            {(serviceType === 'homeSurvey' || serviceType === 'homeTreatment') && (
+            {/* Nhập địa chỉ chi tiết cho dịch vụ tại nhà */}
+            {(serviceType === 'home-survey' || serviceType === 'home-treatment') && (
                 <div className="form-group">
                     <label>Địa chỉ chi tiết:</label>
                     <input type="text" value={detailedAddress} onChange={(e) => setDetailedAddress(e.target.value)} />
                 </div>
             )}
 
-            {/* Chọn ngày (không hiển thị cho tư vấn trực tuyến) */}
-            {serviceType !== 'onlineConsultation' && (
+            {/* Chọn quận/huyện cho dịch vụ tại nhà */}
+            {(serviceType === 'home-survey' || serviceType === 'home-treatment') && (
                 <div className="form-group">
-                    <label>Chọn ngày:</label>
-                    <input type="date" value={selectedDate} onChange={(e) => setSelectedDate(e.target.value)} />
-                </div>
-            )}
-
-            {/* Chọn giờ (không hiển thị cho tư vấn trực tuyến) */}
-            {serviceType !== 'onlineConsultation' && availableTimes.length > 0 && (
-                <div className="form-group">
-                    <label>Chọn giờ:</label>
-                    <select value={selectedTime} onChange={(e) => setSelectedTime(e.target.value)}>
-                        {availableTimes.map((time, index) => (
-                            <option key={index} value={`${time.startTime}-${time.endTime}`}>
-                                {time.startTime} - {time.endTime}
+                    <label>Chọn quận/huyện:</label>
+                    <select value={selectedDistrict} onChange={(e) => setSelectedDistrict(e.target.value)}>
+                        <option value="">Chọn quận/huyện</option>
+                        {districts.map((district) => (
+                            <option key={district.id} value={district.name}>
+                                {district.name}
                             </option>
                         ))}
                     </select>
                 </div>
+            )}
+
+            {/* Chọn bác sĩ và giờ cho dịch vụ điều trị tại trung tâm */}
+            {serviceType === 'center-appointment' && (
+                <>
+                    <div className="form-group">
+                        <label>Chọn bác sĩ:</label>
+                        <select onChange={(e) => handleDoctorSelect(e.target.value)}>
+                            <option value="">Không chọn</option>
+                            {/* Giả sử bạn có danh sách bác sĩ */}
+                            {/* {doctors.map((doctor) => ( */}
+                            {/* <option key={doctor.id} value={doctor.id}> */}
+                            {/* {doctor.name} */}
+                            {/* </option> */}
+                            {/* ))} */}
+                        </select>
+                    </div>
+
+                    {availableTimes.length > 0 && (
+                        <div className="form-group">
+                            <label>Chọn giờ:</label>
+                            <select value={selectedTime} onChange={(e) => setSelectedTime(e.target.value)}>
+                                {availableTimes.map((time, index) => (
+                                    <option key={index} value={`${time.startTime}-${time.endTime}`}>
+                                        {time.startTime} - {time.endTime}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+                    )}
+                </>
             )}
 
             {/* Nút xác nhận */}

@@ -1,6 +1,6 @@
 import "../services/axiosInstance.js"
 import axios from "axios";
-import axiosInstance from "./axiosInstance.js";
+// import axiosInstance from "./axiosInstance.js";
 
 export const getService = async () => {
     try {
