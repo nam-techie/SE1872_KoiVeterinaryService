@@ -1,7 +1,14 @@
 import useBookingPage from '../hooks/useBookingPage.js';
-import { useDistrictList, useService, useVeterianList } from '../hooks/useService.js';
-import {ServiceTypeSelector, PhoneInput, DescriptionInput,DateSelector,TimeSelector,DistrictSelector } from "./BookingPageDetail.jsx";
-import {DetailedAddressInput, DoctorSelector,SubmitButton} from "./BookingPageDetail.jsx";
+import {useDistrictList, useService, useVeterianList} from '../hooks/useService.js';
+import {
+    ServiceTypeSelector,
+    PhoneInput,
+    DescriptionInput,
+    DateSelector,
+    TimeSelector,
+    DistrictSelector
+} from "./BookingPageDetail.jsx";
+import {DetailedAddressInput, DoctorSelector, SubmitButton} from "./BookingPageDetail.jsx";
 import '../styles/BookingPage.css';
 
 export function BookingPage() {
@@ -27,9 +34,9 @@ export function BookingPage() {
         handleDoctorSelect,
     } = useBookingPage();
 
-    const { service, serviceLoading, serviceError } = useService();
-    const { districts, districtsError, districtsLoading } = useDistrictList();
-    const { doctors, doctorLoading, doctorError } = useVeterianList();
+    const {service, serviceLoading, serviceError} = useService();
+    const {districts, districtsError, districtsLoading} = useDistrictList();
+    const {doctors, doctorLoading, doctorError} = useVeterianList();
 
     return (
         <div className="appointment-form">
@@ -38,40 +45,59 @@ export function BookingPage() {
             {serviceLoading && <p>Đang tải danh sách dịch vụ...</p>}
             {serviceError && <p>{serviceError}</p>}
 
-            <ServiceTypeSelector serviceType={serviceType} setServiceType={setServiceType} service={service} />
-            <PhoneInput phoneNumber={phoneNumber} setPhoneNumber={setPhoneNumber} />
-            <DescriptionInput description={description} setDescription={setDescription} />
-
-            {(serviceType === '2' || serviceType === '4') && (
+            <ServiceTypeSelector serviceType={serviceType} setServiceType={setServiceType} service={service}/>
+            {(serviceType !== '') && (
                 <>
-                    <DateSelector selectedDate={selectedDate} setSelectedDate={setSelectedDate} dateOptions={dateOptions} />
-                    <TimeSelector selectedTime={selectedTime} setSelectedTime={setSelectedTime} availableTimes={availableTimes} />
-                    {!districtsLoading && !districtsError && (
-                        <DistrictSelector
-                            selectedDistrict={selectedDistrict}
-                            setSelectedDistrict={setSelectedDistrict}
-                            districts={districts}
-                        />
+                    <PhoneInput phoneNumber={phoneNumber} setPhoneNumber={setPhoneNumber}/>
+                    <DescriptionInput description={description} setDescription={setDescription}/>
+
+                    {(serviceType === '2' || serviceType === '4') && (
+                        <>
+                            <DateSelector selectedDate={selectedDate} setSelectedDate={setSelectedDate}
+                                          dateOptions={dateOptions}/>
+                            <TimeSelector selectedTime={selectedTime} setSelectedTime={setSelectedTime}
+                                          availableTimes={availableTimes}/>
+                            {!districtsLoading && !districtsError && (
+                                <DistrictSelector
+                                    selectedDistrict={selectedDistrict}
+                                    setSelectedDistrict={setSelectedDistrict}
+                                    districts={districts}
+                                />
+                            )}
+                            <DetailedAddressInput detailedAddress={detailedAddress}
+                                                  setDetailedAddress={setDetailedAddress}/>
+                        </>
                     )}
-                    <DetailedAddressInput detailedAddress={detailedAddress} setDetailedAddress={setDetailedAddress} />
+
+                    {serviceType === '3' && (
+                        <>
+                            {!doctorLoading && !doctorError && (
+                                <>
+                                    <DoctorSelector
+                                        selectedDoctor={selectedDoctor}
+                                        handleDoctorSelect={handleDoctorSelect}
+                                        doctors={doctors}
+                                    />
+                                </>
+                            )}
+                            <DateSelector
+                                selectedDate={selectedDate}
+                                setSelectedDate={setSelectedDate}
+                                dateOptions={dateOptions}
+                            />
+                            <TimeSelector
+                                selectedTime={selectedTime}
+                                setSelectedTime={setSelectedTime}
+                                availableTimes={availableTimes}
+                            />
+                        </>
+                    )}
+
                 </>
             )}
 
-            {serviceType === '3' && (
-                <>
-                    {!doctorLoading && !doctorError && (
-                        <DoctorSelector
-                            selectedDoctor={selectedDoctor}
-                            handleDoctorSelect={handleDoctorSelect}
-                            doctors={doctors}
-                        />
-                    )}
-                    <DateSelector selectedDate={selectedDate} setSelectedDate={setSelectedDate} dateOptions={dateOptions} />
-                    <TimeSelector selectedTime={selectedTime} setSelectedTime={setSelectedTime} availableTimes={availableTimes} />
-                </>
-            )}
 
-            <SubmitButton handleSubmit={handleSubmit} />
+            <SubmitButton handleSubmit={handleSubmit}/>
         </div>
     );
 }

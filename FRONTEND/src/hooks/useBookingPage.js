@@ -1,5 +1,9 @@
 import { useState, useEffect } from 'react';
-import { VeterianScheduleHome, VeterianScheduleCenter } from '../services/apiVeterian.js'; // Các API để lấy dữ liệu thời gian
+import {
+    VeterianScheduleHome,
+    VeterianScheduleCenter,
+    VeterianScheduleCenterWithoutDoctor
+} from '../services/apiVeterian.js'; // Các API để lấy dữ liệu thời gian
 
 export default function useBookingPage() {
     const [serviceType, setServiceType] = useState('');  // Loại dịch vụ
@@ -9,7 +13,7 @@ export default function useBookingPage() {
     const [selectedTime, setSelectedTime] = useState('');  // Giờ đã chọn
     const [detailedAddress, setDetailedAddress] = useState('');  // Địa chỉ chi tiết
     const [selectedDistrict, setSelectedDistrict] = useState('');  // Quận/Huyện
-    const [selectedDoctor, setSelectedDoctor] = useState('');  // Bác sĩ đã chọn
+    const [selectedDoctor, setSelectedDoctor] = useState('dr0');  // Bác sĩ đã chọn
     const [availableTimes, setAvailableTimes] = useState([]);  // Danh sách giờ khả dụng
     const [dateOptions, setDateOptions] = useState([]);  // Danh sách ngày khả dụng
 
@@ -44,6 +48,27 @@ export default function useBookingPage() {
         }
     };
 
+    const fecthCenterServiceTimesWithoutSelectDoctor = async () => {
+        try {
+            const data = await VeterianScheduleCenterWithoutDoctor();
+
+            // Lưu toàn bộ object ngày và giờ vào availableTimes
+            const availableTimesData = data[selectedDate]?.filter(time => time.available) || [];
+            setAvailableTimes(availableTimesData);
+
+            // Lấy danh sách ngày từ dữ liệu trả về và sắp xếp
+            let dateList = Object.keys(data);
+            dateList = sortDates(dateList);
+
+            // Cập nhật danh sách ngày
+            setDateOptions(dateList);
+
+            console.log('Available Times for Center Service:', availableTimesData);
+        }catch (error) {
+            console.error('Error fetching center service times:', error);
+        }
+    }
+
     // Gọi API lấy danh sách ngày và giờ khả dụng cho dịch vụ tại trung tâm
     const fetchCenterServiceTimes = async () => {
         try {
@@ -70,8 +95,12 @@ export default function useBookingPage() {
         const fetchAvailableTimes = async () => {
             if (serviceType === '2' || serviceType === '4') { // Dịch vụ tại nhà
                 await fetchHomeServiceTimes();
-            } else if (serviceType === '3' && selectedDoctor) { // Dịch vụ trung tâm
-                await fetchCenterServiceTimes();
+            } else if (serviceType === '3') { // Dịch vụ trung tâm
+                if (selectedDoctor === 'dr0') {
+                    await fecthCenterServiceTimesWithoutSelectDoctor();
+                }else {
+                    await fetchCenterServiceTimes();
+                }
             }
 
             console.log('Selected Date:', selectedDate);

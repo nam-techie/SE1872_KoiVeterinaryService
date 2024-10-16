@@ -56,7 +56,7 @@ export function DoctorSelector({ selectedDoctor, handleDoctorSelect, doctors }) 
         <div className="form-group">
             <label>Chọn bác sĩ( không bắt buộc):</label>
             <select value={selectedDoctor} onChange={(e) => handleDoctorSelect(e.target.value)}>
-                <option value="">Không chọn</option>
+                <option value="dr0">Không chọn</option>
                 {doctors && doctors.map((doctor) => (
                     <option key={doctor.id} value={doctor.id}>
                         {doctor.fullname}
