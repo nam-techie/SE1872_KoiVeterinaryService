@@ -12,5 +12,5 @@ public interface VeterianRepository extends JpaRepository<Veterian, Long> {
 
     // Chưa hoàn thiện
     public List<Veterian> findAll();
-    Optional<Veterian> findById(Long id);
+    Veterian findById(long id);
 }

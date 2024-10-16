@@ -95,8 +95,8 @@ public class AppointmentController {
     }
 
     @GetMapping("/getVeterianAuto")
-    public ResponseEntity getVeterianAuto(@Param("BookingDate")Date bookingDate) {
-        Veterian veterian = appointmentService.findAvailableVeterian(bookingDate, Time.valueOf("13:00:00"));
+    public ResponseEntity getVeterianAuto(@Param("BookingDate")String bookingDate, @Param("BookingTime") String bookingTimeStr) {
+        Veterian veterian = appointmentService.findAvailableVeterian(bookingDate, bookingTimeStr);
         return ResponseEntity.ok(veterian);
     }
 

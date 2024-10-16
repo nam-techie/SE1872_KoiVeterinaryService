@@ -9,6 +9,7 @@ import java.sql.Date;
 import java.sql.Time;
 import java.sql.Timestamp;
 
+
 @Entity
 @Data
 public class AppointmentDetail {
