@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-unused-vars
 import React, { useState, useEffect } from 'react';
 import '../styles/UpdateProfile.css'; // Sử dụng file CSS mới
 import { useCustomerInfo } from '../hooks/useCustomerInfo';
@@ -56,6 +57,7 @@ function UpdateProfile() {
             setTimeout(() => {
                 navigate('/profile'); // Chuyển hướng về trang profile sau khi cập nhật thành công
             }, 2000);
+            // eslint-disable-next-line no-unused-vars
         } catch (err) {
             setUpdateError('Cập nhật thông tin thất bại. Vui lòng thử lại.');
         }

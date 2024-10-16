@@ -78,7 +78,7 @@ function Profile() {
 
                 {/* Nút cập nhật thông tin */}
                 <button className="update-button" onClick={handleUpdateClick}>
-                    Cập nhật thông tin
+                    Chỉnh sửa thông tin
                 </button>
             </div>
         </div>
