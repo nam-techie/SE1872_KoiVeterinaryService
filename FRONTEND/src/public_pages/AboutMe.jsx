@@ -20,7 +20,7 @@ function AboutMe() {
                             may mắn, thịnh vượng và vẻ đẹp hoàn mỹ trong văn hóa Á Đông.
                         </p>
 
-                        <h3>Ý nghĩa của tên gọi "KoiKung"</h3>
+                        <h3>Ý nghĩa của tên gọi KoiKung</h3>
                         <p>
                             “Koi” tượng trưng cho cá Koi – loài cá được yêu thích bởi sự đa dạng màu sắc, vẻ đẹp thanh
                             thoát và ý nghĩa phong thủy sâu sắc.
@@ -41,7 +41,7 @@ function AboutMe() {
 
                     <div className="right-content">
                         <img src={image} alt="KoiKung Logo" className="koi-logo"/>
-                        <p className="slogan">"Tận tâm, chuyên nghiệp – Tạo nên sự khác biệt"</p>
+                        <p className="slogan">Tận tâm, chuyên nghiệp – Tạo nên sự khác biệt</p>
                     </div>
                 </div>
             </div>
