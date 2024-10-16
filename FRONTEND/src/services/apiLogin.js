@@ -1,5 +1,5 @@
 import axios from 'axios';
-import axiosInstance from "./axiosInstance.js";
+// import apiRequest from "./apiRequest.js";
 
 export const login = async (username, password) => {
     try {
@@ -27,13 +27,3 @@ export const login = async (username, password) => {
         }
     }
 };
-
-export const getCustomerInf = async () =>{
-    try{
-        const response = await axiosInstance("http://localhost:8080/api/userInf");
-        return response.data;
-    }catch (error){
-        console.error("Error fetching data: ", error);
-        return [];
-    }
-}

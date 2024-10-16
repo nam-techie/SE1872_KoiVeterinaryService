@@ -2,14 +2,12 @@
 .terms-container {
     padding: 50px;
     max-width: 960px;
-    margin-top: 100px;
-    margin-bottom: 10px;
-    margin-left: auto;
-    margin-right: auto;
+    margin: 100px auto 10px auto;
     font-family: 'Arial', sans-serif;
     background-color: #fff;
     border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
 }
 
 /* Tiêu đề của trang */

@@ -1,18 +1,22 @@
 [
   {
-    "id": "online-consultation",
-    "name": "Tư Vấn Trực Tuyến"
+    "id": 1,
+    "name": "Tư Vấn Trực Tuyến",
+    "base_price": "50000"
   },
   {
-    "id": "home-survey",
-    "name": "Khảo Sát Tại Nhà"
+    "id": 2,
+    "name": "Khảo Sát Tại Nhà",
+    "base_price": "550000"
   },
   {
-    "id": "center-appointment",
-    "name": "Đặt lịch Khám Tại Trung Tâm"
+    "id": 3,
+    "name": "Đặt lịch Khám Tại Trung Tâm",
+    "base_price": "1200000"
   },
   {
-    "id": "home-treatment",
-    "name": "Điều Trị Tại Nhà"
+    "id": 4,
+    "name": "Điều Trị Tại Nhà",
+    "base_price": "100000"
   }
 ]

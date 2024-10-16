@@ -1,129 +1,191 @@
-import { useState, useEffect } from "react";
-import { getVeterianInf, getDistrict } from "../services/apiService.js";
-import { VeterianList, VeterianScheduleTimePeriods, VeterianScheduleAvailableSlots, VeterianScheduleAvailableDay } from "../services/apiVeterian.js";
+import { useState, useEffect } from 'react';
+import { VeterianScheduleHome, VeterianScheduleCenterByID, VeterianScheduleCenter } from '../services/apiVeterian.js';
+import {useNavigate} from "react-router-dom";
 
-export const useBookingPage = () => {
-    const [services, setServices] = useState([]);
-    const [districts, setDistricts] = useState([]);
-    const [doctors, setDoctors] = useState([]);
-    const [periods, setPeriods] = useState([]);
-    const [specialty, setSpecialty] = useState('');
-    const [phoneNumber, setPhoneNumber] = useState('');
-    const [description, setDescription] = useState('');
-    const [address, setAddress] = useState('');
-    const [doctor, setDoctor] = useState('');
-    const [selectedDate, setSelectedDate] = useState('');
-    const [availableDates, setAvailableDates] = useState([]);
-    const [availableTimes, setAvailableTimes] = useState([]);
-    const [selectedTime, setSelectedTime] = useState('');
-    const [timePeriod, setTimePeriod] = useState('');
+export default function useBookingPage() {
+    const [serviceType, setServiceType] = useState('');  // Loại dịch vụ
+    const [phoneNumber, setPhoneNumber] = useState('');  // Số điện thoại
+    const [description, setDescription] = useState('');  // Mô tả
+    const [selectedDate, setSelectedDate] = useState('');  // Ngày đã chọn
+    const [selectedTime, setSelectedTime] = useState('');  // Thời gian đã chọn
+    const [detailedAddress, setDetailedAddress] = useState('');  // Địa chỉ chi tiết
+    const [selectedDistrict, setSelectedDistrict] = useState('');  // Quận/Huyện đã chọn
+    const [selectedDoctor, setSelectedDoctor] = useState('dr0');  // Bác sĩ đã chọn
+    const [availableTimes, setAvailableTimes] = useState([]);  // Các khung thời gian có sẵn
+    const [dateOptions, setDateOptions] = useState([]);  // Các ngày có sẵn
+    const [errors, setErrors] = useState({ phoneNumber: '', detailedAddress: '', selectedDate: '', selectedTime: '', selectedDistrict: '' });  // Lỗi
+    const [showConfirm, setShowConfirm] = useState(false);  // Trạng thái hiển thị xác nhận
+    const navgigate = useNavigate();
+    const sortDates = (dates) => {
+        return dates.sort((a, b) => new Date(a) - new Date(b));  // Sắp xếp ngày theo thứ tự tăng dần
+    };
+
+    const fetchHomeServiceTimes = async () => {
+        try {
+            const data = await VeterianScheduleHome();
+            let filteredDates = Object.keys(data).filter((date) => data[date].some(slot => slot.available));
+
+            filteredDates = sortDates(filteredDates);
+            setDateOptions(filteredDates);
+
+            const availableTimesData = data[selectedDate]?.filter(time => time.available) || [];
+            setAvailableTimes(availableTimesData);
+        } catch (error) {
+            console.error('Error fetching home service times:', error);
+        }
+    };
+
+    const fetchCenterService = async () => {
+        try {
+            const data = await VeterianScheduleCenter();
+            let filteredDates = Object.keys(data).filter((date) => data[date].some(slot => slot.available));
+
+            filteredDates = sortDates(filteredDates);
+            setDateOptions(filteredDates);
+
+            const availableTimesData = data[selectedDate]?.filter(time => time.available) || [];
+            setAvailableTimes(availableTimesData);
+        } catch (error) {
+            console.error('Error fetching center service times:', error);
+        }
+    };
+
+    const fetchCenterServiceTimesByID = async () => {
+        try {
+            const data = await VeterianScheduleCenterByID(selectedDoctor);
+
+            const availableTimesData = data[selectedDate]?.filter(time => time.available) || [];
+            setAvailableTimes(availableTimesData);
+
+            let dateList = Object.keys(data);
+            dateList = sortDates(dateList);
+            setDateOptions(dateList);
+        } catch (error) {
+            console.error('Error fetching center service times:', error);
+        }
+    };
 
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const [servicesData, districtsData, doctorsData, periodsData] = await Promise.all([
-                    getVeterianInf(),
-                    getDistrict(),
-                    VeterianList(),
-                    VeterianScheduleTimePeriods()
-                ]);
-
-                setServices(servicesData);
-                setDistricts(districtsData);
-                setDoctors(doctorsData);
-                setPeriods(periodsData);
-            } catch (error) {
-                console.error('Error loading data:', error);
+        const fetchAvailableTimes = async () => {
+            if (serviceType === '2' || serviceType === '4') {
+                await fetchHomeServiceTimes();
+            } else if (serviceType === '3' && selectedDoctor) {
+                if (selectedDoctor === 'dr0') {
+                    await fetchCenterService();
+                } else {
+                    await fetchCenterServiceTimesByID();
+                }
             }
         };
 
-        fetchData();
-    }, []);
+        if ((serviceType === '2' || serviceType === '4') || (serviceType === '3' && selectedDoctor)) {
+            fetchAvailableTimes();
+        }
+    }, [selectedDate, selectedDoctor, serviceType]);
 
-    // Luôn hiển thị tất cả ngày và thời gian khả dụng nếu không có bác sĩ được chọn
     useEffect(() => {
-        const loadAvailableDates = async () => {
-            if (doctor) {
-                // Nếu chọn bác sĩ, chỉ lấy ngày khả dụng của bác sĩ đó
-                const dates = await VeterianScheduleAvailableDay(doctor);
-                setAvailableDates(dates);  // Cập nhật danh sách ngày khả dụng của bác sĩ
-                setSelectedDate('');  // Xóa ngày đã chọn khi đổi bác sĩ
-                setAvailableTimes([]); // Xóa các slot thời gian khi đổi bác sĩ
-            } else {
-                // Nếu không chọn bác sĩ, hợp nhất ngày của tất cả bác sĩ
-                let allDates = [];
-                const promises = doctors.map(async (doc) => {
-                    const dates = await VeterianScheduleAvailableDay(doc.id);
-                    allDates = [...new Set([...allDates, ...dates])]; // Hợp nhất và loại bỏ trùng lặp
-                });
-                await Promise.all(promises);
-                setAvailableDates(allDates);  // Cập nhật danh sách ngày của tất cả bác sĩ
-            }
-        };
+        if (selectedDate) {
+            console.log('Selected Date has been updated:', selectedDate);
+        }
+    }, [selectedDate]);
 
-        loadAvailableDates();
-    }, [doctor, doctors]);  // Chạy lại khi bác sĩ hoặc danh sách bác sĩ thay đổi
+    const handleDoctorSelect = (doctorId) => {
+        setSelectedDoctor(doctorId);
+        setSelectedDate('');  // Reset ngày khi chọn bác sĩ khác
+        setAvailableTimes([]);
+        setDateOptions([]);
+    };
 
-    // Tự động hiển thị thời gian khả dụng khi không chọn bác sĩ
-    useEffect(() => {
-        const loadAvailableTimes = async () => {
-            if (doctor && selectedDate) {
-                const times = await VeterianScheduleAvailableSlots(doctor, selectedDate);
-                setAvailableTimes(times);  // Cập nhật danh sách slot thời gian khả dụng của bác sĩ đã chọn
-            } else if (selectedDate) {
-                // Hợp nhất tất cả slot thời gian của tất cả bác sĩ cho ngày đã chọn
-                let allTimes = [];
-                const promises = doctors.map(async (doc) => {
-                    const times = await VeterianScheduleAvailableSlots(doc.id, selectedDate);
-                    allTimes = [...new Set([...allTimes, ...times])]; // Hợp nhất và loại bỏ trùng lặp
-                });
-                await Promise.all(promises);
-                setAvailableTimes(allTimes);  // Cập nhật danh sách slot thời gian của tất cả bác sĩ cho ngày đã chọn
-            } else {
-                setAvailableTimes([]);
-            }
-        };
+    const handleConfirm = () => {
+        const hasErrors = handleSubmit();
+        if (!hasErrors) {
+            setShowConfirm(true);  // Hiển thị modal xác nhận
+        }
+    };
 
-        loadAvailableTimes();
-    }, [doctor, selectedDate, doctors]);  // Chạy lại khi bác sĩ, ngày hoặc danh sách bác sĩ thay đổi
+    const handleFinalSubmit = async () => {
+        setShowConfirm(false);  // Đóng modal xác nhận và gửi form
 
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        console.log({
-            specialty,
+        const createdDate = new Date();
+        const currentTime = `${createdDate.getHours()}:${createdDate.getMinutes()}:${createdDate.getSeconds()}`;
+
+        const finalSelectedDate = serviceType === '1' ? createdDate.toISOString().split('T')[0] : selectedDate;
+        const finalSelectedTime = serviceType === '1' ? currentTime : selectedTime;
+        const finalDetailedAddress = (serviceType === '1' || serviceType === '3') ? null : detailedAddress;
+        const finalSelectedDistrict = (serviceType === '3' || serviceType === '1') ? null : selectedDistrict;
+        const finalSelectedDoctor = (serviceType === '1' || serviceType === '2' || serviceType === '4') ? null : selectedDoctor;
+
+        const bookingData = {
+            serviceType,
             phoneNumber,
             description,
-            address,
-            doctor,
-            selectedDate,
-            selectedTime,
-            timePeriod,  // Thêm lại timePeriod vào submit log
-        });
+            selectedDate: finalSelectedDate,
+            selectedTime: finalSelectedTime,
+            detailedAddress: finalDetailedAddress,
+            selectedDistrict: finalSelectedDistrict,
+            selectedDoctor: finalSelectedDoctor,
+            createdDate: createdDate.toISOString(),
+        };
+
+        console.log('Booking data submitted:', bookingData);
+        // Call the API to submit bookingData here
+
+        navgigate("/booking-service-history");
+    };
+
+    const handleSubmit = () => {
+        let hasErrors = false;
+        const newErrors = { phoneNumber: '', detailedAddress: '', selectedDate: '', selectedTime: '', selectedDistrict: '' };
+
+        if (!phoneNumber) {
+            newErrors.phoneNumber = 'Số điện thoại là bắt buộc';
+            hasErrors = true;
+        }
+
+        if ((serviceType === '2' || serviceType === '4') && !detailedAddress) {
+            newErrors.detailedAddress = 'Vui lòng nhập địa chỉ chi tiết cho dịch vụ tại nhà';
+            newErrors.selectedDistrict = 'Vui lòng chọn hãy chọn quận ';
+            hasErrors = true;
+        }
+
+        if (serviceType !== '1') {
+            if (!selectedDate) {
+                newErrors.selectedDate = 'Vui lòng chọn ngày';
+                hasErrors = true;
+            }
+            if (!selectedTime) {
+                newErrors.selectedTime = 'Vui lòng chọn thời gian';
+                hasErrors = true;
+            }
+        }
+
+        setErrors(newErrors);
+        return hasErrors;
     };
 
     return {
-        services,
-        districts,
-        doctors,
-        periods,
-        specialty,
-        setSpecialty,
+        serviceType,
+        setServiceType,
         phoneNumber,
         setPhoneNumber,
         description,
         setDescription,
-        address,
-        setAddress,
-        doctor,
-        setDoctor,
-        availableDates,
         selectedDate,
         setSelectedDate,
-        availableTimes,
         selectedTime,
         setSelectedTime,
-        timePeriod,  // Trả lại timePeriod
-        setTimePeriod,  // Trả lại setTimePeriod
+        detailedAddress,
+        setDetailedAddress,
+        selectedDistrict,
+        setSelectedDistrict,
+        selectedDoctor,
+        availableTimes,
+        dateOptions,
+        errors,
+        handleDoctorSelect,
+        handleConfirm,
+        handleFinalSubmit,
         handleSubmit,
+        showConfirm,
     };
-};
+}

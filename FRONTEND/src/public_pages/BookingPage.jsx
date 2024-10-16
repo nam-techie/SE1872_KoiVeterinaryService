@@ -1,117 +1,111 @@
-import { OnlineConsultation, HomeService, CenterAppointment } from "./BookingPageDetail.jsx";
-import { useBookingPage } from '../hooks/useBookingPage';
+import { useState } from 'react';
+import useBookingPage from '../hooks/useBookingPage.js';
+import { useDistrictList, useService, useVeterianList } from '../hooks/useService.js';
+import { ServiceTypeSelector, PhoneInput, DescriptionInput, DateSelector, TimeSelector, DistrictSelector } from './BookingPageDetail.jsx';
+import { DetailedAddressInput, DoctorSelector, SubmitButton, ConfirmationModal } from './BookingPageDetail.jsx';
+import '../styles/BookingPage.css';
 
-function BookingPage() {
+export function BookingPage() {
     const {
-        services,
-        districts,
-        doctors,
-        specialty,
-        setSpecialty,
+        serviceType,
+        setServiceType,
         phoneNumber,
         setPhoneNumber,
         description,
         setDescription,
-        address,
-        setAddress,
-        doctor,
-        setDoctor,
-        availableDates,
+        handleSubmit,   // Hàm này sẽ kiểm tra lỗi trước khi hiển thị modal
         selectedDate,
         setSelectedDate,
-        availableTimes,
         selectedTime,
         setSelectedTime,
-        periods,  // periods được giữ nguyên
-        timePeriod,  // Thêm lại timePeriod
-        setTimePeriod,  // Thêm lại setTimePeriod
-        handleSubmit
+        detailedAddress,
+        setDetailedAddress,
+        selectedDistrict,
+        setSelectedDistrict,
+        errors,  // Lỗi đã được truyền từ useBookingPage
+        selectedDoctor,
+        availableTimes,
+        dateOptions,
+        handleDoctorSelect,
+        handleFinalSubmit,
     } = useBookingPage();
 
+    const { service, serviceLoading, serviceError } = useService();
+    const { districts, districtsError, districtsLoading } = useDistrictList();
+    const { doctors, doctorLoading, doctorError } = useVeterianList();
+
+    const [showConfirm, setShowConfirm] = useState(false);
+
+    // Hàm xử lý khi nhấn submit
+    const handlePreSubmit = (e) => {
+        const hasErrors = handleSubmit(e); // Kiểm tra lỗi trước khi hiển thị modal
+        if (!hasErrors) {
+            setShowConfirm(true); // Nếu không có lỗi, hiển thị modal xác nhận
+        }
+    };
+
     return (
-        <form onSubmit={handleSubmit} className="appointment-form">
-            <h2>Nội dung chi tiết đặt hẹn</h2>
-            <div className="form-group">
-                <label htmlFor="specialty">Loại Dịch Vụ Bạn Muốn Đặt</label>
-                <select
-                    id="specialty"
-                    value={specialty}
-                    onChange={(e) => setSpecialty(e.target.value)}
-                >
-                    <option value="">Chọn loại dịch vụ</option>
-                    {services.map(service => (
-                        <option key={service.id} value={service.id}>
-                            {service.name}
-                        </option>
-                    ))}
-                </select>
-            </div>
+        <div className="appointment-form">
+            <h1>Đặt dịch vụ</h1>
 
-            {specialty === 'online-consultation' && (
-                <OnlineConsultation
-                    phoneNumber={phoneNumber}
-                    setPhoneNumber={setPhoneNumber}
-                    description={description}
-                    setDescription={setDescription}
-                />
+            {serviceLoading && <p>Đang tải danh sách dịch vụ...</p>}
+            {serviceError && <p>{serviceError}</p>}
+            <ServiceTypeSelector serviceType={serviceType} setServiceType={setServiceType} service={service} />
+
+            {(serviceType) && (
+                <>
+                    <PhoneInput phoneNumber={phoneNumber} setPhoneNumber={setPhoneNumber} error={errors.phoneNumber} />
+                    <DescriptionInput description={description} setDescription={setDescription} />
+                </>
             )}
 
-            {specialty === 'home-survey' && (
-                <HomeService
-                    phoneNumber={phoneNumber}
-                    setPhoneNumber={setPhoneNumber}
-                    description={description}
-                    setDescription={setDescription}
-                    address={address}
-                    setAddress={setAddress}
-                    selectedDate={selectedDate}
-                    setSelectedDate={setSelectedDate}
-                    timePeriod={timePeriod}  // Truyền timePeriod vào HomeService
-                    setTimePeriod={setTimePeriod}  // Truyền setTimePeriod vào HomeService
-                    periods={periods}
-                    districts={districts}
-                />
+            {(serviceType === '2' || serviceType === '4') && (
+                <>
+                    <DateSelector selectedDate={selectedDate} setSelectedDate={setSelectedDate} dateOptions={dateOptions} error={errors.selectedDate}/>
+                    <TimeSelector selectedTime={selectedTime} setSelectedTime={setSelectedTime} availableTimes={availableTimes} error={errors.selectedTime} />
+
+                    {!districtsLoading && !districtsError && (
+                        <DistrictSelector selectedDistrict={selectedDistrict} setSelectedDistrict={setSelectedDistrict} districts={districts} error={errors.selectedDistrict}/>
+                    )}
+                    <DetailedAddressInput detailedAddress={detailedAddress} setDetailedAddress={setDetailedAddress} error={errors.detailedAddress} />
+                </>
             )}
 
-            {specialty === 'center-appointment' && (
-                <CenterAppointment
+            {serviceType === '3' && (
+                <>
+                    {!doctorLoading && !doctorError && (
+                        <DoctorSelector
+                            selectedDoctor={selectedDoctor}
+                            handleDoctorSelect={handleDoctorSelect}
+                            doctors={doctors}
+                        />
+                    )}
+                    <DateSelector selectedDate={selectedDate} setSelectedDate={setSelectedDate} dateOptions={dateOptions} error={errors.selectedDate}/>
+                    <TimeSelector selectedTime={selectedTime} setSelectedTime={setSelectedTime} availableTimes={availableTimes} error={errors.selectedTime} />
+                </>
+            )}
+
+            {/* Hiển thị modal xác nhận nếu không có lỗi */}
+            {showConfirm && (
+                <ConfirmationModal
+                    serviceType={serviceType}
                     phoneNumber={phoneNumber}
-                    setPhoneNumber={setPhoneNumber}
                     description={description}
-                    setDescription={setDescription}
-                    doctor={doctor}
-                    setDoctor={setDoctor}
-                    doctors={doctors}
-                    availableDates={availableDates}
                     selectedDate={selectedDate}
-                    setSelectedDate={setSelectedDate}
-                    availableTimes={availableTimes}
                     selectedTime={selectedTime}
-                    setSelectedTime={setSelectedTime}
+                    selectedDistrict={selectedDistrict}
+                    detailedAddress={detailedAddress}
+                    selectedDoctor={selectedDoctor}
+                    handleFinalSubmit={handleFinalSubmit}
+                    setShowConfirm={setShowConfirm}
+                    serviceTypeMap={service}
+                    districtsMap={districts}
+                    doctorMap={doctors}
                 />
             )}
 
-            {specialty === 'home-treatment' && (
-                <HomeService
-                    phoneNumber={phoneNumber}
-                    setPhoneNumber={setPhoneNumber}
-                    description={description}
-                    setDescription={setDescription}
-                    address={address}
-                    setAddress={setAddress}
-                    selectedDate={selectedDate}
-                    setSelectedDate={setSelectedDate}
-                    timePeriod={timePeriod}  // Truyền timePeriod vào HomeService
-                    setTimePeriod={setTimePeriod}  // Truyền setTimePeriod vào HomeService
-                    periods={periods}
-                    districts={districts}
-                />
-            )}
-
-            <button type="submit" className="submit-button">
-                Đặt ngay
-            </button>
-        </form>
+            {!showConfirm && <SubmitButton handleSubmit={handlePreSubmit} />}  {/* Kiểm tra lỗi trước khi hiển thị modal */}
+        </div>
     );
 }
 
