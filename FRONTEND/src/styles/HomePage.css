@@ -21,6 +21,7 @@
   background-color: white;
   padding: 2rem;
   box-sizing: border-box;
+  font-family: Arial, sans-serif
 }
 
 @media (min-width: 768px) {
