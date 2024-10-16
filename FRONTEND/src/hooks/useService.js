@@ -1,4 +1,4 @@
-// useService.js
+
 import { useState, useEffect } from 'react';
 import {getDistrict, getService, ServiceBookingData} from "../services/apiService.js"
 import {VeterianList} from "../services/apiVeterian.js";
@@ -38,8 +38,8 @@ export const useVeterianList = () => {
         const fetchDoctors = async () => {
             try {
                 setDoctorLoading(true);
-                const data = await VeterianList(); // Gọi hàm VeterianList để lấy dữ liệu
-                setDoctors(data); // Đặt dữ liệu vào state
+                const data = await VeterianList();
+                setDoctors(data);
             } catch (err) {
                 setDoctorError("Đã xảy ra lỗi khi lấy dữ liệu bác sĩ.");
                 console.error(err);
@@ -63,8 +63,11 @@ export const useDistrictList = () => {
         const fetchDistricts = async () => {
             try {
                 setDistrictsLoading(true);
-                const data = await getDistrict(); // Gọi API để lấy danh sách quận/huyện
-                setDistricts(data); // Lưu danh sách vào state
+                const data = await getDistrict();
+                if (data.fee !== 0){
+                    setDistricts(data);
+                }
+
             } catch (err) {
                 setDistrictsError("Đã xảy ra lỗi khi lấy dữ liệu quận/huyện.");
                 console.error(err);
