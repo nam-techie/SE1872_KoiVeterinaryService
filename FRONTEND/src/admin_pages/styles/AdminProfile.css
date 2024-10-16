@@ -1,0 +1,89 @@
+.admin-profile {
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.admin-profile h2 {
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.profile-content {
+    display: flex;
+    flex-direction: column;
+}
+
+.profile-details {
+    flex: 1;
+}
+
+.profile-item {
+    margin-bottom: 15px;
+}
+
+.profile-item label {
+    font-weight: bold;
+    display: inline-block;
+    width: 120px;
+    color: #555;
+}
+
+.profile-item input {
+    width: calc(100% - 130px);
+    padding: 5px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.password-input {
+    display: flex;
+    align-items: center;
+}
+
+.password-input input {
+    flex: 1;
+    margin-right: 10px;
+}
+
+.password-input button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+    color: #555;
+}
+
+.edit-button, .save-button {
+    background-color: #ff8c00;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin-top: 20px;
+}
+
+.edit-button:hover, .save-button:hover {
+    background-color: #e67e00;
+}
+
+.error-message, .success-message {
+    margin-top: 15px;
+    padding: 10px;
+    border-radius: 4px;
+}
+
+.error-message {
+    background-color: #ffe6e6;
+    color: #d8000c;
+}
+
+.success-message {
+    background-color: #e6ffe6;
+    color: #006400;
+}

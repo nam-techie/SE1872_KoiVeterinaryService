@@ -3,13 +3,17 @@ package com.namtechie.org.controller;
 import com.namtechie.org.entity.Account;
 import com.namtechie.org.entity.Customers;
 import com.namtechie.org.entity.Doctor;
+import com.namtechie.org.model.request.AdminInfoRequest;
+import com.namtechie.org.model.request.CustomerInfoRequest;
 import com.namtechie.org.model.response.AccountResponse;
 import com.namtechie.org.model.request.VeterinaryRequest;
+import com.namtechie.org.model.response.InfoCustomerResponse;
 import com.namtechie.org.service.AuthenticationService;
 import com.namtechie.org.service.CustomerService;
 import com.namtechie.org.service.DoctorService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,6 +35,8 @@ public class AdminController {
 
     @Autowired
     CustomerService customerService;
+    @Autowired
+    private ModelMapper modelMapper;
 
     //APi down is provide for ADMIN
     @PutMapping("/setAccountVeterinary/{email}")
@@ -67,6 +73,20 @@ public class AdminController {
     public ResponseEntity deleteDoctor(long id) {
         doctorService.deleteDoctor(id);
         return ResponseEntity.ok("Xóa thông tin bác sĩ thành công!");
+    }
+
+
+    @GetMapping("/getInfoAdmin")
+    public ResponseEntity getInfoAdmin() {
+        Account currentAccount = authenticationService.getCurrentAccount();
+        AdminInfoRequest accountAdmin = modelMapper.map(currentAccount, AdminInfoRequest.class);
+        return ResponseEntity.ok(accountAdmin);
+    }
+
+    @PutMapping("/updateInfoAdmin")
+    public ResponseEntity updateInfoAdmin(@ModelAttribute AdminInfoRequest adminInfoRequest) {
+        AdminInfoRequest newUpdate = authenticationService.updateAdminInfo(adminInfoRequest);
+        return ResponseEntity.ok(newUpdate);
     }
 
     @GetMapping("/listInfoCustomer")

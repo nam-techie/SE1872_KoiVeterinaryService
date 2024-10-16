@@ -17,37 +17,39 @@ import ResetPassword from "./public_pages/ResetPassword.jsx";
 import Profile from "./public_pages/Profile.jsx";
 import UpdateProfile from "./public_pages/UpdateProfile.jsx"; 
 
-import AdminDashboard from './public_pages/dashboard/Dashboard.jsx';
-
-
+import AdminDashboard from './admin_pages/Dashboard.jsx';
 
 function App() {
     return (
         <Router>
-            <div>
-                <Navbar/> {/* Navbar sẽ hiển thị trên tất cả các trang */}
-                <Layout>  {/* Bọc các Routes bên trong Layout */}
-                    <Routes>
-                        <Route path="/" element={<HomePage/>}/>
-                        <Route path="/homepage" element={<HomePage/>}/>
-                        <Route path="/login" element={<LoginPage/>}/>
-                        <Route path="/login/success" element={<GoogleLoginSuccess/>}/>
-                        <Route path="/services" element={<ServicesPage/>}/>
-                        <Route path="/AboutMe" element={<AboutMe/>}/>
-                        <Route path="/register" element={<RegisterPage/>}/>
-                        <Route path="/bookingpage" element={<BookingPage/>}/>
-                        <Route path="/termandrefunds" element={<TermAndRefund/>}/>
-                        <Route path="/forgot-password" element={<ForgotPassword/>}/>
-                        <Route path="/booking-service-history" element={<BookingServiceHistory/>}/>
-                        <Route path="/verify-otp" element={<VerifyOTP />} />
-                        <Route path="/reset-password" element={<ResetPassword/>}/>
-                        <Route path="/profile" element={<Profile/>}/>
-                        <Route path="/update-profile" element={<UpdateProfile/>}/>
-                        <Route path="/dashboard" element={<AdminDashboard/>} />
-                    </Routes>
-                    <ContactButton/>
-                </Layout>
-            </div>
+            <Routes>
+                <Route path="/dashboard" element={<AdminDashboard />} />
+                <Route path="*" element={
+                    <div>
+                        <Navbar />
+                        <Layout>
+                            <Routes>
+                                <Route path="/" element={<HomePage/>}/>
+                                <Route path="/homepage" element={<HomePage/>}/>
+                                <Route path="/login" element={<LoginPage/>}/>
+                                <Route path="/login/success" element={<GoogleLoginSuccess/>}/>
+                                <Route path="/services" element={<ServicesPage/>}/>
+                                <Route path="/AboutMe" element={<AboutMe/>}/>
+                                <Route path="/register" element={<RegisterPage/>}/>
+                                <Route path="/bookingpage" element={<BookingPage/>}/>
+                                <Route path="/termandrefunds" element={<TermAndRefund/>}/>
+                                <Route path="/forgot-password" element={<ForgotPassword/>}/>
+                                <Route path="/booking-service-history" element={<BookingServiceHistory/>}/>
+                                <Route path="/verify-otp" element={<VerifyOTP />} />
+                                <Route path="/reset-password" element={<ResetPassword/>}/>
+                                <Route path="/profile" element={<Profile/>}/>
+                                <Route path="/update-profile" element={<UpdateProfile/>}/>
+                            </Routes>
+                            <ContactButton/>
+                        </Layout>
+                    </div>
+                } />
+            </Routes>
         </Router>
     );
 }

@@ -2,8 +2,10 @@ package com.namtechie.org.service;
 
 import com.namtechie.org.entity.Account;
 import com.namtechie.org.entity.Customers;
+import com.namtechie.org.model.request.AdminInfoRequest;
 import com.namtechie.org.model.request.CustomerInfoRequest;
 import com.namtechie.org.model.response.InfoCustomerResponse;
+import com.namtechie.org.repository.AccountRepository;
 import com.namtechie.org.repository.CustomerRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +24,8 @@ public class CustomerService {
 
     @Autowired
     ModelMapper modelMapper;
+    @Autowired
+    private AccountRepository accountRepository;
 
     public InfoCustomerResponse getInfoCustomer() {
         try {
@@ -56,6 +60,8 @@ public class CustomerService {
     }
 
 
+
+
     public CustomerInfoRequest updateCustomerInfo(CustomerInfoRequest customerInfo) {
         try {
             // Lấy tài khoản hiện tại của người dùng đã xác thực
@@ -87,6 +93,8 @@ public class CustomerService {
             throw new RuntimeException("Đã xảy ra lỗi trong quá trình cập nhật thông tin khách hàng.");
         }
     }
+
+
 
     public List<Customers> getAllCustomers() {
         return customerRepository.findAll();

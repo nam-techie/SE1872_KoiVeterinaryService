@@ -10,6 +10,7 @@ import com.namtechie.org.service.CustomerService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -125,6 +126,9 @@ public class AuthenticationController {
         CustomerInfoRequest newUpdate = customerService.updateCustomerInfo(customerInfo);
         return ResponseEntity.ok(newUpdate);
     }
+
+
+
 
     //khi nao xong thì xử lí đoạn image sau
 //    @PutMapping("/updateInfoCustomer")

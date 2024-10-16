@@ -1,6 +1,7 @@
 package com.namtechie.org.service;
 
 import com.namtechie.org.entity.Account;
+import com.namtechie.org.entity.Customers;
 import com.namtechie.org.entity.Role;
 import com.namtechie.org.exception.BadCredentialsException;
 import com.namtechie.org.exception.DuplicateEntity;
@@ -8,6 +9,7 @@ import com.namtechie.org.exception.NotFoundException;
 import com.namtechie.org.model.*;
 import com.namtechie.org.model.request.*;
 import com.namtechie.org.model.response.AccountResponse;
+import com.namtechie.org.model.response.InfoCustomerResponse;
 import com.namtechie.org.repository.AccountRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.modelmapper.ModelMapper;
@@ -26,6 +28,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -396,5 +399,44 @@ public class AuthenticationService implements UserDetailsService {
 
         return response;
     }
+
+    public AdminInfoRequest updateAdminInfo(AdminInfoRequest adminInfoRequest) {
+        try {
+            // Lấy tài khoản hiện tại của người dùng đã xác thực
+            Account currentAccount = getCurrentAccount();
+
+            // So sánh và cập nhật username
+            if (!Objects.equals(currentAccount.getUsername(), adminInfoRequest.getUsername())) {
+                currentAccount.setUsername(adminInfoRequest.getUsername());
+            }
+
+            // So sánh và cập nhật email
+            if (!Objects.equals(currentAccount.getEmail(), adminInfoRequest.getEmail())) {
+                currentAccount.setEmail(adminInfoRequest.getEmail());
+            }
+
+            // So sánh và mã hóa mật khẩu nếu có sự thay đổi
+            if (adminInfoRequest.getPassword() != null && !adminInfoRequest.getPassword().isEmpty()) {
+                // Kiểm tra xem mật khẩu mới có khác với mật khẩu cũ không (so sánh mật khẩu chưa mã hóa)
+                if (!passwordEncoder.matches(adminInfoRequest.getPassword(), currentAccount.getPassword())) {
+                    // Nếu khác, mã hóa lại mật khẩu mới
+                    currentAccount.setPassword(passwordEncoder.encode(adminInfoRequest.getPassword()));
+                }
+            }
+
+            // Lưu thông tin cập nhật vào database
+            accountRepository.save(currentAccount);
+
+            // Trả về đối tượng adminInfoRequest đã cập nhật
+            return modelMapper.map(currentAccount, AdminInfoRequest.class);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("Đã xảy ra lỗi trong quá trình cập nhật thông tin admin.");
+        }
+    }
+
+
+
 
 }

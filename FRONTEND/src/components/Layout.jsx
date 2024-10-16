@@ -1,5 +1,7 @@
 import { useLocation, Navigate } from 'react-router-dom';
 import Footer from './Footer.jsx';
+// Giả sử bạn đã import Navbar ở đây
+import Navbar from './Navbar.jsx';
 
 function Layout({ children }) {
     const location = useLocation();
@@ -29,6 +31,9 @@ function Layout({ children }) {
         return <Navigate to="/homepage" />; // Hoặc đường dẫn bạn muốn chuyển hướng đến
     }
 
+    // Danh sách các đường dẫn không hiển thị navbar
+    const pathsWithoutNavbar = ['/dashboard'];
+
     // Danh sách các đường dẫn không hiển thị footer
     const pathsWithoutFooter = [
         '/forgot-password',
@@ -37,11 +42,14 @@ function Layout({ children }) {
         '/bookingpage',
         '/booking-service-history',
         '/profile',
-        '/update-profile'
+        '/update-profile',
+        '/dashboard'
     ];
 
     return (
         <>
+            {/* Hiển thị Navbar nếu đường dẫn hiện tại không nằm trong danh sách pathsWithoutNavbar */}
+            {!pathsWithoutNavbar.includes(location.pathname) && <Navbar />}
             <div>{children}</div>
             {/* Hiển thị Footer nếu đường dẫn hiện tại không nằm trong danh sách pathsWithoutFooter */}
             {!pathsWithoutFooter.includes(location.pathname) && <Footer />}
