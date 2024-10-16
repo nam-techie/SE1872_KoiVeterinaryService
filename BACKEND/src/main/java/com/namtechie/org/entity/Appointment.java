@@ -6,6 +6,8 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.List;
+
 @Entity
 @Data
 public class Appointment {
@@ -42,6 +44,14 @@ public class Appointment {
     @OneToOne(mappedBy = "appointment", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonManagedReference
     private AppointmentDetail appointmentDetail;
+
+    @OneToOne(mappedBy = "appointment", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JsonManagedReference
+    private Payment payment;
+
+    @OneToMany(mappedBy = "appointment", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JsonManagedReference
+    private List<AppointmentStatus> appointmentStatuses;
 
     @Column(nullable = false)
     private boolean isVeterianAssigned;

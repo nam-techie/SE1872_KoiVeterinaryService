@@ -5,77 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d2cec660-9bd4-4c6d-9559-8cd458d3cf90" name="Changes" comment="push all because forgot">
-      <change afterPath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/controller/AppointmentController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/entity/Appointment.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/entity/AppointmentDetail.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/repository/AppointmentDetailRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/repository/AppointmentRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/repository/DoctorsSchedulesRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/repository/ServiceTypeRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/service/AppointmentService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/service/ScheduleService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/Group03_SE1872_KoiVeterinaryServiceCenter.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Group03_SE1872_KoiVeterinaryServiceCenter.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BACKEND/src/main/java/com/example/org/KoiVeterinaryServiceCenterApplication.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/BACKEND/src/main/java/com/example/org/config/Filter.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/BACKEND/src/main/java/com/example/org/config/SecurityConfig.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/BACKEND/src/main/java/com/example/org/config/WebConfig.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/BACKEND/src/main/java/com/example/org/controller/AccountController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/BACKEND/src/main/java/com/example/org/controller/AppointmentController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/BACKEND/src/main/java/com/example/org/controller/AuthenticationController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/BACKEND/src/main/java/com/example/org/controller/HomeController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/BACKEND/src/main/java/com/example/org/controller/ServiceController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/BACKEND/src/main/java/com/example/org/entity/Account.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/BACKEND/src/main/java/com/example/org/entity/Appointment.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/BACKEND/src/main/java/com/example/org/entity/AppointmentDetail.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/BACKEND/src/main/java/com/example/org/entity/AppointmentStatus.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/BACKEND/src/main/java/com/example/org/entity/Customer.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/BACKEND/src/main/java/com/example/org/entity/Role.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/BACKEND/src/main/java/com/example/org/entity/ServiceType.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/BACKEND/src/main/java/com/example/org/entity/Staff.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/BACKEND/src/main/java/com/example/org/entity/Veterian.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/BACKEND/src/main/java/com/example/org/entity/VeterianInfo.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/BACKEND/src/main/java/com/example/org/entity/VeterianSchedule.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/BACKEND/src/main/java/com/example/org/entity/Zone.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/BACKEND/src/main/java/com/example/org/exception/AuthException.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/BACKEND/src/main/java/com/example/org/exception/DuplicateEntity.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/BACKEND/src/main/java/com/example/org/exception/EntityNotFoundException.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/BACKEND/src/main/java/com/example/org/exception/IllegalArgumentException.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/BACKEND/src/main/java/com/example/org/exception/NotFoundException.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/BACKEND/src/main/java/com/example/org/exception/ResponseStatusException.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/BACKEND/src/main/java/com/example/org/exception/ValidationHandler.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/BACKEND/src/main/java/com/example/org/model/AccountResponse.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/BACKEND/src/main/java/com/example/org/model/AppointmentResponse.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/BACKEND/src/main/java/com/example/org/model/CustomerResponse.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/BACKEND/src/main/java/com/example/org/model/LoginRequest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/BACKEND/src/main/java/com/example/org/model/RegisterRequest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/BACKEND/src/main/java/com/example/org/model/ScheduleRequest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/BACKEND/src/main/java/com/example/org/model/ServiceRequest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/BACKEND/src/main/java/com/example/org/repository/AccountRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/BACKEND/src/main/java/com/example/org/repository/AppointmentDetailRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/BACKEND/src/main/java/com/example/org/repository/AppointmentRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/BACKEND/src/main/java/com/example/org/repository/AppointmentStatusRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/BACKEND/src/main/java/com/example/org/repository/CustomerRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/BACKEND/src/main/java/com/example/org/repository/ServiceTypeRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/BACKEND/src/main/java/com/example/org/repository/VeterianRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/BACKEND/src/main/java/com/example/org/repository/VeterianScheduleRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/BACKEND/src/main/java/com/example/org/repository/ZoneRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/BACKEND/src/main/java/com/example/org/service/AppointmentService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/BACKEND/src/main/java/com/example/org/service/AuthenticationService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/BACKEND/src/main/java/com/example/org/service/TokenService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/BACKEND/src/main/java/com/example/org/test/AppointmentServiceTest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/entity/Customers.java" beforeDir="false" afterPath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/entity/Customers.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/entity/Doctor.java" beforeDir="false" afterPath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/entity/Doctor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/entity/DoctorsSchedules.java" beforeDir="false" afterPath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/entity/DoctorsSchedules.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/entity/ServiceType.java" beforeDir="false" afterPath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/entity/ServiceType.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/entity/Zone.java" beforeDir="false" afterPath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/entity/Zone.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BACKEND/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/BACKEND/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FRONTEND/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/FRONTEND/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FRONTEND/src/hooks/useRegister.js" beforeDir="false" afterPath="$PROJECT_DIR$/FRONTEND/src/hooks/useRegister.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FRONTEND/src/services/apiForgotPassword.js" beforeDir="false" afterPath="$PROJECT_DIR$/FRONTEND/src/services/apiForgotPassword.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FRONTEND/src/services/apiLogin.js" beforeDir="false" afterPath="$PROJECT_DIR$/FRONTEND/src/services/apiLogin.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FRONTEND/src/services/apiRegister.js" beforeDir="false" afterPath="$PROJECT_DIR$/FRONTEND/src/services/apiRegister.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FRONTEND/public/VeterianScheduleCenter.json" beforeDir="false" afterPath="$PROJECT_DIR$/FRONTEND/public/VeterianScheduleCenter.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -111,7 +42,7 @@
   <component name="GithubPullRequestsUISettings"><![CDATA[{
   "selectedUrlAndAccountId": {
     "url": "https://github.com/nam-techie/Group03_SE1872_KoiVeterinaryServiceCenter.git",
-    "accountId": "fb721492-648d-4ce9-87f1-567c11d84dec"
+    "accountId": "8472be3a-f9cd-410e-940e-9a6479941986"
   }
 }]]></component>
   <component name="MavenImportPreferences">
@@ -135,26 +66,26 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RequestMappingsPanelOrder0": "0",
-    "RequestMappingsPanelOrder1": "1",
-    "RequestMappingsPanelWidth0": "75",
-    "RequestMappingsPanelWidth1": "75",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "Spring Boot.KoiVeterinaryServiceCenterApplication.executor": "Run",
-    "git-widget-placeholder": "khiem",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/khiem/IdeaProjects/Group03_SE1872_KoiVeterinaryServiceCenter",
-    "list.type.of.created.stylesheet": "CSS",
-    "node.js.detected.package.eslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "ts.external.directory.path": "C:\\Program Files\\JetBrains\\IntelliJ IDEA 2024.2.1\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;Spring Boot.KoiVeterinaryServiceCenterApplication.executor&quot;: &quot;Run&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;thang-lh&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/khiem/IdeaProjects/Group03_SE1872_KoiVeterinaryServiceCenter&quot;,
+    &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2024.2.1\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\Phuong Nam\Desktop\SWP391\Group03_SE1872_KoiVeterinaryServiceCenter\.idea" />
@@ -178,8 +109,8 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-9823dce3aa75-28b599e66164-intellij.indexing.shared.core-IU-242.22855.74" />
-        <option value="bundled-js-predefined-d6986cc7102b-5c90d61e3bab-JavaScript-IU-242.22855.74" />
+        <option value="bundled-jdk-9823dce3aa75-28b599e66164-intellij.indexing.shared.core-IU-242.23339.11" />
+        <option value="bundled-js-predefined-d6986cc7102b-5c90d61e3bab-JavaScript-IU-242.23339.11" />
       </set>
     </attachedChunks>
   </component>
@@ -196,6 +127,7 @@
       <workItem from="1728691569022" duration="9578000" />
       <workItem from="1728735479717" duration="1615000" />
       <workItem from="1728856959201" duration="2384000" />
+      <workItem from="1729070605128" duration="22000" />
     </task>
     <task id="LOCAL-00001" summary="push all because forgot">
       <option name="closed" value="true" />
