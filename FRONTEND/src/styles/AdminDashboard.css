@@ -1,10 +1,10 @@
 /* AdminDashboard.css */
-body {
-    margin: 0;
-    padding: 0;
-    background-color: #f0f2f5;
-    font-family: 'Arial', sans-serif;
-}
+/*body {*/
+/*    margin: 0;*/
+/*    padding: 0;*/
+/*    background-color: #f0f2f5;*/
+/*    font-family: 'Arial', sans-serif;*/
+/*}*/
 
 .admin-dashboard {
     display: flex;
@@ -79,7 +79,7 @@ body {
     gap: 20px;
 }
 
-.card {
+.card-admin {
     background-color: #ffffff;
     padding: 20px;
     border-radius: 8px;
@@ -88,11 +88,11 @@ body {
     transition: transform 0.3s;
 }
 
-.card:hover {
+.card-admin:hover {
     transform: translateY(-5px);
 }
 
-.card h3 {
+.card-admin h3 {
     color: #8898aa;
     font-size: 14px;
     text-transform: uppercase;
@@ -100,7 +100,7 @@ body {
     font-weight: 600;
 }
 
-.card p {
+.card-admin p {
     color: #32325d;
     font-size: 28px;
     font-weight: bold;

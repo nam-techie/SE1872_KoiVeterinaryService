@@ -63,14 +63,14 @@ function Navbar() {
                 <div className="user-icon-container">
                   <Link to="/booking-service-history">
                     <FaRegFileAlt
-                        size={29}
+                        size={32}
                         className="file-icon"
                         style={{ cursor: 'pointer', marginRight: '25px', color: 'white' }}
                     />
                   </Link>
                   <div onClick={handleUserIconClick} className="user-icon-wrapper">
                     <FaUser
-                        size={29}
+                        size={32}
                         className="user-icon"
                         style={{ cursor: 'pointer' }}
                     />

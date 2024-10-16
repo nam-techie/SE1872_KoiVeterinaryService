@@ -4,7 +4,7 @@
   top: 0;
   left: 0;
   background-color: white;
-  padding: 12px 0;
+  padding: 17px 0;
   display: flex;
   justify-content: space-between; /* Chia đều khoảng cách giữa "Xin chào" và contact-info */
   align-items: center;
@@ -12,12 +12,12 @@
   color: black;
   font-family: Arial, sans-serif;
   z-index: 1001;
-  box-sizing: border-box; /* Đảm bảo padding không làm tăng kích thước */
-
+  box-sizing: border-box;
+  ;
 }
 
 .welcome-tittle {
-  font-size: 15px; /* Cùng kích thước với .contact-info */
+  font-size: 18px; /* Cùng kích thước với .contact-info */
   margin-left: 70px; /* Khoảng cách từ cạnh trái */
   color: black;
   flex-grow: 1; /* Đảm bảo phần này giãn ra nếu cần */
@@ -33,10 +33,11 @@
 
 .navbar {
   position: fixed;
-  height: 50px;
+  height: 70px;
   width: 100%;
-  margin-top: 5px;
-  padding: 10px 20px;
+  padding-right: 20px;
+  padding-top: 35px;   /* Tăng padding trên */
+  padding-bottom: 20px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -47,6 +48,7 @@
   color: white;
   z-index: 1000;
   box-sizing: border-box;
+
 }
 
 .nav-links {

@@ -17,7 +17,7 @@ import ResetPassword from "./public_pages/ResetPassword.jsx";
 import Profile from "./public_pages/Profile.jsx";
 import UpdateProfile from "./public_pages/UpdateProfile.jsx"; 
 
-import AdminDashboard from './public_pages/dashboard/Dashboard.jsx';
+import AdminDashboard from './dashboard/Dashboard.jsx';
 
 
 

@@ -8,7 +8,7 @@ export const useLogin = () => {
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
-    const navigate = useNavigate();
+
 
     const handleSubmit = async (e) => {
         e.preventDefault();  // Ngăn chặn hành vi mặc định của form
@@ -35,7 +35,7 @@ export const useLogin = () => {
             }
         } catch (error) {
             // Hiển thị thông báo lỗi trực tiếp từ backend
-            setError(error.message || 'Đăng nhập thất bại. Vui lòng thử lại.');
+            setError(error.message || 'Đăng nhập thất bại, hãy thử lại');
         } finally {
             setLoading(false);  // Tắt trạng thái loading
         }

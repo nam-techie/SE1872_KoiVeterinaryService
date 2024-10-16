@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
-import axiosInstance from '../services/axiosInstance';
-
+import {axiosInstance} from "../services/apiRequest.js";
 
 
 export const useCustomerInfo = () => {

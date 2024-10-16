@@ -1,5 +1,5 @@
-import React from 'react';
-import '../../styles/AdminDashboard.css';
+
+import '../styles/AdminDashboard.css';
 
 
 const AdminDashboard = () => {
@@ -30,15 +30,15 @@ const AdminDashboard = () => {
                         <h3>Bookings</h3>
                         <p>281</p>
                     </div>
-                    <div className="card">
-                        <h3>Today's Users</h3>
+                    <div className="card-admin">
+                        <h3>Today Users</h3>
                         <p>2,300</p>
                     </div>
-                    <div className="card">
+                    <div className="card-admin">
                         <h3>Revenue</h3>
                         <p>34k</p>
                     </div>
-                    <div className="card">
+                    <div className="card-admin">
                         <h3>Followers</h3>
                         <p>+91</p>
                     </div>
