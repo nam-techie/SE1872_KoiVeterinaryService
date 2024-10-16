@@ -1,10 +1,10 @@
 package com.namtechie.org.controller;
 
 import com.namtechie.org.entity.Account;
-import com.namtechie.org.entity.Customers;
 import com.namtechie.org.model.UpdateDoctorLogin;
 import com.namtechie.org.model.request.*;
 import com.namtechie.org.model.response.AccountResponse;
+import com.namtechie.org.model.response.InfoCustomerResponse;
 import com.namtechie.org.service.AuthenticationService;
 import com.namtechie.org.service.CustomerService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 
 
 @RequestMapping("/api")
@@ -117,15 +116,36 @@ public class AuthenticationController {
 
     @GetMapping("/getInfoCustomer")
     public ResponseEntity getInfoCustomer() {
-        Customers curruntCutomer = customerService.getCustomerById();
-        return ResponseEntity.ok(curruntCutomer);
+        InfoCustomerResponse customerInfo = customerService.getInfoCustomer();
+        return ResponseEntity.ok(customerInfo);
     }
 
     @PutMapping("/updateInfoCustomer")
-    public ResponseEntity updateInfoCustomer(@Valid @RequestBody CustomerInfoRequest customerInfo) {
+    public ResponseEntity updateInfoCustomer(@ModelAttribute CustomerInfoRequest customerInfo) {
         CustomerInfoRequest newUpdate = customerService.updateCustomerInfo(customerInfo);
         return ResponseEntity.ok(newUpdate);
     }
+
+    //khi nao xong thì xử lí đoạn image sau
+//    @PutMapping("/updateInfoCustomer")
+//    public ResponseEntity updateInfoCustomer(
+//            @RequestPart("fullName") String fullName,
+//            @RequestPart("phoneNumber") String phoneNumber,
+//            @RequestPart("address") String address,
+//            @RequestPart(value = "image", required = false) MultipartFile image) {
+//
+//        // Tạo một đối tượng CustomerInfoRequest từ các phần của multipart form
+//        CustomerInfoRequest customerInfo = new CustomerInfoRequest();
+//        customerInfo.setFullName(fullName);
+//        customerInfo.setPhoneNumber(phoneNumber);
+//        customerInfo.setAddress(address);
+//
+//        // Gọi service để xử lý cập nhật
+//        CustomerInfoRequest newUpdate = customerService.updateCustomerInfo(customerInfo);
+//
+//        return ResponseEntity.ok(newUpdate);
+//    }
+
 
 //    @PostMapping("/google-login")
 //    public ResponseEntity<?> googleLogin(@RequestBody Map<String, String> body) {

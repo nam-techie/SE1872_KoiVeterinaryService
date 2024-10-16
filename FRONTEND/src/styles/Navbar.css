@@ -17,9 +17,9 @@
 }
 
 .welcome-tittle {
-  font-size: 20px; /* Cùng kích thước với .contact-info */
+  font-size: 15px; /* Cùng kích thước với .contact-info */
   margin-left: 70px; /* Khoảng cách từ cạnh trái */
-  color: gray;
+  color: black;
   flex-grow: 1; /* Đảm bảo phần này giãn ra nếu cần */
 }
 

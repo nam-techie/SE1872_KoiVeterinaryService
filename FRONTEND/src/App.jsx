@@ -15,6 +15,10 @@ import BookingServiceHistory from "./public_pages/BookingServiceHistory.jsx";
 import VerifyOTP from './public_pages/VerifyOTP.jsx';
 import ResetPassword from "./public_pages/ResetPassword.jsx";
 import Profile from "./public_pages/Profile.jsx";
+import UpdateProfile from "./public_pages/UpdateProfile.jsx"; 
+
+import AdminDashboard from './public_pages/dashboard/Dashboard.jsx';
+
 
 
 function App() {
@@ -38,6 +42,8 @@ function App() {
                         <Route path="/verify-otp" element={<VerifyOTP />} />
                         <Route path="/reset-password" element={<ResetPassword/>}/>
                         <Route path="/profile" element={<Profile/>}/>
+                        <Route path="/update-profile" element={<UpdateProfile/>}/>
+                        <Route path="/dashboard" element={<AdminDashboard/>} />
                     </Routes>
                     <ContactButton/>
                 </Layout>

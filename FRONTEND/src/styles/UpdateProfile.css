@@ -1,0 +1,135 @@
+.update-profile-container {
+    display: flex;
+    max-width: 1000px;
+    width: 90%;
+    margin: 170px auto 10px;
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.1);
+    overflow: hidden;
+}
+
+.update-profile-avatar {
+    flex: 0 0 40%;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #f8f8f8;
+}
+
+.update-profile-avatar img {
+    width: 250px;
+    height: 250px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 5px solid #fff;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+   margin: auto;
+}
+
+.update-profile-avatar input[type="file"] {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+}
+
+.update-profile-info {
+    flex: 1;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+}
+
+.update-profile-info h2 {
+    color: #ff8c00;
+    font-size: 28px;
+    margin-bottom: 30px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.update-info-item {
+    margin-bottom: 20px;
+    font-size: 18px;
+    width: 100%; /* Đảm bảo tất cả các item có chiều rộng 100% */
+}
+
+.update-info-item label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #555;
+}
+
+.update-info-item input,
+.update-info-item textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+    box-sizing: border-box; /* Quan trọng: đảm bảo padding không làm tăng kích thước tổng thể */
+}
+
+.update-info-item textarea {
+    height: 100px;
+    resize: vertical;
+}
+
+/* Thêm style mới cho input type="tel" */
+.update-info-item input[type="tel"] {
+    width: 100%;
+}
+
+.update-button {
+    margin-top: 20px;
+    padding: 12px 24px;
+    background-color: #ff8c00;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 18px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    align-self: flex-start;
+}
+
+.update-button:hover {
+    background-color: #e67e00;
+}
+
+.error-message,
+.success-message {
+    margin-bottom: 20px;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.error-message {
+    background-color: #ffe6e6;
+    color: #d8000c;
+}
+
+.success-message {
+    background-color: #e6ffe6;
+    color: #006400;
+}
+
+@media (max-width: 768px) {
+    .update-profile-container {
+        flex-direction: column;
+        width: 95%;
+    }
+
+    .update-profile-avatar,
+    .update-profile-info {
+        padding: 20px;
+    }
+
+    .update-button {
+        width: 100%;
+    }
+}
