@@ -296,6 +296,10 @@ public class AppointmentService {
         }
     }
 
+    public void testGit(){
+        System.out.println("testgit");
+    }
+
     public Veterian findAvailableVeterian(String bookingDate, String bookingTime) {
         // Lấy danh sách tất cả các bác sĩ
         List<Veterian> allVeterians = veterianRepository.findAll();
