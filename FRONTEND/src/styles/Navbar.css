@@ -2,36 +2,40 @@
   position: fixed;
   width: 100%;
   top: 0;
+  left: 0;
   background-color: white;
-  padding: 12px 0px;
-  margin-left: -20px;
+  padding: 12px 0;
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between; /* Chia đều khoảng cách giữa "Xin chào" và contact-info */
   align-items: center;
   font-size: 14px;
   color: black;
   font-family: Arial, sans-serif;
-  z-index: 1001; /* Đảm bảo top-navbar nằm trên navbar */
+  z-index: 1001;
+  box-sizing: border-box; /* Đảm bảo padding không làm tăng kích thước */
+
+}
+
+.welcome-tittle {
+  font-size: 20px; /* Cùng kích thước với .contact-info */
+  margin-left: 70px; /* Khoảng cách từ cạnh trái */
+  color: gray;
+  flex-grow: 1; /* Đảm bảo phần này giãn ra nếu cần */
 }
 
 .contact-info {
   display: flex;
-  gap: 20px;
-}
-
-.contact-info span {
-  display: flex;
-  align-items: center;
-}
-
-.contact-info span svg {
-  margin-right: 5px; /* Khoảng cách giữa icon và text */
+  gap: 15px;
+  font-size: 15px;
+  padding-right: 20px; /* Khoảng cách từ cạnh phải */
+  white-space: nowrap; /* Giữ các phần tử nằm trên một dòng */
 }
 
 .navbar {
   position: fixed;
   height: 50px;
-  width: calc(100% - 14px); /* Điều chỉnh chiều rộng để phù hợp với padding */
+  width: 100%;
+  margin-top: 5px;
   padding: 10px 20px;
   display: flex;
   justify-content: space-between;
@@ -43,9 +47,7 @@
   color: white;
   z-index: 1000;
   box-sizing: border-box;
-  overflow: hidden;
 }
-
 
 .nav-links {
   list-style: none;
@@ -101,7 +103,9 @@
 }
 
 .register-btn:hover {
-  background-color: #0056b3; /* Màu nền khi hover cho nút Đăng Kí */
+  background-color: orangered;
+  color: white;
+  text-decoration: none/* Màu nền khi hover cho nút Đăng Kí */
 }
 
 .logo img {
@@ -134,13 +138,14 @@
 }
 
 .dropdown-menu {
+  border-radius: 8px;
   display: none;
   position: absolute;
   top: 35px; /* Đặt vị trí xuất hiện ngay bên dưới biểu tượng */
   right: 0;
+  text-align: center;
   background-color: white;
   border: 1px solid #ddd;
-  border-radius: 5px;
   width: 200px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   z-index: 1001;
@@ -181,3 +186,4 @@
   width: 100%;
   text-align: left;
 }
+

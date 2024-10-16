@@ -6,6 +6,7 @@
   height: 100vh;
   background-color: #f8f8f8;
   margin-top: 80px;
+  font-family: Arial, sans-serif
 }
 
 .login-form {
@@ -17,14 +18,13 @@
   width: 100%;
 }
 
-
 h2 {
   text-align: center;
   margin-bottom: 20px;
 }
 
 .form-group {
-  margin-bottom: 15px;
+  margin-bottom: 20px; /* Tăng khoảng cách giữa các form-group */
 }
 
 .form-group label {
@@ -33,19 +33,13 @@ h2 {
 }
 
 .form-group input {
-  border: 2px solid #000000;    /* Đặt viền dày 2px màu đen */
-  padding: 10px;                /* Khoảng cách bên trong input */
-  border-radius: 5px;           /* Làm bo tròn góc */
-  outline: none;                /* Xóa khung viền mặc định khi focus */
-}
-
-
-.form-group input {
   width: 100%;
-  padding: 10px;
+  padding: 12px; /* Tăng khoảng cách padding cho đều */
   border-radius: 4px;
   border: 1px solid #ddd;
   font-size: 16px;
+  box-sizing: border-box; /* Đảm bảo padding không ảnh hưởng đến kích thước */
+  margin-top: 10px;
 }
 
 .forgot-password {
@@ -56,12 +50,13 @@ h2 {
 .login-button {
   background-color: #f58220;
   color: white;
-  padding: 10px;
+  padding: 12px; /* Đồng nhất padding với input */
   border: none;
   border-radius: 4px;
   width: 100%;
   font-size: 16px;
   cursor: pointer;
+  margin-top: 10px; /* Thêm khoảng cách giữa input và nút */
 }
 
 .login-button:hover {
@@ -79,28 +74,23 @@ h2 {
   color: #999;
 }
 
-.google-login {
-  display: flex;
-  justify-content: center;
-  margin-top: 10px;
-}
 
 .google-button {
+  display: flex; /* Sử dụng Flexbox để căn giữa nội dung */
+  justify-content: center; /* Căn giữa theo chiều ngang */
+  align-items: center; /* Căn giữa theo chiều dọc */
   background-color: white;
   border: 1px solid #ddd;
-  padding: 10px;
   border-radius: 4px;
   cursor: pointer;
-  width: 100%;
+  width: 100%; /* Đảm bảo nút có chiều rộng đầy đủ */
   font-size: 16px;
-  text-align: center; /* Canh giữa nội dung trong nút */
+  padding: 12px; /* Đảm bảo padding đều cho nút */
+  transition: background-color 0.3s; /* Hiệu ứng chuyển tiếp màu nền */
 }
 
-.google-button img {
-  width: 40px;
-  height: 20px;
-  vertical-align: middle; /* Canh giữa hình ảnh */
-  margin-right: 10px; /* Tạo khoảng cách giữa ảnh và text */
+.google-button:hover {
+  background-color: #f1f1f1; /* Màu nền khi hover */
 }
 
 .error-message {

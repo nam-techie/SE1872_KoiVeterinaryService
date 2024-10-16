@@ -1,10 +1,10 @@
 
-import { useServiceData } from '../hooks/useServiceData.js';
-import Card from './Card.jsx';
+import { useServiceBookingData } from '../hooks/useService.js';
+import {BookingHistoryDataCard} from '../components/Card.jsx';
 import '../styles/BookingServiceHistory.css';
 
 function BookingServiceHistory() {
-    const { services, loading, error } = useServiceData();
+    const { services, loading, error } = useServiceBookingData();
 
     if (loading) {
         return <div>Loading...</div>;
@@ -17,7 +17,7 @@ function BookingServiceHistory() {
     return (
         <>
             {services.map((service) => (
-                <Card
+                <BookingHistoryDataCard
                     key={service.id}
                     serviceName={service.serviceName}
                     description={service.description}

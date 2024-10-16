@@ -1,28 +1,16 @@
 import axios from 'axios';
 
-export const sendResetEmail = async (email) => {
-    try {
-        const response = await axios.post('http://localhost:8080/api/auth/send-reset-email', { email });
-        return response.data;
-    } catch (error) {
-        throw new Error('Failed to send reset email.');
-    }
+export const forgotPassword = (email) => {
+    return axios.post('http://localhost:8080/api/forgot-password', {email});
 };
 
-export const verifyOTP = async (otp, email) => {
-    try {
-        const response = await axios.post('http://localhost:8080/api/auth/verify-otp', { otp, email });
-        return response.data;
-    } catch (error) {
-        throw new Error('Failed to verify OTP.');
-    }
+export const validateOtp = (email, otp) => {
+    return axios.post('http://localhost:8080/api/validate-otp', null, {
+        params: {email, otp}
+    });
+
 };
 
-export const resetPassword = async (password, email) => {
-    try {
-        const response = await axios.post('http://localhost:8080/api/auth/reset-password', { password, email });
-        return response.data;
-    } catch (error) {
-        throw new Error('Failed to reset password.');
-    }
+export const resetPassword = (data) => {
+    return axios.post('http://localhost:8080/api/reset-password', data);
 };
