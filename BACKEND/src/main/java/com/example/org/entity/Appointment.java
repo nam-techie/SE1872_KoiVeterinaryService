@@ -25,7 +25,6 @@ public class Appointment {
     @ManyToOne
     @JoinColumn(name = "veterian_id", nullable = false)
     @JsonIgnoreProperties({"appointment"})
-    @JsonIgnore
     private Veterian veterian;
 
     @ManyToOne

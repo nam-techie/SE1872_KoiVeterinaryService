@@ -209,6 +209,9 @@ public class AppointmentService {
             Account account = (Account) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             appointment.setCustomer(account.getCustomer());
 
+            Customer customer = account.getCustomer();
+            customer.setPhone(appointmentRequest.getPhone()); // lưu số đth khách hàng
+
 
 
 
@@ -216,7 +219,6 @@ public class AppointmentService {
             ServiceType serviceType = serviceTypeRepository.findById(appointmentRequest.getServiceTypeId());
             appointment.setServiceType(serviceType);
 
-            // Step 4: Tìm Zone từ zoneName nếu có
 
 
 
@@ -225,6 +227,10 @@ public class AppointmentService {
             appointmentDetail.setAppointment(appointment);
             appointmentDetail.setAddress(appointmentRequest.getAddress());
 
+            Zone zone = null;
+            if(appointmentRequest.getZoneId() != 0){
+                zone = zoneRepository.findById(appointmentRequest.getZoneId());
+            }
 
 
             Veterian veterian = null;
@@ -234,6 +240,8 @@ public class AppointmentService {
 
             //khám tại trung tam
             if(appointmentRequest.getServiceTypeId() == 3) {
+                Zone centerZone = zoneRepository.findById(1);
+                appointment.setZone(centerZone);
                 //khách hàng chọn bác sĩ
                 if(veterian != null) {
                     appointment.setVeterianAssigned(true); // đánh dấu khách hàng có chọn bác sĩ
@@ -252,29 +260,28 @@ public class AppointmentService {
 
             }else if(appointmentRequest.getServiceTypeId() == 2 || appointmentRequest.getServiceTypeId() == 4) { // khám tại nhà
                 if(veterian == null) {
-
                     veterian = findAvailableVeterian(String.valueOf(appointmentRequest.getBookingDate()), String.valueOf(appointmentRequest.getBookingTime()));
                     appointment.setVeterianAssigned(false);
                     appointment.setVeterian(veterian);
                     appointmentDetail.setAppointmentBookingDate(appointmentRequest.getBookingDate());
                     appointmentDetail.setAppointmentBookingTime(appointmentRequest.getBookingTime());
-
+                    appointment.setZone(zone);
                 }
-            }else{
+            }else if(appointmentRequest.getServiceTypeId() == 1) { // dịch vụ tư vấn
                 if(veterian == null) {
                     Time appointmentTime = appointmentRequest.getBookingTime();
                     Time updateAppointmentTime = new Time(appointmentTime.getTime() + 15 * 60 * 1000); // 15 phút sau
-                    appointmentDetail.setAppointmentBookingTime(updateAppointmentTime);
+                    System.out.println("15Minutes: " + updateAppointmentTime);
                     veterian = findAvailableVeterian(String.valueOf(appointmentRequest.getBookingDate()), String.valueOf(updateAppointmentTime));
                     appointment.setVeterianAssigned(false);
                     appointment.setVeterian(veterian);
-                    Zone onlineZone = new Zone();
-                    onlineZone.setId(15);
+                    Zone onlineZone = zoneRepository.findById(15);
                     appointment.setZone(onlineZone);
+                    appointmentDetail.setAppointmentBookingDate(appointmentRequest.getBookingDate());
+                    appointmentDetail.setAppointmentBookingTime(updateAppointmentTime);
                 }
             }
-            Zone zone = zoneRepository.findById(appointmentRequest.getZoneId());
-            appointment.setZone(zone);
+
             appointmentDetail.setDescriptions(appointmentRequest.getDescription());
             appointment.setAppointmentDetail(appointmentDetail);
 
@@ -296,9 +303,6 @@ public class AppointmentService {
         }
     }
 
-    public void testGit(){
-        System.out.println("testgit");
-    }
 
     public Veterian findAvailableVeterian(String bookingDate, String bookingTime) {
         // Lấy danh sách tất cả các bác sĩ
@@ -317,7 +321,8 @@ public class AppointmentService {
             List<ScheduleRequest> schedulesForDay = freeSchedules.get(bookingDateSQL);
             System.out.println("12345" + schedulesForDay);
             for(ScheduleRequest schedule : schedulesForDay) {
-                if(schedule.getDate().equals(bookingDateSQL) && schedule.getStartTime().equals(Time.valueOf(bookingTime)) && schedule.isAvailable()) {
+                if((schedule.getDate().equals(bookingDateSQL) && schedule.getStartTime().equals(Time.valueOf(bookingTime)) && schedule.isAvailable()) ||
+                        (schedule.getDate().equals(bookingDateSQL) && Time.valueOf(bookingTime).after(schedule.getStartTime()) && Time.valueOf(bookingTime).before(schedule.getEndTime()) && schedule.isAvailable())) {
                     return v;
                 }
 
