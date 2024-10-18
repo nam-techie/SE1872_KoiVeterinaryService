@@ -1,5 +1,5 @@
 // eslint-disable-next-line no-unused-vars
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FaEdit, FaSave, FaEye, FaEyeSlash } from 'react-icons/fa';
 import '../admin_pages/styles/AdminProfile.css';
 import { useAdminInfo } from './hooks/useAdminInfo';
@@ -9,23 +9,38 @@ const AdminProfile = () => {
     const [isEditing, setIsEditing] = useState(false);
     const [editedAdmin, setEditedAdmin] = useState({});
     const [showPassword, setShowPassword] = useState(false);
-    const [updateError, setUpdateError] = useState(null);
-    const [updateSuccess, setUpdateSuccess] = useState(false);
+    const [updateMessage, setUpdateMessage] = useState({ type: '', content: '' });
+
+    useEffect(() => {
+        if (admin) {
+            setEditedAdmin(admin);
+        }
+    }, [admin]);
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setUpdateMessage({ type: '', content: '' });
+        }, 3000);
+        return () => clearTimeout(timer);
+    }, [updateMessage]);
 
     const handleEdit = () => {
-        setEditedAdmin(admin);
         setIsEditing(true);
+        setUpdateMessage({ type: '', content: '' });
     };
 
     const handleSave = async () => {
         try {
-            await updateAdminInfo(editedAdmin);
+            const updatedAdmin = await updateAdminInfo(editedAdmin);
             setIsEditing(false);
-            setUpdateSuccess(true);
-            setTimeout(() => setUpdateSuccess(false), 3000);
+            setUpdateMessage({ type: 'success', content: 'Cập nhật thông tin thành công!' });
+            setEditedAdmin(updatedAdmin);
         } catch (err) {
             console.error("Lỗi khi cập nhật thông tin:", err);
-            setUpdateError('Cập nhật thông tin thất bại. Vui lòng thử lại.');
+            setUpdateMessage({ 
+                type: 'error', 
+                content: err.response?.data?.message || 'Cập nhật thông tin thất bại. Vui lòng thử lại.' 
+            });
         }
     };
 
@@ -41,61 +56,77 @@ const AdminProfile = () => {
         setShowPassword(!showPassword);
     };
 
-    if (loading) {
-        return <div className="admin-profile">Đang tải thông tin...</div>;
-    }
-
-    if (error) {
-        return <div className="admin-profile">Lỗi: {error}</div>;
-    }
+    if (loading) return <div className="admin-profile">Đang tải thông tin...</div>;
+    if (error) return <div className="admin-profile">Lỗi: {error}</div>;
 
     return (
         <div className="admin-profile">
             <h2>Thông tin Admin</h2>
-            <div className="profile-content">
-                <div className="profile-details">
-                    {['username', 'password', 'email'].map((key) => (
-                        <div key={key} className="profile-item">
-                            <label>{key.charAt(0).toUpperCase() + key.slice(1)}:</label>
-                            {isEditing ? (
-                                key === 'password' ? (
-                                    <div className="password-input">
-                                        <input
-                                            type={showPassword ? 'text' : 'password'}
-                                            name={key}
-                                            value={editedAdmin[key] || ''}
-                                            onChange={handleChange}
-                                        />
-                                        <button type="button" onClick={togglePasswordVisibility}>
-                                            {showPassword ? <FaEyeSlash /> : <FaEye />}
-                                        </button>
-                                    </div>
-                                ) : (
-                                    <input
-                                        type={key === 'email' ? 'email' : 'text'}
-                                        name={key}
-                                        value={editedAdmin[key] || ''}
-                                        onChange={handleChange}
-                                    />
-                                )
-                            ) : (
-                                <span>{key === 'password' ? '••••••••' : admin[key] || 'Trống'}</span>
-                            )}
+            <div className="profile-info">
+                {isEditing ? (
+                    <form className="profile-form">
+                        <div className="form-group">
+                            <label htmlFor="username">Tên đăng nhập:</label>
+                            <input
+                                type="text"
+                                id="username"
+                                name="username"
+                                value={editedAdmin.username || ''}
+                                onChange={handleChange}
+                            />
                         </div>
-                    ))}
-                </div>
+                        <div className="form-group">
+                            <label htmlFor="password">Mật khẩu:</label>
+                            <div className="password-input">
+                                <input
+                                    type={showPassword ? 'text' : 'password'}
+                                    id="password"
+                                    name="password"
+                                    value={editedAdmin.password || ''}
+                                    onChange={handleChange}
+                                />
+                                <button 
+                                    type="button" 
+                                    onClick={togglePasswordVisibility} 
+                                    className="toggle-password"
+                                    aria-label={showPassword ? "Ẩn mật khẩu" : "Hiện mật khẩu"}
+                                >
+                                    {showPassword ? <FaEyeSlash /> : <FaEye />}
+                                </button>
+                            </div>
+                        </div>
+                        <div className="form-group">
+                            <label htmlFor="email">Email:</label>
+                            <input
+                                type="email"
+                                id="email"
+                                name="email"
+                                value={editedAdmin.email || ''}
+                                onChange={handleChange}
+                            />
+                        </div>
+                    </form>
+                ) : (
+                    <div className="profile-details">
+                        <p><strong>Tên đăng nhập:</strong> {admin.username}</p>
+                        <p><strong>Email:</strong> {admin.email}</p>
+                    </div>
+                )}
+                {updateMessage.content && (
+                    <div className={`message ${updateMessage.type}`}>
+                        {updateMessage.content}
+                    </div>
+                )}
+                {isEditing ? (
+                    <button type="button" className="save-button" onClick={handleSave}>
+                        <FaSave /> Lưu thay đổi
+                    </button>
+                ) : (
+                    <button type="button" className="edit-button" onClick={handleEdit}>
+                        <FaEdit /> Chỉnh sửa thông tin
+                    </button>
+                )}
             </div>
-            {updateError && <div className="error-message">{updateError}</div>}
-            {updateSuccess && <div className="success-message">Cập nhật thông tin thành công!</div>}
-            {isEditing ? (
-                <button className="save-button" onClick={handleSave}>
-                    <FaSave /> Lưu thay đổi
-                </button>
-            ) : (
-                <button className="edit-button" onClick={handleEdit}>
-                    <FaEdit /> Chỉnh sửa thông tin
-                </button>
-            )}
         </div>
     );
 };

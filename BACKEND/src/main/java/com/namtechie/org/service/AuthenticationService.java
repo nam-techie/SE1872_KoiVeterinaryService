@@ -405,6 +405,18 @@ public class AuthenticationService implements UserDetailsService {
             // Lấy tài khoản hiện tại của người dùng đã xác thực
             Account currentAccount = getCurrentAccount();
 
+            // Kiểm tra trùng lặp username, nếu username mới đã tồn tại và không phải của tài khoản hiện tại
+            if (!Objects.equals(currentAccount.getUsername(), adminInfoRequest.getUsername()) &&
+                    accountRepository.existsByUsername(adminInfoRequest.getUsername())) {
+                throw new DuplicateEntity("Username đã tồn tại, vui lòng chọn username khác!");
+            }
+
+            // Kiểm tra trùng lặp email, nếu email mới đã tồn tại và không phải của tài khoản hiện tại
+            if (!Objects.equals(currentAccount.getEmail(), adminInfoRequest.getEmail()) &&
+                    accountRepository.existsByEmail(adminInfoRequest.getEmail())) {
+                throw new DuplicateEntity("Email đã tồn tại, vui lòng chọn email khác!");
+            }
+
             // So sánh và cập nhật username
             if (!Objects.equals(currentAccount.getUsername(), adminInfoRequest.getUsername())) {
                 currentAccount.setUsername(adminInfoRequest.getUsername());
@@ -430,11 +442,15 @@ public class AuthenticationService implements UserDetailsService {
             // Trả về đối tượng adminInfoRequest đã cập nhật
             return modelMapper.map(currentAccount, AdminInfoRequest.class);
 
+        } catch (DuplicateEntity e) {
+            // Bắt lỗi trùng lặp username hoặc email
+            throw e;
         } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException("Đã xảy ra lỗi trong quá trình cập nhật thông tin admin.");
         }
     }
+
 
 
 
