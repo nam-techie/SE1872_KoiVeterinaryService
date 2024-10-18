@@ -53,5 +53,8 @@ public class Appointment {
     @Column(nullable = false)
     private boolean isCancel;
 
+    @OneToMany(mappedBy = "appointment", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JsonManagedReference
+    private List<FeedBack> feedBack;
 
 }
