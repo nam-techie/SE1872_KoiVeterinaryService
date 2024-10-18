@@ -25,16 +25,4 @@ public class PaymentController {
             return ResponseEntity.status(500).body("Đã xảy ra lỗi khi tạo URL thanh toán.");
         }
     }
-
-
-
-
-
-
-
-    @GetMapping("/crea/{appointmentId}")
-    public ResponseEntity abc(@PathVariable Long appointmentId) {
-        System.out.println("hello" + appointmentId);
-        return ResponseEntity.ok(paymentService.fiPayment(appointmentId));
-    }
 }

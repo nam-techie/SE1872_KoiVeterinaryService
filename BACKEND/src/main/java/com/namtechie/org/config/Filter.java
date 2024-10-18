@@ -55,8 +55,7 @@ public class Filter extends OncePerRequestFilter {
             "/api/getFreeSchedule",
             "/api/getFreeScheduleWithTime",
             "/api/testFreeScheduleWithTime",
-            "/api/payment/create-payment-url/{appointmentId}",
-            "/api/payment/crea/{appointmentId}"
+            "/api/payment/create-payment-url/{appointmentId}"
     );
 
     public boolean checkIsPublicAPI(String uri) {

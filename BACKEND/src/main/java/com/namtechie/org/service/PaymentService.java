@@ -21,9 +21,6 @@ public class PaymentService {
     @Autowired
     private PaymentRepository paymentRepository;
 
-    public Payment fiPayment(Long appointmentID) {
-        return paymentRepository.findByAppointmentId(appointmentID);
-    }
 
     // Phương thức createUrl với tham số appointmentId
     public String createUrl(Long appointmentId) throws Exception {

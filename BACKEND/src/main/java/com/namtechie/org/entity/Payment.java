@@ -22,7 +22,7 @@ public class Payment {
 
     @OneToMany(mappedBy = "payment", cascade = CascadeType.ALL)
     @JsonManagedReference
-    private List<Transaction> transaction;
+    private List<TransactionRecords> transactionRecords;
 
     private long totalFee;
 

@@ -22,7 +22,7 @@ public class AppointmentStatus {  // Đã sửa tên class
 
     @OneToOne(mappedBy = "appointmentStatus", cascade = CascadeType.ALL)  // Đảm bảo tên thuộc tính đúng trong class Payment
     @JsonManagedReference
-    private Transaction transaction;
+    private TransactionRecords transactionRecords;
 
     private String status;
     private Timestamp createDate;
