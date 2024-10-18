@@ -84,7 +84,7 @@ const AccountDashboard = () => {
                             <th onClick={() => handleSort('email')}>Email</th>
                             <th onClick={() => handleSort('role')}>Vai trò</th>
                             <th onClick={() => handleSort('created_at')}>Ngày tạo</th>
-                            <th onClick={() => handleSort('is_deleted')}>Trạng thái</th>
+                            <th onClick={() => handleSort('deleted')}>Trạng thái</th>
                             <th>Hành động</th>
                         </tr>
                     </thead>
@@ -101,8 +101,8 @@ const AccountDashboard = () => {
                                 <td>{account.role}</td>
                                 <td>{account.createdAt}</td>
                                 <td>
-                                    <span className={`status-badge ${account.isDeleted ? 'inactive' : 'active'}`}>
-                                        {account.status}
+                                    <span className={`status-badge ${account.deleted ? 'inactive' : 'active'}`}>
+                                        {account.deleted ? 'Đã bị vô hiệu hóa' : 'Đang sử dụng'}
                                     </span>
                                 </td>
                                 <td>

@@ -74,6 +74,7 @@ public class AuthenticationService implements UserDetailsService {
         try {
             // Auto set role to CUSTOMER
             account.setRole(Role.CUSTOMER.name());
+            account.setDeleted(false);
 
             // Mã hóa mật khẩu
             String originPassword = account.getPassword();
@@ -127,11 +128,6 @@ public class AuthenticationService implements UserDetailsService {
             throw new RuntimeException("Đã xảy ra lỗi trong quá trình đăng nhập, vui lòng thử lại sau.");
         }
     }
-
-//    public List<Account> getAllAccount() {
-//        List<Account> accounts = accountRepository.findAll();
-//        return accounts;
-//    }
 
 
     @Override

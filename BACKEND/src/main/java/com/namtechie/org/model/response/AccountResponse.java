@@ -9,4 +9,5 @@ public class AccountResponse {
     String email;
     String role;
     String token;
+    boolean isDeleted;
 }

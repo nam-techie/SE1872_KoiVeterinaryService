@@ -45,8 +45,7 @@ public class Account implements UserDetails {
     @Column(name = "created_at", nullable = false, updatable = false)
     private Date createdAt;
 
-    @JsonIgnore // Để nó k trả về và bắt mình nhập thông tin này
-    boolean isDeleted = false;
+    boolean isDeleted;
 
 
     @Override
