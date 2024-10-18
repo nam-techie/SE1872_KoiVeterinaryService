@@ -42,8 +42,8 @@ public class Account implements UserDetails {
     private String role;
 
     @CreationTimestamp
-    @Column(nullable = false, updatable = false)
-    private Date created_at;
+    @Column(name = "created_at", nullable = false, updatable = false)
+    private Date createdAt;
 
     @JsonIgnore // Để nó k trả về và bắt mình nhập thông tin này
     boolean isDeleted = false;

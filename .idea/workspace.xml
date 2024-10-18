@@ -4,12 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d2cec660-9bd4-4c6d-9559-8cd458d3cf90" name="Changes" comment="done demo dashboard and view profile and update profile for admin">
+    <list default="true" id="d2cec660-9bd4-4c6d-9559-8cd458d3cf90" name="Changes" comment="search account and sort them">
+      <change afterPath="$PROJECT_DIR$/FRONTEND/src/admin_pages/AccountDashboard.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FRONTEND/src/admin_pages/hooks/useAccountInfo.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FRONTEND/src/admin_pages/styles/AccountDashboard.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/controller/AdminController.java" beforeDir="false" afterPath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/controller/AdminController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/entity/Account.java" beforeDir="false" afterPath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/entity/Account.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/service/AuthenticationService.java" beforeDir="false" afterPath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/service/AuthenticationService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FRONTEND/src/admin_pages/AdminProfile.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/FRONTEND/src/admin_pages/AdminProfile.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FRONTEND/src/admin_pages/styles/AdminProfile.css" beforeDir="false" afterPath="$PROJECT_DIR$/FRONTEND/src/admin_pages/styles/AdminProfile.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FRONTEND/src/hooks/useCustomerInfo.js" beforeDir="false" afterPath="$PROJECT_DIR$/FRONTEND/src/hooks/useCustomerInfo.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FRONTEND/src/admin_pages/Dashboard.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/FRONTEND/src/admin_pages/Dashboard.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -73,26 +76,27 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
-    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
-    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
-    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
-    &quot;Spring Boot.KoiVeterinaryServiceCenterApplication.executor&quot;: &quot;Run&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;nam&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/Phuong Nam/Desktop/SWP391/Group03_SE1872_KoiVeterinaryServiceCenter/.idea&quot;,
-    &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;advanced.settings&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2024.2.1\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_MARK_IGNORED_FILES_AS_EXCLUDED": "true",
+    "RequestMappingsPanelOrder0": "0",
+    "RequestMappingsPanelOrder1": "1",
+    "RequestMappingsPanelWidth0": "75",
+    "RequestMappingsPanelWidth1": "75",
+    "Spring Boot.KoiVeterinaryServiceCenterApplication.executor": "Run",
+    "git-widget-placeholder": "nam",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/Phuong Nam/Desktop/SWP391/Group03_SE1872_KoiVeterinaryServiceCenter/.idea",
+    "list.type.of.created.stylesheet": "CSS",
+    "node.js.detected.package.eslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "advanced.settings",
+    "ts.external.directory.path": "C:\\Program Files\\JetBrains\\IntelliJ IDEA 2024.2.1\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\Phuong Nam\Desktop\SWP391\Group03_SE1872_KoiVeterinaryServiceCenter\.idea" />
@@ -138,7 +142,7 @@
       <workItem from="1728735479717" duration="7657000" />
       <workItem from="1728902718685" duration="1396000" />
       <workItem from="1729218095908" duration="1953000" />
-      <workItem from="1729256619124" duration="509000" />
+      <workItem from="1729256619124" duration="8160000" />
     </task>
     <task id="LOCAL-00001" summary="push all because forgot">
       <option name="closed" value="true" />
@@ -196,7 +200,15 @@
       <option name="project" value="LOCAL" />
       <updated>1729103147148</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="update new of clas">
+      <option name="closed" value="true" />
+      <created>1729257213237</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1729257213237</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -222,6 +234,8 @@
     <MESSAGE value="done update profile" />
     <MESSAGE value="update view css" />
     <MESSAGE value="done demo dashboard and view profile and update profile for admin" />
-    <option name="LAST_COMMIT_MESSAGE" value="done demo dashboard and view profile and update profile for admin" />
+    <MESSAGE value="update new of clas" />
+    <MESSAGE value="search account and sort them" />
+    <option name="LAST_COMMIT_MESSAGE" value="search account and sort them" />
   </component>
 </project>

@@ -4,10 +4,9 @@ import com.namtechie.org.entity.Account;
 import com.namtechie.org.entity.Customers;
 import com.namtechie.org.entity.Doctor;
 import com.namtechie.org.model.request.AdminInfoRequest;
-import com.namtechie.org.model.request.CustomerInfoRequest;
+
 import com.namtechie.org.model.response.AccountResponse;
 import com.namtechie.org.model.request.VeterinaryRequest;
-import com.namtechie.org.model.response.InfoCustomerResponse;
 import com.namtechie.org.service.AuthenticationService;
 import com.namtechie.org.service.CustomerService;
 import com.namtechie.org.service.DoctorService;
@@ -52,9 +51,11 @@ public class AdminController {
     }
 
     @GetMapping("/listAccount")
-    public ResponseEntity get() {
+    public List<Account> getAllAccount() {
         List<Account> accounts = authenticationService.getAllAccount();
-        return ResponseEntity.ok(accounts);
+        System.out.println("Số lượng tài khoản: " + accounts.size());
+        accounts.forEach(account -> System.out.println(account.toString()));
+        return accounts;
     }
 
     @DeleteMapping("/deleteAccount")
@@ -64,7 +65,7 @@ public class AdminController {
     }
 
     @GetMapping("/listAllVeterinary")
-    public ResponseEntity getAllDoctor(){
+    public ResponseEntity getAllDoctor() {
         List<Doctor> doctors = doctorService.getAllDoctors();
         return ResponseEntity.ok(doctors);
     }
@@ -90,11 +91,9 @@ public class AdminController {
     }
 
     @GetMapping("/listInfoCustomer")
-    public List<Customers> getAllInfoCustomer(){
+    public List<Customers> getAllInfoCustomer() {
         return customerService.getAllCustomers();
     }
-
-
 
 
 }

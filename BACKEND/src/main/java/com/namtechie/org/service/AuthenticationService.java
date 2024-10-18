@@ -210,7 +210,7 @@ public class AuthenticationService implements UserDetailsService {
     }
 
     public List<Account> getAllAccount() {
-        List<Account> accounts = accountRepository.findAccountByIsDeletedFalse();
+        List<Account> accounts = accountRepository.findAll();
         return accounts;
     }
 
