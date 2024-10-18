@@ -1,17 +1,43 @@
-import "../styles/BookingServiceHistory.css";
+import {useState} from "react";
 
-export function BookingHistoryDataCard({ serviceName, description, image, date, time, status }) {
+export function BookingHistoryDataCard({ serviceName, description, selectedDate, selectedTime, status, selectedDoctor }) {
+    const [showDetails, setShowDetails] = useState(false);
+
+    const handleShowDetails = () => {
+        setShowDetails(!showDetails);
+    };
+
     return (
         <div className="card-booking-service">
-            <img className="card-image-booking-service" src={image} alt={serviceName} />
             <h2 className="card-title-booking-service">{serviceName}</h2>
-            <p className="card-text-booking-service">{description}</p>
-            <p className="card-text-booking-service">Ngày: {date}</p>
-            <p className="card-text-booking-service">Thời gian: {time}</p>
-            <p className="card-text-booking-service">Trạng thái: {status}</p>
+            <p className="card-text-booking-service">Bác sĩ: {selectedDoctor || 'Không có'}</p> {/* Hiển thị bác sĩ nếu có */}
+            <p className="card-text-booking-service">Ngày: {selectedDate}</p>
+            {showDetails && (
+                <div className="card-details-booking-service">
+                    <p className="card-text-booking-service">Mô tả: {description}</p>
+                    <p className="card-text-booking-service">Thời gian: {selectedTime}</p>
+                    <p className="card-text-booking-service">Trạng thái: {status}</p>
+                </div>
+            )}
+
+            {/* Nút Chi tiết để hiện thông tin đầy đủ */}
+            <div className="card-actions-booking-service">
+                <button onClick={handleShowDetails} className="btn-card-bookinghistory btn-blue-bookinghistory">
+                    {showDetails ? 'Ẩn chi tiết' : 'Chi tiết'}
+                </button>
+                <button
+                    className={`btn-card-bookinghistory ${status === 'doctor confirmed' ? 'btn-green-bookinghistory' : 'btn-gray-bookinghistory'}`}
+                    disabled={status !== 'doctor confirmed'}
+                >
+                    Thanh toán
+                </button>
+                <button className="btn-card-bookinghistory btn-red-bookinghistory">Hủy lịch</button>
+            </div>
         </div>
     );
 }
+
+
 
 export function VeterianCard({ fullname, sex, phone, experience, profilePic }) {
     return (

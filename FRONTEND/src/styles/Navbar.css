@@ -18,9 +18,10 @@
 
 .welcome-tittle {
   font-size: 18px; /* Cùng kích thước với .contact-info */
-  margin-left: 70px; /* Khoảng cách từ cạnh trái */
-  color: black;
+  margin-left: 50px; /* Khoảng cách từ cạnh trái */
+  color: dimgray;
   flex-grow: 1; /* Đảm bảo phần này giãn ra nếu cần */
+  font-weight: bold;
 }
 
 .contact-info {
@@ -187,5 +188,82 @@
   color: gray;
   width: 100%;
   text-align: left;
+}
+
+.doctor-sidebar {
+  background-color: #333;
+  color: white;
+  width: 200px;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: -200px; /* Ẩn sidebar mặc định */
+  padding-top: 20px;
+  transition: 0.3s; /* Thêm hiệu ứng chuyển đổi */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Khi sidebar mở ra */
+.doctor-sidebar.open {
+  left: 0; /* Di chuyển sidebar để hiển thị */
+}
+
+.doctor-sidebar .hamburger {
+  cursor: pointer;
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  width: 30px;
+  height: 30px;
+}
+
+.doctor-sidebar .hamburger .bar {
+  width: 100%;
+  height: 4px;
+  background-color: white;
+  margin: 3px 0;
+}
+
+.doctor-sidebar .logo {
+  margin-bottom: 20px;
+}
+
+.doctor-sidebar .nav-links {
+  list-style-type: none;
+  padding: 0;
+  width: 100%;
+}
+
+.doctor-sidebar .nav-links li {
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.doctor-sidebar .nav-links li a {
+  color: white;
+  text-decoration: none;
+  font-size: 16px;
+  display: block;
+  padding: 10px 0;
+  width: 100%;
+  transition: background-color 0.3s;
+}
+
+.doctor-sidebar .nav-links li a:hover {
+  background-color: #555;
+}
+
+.doctor-sidebar .auth-buttons {
+  margin-top: auto;
+}
+
+.doctor-sidebar .user-icon-wrapper {
+  cursor: pointer;
 }
 

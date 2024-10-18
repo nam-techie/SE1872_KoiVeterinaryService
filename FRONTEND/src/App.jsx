@@ -18,6 +18,7 @@ import Profile from "./public_pages/Profile.jsx";
 import UpdateProfile from "./public_pages/UpdateProfile.jsx"; 
 
 import AdminDashboard from './dashboard/Dashboard.jsx';
+import VeterianDashBoard from "./veterian_pages/VeterianDashBoard.jsx";
 
 
 
@@ -44,6 +45,7 @@ function App() {
                         <Route path="/profile" element={<Profile/>}/>
                         <Route path="/update-profile" element={<UpdateProfile/>}/>
                         <Route path="/dashboard" element={<AdminDashboard/>} />
+                        i<Route path="/doctor-dashboard" element={<VeterianDashBoard/>}/>
                     </Routes>
                     <ContactButton/>
                 </Layout>

@@ -1,0 +1,14 @@
+.doctor-dashboard-container{
+    display: flex;
+    height: 100vh;
+    padding-top: 120px;
+}
+
+
+.doctor-veterian-information {
+    flex: 1; /* Chiếm 25% */
+}
+
+.doctor-schedule-information {
+    flex: 3; /* Chiếm 75% */
+}

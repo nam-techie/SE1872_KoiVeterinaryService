@@ -37,7 +37,8 @@ function Layout({ children }) {
         '/bookingpage',
         '/booking-service-history',
         '/profile',
-        '/update-profile'
+        '/update-profile',
+        '/doctor-dashboard'
     ];
 
     return (
