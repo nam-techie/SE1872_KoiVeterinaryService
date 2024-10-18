@@ -6,7 +6,7 @@ import com.namtechie.org.entity.Doctor;
 import com.namtechie.org.model.response.AccountResponse;
 import com.namtechie.org.model.request.VeterinaryRequest;
 import com.namtechie.org.service.AuthenticationService;
-import com.namtechie.org.service.CustomerService;
+//import com.namtechie.org.service.CustomerService;
 import com.namtechie.org.service.DoctorService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
@@ -29,8 +29,8 @@ public class AdminController {
     @Autowired
     DoctorService doctorService;
 
-    @Autowired
-    CustomerService customerService;
+//    @Autowired
+//    CustomerService customerService;
 
     //APi down is provide for ADMIN
     @PutMapping("/setAccountVeterinary/{email}")
@@ -69,11 +69,11 @@ public class AdminController {
         return ResponseEntity.ok("Xóa thông tin bác sĩ thành công!");
     }
 
-    @GetMapping("/listInfoCustomer")
-    public List<Customers> getAllInfoCustomer(){
-        return customerService.getAllCustomers();
-    }
-
+//    @GetMapping("/listInfoCustomer")
+//    public List<Customers> getAllInfoCustomer(){
+//        return customerService.getAllCustomers();
+//    }
+//
 
 
 

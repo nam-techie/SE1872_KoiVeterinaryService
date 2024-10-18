@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { VeterianScheduleHome, VeterianScheduleCenterByID, VeterianScheduleCenter } from '../services/apiVeterian.js';
 import {useNavigate} from "react-router-dom";
+import {postBookingData} from "../services/apiService.js";
 
 export default function useBookingPage() {
     const [serviceType, setServiceType] = useState('');  // Loại dịch vụ
@@ -23,6 +24,7 @@ export default function useBookingPage() {
     const fetchHomeServiceTimes = async () => {
         try {
             const data = await VeterianScheduleHome();
+            console.log("Fetched data:", data);
             let filteredDates = Object.keys(data).filter((date) => data[date].some(slot => slot.available));
 
             filteredDates = sortDates(filteredDates);
@@ -131,6 +133,16 @@ export default function useBookingPage() {
         // Call the API to submit bookingData here
 
         navgigate("/booking-service-history");
+        try {
+            const response = await postBookingData(bookingData);
+
+            // Xử lý kết quả sau khi gửi dữ liệu
+            if (response.status === 200 || response.status === 201) {
+                navgigate("/booking-service-history");
+            }
+        } catch (error) {
+            console.error('Đã xảy ra lỗi khi gửi dữ liệu:', error);
+        }
     };
 
     const handleSubmit = () => {

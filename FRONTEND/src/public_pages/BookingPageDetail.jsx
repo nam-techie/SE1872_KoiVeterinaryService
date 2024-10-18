@@ -66,7 +66,7 @@ export function DoctorSelector({ selectedDoctor, handleDoctorSelect, doctors }) 
                 <option value="dr0">Không chọn</option>
                 {doctors && doctors.map((doctor) => (
                     <option key={doctor.id} value={doctor.id}>
-                        {doctor.fullName}
+                        {doctor.fullname}
                     </option>
                 ))}
             </select>

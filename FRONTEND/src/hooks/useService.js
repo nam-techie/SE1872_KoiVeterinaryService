@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from 'react';
-import {getDistrict, ServiceList, ServiceBookingData} from "../services/apiService.js"
+import {getDistrict, getService, ServiceBookingData} from "../services/apiService.js"
 import {VeterianList, VeterianScheduleHome} from "../services/apiVeterian.js";
 
 
@@ -64,9 +64,8 @@ export const useDistrictList = () => {
             try {
                 setDistrictsLoading(true);
                 const data = await getDistrict();
-                if (data.fee !== 0){
+
                     setDistricts(data);
-                }
 
             } catch (err) {
                 setDistrictsError("Đã xảy ra lỗi khi lấy dữ liệu quận/huyện.");
@@ -90,7 +89,7 @@ export const useService = () =>{
         const fetchService = async () =>{
             try{
                 setServiceLoading(true);
-                const data = await ServiceList();
+                const data = await getService();
                 setService(data);
             } catch (err){
                 setServiceError("Lỗi khi lấy dữ liệu dịch vụ");

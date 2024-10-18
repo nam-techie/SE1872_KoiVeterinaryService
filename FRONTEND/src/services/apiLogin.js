@@ -1,21 +1,19 @@
 import axios from 'axios';
-// import apiRequest from "./apiRequest.js";
 
 export const login = async (username, password) => {
     try {
-        const response = await axios.post('http://localhost:8080/api/login', { // Sử dụng đường dẫn proxy
+        const response = await axios.post('http://localhost:8080/api/login', {
             username,
             password,
         });
-        console.log('Response from server:', response.data);  // Log phản hồi từ server
-        return response.data; // Trả về dữ liệu phản hồi
+        console.log('Response from server:', response.data);
+        return response.data;
 
     } catch (error) {
         if (error.response) {
-            const {message, errors} = error.response.data; // Lấy message và errors từ backend
+            const {message, errors} = error.response.data;
             let errorMessage = message;
 
-            // Nếu có danh sách lỗi chi tiết thì nối thêm vào thông báo lỗi
             if (errors && errors.length > 0) {
                 errorMessage += ": " + errors.join(", ");
             }

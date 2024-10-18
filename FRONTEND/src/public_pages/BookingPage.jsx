@@ -61,12 +61,13 @@ export function BookingPage() {
 
             {(serviceType === '2' || serviceType === '4') && (
                 <>
-                    <DateSelector selectedDate={selectedDate} setSelectedDate={setSelectedDate} dateOptions={dateOptions} error={errors.selectedDate}/>
-                    <TimeSelector selectedTime={selectedTime} setSelectedTime={setSelectedTime} availableTimes={availableTimes} error={errors.selectedTime} />
-
                     {!districtsLoading && !districtsError && (
                         <DistrictSelector selectedDistrict={selectedDistrict} setSelectedDistrict={setSelectedDistrict} districts={districts} error={errors.selectedDistrict}/>
                     )}
+                    <DateSelector selectedDate={selectedDate} setSelectedDate={setSelectedDate} dateOptions={dateOptions} error={errors.selectedDate}/>
+                    <TimeSelector selectedTime={selectedTime} setSelectedTime={setSelectedTime} availableTimes={availableTimes} error={errors.selectedTime} />
+
+
                     <DetailedAddressInput detailedAddress={detailedAddress} setDetailedAddress={setDetailedAddress} error={errors.detailedAddress} />
                 </>
             )}
