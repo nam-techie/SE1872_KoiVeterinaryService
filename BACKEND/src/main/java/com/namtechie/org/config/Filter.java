@@ -46,7 +46,14 @@ public class Filter extends OncePerRequestFilter {
             "/login/oauth2/code/**",
             "/api//forgot-password",
             "/api/reset-password",
-            "/api/validate-otp"
+            "/api/validate-otp",
+            "/api/getAllDoctor",
+            "/api/getAllZone",
+            "/api/getAllServiceType",
+            "/api/getFreeScheduleByDoctorId",
+            "/api/getFreeSchedule",
+            "/api/getFreeScheduleWithTime",
+            "/api/testFreeScheduleWithTime"
     );
 
     public boolean checkIsPublicAPI(String uri) {
@@ -65,7 +72,8 @@ public class Filter extends OncePerRequestFilter {
         if (isPublicAPI) {
             filterChain.doFilter(request, response);
         } else {
-            String token = getToken(request);
+            String authHeader = request.getHeader("Authorization");
+            String token = tokenService.getToken(authHeader);
             if (token == null) {
                 //ko được phép truy cập
                 handlerExceptionResolver.resolveException(request, response, null, new AuthException("Empty token!"));
@@ -105,13 +113,6 @@ public class Filter extends OncePerRequestFilter {
         }
     }
 
-    public String getToken(HttpServletRequest request) {
-        String authHeader = request.getHeader("Authorization");
-        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            return null;
-        }
-        return authHeader.substring(7); // Bỏ qua "Bearer "
-    }
 
 
     // Bearer asdasdasdsadasdasd => lấy từ index 7 bỏ qua thằng bearer

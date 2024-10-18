@@ -10,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RequestMapping("/api/veterinary")
 @RestController
 @PreAuthorize("hasAuthority('VETERINARY')") // set từng thằng
@@ -30,4 +32,5 @@ public class DoctorController {
         Doctor findDoctor = doctorService.getDoctorById();
         return ResponseEntity.ok(findDoctor);
     }
+
 }
