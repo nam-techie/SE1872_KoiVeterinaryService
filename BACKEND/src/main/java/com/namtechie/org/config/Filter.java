@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.rmi.ServerException;
 import java.rmi.server.ServerCloneException;
 import java.util.List;
+import java.util.Locale;
 
 @Component
 public class Filter extends OncePerRequestFilter {
@@ -54,7 +55,8 @@ public class Filter extends OncePerRequestFilter {
             "/api/getFreeSchedule",
             "/api/getFreeScheduleWithTime",
             "/api/testFreeScheduleWithTime",
-            "/api/abc"
+            "/api/payment/create-payment-url/{appointmentId}",
+            "/api/payment/crea/{appointmentId}"
     );
 
     public boolean checkIsPublicAPI(String uri) {

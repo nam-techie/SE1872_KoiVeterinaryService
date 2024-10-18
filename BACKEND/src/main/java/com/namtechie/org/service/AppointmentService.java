@@ -1,7 +1,9 @@
 package com.namtechie.org.service;
 
 import com.namtechie.org.entity.Appointment;
+import com.namtechie.org.entity.Payment;
 import com.namtechie.org.repository.AppointmentRepository;
+import com.namtechie.org.repository.PaymentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +17,7 @@ public class AppointmentService {
 
     @Autowired
     private AppointmentRepository appointmentRepository;
+    private PaymentRepository paymentRepository;
 
     private static final Time NOON = Time.valueOf("12:00:00");
 
@@ -61,6 +64,31 @@ public class AppointmentService {
         if (appointment != null) {
             return appointment;
         }else return appointmentsOfSession;
+    }
+
+    // Thêm phương thức findAppointmentById
+    public Appointment findAppointmentById(Long appointmentId) {
+        // Trả về Appointment nếu tìm thấy, nếu không sẽ trả về null
+        return appointmentRepository.findById(appointmentId).orElse(null);
+    }
+
+    // Phương thức tính chi phí cuộc hẹn từ Payment
+    public float calculateAppointmentCost(Long appointmentId) {
+        Appointment appointment = findAppointmentById(appointmentId);
+
+        if (appointment == null) {
+            throw new IllegalArgumentException("Không tìm thấy cuộc hẹn với ID: " + appointmentId);
+        }
+
+        // Lấy thông tin Payment dựa trên appointmentId
+        Payment payment = paymentRepository.findByAppointmentId(appointmentId);
+
+        if (payment == null) {
+            throw new IllegalArgumentException("Không tìm thấy thông tin thanh toán cho cuộc hẹn với ID: " + appointmentId);
+        }
+
+        // Trả về chi phí (total_fee) từ Payment
+        return payment.getTotalFee();
     }
 
 }

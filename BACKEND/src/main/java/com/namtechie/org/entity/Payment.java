@@ -24,8 +24,6 @@ public class Payment {
     @JsonManagedReference
     private List<Transaction> transaction;
 
-
-
     private long totalFee;
 
     private Timestamp updateTime;
