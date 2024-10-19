@@ -1,17 +1,10 @@
 /* AdminDashboard.css */
-/*body {*/
-/*    margin: 0;*/
-/*    padding: 0;*/
-/*    background-color: #f0f2f5;*/
-/*    font-family: 'Arial', sans-serif;*/
-/*    overflow: hidden; !* Ngăn cuộn toàn trang *!*/
-/*}*/
+
 
 body, html {
     margin: 0;
     padding: 0;
     height: 100%;
-    overflow: hidden; /* Ngăn cuộn toàn trang */
 }
 
 .admin-dashboard {

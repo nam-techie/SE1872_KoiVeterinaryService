@@ -1,15 +1,15 @@
 // eslint-disable-next-line no-unused-vars
 import React, {useState, useEffect} from 'react';
-import {FaTrash, FaEdit, FaUserPlus, FaUserMd} from 'react-icons/fa';
-import {Link} from 'react-router-dom';
+import {FaTrash, FaEdit, FaUserPlus, FaUserMd, FaUndo} from 'react-icons/fa';
 import './styles/AccountDashboard.css';
 import {useAccountInfo} from './hooks/useAccountInfo';
 
 const AccountDashboard = ({ setActiveTab }) => {
-    const {accounts, loading, error, fetchAllAccounts} = useAccountInfo();
+    const {accounts, loading, error, fetchAllAccounts, deleteAccount, restoreAccount, updateAccountRole} = useAccountInfo();
     const [searchTerm, setSearchTerm] = useState('');
     const [sortBy, setSortBy] = useState('username');
     const [sortOrder, setSortOrder] = useState('asc');
+    const [editingAccount, setEditingAccount] = useState(null);
 
     useEffect(() => {
         fetchAllAccounts();
@@ -25,6 +25,14 @@ const AccountDashboard = ({ setActiveTab }) => {
     };
 
     const sortedAccounts = [...accounts].sort((a, b) => {
+        if (sortBy === 'status') {
+            // Sắp xếp theo trạng thái
+            const statusA = a.deleted ? 'inactive' : 'active';
+            const statusB = b.deleted ? 'inactive' : 'active';
+            return sortOrder === 'asc' 
+                ? statusA.localeCompare(statusB) 
+                : statusB.localeCompare(statusA);
+        }
         if (a[sortBy] < b[sortBy]) return sortOrder === 'asc' ? -1 : 1;
         if (a[sortBy] > b[sortBy]) return sortOrder === 'asc' ? 1 : -1;
         return 0;
@@ -35,6 +43,45 @@ const AccountDashboard = ({ setActiveTab }) => {
         account.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
         account.role.toLowerCase().includes(searchTerm.toLowerCase())
     );
+
+    const handleDelete = async (email) => {
+        if (window.confirm('Bạn có chắc chắn muốn xóa tài khoản này?')) {
+            try {
+                await deleteAccount(email);
+                alert('Tài khoản đã được xóa thành công.');
+            } catch (err) {
+                console.error('Lỗi khi xóa tài khoản:', err);
+                alert('Có lỗi xảy ra khi xóa tài khoản. Vui lòng thử lại.');
+            }
+        }
+    };
+
+    const handleRestore = async (email) => {
+        if (window.confirm('Bạn có chắc chắn muốn khôi phục tài khoản này?')) {
+            try {
+                await restoreAccount(email);
+                alert('Tài khoản đã được khôi phục thành công.');
+            } catch (err) {
+                console.error('Lỗi khi khôi phục tài khoản:', err);
+                alert('Có lỗi xảy ra khi khôi phục tài khoản. Vui lòng thử lại.');
+            }
+        }
+    };
+
+    const handleEditRole = (account) => {
+        setEditingAccount(account);
+    };
+
+    const handleRoleChange = async (email, newRole) => {
+        try {
+            await updateAccountRole(email, newRole);
+            setEditingAccount(null);
+            alert('Role đã được cập nhật thành công.');
+        } catch (err) {
+            console.error('Lỗi khi cập nhật role:', err);
+            alert('Có lỗi xảy ra khi cập nhật role. Vui lòng thử lại.');
+        }
+    };
 
     if (loading) return <div>Đang tải...</div>;
     if (error) return <div>Lỗi: {error}</div>;
@@ -72,6 +119,7 @@ const AccountDashboard = ({ setActiveTab }) => {
                         <option value="email">Sắp xếp theo Email</option>
                         <option value="role">Sắp xếp theo Vai trò</option>
                         <option value="createdAt">Sắp xếp theo Ngày tạo</option>
+                        <option value="status">Sắp xếp theo Trạng thái</option>
                     </select>
                 </div>
                 <div className="sort-order-container">
@@ -105,7 +153,20 @@ const AccountDashboard = ({ setActiveTab }) => {
                                     </div>
                                 </td>
                                 <td>{account.email}</td>
-                                <td>{account.role}</td>
+                                <td>
+                                    {editingAccount && editingAccount.id === account.id ? (
+                                        <select
+                                            value={account.role}
+                                            onChange={(e) => handleRoleChange(account.email, e.target.value)}
+                                        >
+                                            <option value="CUSTOMER">CUSTOMER</option>
+                                            <option value="VETERINARY">VETERINARY</option>
+                                            <option value="ADMIN">ADMIN</option>
+                                        </select>
+                                    ) : (
+                                        account.role
+                                    )}
+                                </td>
                                 <td>{account.createdAt}</td>
                                 <td>
                                     <span className={`status-badge ${account.deleted ? 'inactive' : 'active'}`}>
@@ -113,8 +174,25 @@ const AccountDashboard = ({ setActiveTab }) => {
                                     </span>
                                 </td>
                                 <td>
-                                    <button className="edit-btn"><FaEdit /></button>
-                                    <button className="delete-btn"><FaTrash /></button>
+                                    {!editingAccount || editingAccount.id !== account.id ? (
+                                        <button className="edit-btn" onClick={() => handleEditRole(account)}>
+                                            <FaEdit />
+                                        </button>
+                                    ) : null}
+                                    <button 
+                                        className="delete-btn" 
+                                        onClick={() => handleDelete(account.email)}
+                                    >
+                                        <FaTrash />
+                                    </button>
+                                    {account.deleted && (
+                                        <button 
+                                            className="restore-btn" 
+                                            onClick={() => handleRestore(account.email)}
+                                        >
+                                            <FaUndo />
+                                        </button>
+                                    )}
                                 </td>
                             </tr>
                         ))}

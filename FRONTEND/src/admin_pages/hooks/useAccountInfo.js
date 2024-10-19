@@ -67,5 +67,46 @@ export const useAccountInfo = () => {
         }
     };
 
-    return { accounts, loading, error, updateAccountStatus, fetchAllAccounts, createAccount, createVeterinaryAccount };
+    const deleteAccount = async (email) => {
+        try {
+            await axiosInstance.delete(`/admin/deleteAccount?email=${email}`);
+            await fetchAllAccounts(); // Cập nhật lại danh sách sau khi xóa
+        } catch (error) {
+            console.error('Lỗi khi xóa tài khoản:', error);
+            throw error;
+        }
+    };
+
+    const restoreAccount = async (email) => {
+        try {
+            await axiosInstance.put(`/admin/restoreAccount/${email}`);
+            await fetchAllAccounts(); // Cập nhật lại danh sách sau khi khôi phục
+        } catch (error) {
+            console.error('Lỗi khi khôi phục tài khoản:', error);
+            throw error;
+        }
+    };
+
+    const updateAccountRole = async (email, newRole) => {
+        try {
+            await axiosInstance.put(`/admin/updateAccountRole/${email}/${newRole}`);
+            await fetchAllAccounts(); // Cập nhật lại danh sách sau khi thay đổi role
+        } catch (error) {
+            console.error('Lỗi khi cập nhật role tài khoản:', error);
+            throw error;
+        }
+    };
+
+    return { 
+        accounts, 
+        loading, 
+        error, 
+        updateAccountStatus, 
+        fetchAllAccounts, 
+        createAccount, 
+        createVeterinaryAccount,
+        deleteAccount,
+        restoreAccount,
+        updateAccountRole
+    };
 };

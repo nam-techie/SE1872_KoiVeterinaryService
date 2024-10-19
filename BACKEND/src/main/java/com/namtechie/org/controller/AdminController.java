@@ -79,6 +79,23 @@ public class AdminController {
         return new ResponseEntity<>("Đã xóa thành công.", HttpStatus.ACCEPTED);
     }
 
+    @PutMapping("/restoreAccount/{email}")
+    public ResponseEntity<String> restoreAccount(@PathVariable String email) {
+        authenticationService.restoreAccount(email);
+        return new ResponseEntity<>("Đã khôi phục thành công.", HttpStatus.ACCEPTED);
+    }
+
+    @PutMapping("/updateAccountRole/{email}/{role}")
+    public ResponseEntity<String> updateAccountRole(@PathVariable String email, @PathVariable String role) {
+        authenticationService.updateRole(email, role);
+        return new ResponseEntity<>("Đã cập nhật thành công.", HttpStatus.ACCEPTED);
+    }
+
+
+
+
+
+
     @GetMapping("/listAllVeterinary")
     public ResponseEntity getAllDoctor() {
         List<Doctor> doctors = doctorService.getAllDoctors();

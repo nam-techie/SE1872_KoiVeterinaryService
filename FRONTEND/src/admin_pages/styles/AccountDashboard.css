@@ -206,3 +206,7 @@
 .add-account-btn:hover {
     opacity: 0.9;
 }
+
+.restore-btn {
+    background-color: #4CAF50;
+}

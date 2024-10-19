@@ -75,9 +75,9 @@ const CreateAccount = ({ setActiveTab }) => {
                             required
                         >
                             <option value="">Chọn vai trò</option>
-                            <option value="CUSTOMER">Khách hàng</option>
-                            <option value="VETERINARY">Bác sĩ thú y</option>
-                            <option value="ADMIN">Quản trị viên</option>
+                            <option value="CUSTOMER">CUSTOMER</option>
+                            <option value="VETERINARY">VETERINARY</option>
+                            <option value="ADMIN">ADMIN</option>
                         </select>
                     </div>
                     <div className="form-group">

@@ -187,7 +187,6 @@ public class AuthenticationService implements UserDetailsService {
 
     public AccountResponse createAccountForAdmin(AdminAccountRequest adminAccountRequest) {
         Account account = new Account();
-        System.out.println("Role received: " + adminAccountRequest.getRole());
         modelMapper.map(adminAccountRequest, Account.class);
 
         if (accountRepository.existsByEmail(adminAccountRequest.getEmail())) {
@@ -254,6 +253,32 @@ public class AuthenticationService implements UserDetailsService {
         // Kiểm tra xem tài khoản có tồn tại hay không trước khi xóa
         if (accountRepository.existsByEmail(email)) {
             accountRepository.updateIsDeletedByEmail(true, email);
+        } else {
+            throw new EntityNotFoundException("Tài khoản với email: " + email + " không tồn tại.");
+        }
+    }
+
+    public void restoreAccount(String email) {
+        // Kiểm tra xem tài khoản có tồn tại hay không trước khi xóa
+        if (accountRepository.existsByEmail(email)) {
+            accountRepository.updateIsDeletedByEmail(false, email);
+        } else {
+            throw new EntityNotFoundException("Tài khoản với email: " + email + " không tồn tại.");
+        }
+    }
+
+    public void updateRole(String email, String role){
+        if (accountRepository.existsByEmail(email)) {
+            Account newUpdate = accountRepository.findAccountByEmail(email);
+
+            try {
+                // Kiểm tra xem role có hợp lệ không
+                newUpdate.setRole(Role.valueOf(role).name());
+            } catch (IllegalArgumentException e) {
+                throw new RuntimeException("Role không hợp lệ: " + role);
+            }
+
+            accountRepository.save(newUpdate);
         } else {
             throw new EntityNotFoundException("Tài khoản với email: " + email + " không tồn tại.");
         }
