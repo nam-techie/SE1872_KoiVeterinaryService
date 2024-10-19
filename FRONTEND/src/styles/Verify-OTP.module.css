@@ -1,0 +1,86 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
+
+/* Căn giữa form giống như phần login */
+.verifyOtpContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f8f8f8;
+    font-family: Arial, sans-serif;
+    padding: 20px;
+}
+
+.verifyOtpForm {
+    background-color: white;
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    max-width: 500px; /* Tăng chiều rộng để đồng nhất với form quên mật khẩu */
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+}
+
+.verifyOtpForm h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 1.5rem;
+    color: #333;
+}
+
+/* Chỉnh lại ô input để căn giữa */
+.inputField {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.inputField input {
+    width: 60px; /* Tăng kích thước ô input để dễ nhập mã OTP */
+    height: 60px;
+    border-radius: 8px;
+    text-align: center;
+    font-size: 1.5rem;
+    border: 2px solid #ddd;
+    transition: all 0.3s ease;
+}
+
+.inputField input:focus {
+    border-color: #4CAF50;
+    outline: none;
+    box-shadow: 0 0 5px rgba(76, 175, 80, 0.5); /* Đổi màu focus cho phù hợp với form trước */
+}
+
+.verifyOtpButton {
+    background-color: #f58220;
+    color: white;
+    padding: 12px;
+    border: none;
+    border-radius: 4px;
+    width: 100%;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+.verifyOtpButton:hover {
+    background-color: #e0730f;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.errorMessage {
+    color: red;
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.errorIcon {
+    width: 16px;
+    height: 16px;
+    vertical-align: middle;
+    margin-right: 5px;
+}

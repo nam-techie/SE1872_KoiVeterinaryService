@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { resetPassword,forgotPassword,validateOtp} from '../services/apiResetPassword.js';
+import { resetPassword,forgotPassword,validateOtp} from '../service/apiResetPassword.js';
 import {useLocation,useNavigate} from "react-router-dom";
 
 export const useResetPassword = () => {

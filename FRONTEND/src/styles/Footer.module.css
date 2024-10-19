@@ -1,0 +1,79 @@
+html, body {
+    height: 100%; /* Đảm bảo chiều cao 100% cho body */
+    margin: 0; /* Xóa margin mặc định */
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.footerContainer {
+    background-color: #1c1c1c;
+    color: white;
+    padding: 40px 20px;
+    font-family: Arial, sans-serif;
+    position: relative; /* Đảm bảo footer nằm dưới cùng */
+    left: 0; /* Đặt vị trí bắt đầu ở bên trái */
+    right: 0; /* Đặt vị trí kết thúc ở bên phải */
+    margin: 0; /* Xóa khoảng cách xung quanh */
+    width: 100vw; /* Đặt chiều rộng của footer bằng chiều rộng viewport */
+}
+
+.footerContent {
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+}
+
+.footerSection {
+    flex: 1;
+    margin-right: 20px;
+}
+
+.logoSection img {
+    width: 150px;
+    margin-bottom: 10px;
+}
+
+.socialIcons {
+    margin-top: 10px;
+}
+
+.socialIcons a {
+    color: white;
+    margin-right: 10px;
+    font-size: 24px;
+}
+
+.linksSection ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.linksSection ul li {
+    margin-bottom: 10px;
+}
+
+.linksSection ul li a {
+    color: white;
+    text-decoration: none;
+}
+
+.linksSection ul li a:hover {
+    text-decoration: underline;
+}
+
+.mapSection iframe {
+    border: 0;
+    border-radius: 8px;
+    margin-right: 100px;
+}
+
+.footerBottom {
+    text-align: center;
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid #333;
+}
+
+.footerBottom p {
+    color: #aaa;
+    font-size: 14px;
+}

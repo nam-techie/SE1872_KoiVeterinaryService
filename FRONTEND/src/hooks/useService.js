@@ -1,20 +1,16 @@
+import {useState, useEffect} from "react";
+import {getServiceList,getDistrictList} from "../service/apiService.js";
+import {getDoctorList} from "../service/apiDoctor.js";
 
-import { useState, useEffect } from 'react';
-import {getDistrict, getService, ServiceBookingData} from "../services/apiService.js"
-import {VeterianList, VeterianScheduleHome} from "../services/apiVeterian.js";
-
-
-export const useServiceBookingData = () => {
+export const useService = () =>{
     const [services, setServices] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        console.log('Bắt đầu fetch dữ liệu từ /serviceBooking.json');
-
-        const getData = async () => {
+        const getService = async () => {
             try {
-                const data = await ServiceBookingData();
+                const data = await getServiceList();
                 setServices(data);
             } catch (err) {
                 setError(err.message);
@@ -23,36 +19,11 @@ export const useServiceBookingData = () => {
             }
         };
 
-        getData();
+        getService();
     }, []);
 
     return { services, loading, error };
-};
-
-export const useVeterianList = () => {
-    const [doctors, setDoctors] = useState([]);
-    const [doctorLoading, setDoctorLoading] = useState(true);
-    const [doctorError, setDoctorError] = useState(null);
-
-    useEffect(() => {
-        const fetchDoctors = async () => {
-            try {
-                setDoctorLoading(true);
-                const data = await VeterianList();
-                setDoctors(data);
-            } catch (err) {
-                setDoctorError("Đã xảy ra lỗi khi lấy dữ liệu bác sĩ.");
-                console.error(err);
-            } finally {
-                setDoctorLoading(false);
-            }
-        };
-
-        fetchDoctors();
-    }, []);
-
-    return { doctors, doctorLoading, doctorError };
-};
+}
 
 export const useDistrictList = () => {
     const [districts, setDistricts] = useState([]);
@@ -63,9 +34,9 @@ export const useDistrictList = () => {
         const fetchDistricts = async () => {
             try {
                 setDistrictsLoading(true);
-                const data = await getDistrict();
-
-                    setDistricts(data);
+                const data = await getDistrictList();
+                console.log(data)
+                setDistricts(data);
 
             } catch (err) {
                 setDistrictsError("Đã xảy ra lỗi khi lấy dữ liệu quận/huyện.");
@@ -81,52 +52,27 @@ export const useDistrictList = () => {
     return { districts, districtsLoading, districtsError };
 };
 
-export const useService = () =>{
-    const[service,setService] = useState([]);
-    const [serviceLoading, setServiceLoading] = useState(true);
-    const [serviceError, setServiceError] = useState(null);
+export const useDoctorList = () => {
+    const [doctors, setDoctors] = useState([]);
+    const [doctorLoading, setDoctorLoading] = useState(true);
+    const [doctorError, setDoctorError] = useState(null);
+
     useEffect(() => {
-        const fetchService = async () =>{
-            try{
-                setServiceLoading(true);
-                const data = await getService();
-                setService(data);
-            } catch (err){
-                setServiceError("Lỗi khi lấy dữ liệu dịch vụ");
+        const fetchDoctors = async () => {
+            try {
+                setDoctorLoading(true);
+                const data = await  getDoctorList();
+                setDoctors(data);
+            } catch (err) {
+                setDoctorError("Đã xảy ra lỗi khi lấy dữ liệu bác sĩ.");
                 console.error(err);
             } finally {
-                setServiceLoading(false);
+                setDoctorLoading(false);
             }
-        }
-       fetchService();
+        };
+
+        fetchDoctors();
     }, []);
 
-    return{service,serviceLoading,serviceError};
-
+    return { doctors, doctorLoading, doctorError };
 };
-export const useVeterianScheduleHome =() => {
-    const [veterianScheduleHome, setveterianScheduleHome] = useState('');
-    const [veterianScheduleHomeLoading, setveterianScheduleHomeLoading] = useState(true);
-    const [veterianScheduleHomeError, setveterianScheduleHomeError] = useState(null);
-
-    useEffect(() => {
-        const fetchHomeSchedule = async () =>{
-            try{
-                setveterianScheduleHomeLoading(true);
-                const data = await VeterianScheduleHome;
-                setveterianScheduleHome(data);
-            } catch (err){
-                setveterianScheduleHomeError("Lỗi khi lấy dữ liệu dịch vụ");
-                console.error(err);
-            } finally {
-                setveterianScheduleHomeLoading(false);
-            }
-        }
-        fetchHomeSchedule();
-    }, []);
-
-    return{veterianScheduleHome,veterianScheduleHomeLoading,veterianScheduleHomeError};
-
-}
-
-
