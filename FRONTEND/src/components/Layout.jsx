@@ -35,7 +35,10 @@ function Layout({ children }) {
         '/reset-password',
         '/verify-otp',
         '/bookingpage',
-        '/booking-service-history'
+        '/booking-service-history',
+        '/profile',
+        '/update-profile',
+        '/doctor-dashboard'
     ];
 
     return (

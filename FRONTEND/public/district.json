@@ -48,5 +48,19 @@
     "id": 10,
     "name": "District 10",
     "fee": 580000
+  },
+
+  {
+    "id": 11,
+    "name": "Trung tam",
+    "fee": 0
+  },
+
+
+  {
+    "id": 12,
+    "name": "Online",
+    "fee": 0
   }
+
 ]

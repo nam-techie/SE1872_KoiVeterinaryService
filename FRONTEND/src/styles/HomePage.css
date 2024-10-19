@@ -1,5 +1,5 @@
 .homepage-container {
-  padding-top: 50px;
+  margin-top: 70px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -112,7 +112,7 @@
 
 
 .red-line {
-  width: 80%;
+  width: 40%;
   height: 0;
   border: 0.1rem solid #F53838;
   margin: 2rem auto;

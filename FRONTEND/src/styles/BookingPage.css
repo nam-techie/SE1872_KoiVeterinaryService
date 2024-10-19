@@ -73,3 +73,96 @@ select, input[type="checkbox"], input[type="text"], textarea, input[type="date"]
         padding: 10px;
     }
 }
+
+/* BookingPage.css */
+
+/* Styling for the confirmation modal */
+/* Overlay background to cover the entire page and block interaction */
+.confirmation-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);  /* Màu nền đen mờ để che toàn bộ trang */
+    z-index: 999;  /* Đảm bảo nó hiển thị trên tất cả các phần tử khác */
+}
+
+/* Modal box styling */
+.confirmation-modal {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    width: 400px;
+    max-width: 100%;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);  /* Căn giữa theo cả chiều ngang và dọc */
+    z-index: 1000;  /* Đảm bảo nó nổi trên overlay */
+}
+
+/* Style for the heading and field labels */
+.confirmation-modal h2 {
+    font-weight: bold;
+    text-align: center;
+    color: orangered;
+}
+
+.confirmation-modal hr {
+    margin: 10px 0;
+    border: 1px solid #eee;
+}
+
+.field-label {
+    font-weight: bold;
+    color: orange;
+    margin-bottom: 5px;
+}
+
+.field-value {
+    font-weight: normal;
+    color: #888; /* Xám nhẹ */
+}
+
+/* Buttons container */
+.confirmation-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+/* Styling for buttons */
+.confirmation-buttons button {
+    flex: 1;
+    margin-right: 10px;
+    padding: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    border: none;
+}
+
+.confirmation-buttons button:last-of-type {
+    margin-right: 0;
+}
+
+.confirm-btn {
+    background-color: #28a745;
+    color: white;
+}
+
+.edit-btn {
+    background-color: #dc3545;
+    color: white;
+}
+
+.confirmation-buttons button:hover {
+    opacity: 0.9;
+}
+
+/* Disable scrolling when modal is open */
+body.modal-open {
+    overflow: hidden;
+}
