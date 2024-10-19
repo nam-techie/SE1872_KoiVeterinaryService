@@ -2,9 +2,11 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../admin_pages/styles/AdminDashboard.css';
-import { FaHome, FaCalendarAlt, FaUsers, FaUserMd, FaCog, FaComments, FaSignOutAlt, FaUser } from 'react-icons/fa';
+import { FaHome, FaCalendarAlt, FaUsers, FaUserMd, FaCog, FaComments, FaSignOutAlt, FaUser, FaUserPlus } from 'react-icons/fa';
 import AdminProfile from './AdminProfile';
 import AccountDashboard from './AccountDashboard';
+import CreateAccount from './CreateAccount';
+import VeterinaryAccount from './VeterinaryAccount';
 
 const AdminDashboard = () => {
     const navigate = useNavigate();
@@ -74,8 +76,11 @@ const AdminDashboard = () => {
             case 'profile':
                 return <AdminProfile />;
             case 'accounts':
-                return <AccountDashboard />;
-            // Thêm các case khác cho các tab khác nếu cần
+                return <AccountDashboard setActiveTab={setActiveTab} />;
+            case 'createAccount':
+                return <CreateAccount setActiveTab={setActiveTab} />;
+            case 'createVeterinaryAccount':
+                return <VeterinaryAccount setActiveTab={setActiveTab} />;
             default:
                 return <div>Nội dung chưa được tạo</div>;
         }
@@ -102,7 +107,7 @@ const AdminDashboard = () => {
                     <li className="menu-item"><FaUsers /> Quản lý khách hàng</li>
                     <li className="menu-item"><FaUserMd /> Quản lý dịch vụ</li>
                     <li className="menu-item"><FaCog /> Quản lý bác sĩ</li>
-                    <li className={`menu-item ${activeTab === 'accounts' ? 'active' : ''}`} onClick={() => setActiveTab('accounts')}>
+                    <li className={`menu-item ${activeTab === 'accounts' || activeTab === 'createAccount' || activeTab === 'createVeterinaryAccount' ? 'active' : ''}`} onClick={() => setActiveTab('accounts')}>
                         <FaUsers /> Quản lý tài khoản
                     </li>
                     <li className={`menu-item ${activeTab === 'profile' ? 'active' : ''}`} onClick={() => setActiveTab('profile')}>

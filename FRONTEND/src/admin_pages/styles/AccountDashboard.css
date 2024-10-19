@@ -1,8 +1,9 @@
 .account-dashboard {
-    background-color: #f0f2f5;
+    background-color: #fcc151;
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-left: 40px;
 }
 
 .dashboard-header {
@@ -174,4 +175,34 @@
 
 .accounts-table th:hover {
     background-color: #e9ecef;
+}
+
+.account-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.add-account-btn {
+    display: flex;
+    align-items: center;
+    padding: 10px 15px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.add-account-btn.doctor-btn {
+    background-color: #2196F3;
+}
+
+.add-account-btn svg {
+    margin-right: 5px;
+}
+
+.add-account-btn:hover {
+    opacity: 0.9;
 }

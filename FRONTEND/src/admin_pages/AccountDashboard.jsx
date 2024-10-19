@@ -1,10 +1,11 @@
 // eslint-disable-next-line no-unused-vars
 import React, {useState, useEffect} from 'react';
-import {FaTrash, FaEdit, FaUserPlus} from 'react-icons/fa';
+import {FaTrash, FaEdit, FaUserPlus, FaUserMd} from 'react-icons/fa';
+import {Link} from 'react-router-dom';
 import './styles/AccountDashboard.css';
 import {useAccountInfo} from './hooks/useAccountInfo';
 
-const AccountDashboard = () => {
+const AccountDashboard = ({ setActiveTab }) => {
     const {accounts, loading, error, fetchAllAccounts} = useAccountInfo();
     const [searchTerm, setSearchTerm] = useState('');
     const [sortBy, setSortBy] = useState('username');
@@ -42,7 +43,14 @@ const AccountDashboard = () => {
         <div className="account-dashboard">
             <div className="dashboard-header">
                 <h2>Quản lý Tài khoản</h2>
-                <button className="add-account-btn"><FaUserPlus /> Thêm Tài khoản</button>
+                <div className="account-actions">
+                    <button onClick={() => setActiveTab('createAccount')} className="add-account-btn">
+                        <FaUserPlus /> Thêm Tài khoản Tự do
+                    </button>
+                    <button onClick={() => setActiveTab('createVeterinaryAccount')} className="add-account-btn doctor-btn">
+                        <FaUserMd /> Thêm Tài khoản Bác sĩ
+                    </button>
+                </div>
             </div>
             <div className="search-sort-container">
                 <div className="search-container">
@@ -64,7 +72,6 @@ const AccountDashboard = () => {
                         <option value="email">Sắp xếp theo Email</option>
                         <option value="role">Sắp xếp theo Vai trò</option>
                         <option value="createdAt">Sắp xếp theo Ngày tạo</option>
-                        <option value="is_deleted">Sắp xếp theo Trạng thái</option>
                     </select>
                 </div>
                 <div className="sort-order-container">

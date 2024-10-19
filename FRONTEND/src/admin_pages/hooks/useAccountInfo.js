@@ -40,5 +40,32 @@ export const useAccountInfo = () => {
         }
     };
 
-    return { accounts, loading, error, updateAccountStatus, fetchAllAccounts };
+    const createAccount = async (accountData) => {
+        try {
+            const response = await axiosInstance.post('/admin/createAccount', accountData);
+            console.log('API Response:', response.data);
+            await fetchAllAccounts();
+            return response.data;
+        } catch (error) {
+            console.error('Lỗi khi tạo tài khoản:', error);
+            if (error.response && error.response.data) {
+                throw new Error(error.response.data);
+            } else {
+                throw new Error('Có lỗi xảy ra khi tạo tài khoản. Vui lòng thử lại.');
+            }
+        }
+    };
+
+    const createVeterinaryAccount = async (accountData) => {
+        try {
+            const response = await axiosInstance.post('/admin/createAccountVeterinary', accountData);
+            await fetchAllAccounts();
+            return response.data;
+        } catch (error) {
+            console.error('Lỗi khi tạo tài khoản bác sĩ:', error);
+            throw error;
+        }
+    };
+
+    return { accounts, loading, error, updateAccountStatus, fetchAllAccounts, createAccount, createVeterinaryAccount };
 };

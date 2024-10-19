@@ -182,6 +182,45 @@ public class AuthenticationService implements UserDetailsService {
             }
         }
 
+    }
+
+
+    public AccountResponse createAccountForAdmin(AdminAccountRequest adminAccountRequest) {
+        Account account = new Account();
+        System.out.println("Role received: " + adminAccountRequest.getRole());
+        modelMapper.map(adminAccountRequest, Account.class);
+
+        if (accountRepository.existsByEmail(adminAccountRequest.getEmail())) {
+            throw new DuplicateEntity("Email này đã được sử dụng!");
+        }
+
+        if (accountRepository.existsByUsername(adminAccountRequest.getUsername())) {
+            throw new DuplicateEntity("Username này đã tồn tại!");
+        }
+
+        try {
+            String role = adminAccountRequest.getRole();
+            account.setEmail(adminAccountRequest.getEmail());
+            account.setUsername(adminAccountRequest.getUsername());
+            account.setPassword(passwordEncoder.encode("123456"));
+            account.setRole(Role.valueOf(role).name());
+
+            // Lưu tài khoản bác sĩ vào database
+            accountRepository.save(account);
+
+            // Gửi email thông báo đăng kí thành công
+//            EmailDetail emailDetail = new EmailDetail();
+//            emailDetail.setReceiver(account);
+//            emailDetail.setSubject("Welcome to KoiKung Center!");
+//            emailDetail.setLink("https://www.google.com/");
+//            emailService.sendEmail(emailDetail);
+
+            // Chuyển đổi thành AccountResponse và trả về
+            return modelMapper.map(account, AccountResponse.class);
+        } catch (DataIntegrityViolationException e) {
+            throw new RuntimeException("Đã xảy ra lỗi trong quá trình đăng ký, vui lòng thử lại sau.");
+
+        }
 
     }
 
@@ -446,9 +485,6 @@ public class AuthenticationService implements UserDetailsService {
             throw new RuntimeException("Đã xảy ra lỗi trong quá trình cập nhật thông tin admin.");
         }
     }
-
-
-
 
 
 }

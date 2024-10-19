@@ -3,8 +3,10 @@ package com.namtechie.org.controller;
 import com.namtechie.org.entity.Account;
 import com.namtechie.org.entity.Customers;
 import com.namtechie.org.entity.Doctor;
+import com.namtechie.org.exception.DuplicateEntity;
+import com.namtechie.org.model.request.AdminAccountRequest;
 import com.namtechie.org.model.request.AdminInfoRequest;
-
+import com.namtechie.org.model.request.CustomerInfoRequest;
 import com.namtechie.org.model.response.AccountResponse;
 import com.namtechie.org.model.request.VeterinaryRequest;
 import com.namtechie.org.service.AuthenticationService;
@@ -44,17 +46,30 @@ public class AdminController {
         return new ResponseEntity<>("Tài khoản bác sĩ đã được tạo thành công.", HttpStatus.ACCEPTED);
     }
 
-    @PostMapping(value = "/registerVeterinary")
-    public ResponseEntity registerVeterinary(@Valid @RequestBody VeterinaryRequest veterinaryRequest) {
+    @PostMapping(value = "/createAccountVeterinary")
+    public AccountResponse registerVeterinary(@Valid @RequestBody VeterinaryRequest veterinaryRequest) {
         AccountResponse newAccount = authenticationService.registerVeterinary(veterinaryRequest);
-        return ResponseEntity.ok(newAccount);
+        System.out.println(newAccount.toString());
+        return newAccount;
+    }
+
+    @PostMapping(value = "/createAccount")
+    public ResponseEntity<?> createAccountForAdmin(@Valid @RequestBody AdminAccountRequest adminAccountRequest) {
+        try {
+            AccountResponse newAccount = authenticationService.createAccountForAdmin(adminAccountRequest);
+            return ResponseEntity.ok(newAccount);
+        } catch (DuplicateEntity e) {
+            System.out.println(e.toString());
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Đã xảy ra lỗi trong quá trình đăng ký, vui lòng thử lại sau.");
+        }
     }
 
     @GetMapping("/listAccount")
     public List<Account> getAllAccount() {
         List<Account> accounts = authenticationService.getAllAccount();
-        System.out.println("Số lượng tài khoản: " + accounts.size());
-        accounts.forEach(account -> System.out.println(account.toString()));
         return accounts;
     }
 

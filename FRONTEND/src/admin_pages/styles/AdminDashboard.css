@@ -7,9 +7,17 @@
 /*    overflow: hidden; !* Ngăn cuộn toàn trang *!*/
 /*}*/
 
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    overflow: hidden; /* Ngăn cuộn toàn trang */
+}
+
 .admin-dashboard {
     display: flex;
     height: 100vh;
+    overflow: hidden; /* Ngăn cuộn cho toàn bộ dashboard */
 }
 
 .dashboard-header {
@@ -33,10 +41,10 @@
     background-color: #2c3e50; /* Màu nền sáng hơn cho sidebar */
     padding: 20px;
     height: 100vh;
+    overflow-y: auto; /* Cho phép cuộn nếu nội dung sidebar dài */
     position: fixed;
     left: 0;
     top: 0;
-    overflow-y: auto;
     z-index: 1000; /* Đảm bảo sidebar luôn nằm trên cùng */
 }
 
@@ -123,9 +131,9 @@
     flex: 1;
     padding: 20px 30px;
     background-color: #f4f6f9;
-    margin-left: 270px; /* Tăng lên từ 250px để tạo khoảng cách */
-    min-height: 100vh;
-    overflow-y: auto;
+    margin-left: 250px; /* Giữ nguyên margin để tránh chồng lên sidebar */
+    height: 100vh;
+    overflow-y: auto; /* Chỉ cho phép cuộn nội dung chính */
     box-sizing: border-box; /* Đảm bảo padding không làm tăng kích thước tổng thể */
 }
 
@@ -220,25 +228,20 @@
 @media (max-width: 768px) {
     .admin-dashboard {
         flex-direction: column;
+        overflow-y: auto; /* Cho phép cuộn trên thiết bị di động */
     }
 
     .sidebar {
         width: 100%;
         height: auto;
         position: relative;
+        overflow-y: visible;
     }
 
     .main-content {
         margin-left: 0;
-        padding: 15px;
-    }
-
-    .main-content::before {
-        display: none; /* Ẩn đường phân cách trên thiết bị di động */
-    }
-
-    .content-cards, .stats-cards {
-        flex-direction: column;
+        height: auto;
+        overflow-y: visible;
     }
 }
 
