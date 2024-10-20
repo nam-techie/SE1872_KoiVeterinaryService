@@ -56,13 +56,19 @@ PrivateRoute.propTypes = {
 // RoleBasedRoute: Yêu cầu token và vai trò phù hợp để truy cập
 export const RoleBasedRoute = ({ children, allowedRoles }) => {
     const token = localStorage.getItem('authToken');
-    const userRole = localStorage.getItem('role');  // Lưu vai trò của người dùng và loại bỏ khoảng trắng
+    const userRole = localStorage.getItem('role')?.trim();  // Lấy vai trò của người dùng và loại bỏ khoảng trắng
 
-    // Nếu không có token hoặc vai trò không hợp lệ, điều hướng về trang đăng nhập
+    // Nếu không có token hoặc vai trò không hợp lệ
     if (!token || !allowedRoles.includes(userRole)) {
-        return <Navigate to="/login" />;
+        // Điều hướng khác nhau dựa trên vai trò người dùng
+        if (userRole === 'DOCTOR') {
+            return <Navigate to="/doctor/doctor-dashboard" />;
+        } else {
+            return <Navigate to="/homepage" />;
+        }
     }
 
+    // Nếu người dùng có vai trò hợp lệ, trả về component con (children)
     return children;
 };
 

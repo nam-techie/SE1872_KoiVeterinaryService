@@ -72,7 +72,10 @@
 }
 
 .functionButton:hover {
-    background-color: #f5f5f5;
+    background-color: #ea8045;
+}
+.functionButton:hover h4{
+    color: white;
 }
 
 .functionIcon {

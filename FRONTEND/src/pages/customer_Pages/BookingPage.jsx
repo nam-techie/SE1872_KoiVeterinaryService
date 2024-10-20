@@ -3,24 +3,31 @@ import { useDoctorList, useService, useDistrictList } from '../../hooks/useServi
 import { ServiceTypeSelector, PhoneInput, DescriptionInput, DateSelector, TimeSelector, DistrictSelector, AgreementCheckbox } from '../../components/BookingCard.jsx';
 import { DetailedAddressInput, DoctorSelector, SubmitButton, ConfirmationModal } from '../../components/BookingCard.jsx';
 import styles from '../../styles/BookingPage.module.css';
-import { useState } from "react";
-import { CustomerNavBar } from "../../components/Navbar.jsx";  // Chuyển từ import CSS thường sang CSS module
+import { useState, useEffect } from "react";
+import { CustomerNavBar } from "../../components/Navbar.jsx";  // CSS Module import
 
 function BookingPage() {
     const {
         serviceType,
-        setFormData,
+        setServiceType,
         phoneNumber,
+        setPhoneNumber,
         description,
-        handleSubmit,
+        setDescription,
         selectedDate,
+        setSelectedDate,
         selectedTime,
+        setSelectedTime,
         detailedAddress,
+        setDetailedAddress,
         selectedDistrict,
+        setSelectedDistrict,
         selectedDoctor,
+        setSelectedDoctor,
         errors,
         availableTimes,
         dateOptions,
+        handleSubmit,
         handleFinalSubmit,
         agree,
         setAgree
@@ -31,6 +38,16 @@ function BookingPage() {
     const { doctors } = useDoctorList();
 
     const [showConfirm, setShowConfirm] = useState(false);
+
+    // Reset các giá trị liên quan khi loại dịch vụ thay đổi
+    useEffect(() => {
+        // Khi chuyển dịch vụ, reset lại các giá trị nhập liên quan
+        setSelectedDate('');
+        setSelectedTime('');
+        setDetailedAddress('');
+        setSelectedDistrict('');
+        setSelectedDoctor('dr0'); // Đặt lại bác sĩ được chọn nếu cần
+    }, [serviceType]);
 
     const handlePreSubmit = (e) => {
         const hasErrors = handleSubmit(e);
@@ -49,28 +66,28 @@ function BookingPage() {
                     <div className={styles.appointmentColumn}>
                         <ServiceTypeSelector
                             serviceType={serviceType}
-                            setServiceType={(value) => setFormData(prev => ({ ...prev, serviceType: value }))}
+                            setServiceType={setServiceType}
                             service={services}
                         />
                         <PhoneInput
                             phoneNumber={phoneNumber}
-                            setPhoneNumber={(value) => setFormData(prev => ({ ...prev, phoneNumber: value }))}
+                            setPhoneNumber={setPhoneNumber}
                             error={errors.phoneNumber}
                         />
                         <DescriptionInput
                             description={description}
-                            setDescription={(value) => setFormData(prev => ({ ...prev, description: value }))}
+                            setDescription={setDescription}
                         />
                         <DistrictSelector
                             selectedDistrict={selectedDistrict}
-                            setSelectedDistrict={(value) => setFormData(prev => ({ ...prev, selectedDistrict: value }))}
+                            setSelectedDistrict={setSelectedDistrict}
                             districts={districts}
                             error={errors.selectedDistrict}
                             disabled={serviceType !== '2' && serviceType !== '4'}
                         />
                         <DetailedAddressInput
                             detailedAddress={detailedAddress}
-                            setDetailedAddress={(value) => setFormData(prev => ({ ...prev, detailedAddress: value }))}
+                            setDetailedAddress={setDetailedAddress}
                             error={errors.detailedAddress}
                             disabled={serviceType !== '2' && serviceType !== '4'}
                         />
@@ -79,26 +96,26 @@ function BookingPage() {
                     <div className={styles.appointmentColumn}>
                         <DoctorSelector
                             selectedDoctor={selectedDoctor}
-                            handleDoctorSelect={(value) => setFormData(prev => ({ ...prev, selectedDoctor: value }))}
+                            handleDoctorSelect={setSelectedDoctor}
                             doctors={doctors}
                             disabled={serviceType !== '3'}
                         />
                         <DateSelector
                             selectedDate={selectedDate}
-                            setSelectedDate={(value) => setFormData(prev => ({ ...prev, selectedDate: value }))}
+                            setSelectedDate={setSelectedDate}
                             dateOptions={dateOptions}
                             error={errors.selectedDate}
                             disabled={serviceType === '1'}
                         />
                         <TimeSelector
                             selectedTime={selectedTime}
-                            setSelectedTime={(value) => setFormData(prev => ({ ...prev, selectedTime: value }))}
+                            setSelectedTime={setSelectedTime}
                             availableTimes={availableTimes}
                             error={errors.selectedTime}
                             disabled={serviceType === '1'}
                         />
 
-                        {/* Checkbox đồng ý điều khoản */}
+                        {/* Hộp kiểm Đồng ý điều khoản */}
                         <AgreementCheckbox setAgree={setAgree} />
 
                         <SubmitButton handleSubmit={handlePreSubmit} isDisabled={!agree} />

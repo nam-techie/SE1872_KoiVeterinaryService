@@ -10,7 +10,7 @@ import DoctorDashBoard from "./pages/doctor_Pages/DoctorDashBoard.jsx";
 import GoogleLoginSuccess from "./pages/GoogleLoginSuccess.jsx";
 import BookingPage from "./pages/customer_Pages/BookingPage.jsx";
 import LoadingCat from "./components/LoadingCat.jsx";
-
+import DoctorAppointment from "./pages/doctor_Pages/DoctorAppointment.jsx";
 
 function App() {
 
@@ -24,7 +24,7 @@ function App() {
           <Route path="/homepage" element={<PublicRoute><HomePage /></PublicRoute>}/>
           <Route path="/service" element={<PublicRoute><ServiceIntro /></PublicRoute>}/>
           <Route path="/aboutme" element={<PublicRoute><AboutMe /></PublicRoute>}/>
-          <Route path="/success" element={<PublicRoute><GoogleLoginSuccess /></PublicRoute>}/>
+          <Route path="/login/success" element={<PublicRoute><GoogleLoginSuccess /></PublicRoute>}/>
           <Route path="/loading" element={<PublicRoute><LoadingCat/></PublicRoute>}/>
 
           {/* Trang không cho phép truy cập nếu đã đăng nhập (có token) */}
@@ -42,6 +42,12 @@ function App() {
           <Route path="/doctor/doctor-dashboard" element={
             <RoleBasedRoute allowedRoles={['DOCTOR', 'ADMIN']}>
               <DoctorDashBoard/>
+            </RoleBasedRoute>
+          } />
+
+          <Route path="/doctor/doctor-appointment" element={
+            <RoleBasedRoute allowedRoles={['DOCTOR', 'ADMIN']}>
+                <DoctorAppointment/>
             </RoleBasedRoute>
           } />
 

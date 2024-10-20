@@ -1,11 +1,17 @@
 import styles from "../styles/NavBar.module.css";
 import { FaMapMarkerAlt, FaPhoneAlt, FaClock} from "react-icons/fa";
-import { FaUserLarge } from "react-icons/fa6";
+import { FaUserLarge,  FaUserDoctor } from "react-icons/fa6";
 import Logo from "../assets/homePage_images/logo.png";
 import { Link } from "react-router-dom";
 import { IoLogInOutline, IoLogInSharp } from "react-icons/io5";
 import { useAuthValidation } from "../utils/Validation.js";
 import { useState } from "react"; // Để quản lý trạng thái hiển thị dropdown
+import { AiFillSchedule } from "react-icons/ai";
+import { PiNewspaperClippingFill } from "react-icons/pi";
+import { IoLogOutSharp } from "react-icons/io5";
+import { RiFeedbackFill } from "react-icons/ri";
+import { FaRegCalendarPlus } from "react-icons/fa";
+
 
 export function CustomerNavBar() {
   const { isLoggedIn, username, handleLogout } = useAuthValidation(); // Kiểm tra trạng thái đăng nhập
@@ -101,3 +107,37 @@ export function CustomerNavBar() {
       </>
   );
 }
+
+
+export const DoctorNavBar = () => {
+    const { username, role, handleLogout } = useAuthValidation(); // Lấy role từ hook
+
+    return (
+        <div className={styles.DoctorSidebar}>
+            <div className={styles.DoctorSidebarLogo}>
+                [{role}] {username} {/* Hiển thị role và username */}
+            </div>
+            <div className={styles.DoctorSidebarLinks}>
+                <a className={styles.DoctorSidebarLink} href="/doctor/doctor-dashboard">
+                    <FaUserDoctor className={styles.icon} size={40}/> Dashboard
+                </a>
+                <a className={styles.DoctorSidebarLink} href="#patients">
+                    <AiFillSchedule className={styles.icon} size={40}/> Lịch Làm Việc
+                </a>
+                <a className={styles.DoctorSidebarLink} href="/doctor/doctor-appointment">
+                    <PiNewspaperClippingFill className={styles.icon} size={40}/> Lịch Đặt
+                </a>
+                <a className={styles.DoctorSidebarLink} href="#appointments">
+                    <RiFeedbackFill className={styles.icon} size={40}/> FeedBack
+                </a>
+                <a className={styles.DoctorSidebarLink} href="#appointments">
+                    <FaRegCalendarPlus className={styles.icon} size={40}/> Dịch Vụ Đặt Thêm
+                </a>
+                <hr className={styles.separator}/>
+                <a className={styles.DoctorSidebarLink} href="#logout" onClick={handleLogout}>
+                    <IoLogOutSharp className={styles.icon} size={40}/> Đăng Xuất
+                </a>
+            </div>
+        </div>
+    );
+};

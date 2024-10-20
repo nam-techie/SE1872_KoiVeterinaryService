@@ -167,8 +167,70 @@
     text-align: left;
 }
 
+
+
 .dropdownMenu hr {
     margin: 10px 0;
     border: none;
     border-top: 1px solid #ddd;
+}
+
+
+/*Thiết lập navbar cho trang bác sĩ*/
+
+.DoctorSidebar {
+    height: 100vh;
+    width: 200px; /* Sidebar nhỏ hơn, nhưng vẫn đủ để hiển thị nội dung */
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: #ff7245;
+    padding-top: 20px;
+    transition: 0.3s ease;
+    overflow-y: auto; /* Cho phép cuộn nếu nội dung quá dài */
+}
+
+.DoctorSidebarLogo {
+    color: white;
+    font-size: 22px; /* Kích thước logo lớn hơn một chút */
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.DoctorSidebarLinks {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+}
+
+.DoctorSidebarLink {
+    display: flex;
+    flex-direction: column; /* Icon nằm trên chữ */
+    align-items: center;
+    color: white;
+    padding: 15px; /* Khoảng cách vừa đủ để không quá chật */
+    text-decoration: none;
+    font-size: 16px; /* Tăng kích thước chữ để dễ đọc hơn */
+    transition: background-color 0.3s;
+}
+.DoctorSidebarLink a{
+    font-size: 100px;
+}
+
+.DoctorSidebarLink:hover {
+    background-color: white;
+    color: orangered;
+}
+
+.icon {
+    font-size: 24px; /* Tăng kích thước icon để nổi bật hơn */
+    margin-bottom: 5px; /* Khoảng cách giữa icon và chữ */
+}
+
+.separator {
+    border: 0;
+    height: 1px;
+    background-color: white;
+    margin: 15px 0;
 }
