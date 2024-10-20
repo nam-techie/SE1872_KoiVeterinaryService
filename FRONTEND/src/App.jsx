@@ -10,6 +10,7 @@ import DoctorDashBoard from "./pages/doctor_Pages/DoctorDashBoard.jsx";
 import GoogleLoginSuccess from "./pages/GoogleLoginSuccess.jsx";
 import BookingPage from "./pages/customer_Pages/BookingPage.jsx";
 import LoadingCat from "./components/LoadingCat.jsx";
+import FAQPage from "./pages/FAQPage.jsx";
 
 
 function App() {
@@ -19,13 +20,14 @@ function App() {
     <>
       <Router>
         <Routes>
-          {/* Trang công khai, nhưng bác sĩ không được truy cập */}
+          {/* Trang công khai*/}
           <Route path="/" element={<PublicRoute><HomePage /></PublicRoute>}/>
           <Route path="/homepage" element={<PublicRoute><HomePage /></PublicRoute>}/>
           <Route path="/service" element={<PublicRoute><ServiceIntro /></PublicRoute>}/>
           <Route path="/aboutme" element={<PublicRoute><AboutMe /></PublicRoute>}/>
           <Route path="/success" element={<PublicRoute><GoogleLoginSuccess /></PublicRoute>}/>
           <Route path="/loading" element={<PublicRoute><LoadingCat/></PublicRoute>}/>
+          <Route path="/faqs" element={<PublicRoute><FAQPage/></PublicRoute>}/>
 
           {/* Trang không cho phép truy cập nếu đã đăng nhập (có token) */}
           <Route path="/login" element={<RestrictedRoute><Login /></RestrictedRoute>} />

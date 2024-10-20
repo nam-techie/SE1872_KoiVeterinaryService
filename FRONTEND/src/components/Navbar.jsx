@@ -72,7 +72,7 @@ export function CustomerNavBar() {
                             </NavLink>
                         </li>
                         <li>
-                            <NavLink to="/faq" className={({isActive}) => isActive ? styles.active : ''}>
+                            <NavLink to="/faqs" className={({isActive}) => isActive ? styles.active : ''}>
                                 Câu hỏi thường gặp
                             </NavLink>
                         </li>
