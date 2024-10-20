@@ -1,4 +1,5 @@
 package com.namtechie.org.entity;
+
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -10,7 +11,7 @@ public class DoctorsSchedules {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "account_id", nullable = false)
+    @JoinColumn(name = "doctor_id", nullable = false)
     private Doctor doctor;
 
     private String workDay;

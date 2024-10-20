@@ -4,13 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d2cec660-9bd4-4c6d-9559-8cd458d3cf90" name="Changes" comment="done create account for ever role when adim want and create account for veterianry">
+    <list default="true" id="d2cec660-9bd4-4c6d-9559-8cd458d3cf90" name="Changes" comment="done dashboard for manage account">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/controller/AdminController.java" beforeDir="false" afterPath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/controller/AdminController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/service/AuthenticationService.java" beforeDir="false" afterPath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/service/AuthenticationService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FRONTEND/src/admin_pages/AccountDashboard.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/FRONTEND/src/admin_pages/AccountDashboard.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FRONTEND/src/admin_pages/hooks/useAccountInfo.js" beforeDir="false" afterPath="$PROJECT_DIR$/FRONTEND/src/admin_pages/hooks/useAccountInfo.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FRONTEND/src/admin_pages/styles/AccountDashboard.css" beforeDir="false" afterPath="$PROJECT_DIR$/FRONTEND/src/admin_pages/styles/AccountDashboard.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/controller/DoctorController.java" beforeDir="false" afterPath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/controller/DoctorController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/entity/Doctor.java" beforeDir="false" afterPath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/entity/Doctor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/entity/DoctorsSchedules.java" beforeDir="false" afterPath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/entity/DoctorsSchedules.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/service/DoctorService.java" beforeDir="false" afterPath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/service/DoctorService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -84,7 +83,7 @@
     "Spring Boot.KoiVeterinaryServiceCenterApplication.executor": "Run",
     "git-widget-placeholder": "nam",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/Phuong Nam/Desktop/SWP391/Group03_SE1872_KoiVeterinaryServiceCenter/.idea",
+    "last_opened_file_path": "C:/Users/Phuong Nam/Desktop/SWP391/SWP391-NJS1806-Jewelry-Production-Order-System-main",
     "list.type.of.created.stylesheet": "CSS",
     "node.js.detected.package.eslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -140,7 +139,7 @@
       <workItem from="1728735479717" duration="7657000" />
       <workItem from="1728902718685" duration="1396000" />
       <workItem from="1729218095908" duration="1953000" />
-      <workItem from="1729256619124" duration="25104000" />
+      <workItem from="1729256619124" duration="33872000" />
     </task>
     <task id="LOCAL-00001" summary="push all because forgot">
       <option name="closed" value="true" />
@@ -230,7 +229,15 @@
       <option name="project" value="LOCAL" />
       <updated>1729340602436</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="done dashboard for manage account">
+      <option name="closed" value="true" />
+      <created>1729344508152</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1729344508152</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -260,6 +267,7 @@
     <MESSAGE value="search account and sort them" />
     <MESSAGE value="done status in view account for admin" />
     <MESSAGE value="done create account for ever role when adim want and create account for veterianry" />
-    <option name="LAST_COMMIT_MESSAGE" value="done create account for ever role when adim want and create account for veterianry" />
+    <MESSAGE value="done dashboard for manage account" />
+    <option name="LAST_COMMIT_MESSAGE" value="done dashboard for manage account" />
   </component>
 </project>

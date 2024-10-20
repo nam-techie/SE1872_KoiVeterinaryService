@@ -19,11 +19,11 @@ public class DoctorController {
     @Autowired
     DoctorService doctorService;
 
-    @PutMapping("/updateInfo")
-    public ResponseEntity updateInforVeterinary(DoctorRequest doctorRequest) {
-        Doctor updateDoctor = doctorService.addInfoVeterinary(doctorRequest);
-        return ResponseEntity.ok(updateDoctor);
-    }
+//    @PutMapping("/updateInfo")
+//    public ResponseEntity updateInforVeterinary(DoctorRequest doctorRequest) {
+//        Doctor updateDoctor = doctorService.addInfoVeterinary(doctorRequest);
+//        return ResponseEntity.ok(updateDoctor);
+//    }
 
     @GetMapping("/listVeterinaryInfo")
     public ResponseEntity getDoctor() {

@@ -3,10 +3,12 @@ package com.namtechie.org.service;
 
 import com.namtechie.org.entity.Account;
 import com.namtechie.org.entity.Doctor;
+import com.namtechie.org.entity.DoctorInfo;
 import com.namtechie.org.entity.Role;
 import com.namtechie.org.model.UpdateDoctorLogin;
 import com.namtechie.org.model.request.DoctorRequest;
 import com.namtechie.org.repository.AccountRepository;
+import com.namtechie.org.repository.DoctorInfoRepository;
 import com.namtechie.org.repository.DoctorRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +25,9 @@ public class DoctorService {
 
     @Autowired
     AccountRepository accountRepository;
+
+    @Autowired
+    DoctorInfoRepository doctorInfoRepository;
 
     @Autowired
     AuthenticationService authenticationService;
@@ -59,54 +64,66 @@ public class DoctorService {
         return doctorRepository.findDoctorById(curruntAccount.getId());
     }
 
-    public Doctor addInfoVeterinary(DoctorRequest doctorRequest) {
-        try {
-            // Lấy tài khoản hiện tại của người dùng đã xác thực
-            Account currentAccount = getCurrentAccount();
-//            if (!currentAccount.getRole().equals(Role.VETERINARY.name())) {
-//                throw new RuntimeException("Chỉ tài khoản của bác sĩ mới có thể thực hiện hành động này.");
-//            } check tài khỏan hiện tại thì có token và role VETERINARY rồi nên ko cần check lại
-
-            // Kiểm tra xem bác sĩ có tồn tại không, nếu không thì khởi tạo mới
-            Doctor doctor = doctorRepository.findByAccountId(currentAccount.getId());
-            if (doctor == null) {
-                doctor = new Doctor();  // Khởi tạo đối tượng Doctor mới
-                doctor.setAccount(currentAccount);  // Liên kết với tài khoản
-            }
-
-            // Xét trường hợp nếu user ko nhập gì thì ko update
-            if (!doctorRequest.getFullName().equals(doctor.getFullname())) {
-                doctor.setFullname(doctorRequest.getFullName());
-            }
-            if (!doctorRequest.getPhone().equals(doctor.getPhone())) {
-                doctor.setPhone(doctorRequest.getPhone());
-            }
-            if (!doctorRequest.getSpecialty().equals(doctor.getSpecialty())) {
-                doctor.setSpecialty(doctorRequest.getSpecialty());
-            }
-            if (!doctorRequest.getIntroduction().equals(doctor.getIntroduction())) {
-                doctor.setIntroduction(doctorRequest.getIntroduction());
-            }
-            if (!doctorRequest.getTraining().equals(doctor.getTraining())) {
-                doctor.setTraining(doctorRequest.getTraining());
-            }
-            if (!doctorRequest.getWorkExperience().equals(doctor.getWorkExperience())) {
-                doctor.setWorkExperience(doctorRequest.getWorkExperience());
-            }
-            if (!doctorRequest.getAchievements().equals(doctor.getAchievements())) {
-                doctor.setAchievements(doctorRequest.getAchievements());
-            }
-            if (!doctorRequest.getResearchPapers().equals(doctor.getResearchPapers())) {
-                doctor.setResearchPapers(doctorRequest.getResearchPapers());
-            }
-
-            // Lưu đối tượng Doctor vào cơ sở dữ liệu
-            return doctorRepository.save(doctor);
-
-        } catch (Exception e) {
-            // Log lỗi hoặc xử lý các ngoại lệ khác nếu cần
-            e.printStackTrace();
-            throw new RuntimeException("Đã xảy ra lỗi trong quá trình thêm thông tin bác sĩ. Vui lòng thử lại sau.");
-        }
+    public List<DoctorInfo> getAllDoctorInfo(long doctorId){
+        List<DoctorInfo> doctorInfos = doctorInfoRepository.findAll();
+        return doctorInfos;
     }
+
+    public DoctorInfo getDoctorInfo(long doctorId){
+        DoctorInfo doctorInfo = doctorInfoRepository.findDoctorInfoByDoctorId(doctorId);
+        return doctorInfo;
+    }
+
+
+
+//    public Doctor addInfoVeterinary(DoctorRequest doctorRequest) {
+//        try {
+//            // Lấy tài khoản hiện tại của người dùng đã xác thực
+//            Account currentAccount = getCurrentAccount();
+////            if (!currentAccount.getRole().equals(Role.VETERINARY.name())) {
+////                throw new RuntimeException("Chỉ tài khoản của bác sĩ mới có thể thực hiện hành động này.");
+////            } check tài khỏan hiện tại thì có token và role VETERINARY rồi nên ko cần check lại
+//
+//            // Kiểm tra xem bác sĩ có tồn tại không, nếu không thì khởi tạo mới
+//            Doctor doctor = doctorRepository.findByAccountId(currentAccount.getId());
+//            if (doctor == null) {
+//                doctor = new Doctor();  // Khởi tạo đối tượng Doctor mới
+//                doctor.setAccount(currentAccount);  // Liên kết với tài khoản
+//            }
+//
+//            // Xét trường hợp nếu user ko nhập gì thì ko update
+//            if (!doctorRequest.getFullName().equals(doctor.getFullName())) {
+//                doctor.setFullName(doctorRequest.getFullName());
+//            }
+//            if (!doctorRequest.getPhone().equals(doctor.getPhone())) {
+//                doctor.setPhone(doctorRequest.getPhone());
+//            }
+//            if (!doctorRequest.getSpecialty().equals(doctor.getSpecialty())) {
+//                doctor.setSpecialty(doctorRequest.getSpecialty());
+//            }
+//            if (!doctorRequest.getIntroduction().equals(doctor.getIntroduction())) {
+//                doctor.setIntroduction(doctorRequest.getIntroduction());
+//            }
+//            if (!doctorRequest.getTraining().equals(doctor.getTraining())) {
+//                doctor.setTraining(doctorRequest.getTraining());
+//            }
+//            if (!doctorRequest.getWorkExperience().equals(doctor.getWorkExperience())) {
+//                doctor.setWorkExperience(doctorRequest.getWorkExperience());
+//            }
+//            if (!doctorRequest.getAchievements().equals(doctor.getAchievements())) {
+//                doctor.setAchievements(doctorRequest.getAchievements());
+//            }
+//            if (!doctorRequest.getResearchPapers().equals(doctor.getResearchPapers())) {
+//                doctor.setResearchPapers(doctorRequest.getResearchPapers());
+//            }
+//
+//            // Lưu đối tượng Doctor vào cơ sở dữ liệu
+//            return doctorRepository.save(doctor);
+//
+//        } catch (Exception e) {
+//            // Log lỗi hoặc xử lý các ngoại lệ khác nếu cần
+//            e.printStackTrace();
+//            throw new RuntimeException("Đã xảy ra lỗi trong quá trình thêm thông tin bác sĩ. Vui lòng thử lại sau.");
+//        }
+//    }
 }
