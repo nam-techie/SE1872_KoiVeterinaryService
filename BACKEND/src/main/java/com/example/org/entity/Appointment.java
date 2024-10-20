@@ -55,6 +55,7 @@ public class Appointment {
 
     @OneToMany(mappedBy = "appointment", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonManagedReference
+    @JsonIgnore
     private List<FeedBack> feedBack;
 
 }

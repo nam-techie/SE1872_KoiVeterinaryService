@@ -28,7 +28,5 @@ public class Staff {
     @Column(nullable = false)
     private String phone;
 
-    @Column
-    private Boolean sex;
 
 }

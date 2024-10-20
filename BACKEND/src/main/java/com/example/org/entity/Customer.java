@@ -27,8 +27,6 @@ public class Customer {
     @Column(length = 255)
     private String fullname;
 
-    @Column
-    private Boolean sex;
 
     @Column(length = 255)
     private String phone;
