@@ -1,4 +1,4 @@
-import { CustomerNavBar } from "../components/Navbar";
+import {CustomerNavBar} from "../components/Navbar";
 import styles from "../styles/HomePage.module.css";
 import homePageFirst1st from "../assets/homePage_images/homePageFish1St.jpg";
 import homePageFirst2nd from "../assets/homePage_images/homePageFish2ndt.jpg";
@@ -9,15 +9,15 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import Masonry from 'react-masonry-css';
 import Slider from "react-slick";
-import { IoCalendarOutline } from "react-icons/io5";
-import { BsFillTelephoneFill } from "react-icons/bs";
-import { FaUserDoctor } from "react-icons/fa6";
-import { CiStethoscope } from "react-icons/ci";
-import { CiMedicalClipboard } from "react-icons/ci";
-import { LuHeartPulse } from "react-icons/lu";
-import { PiSyringe } from "react-icons/pi";
+import {IoCalendarOutline} from "react-icons/io5";
+import {BsFillTelephoneFill} from "react-icons/bs";
+import {FaUserDoctor} from "react-icons/fa6";
+import {CiStethoscope} from "react-icons/ci";
+import {CiMedicalClipboard} from "react-icons/ci";
+import {LuHeartPulse} from "react-icons/lu";
+import {PiSyringe} from "react-icons/pi";
 import {useDoctorList} from "../hooks/useService.js";
-import { DoctorCard } from "../components/Card";
+import {DoctorCard} from "../components/Card";
 import someActive1 from "../assets/homePage_images/someActive1.jpg"
 import someActive2 from "../assets/homePage_images/someActive2.jpg"
 import someActive3 from "../assets/homePage_images/someActive3.jpg"
@@ -28,16 +28,15 @@ import Footer from "../components/Footer.jsx";
 import ContactButton from "../components/ContactButton.jsx";
 
 
-
 function HomePage() {
-    const { doctors, doctorLoading, doctorError } = useDoctorList();
+    const {doctors, doctorLoading, doctorError} = useDoctorList();
 
 
     const images1 = [
-        { id: 1, src: homePageFirst1st, alt: 'KOI_1' },
-        { id: 2, src: homePageFirst2nd, alt: 'KOI_2' },
-        { id: 3, src: homePageFirst3rd, alt: 'KOI_3' },
-        { id: 4, src: homePageFirst4th, alt: 'KOI_4' }
+        {id: 1, src: homePageFirst1st, alt: 'KOI_1'},
+        {id: 2, src: homePageFirst2nd, alt: 'KOI_2'},
+        {id: 3, src: homePageFirst3rd, alt: 'KOI_3'},
+        {id: 4, src: homePageFirst4th, alt: 'KOI_4'}
     ];
 
     const image2 = [
@@ -59,7 +58,7 @@ function HomePage() {
         autoplaySpeed: 1500,
     };
 
-    const settings2 ={
+    const settings2 = {
         dots: true,
         infinite: true,
         speed: 500,
@@ -78,7 +77,7 @@ function HomePage() {
 
     return (
         <>
-            <CustomerNavBar />
+            <CustomerNavBar/>
 
             <div className={styles.homePageContainer}>
                 {/* Phần nội dung đầu tiên */}
@@ -86,7 +85,7 @@ function HomePage() {
                     <Slider {...settings1}>
                         {images1.map((image) => (
                             <div key={image.id} className={styles.sliderItem}>
-                                <img src={image.src} alt={image.alt} className={styles.sliderImage} />
+                                <img src={image.src} alt={image.alt} className={styles.sliderImage}/>
                             </div>
                         ))}
                     </Slider>
@@ -127,58 +126,64 @@ function HomePage() {
                 {/* Phần thứ hai */}
                 <div className={styles.homePageSecond}>
                     <div className={styles.homePageSecondTitle}>
-                    <h1>Tại sao lại chọn KOI CUNG?</h1>
+                        <h1>Tại sao lại chọn KOI CUNG?</h1>
                         <div className={styles.orangeLine}></div>
                     </div>
                     <div className={styles.homePageSecondContent}>
                         <div className={styles.homePageSecondLeft}>
-                            <img src={doctorKOL} alt="web-avatar" />
+                            <img src={doctorKOL} alt="web-avatar"/>
                         </div>
                         <div className={styles.homePageSecondRight}>
                             <div className={styles.homePageSecordRightPart}>
-                                <span className={styles.hPSRPIcon} >
-                                    <CiStethoscope size={60} />
+                                <span className={styles.hPSRPIcon}>
+                                    <CiStethoscope size={60}/>
                                 </span>
                                 <div>
                                     <h2>Chuyên gia hàng đầu</h2>
                                     <p className={styles.hPSRPContent}>
-                                        Trung tâm chúng tôi sở hữu đội ngũ chuyên gia cá Koi giàu kinh nghiệm, kết hợp cùng các kỹ thuật viên chuyên chăm sóc cá bài bản. Chúng tôi cam kết mang lại dịch vụ chất lượng cao và sự hài lòng cho khách hàng.
+                                        Trung tâm chúng tôi sở hữu đội ngũ chuyên gia cá Koi giàu kinh nghiệm, kết hợp
+                                        cùng các kỹ thuật viên chuyên chăm sóc cá bài bản. Chúng tôi cam kết mang lại
+                                        dịch vụ chất lượng cao và sự hài lòng cho khách hàng.
                                     </p>
                                 </div>
                             </div>
 
                             <div className={styles.homePageSecordRightPart}>
                                 <span className={styles.hPSRPIcon}>
-                                    <LuHeartPulse size={60} />
+                                    <LuHeartPulse size={60}/>
                                 </span>
                                 <div>
                                     <h2>Chất lượng xứng tầm</h2>
                                     <p className={styles.hPSRPContent}>
-                                        Trung tâm KoiKung được quản lý bởi các nhà quản lý giàu kinh nghiệm, cùng với sự hỗ trợ của kỹ thuật hiện đại, mang lại cho khách hàng dịch vụ chăm sóc cá toàn diện.
+                                        Trung tâm KoiKung được quản lý bởi các nhà quản lý giàu kinh nghiệm, cùng với sự
+                                        hỗ trợ của kỹ thuật hiện đại, mang lại cho khách hàng dịch vụ chăm sóc cá toàn
+                                        diện.
                                     </p>
                                 </div>
                             </div>
 
                             <div className={styles.homePageSecordRightPart}>
                                 <span className={styles.hPSRPIcon}>
-                                    <CiMedicalClipboard size={60} />
+                                    <CiMedicalClipboard size={60}/>
                                 </span>
                                 <div>
                                     <h2>Công nghệ tiên tiến</h2>
                                     <p className={styles.hPSRPContent}>
-                                        Chúng tôi ứng dụng công nghệ tiên tiến trong chăm sóc cá Koi, đảm bảo sự tối ưu và hiệu quả cao.
+                                        Chúng tôi ứng dụng công nghệ tiên tiến trong chăm sóc cá Koi, đảm bảo sự tối ưu
+                                        và hiệu quả cao.
                                     </p>
                                 </div>
                             </div>
 
                             <div className={styles.homePageSecordRightPart}>
                                 <span className={styles.hPSRPIcon}>
-                                    <PiSyringe size={60} />
+                                    <PiSyringe size={60}/>
                                 </span>
                                 <div>
                                     <h2>Nghiên cứu & Đổi mới</h2>
                                     <p className={styles.hPSRPContent}>
-                                        Chúng tôi không ngừng nâng cao kiến thức và tìm kiếm phương pháp mới để chăm sóc cá Koi tốt nhất.
+                                        Chúng tôi không ngừng nâng cao kiến thức và tìm kiếm phương pháp mới để chăm sóc
+                                        cá Koi tốt nhất.
                                     </p>
                                 </div>
                             </div>
@@ -190,9 +195,9 @@ function HomePage() {
                     <h1>Đội Ngũ Y Bác Sĩ Của Chúng Tôi</h1>
                     <div className={styles.orangeLine}></div>
                     {doctorLoading && <p>Đang tải danh sách bác sĩ...</p>}
-                    {doctorError &&  <p>{doctorError}</p>}
+                    {doctorError && <p>{doctorError}</p>}
                     <Slider {...settings2}>
-                        {doctors.map((doctor) =>(
+                        {doctors.map((doctor) => (
                             <div key={doctor.id}>
                                 <DoctorCard
                                     fullname={doctor.fullname}
@@ -210,15 +215,15 @@ function HomePage() {
                     <h1>Một Số Hình Ảnh Tại Trung Tâm Của Chúng Tôi</h1>
                     <div className={styles.orangeLine}></div>
 
-                        <Masonry
-                            breakpointCols={breakpoints}
-                            className={styles.myMansoryGrid2}
-                            columnClassName={styles.MansoryGrid2Colum}
-                        >
-                            {image2.map(( image2, index) =>(
+                    <Masonry
+                        breakpointCols={breakpoints}
+                        className={styles.myMansoryGrid2}
+                        columnClassName={styles.MansoryGrid2Colum}
+                    >
+                        {image2.map((image2, index) => (
                             <img key={index} src={image2}/>
-                            ))}
-                        </Masonry>
+                        ))}
+                    </Masonry>
 
                 </div>
             </div>
