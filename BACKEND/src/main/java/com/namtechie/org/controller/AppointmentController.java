@@ -22,7 +22,7 @@ import java.util.Map;
 @RequestMapping("/api")
 @RestController
 @SecurityRequirement(name = "api")
-@CrossOrigin(origins = "http://localhost:5741")
+@CrossOrigin(origins = "http://localhost:5741/")
 public class AppointmentController {
 
     @Autowired

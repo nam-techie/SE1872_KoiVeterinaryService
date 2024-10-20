@@ -1,0 +1,174 @@
+.topPage {
+    font-family: Arial, Helvetica, sans-serif;
+    position: fixed;
+    width: 100%;
+    left: 0;
+    right: 0;
+    top: 0;
+    z-index: 1000; /* Đảm bảo topPage luôn nằm trên các phần tử khác */
+}
+
+.customerTopNavBar {
+    width: 100%;
+    top: 0;
+    left: 0;
+    background-color: white;
+    padding: 10px 0;
+    display: flex;
+    justify-content: space-between; /* Phân bổ không gian giữa các phần tử */
+    align-items: center;
+    font-size: 14px;
+    color: black;
+    font-family: Arial, sans-serif;
+    z-index: 1001;
+    box-sizing: border-box;
+}
+
+.welcomeInfo {
+    /* Bỏ float để sử dụng flexbox */
+    font-size: 18px;
+    color: dimgray;
+    padding-left: 80px;
+    font-weight: bold;
+}
+
+.contactInfo {
+    display: flex;
+    gap: 10px;
+    font-size: 14px;
+    padding-right: 20px;
+    white-space: nowrap;
+}
+
+.customerNavBarContainer {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: rgb(255, 115, 0);
+    padding: 15px 20px; /* Điều chỉnh padding để navbar gọn gàng hơn */
+    height: 20px;
+}
+
+.customerNavBarContainer img {
+    height: 40px; /* Giữ kích thước logo cân đối */
+    width: auto;
+    margin-right: 20px;
+}
+
+.customerNavBarLogo img {
+    padding-top: 5px;
+}
+
+.customerNavBarLinks {
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Căn giữa các liên kết */
+    gap: 20px;
+}
+
+.customerNavBarLinks li {
+    list-style: none;
+}
+
+.customerNavBarLinks li a {
+    color: white;
+    text-decoration: none;
+    font-size: 16px;
+    transition: color 0.3s ease;
+}
+
+.customerNavBarLinks li a:hover {
+    color: #ddd;
+    text-decoration: underline;
+}
+
+.authButtons {
+    padding-right: 40px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.authButtons a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 15px;
+    background-color: white;
+    color: rgb(255, 115, 0);
+    border: 2px solid rgb(255, 115, 0);
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
+}
+
+.authButtons a svg {
+    margin-left: 5px;
+}
+
+.authButtons a:hover {
+    background-color: rgb(58, 27, 15);
+    color: white;
+    transform: translateX(-5px); /* Hiệu ứng di chuyển nhẹ từ phải qua trái */
+}
+
+.userIconWrapper {
+    position: relative;
+    cursor: pointer;
+}
+
+.userIconWrapper:hover .dropdownMenu {
+    display: block; /* Hiển thị dropdown khi hover */
+}
+
+.dropdownMenu {
+    border-radius: 12px; /* Bo tròn các góc */
+    display: none; /* Ẩn dropdown mặc định */
+    position: absolute;
+    top: 35px; /* Đặt vị trí xuất hiện ngay bên dưới biểu tượng */
+    right: 0;
+    text-align: center;
+    background-color: white;
+    border: 1px solid #ddd;
+    width: 200px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 1001;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+.dropdownMenu a,
+.dropdownMenu button {
+    display: block;
+    width: 90%;
+    padding: 10px;
+    font-size: 14px;
+    color: gray;
+    text-decoration: none;
+    cursor: pointer;
+    background: none;
+    border: none;
+    text-align: left;
+}
+
+.dropdownMenu a:hover,
+.dropdownMenu button:hover {
+    background-color: #f0f0f0;
+    color: orangered;
+}
+
+.logoutButton {
+    color: gray;
+    width: 100%;
+    text-align: left;
+}
+
+.dropdownMenu hr {
+    margin: 10px 0;
+    border: none;
+    border-top: 1px solid #ddd;
+}

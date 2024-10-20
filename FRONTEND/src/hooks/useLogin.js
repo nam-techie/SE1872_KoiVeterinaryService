@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
-import { useNavigate, useLocation } from "react-router-dom";
-import { login } from '../services/apiLogin.js'; // Service đăng nhập
+import {useNavigate, useLocation} from "react-router-dom";
+import { login } from '../service/apiLogin.js'; // Service đăng nhập
+
+
 
 // Hook xử lý login
 export const useLogin = () => {
@@ -8,11 +10,11 @@ export const useLogin = () => {
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
-
+    const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();  // Ngăn chặn hành vi mặc định của form
-        console.log("Form submitted with:", {username, password});  // Log kiểm tra form
+        console.log("Form submitted with:", { username, password });  // Log kiểm tra form
 
         setLoading(true);
         setError('');  // Reset lỗi trước khi thực hiện đăng nhập
@@ -27,12 +29,15 @@ export const useLogin = () => {
             localStorage.setItem('username', response.username);
             localStorage.setItem('role', response.role); // Lưu role vào localStorage
 
-            // Kiểm tra role và chuyển hướng tương ứng
-            if (response.role === 'ADMIN') {
-                window.location.href = '/dashboard';
-            } else {
-                window.location.href = '/homepage';
-            }
+            // Chuyển hướng đến LoadingCat trước
+            navigate('/loading');
+
+            // Điều hướng đến trang thành công sau 2 giây
+            setTimeout(() => {
+                navigate('/homepage')
+            }, 3000);
+            // Thời gian hiển thị LoadingCat
+
         } catch (error) {
             // Hiển thị thông báo lỗi trực tiếp từ backend
             setError(error.message || 'Đăng nhập thất bại, hãy thử lại');
@@ -57,6 +62,7 @@ export const useLogin = () => {
         handleGoogleLogin,
     };
 };
+
 
 // Hook xử lý token và username sau khi Google login thành công
 export const useTokenHandler = () => {
@@ -102,6 +108,14 @@ export const useTokenHandler = () => {
             console.error('Không có token trong query string');
         }
     }, [navigate, location]);  // Đảm bảo chỉ chạy khi `location` hoặc `navigate` thay đổi
+};
+
+export const handleLogout = () => {
+
+    localStorage.clear();
+
+    
+    window.location.href = "/homepage";
 };
 
 

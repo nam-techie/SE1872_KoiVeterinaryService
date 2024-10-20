@@ -1,0 +1,26 @@
+[
+    { "id": 1, "name": "District 1", "fee": 50000 },
+    { "id": 2, "name": "District 2 (now Thu Duc City)", "fee": 45000 },
+    { "id": 3, "name": "District 3", "fee": 50000 },
+    { "id": 4, "name": "District 4", "fee": 40000 },
+    { "id": 5, "name": "District 5", "fee": 45000 },
+    { "id": 6, "name": "District 6", "fee": 42000 },
+    { "id": 7, "name": "District 7", "fee": 55000 },
+    { "id": 8, "name": "District 8", "fee": 43000 },
+    { "id": 9, "name": "District 9 (now Thu Duc City)", "fee": 47000 },
+    { "id": 10, "name": "District 10", "fee": 50000 },
+    { "id": 11, "name": "District 11", "fee": 45000 },
+    { "id": 12, "name": "District 12", "fee": 40000 },
+    { "id": 13, "name": "Binh Tan District", "fee": 45000 },
+    { "id": 14, "name": "Binh Thanh District", "fee": 50000 },
+    { "id": 15, "name": "Go Vap District", "fee": 47000 },
+    { "id": 16, "name": "Phu Nhuan District", "fee": 52000 },
+    { "id": 17, "name": "Tan Binh District", "fee": 48000 },
+    { "id": 18, "name": "Tan Phu District", "fee": 46000 },
+    { "id": 19, "name": "Thu Duc District (now part of Thu Duc City)", "fee": 45000 },
+    { "id": 20, "name": "Cu Chi District", "fee": 35000 },
+    { "id": 21, "name": "Hoc Mon District", "fee": 37000 },
+    { "id": 22, "name": "Nha Be District", "fee": 40000 },
+    { "id": 23, "name": "Can Gio District", "fee": 30000 }
+  ]
+  

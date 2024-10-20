@@ -1,0 +1,84 @@
+.serviceIntroContainer {
+    font-family: Arial, Helvetica, sans-serif;
+    padding: 150px 20px 20px;
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+    position: relative;
+}
+
+.breadCrumb {
+    display: flex;
+    align-items: center;
+    padding-left: 20px;
+    margin-bottom: 20px; /* Khoảng cách giữa breadcrumb và tiêu đề */
+}
+
+.breadCrumb a {
+    margin-right: 5px;
+    text-decoration: underline;
+    color: purple;
+}
+
+.breadCrumb span {
+    color: darkorange;
+}
+
+.orangeLine {
+    width: 40%;
+    height: 0;
+    border: 0.1rem solid orangered;
+    margin-top: 10px;
+    margin-bottom: 30px;
+}
+
+.serviceIntroFist {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.serviceIntroFist h1 {
+    font-size: 28px;
+    color: black;
+}
+
+.serviceIntroSecond {
+    margin-top: 30px;
+}
+
+.serviceIntroSecondCard {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 10px; /* Giảm padding để form nhỏ lại */
+    background-color: white;
+    border-radius: 10px;
+    text-align: center;
+    width: 80%; /* Giảm width để thẻ nhỏ hơn */
+    margin: 5px auto; /* Cân giữa thẻ và thêm khoảng cách đều giữa các thẻ */
+}
+.serviceIntroSecondCard h4 {
+    margin-top: 10px; /* Giảm khoảng cách giữa icon và title */
+    margin-bottom: 10px;
+    font-size: 16px; /* Kích thước chữ */
+    font-weight: bold;
+}
+
+.scheduleButton {
+    padding: 8px 16px; /* Kích thước nút */
+    background-color: orange;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 14px; /* Kích thước chữ trên nút */
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.scheduleButton:hover {
+    background-color: darkorange; /* Hiệu ứng hover */
+}
