@@ -91,9 +91,9 @@ public class AppointmentController {
         return ResponseEntity.ok(appointmentStatus);
     }
 
-    @GetMapping("/getVeterianAuto")
+    @GetMapping("/getDoctorAuto")
     public ResponseEntity getVeterianAuto(@Param("BookingDate")String bookingDate, @Param("BookingTime") String bookingTimeStr) {
-        Doctor doctor = appointmentService.findAvailableVeterian(bookingDate, bookingTimeStr);
+        Doctor doctor = appointmentService.findAvailableDoctor(bookingDate, bookingTimeStr);
         return ResponseEntity.ok(doctor);
     }
 

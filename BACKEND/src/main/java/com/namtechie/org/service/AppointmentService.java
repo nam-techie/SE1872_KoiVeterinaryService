@@ -201,7 +201,7 @@ public class AppointmentService {
                 }else { //khách hàng ko chọn bác sĩ
                     appointmentDetail.setAppointmentBookingDate(appointmentRequest.getBookingDate());
                     appointmentDetail.setAppointmentBookingTime(appointmentRequest.getBookingTime());
-                    doctor = findAvailableVeterian(String.valueOf(appointmentRequest.getBookingDate()), String.valueOf(appointmentRequest.getBookingTime()));
+                    doctor = findAvailableDoctor(String.valueOf(appointmentRequest.getBookingDate()), String.valueOf(appointmentRequest.getBookingTime()));
                     appointment.setDoctorAssigned(false);
                     appointment.setDoctor(doctor);
 
@@ -209,7 +209,7 @@ public class AppointmentService {
 
             }else if(appointmentRequest.getServiceTypeId() == 2 || appointmentRequest.getServiceTypeId() == 4) { // khám tại nhà
                 if(doctor == null) {
-                    doctor = findAvailableVeterian(String.valueOf(appointmentRequest.getBookingDate()), String.valueOf(appointmentRequest.getBookingTime()));
+                    doctor = findAvailableDoctor(String.valueOf(appointmentRequest.getBookingDate()), String.valueOf(appointmentRequest.getBookingTime()));
                     appointment.setDoctorAssigned(false);
                     appointment.setDoctor(doctor);
                     appointmentDetail.setAppointmentBookingDate(appointmentRequest.getBookingDate());
@@ -221,7 +221,7 @@ public class AppointmentService {
                     Time appointmentTime = appointmentRequest.getBookingTime();
                     Time updateAppointmentTime = new Time(appointmentTime.getTime() + 15 * 60 * 1000); // 15 phút sau
                     System.out.println("15Minutes: " + updateAppointmentTime);
-                    doctor = findAvailableVeterian(String.valueOf(appointmentRequest.getBookingDate()), String.valueOf(updateAppointmentTime));
+                    doctor = findAvailableDoctor(String.valueOf(appointmentRequest.getBookingDate()), String.valueOf(updateAppointmentTime));
                     appointment.setDoctorAssigned(false);
                     appointment.setDoctor(doctor);
                     Zone onlineZone = zoneRepository.findById(15);
@@ -253,7 +253,7 @@ public class AppointmentService {
     }
 
 
-    public Doctor findAvailableVeterian(String bookingDate, String bookingTime) {
+    public Doctor findAvailableDoctor(String bookingDate, String bookingTime) {
         // Lấy danh sách tất cả các bác sĩ
         List<Doctor> allDoctors = doctorRepository.findAll();
 

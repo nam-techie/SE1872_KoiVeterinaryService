@@ -15,7 +15,7 @@ public class AccountController {
     private AppointmentService appointmentService;
 
     @CrossOrigin(origins = "http://localhost:5741")
-    @GetMapping(value = "/getVeterians", produces = "application/json")
+    @GetMapping(value = "/getDoctors", produces = "application/json")
     public ResponseEntity getSchedules() {
         System.out.println("Hllo");
         return ResponseEntity.ok(appointmentService.findAllDoctor());
