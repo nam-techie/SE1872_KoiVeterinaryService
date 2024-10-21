@@ -64,7 +64,7 @@ export const RoleBasedRoute = ({ children, allowedRoles }) => {
         if (userRole === 'DOCTOR') {
             return <Navigate to="/doctor/doctor-dashboard" />;
         } else {
-            return <Navigate to="/homepage" />;
+            return <Navigate to="/login" />;
         }
     }
 

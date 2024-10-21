@@ -5,6 +5,7 @@ import { IoIosArrowForward } from "react-icons/io";
 import Logov2  from "../assets/aboutMe_images/logo_v2.png"
 import Location from "../assets/aboutMe_images/Location.jpg"
 import Footer from "../components/Footer.jsx";
+import ContactButton from "../components/ContactButton.jsx";
 
 function AboutMe(){
     return(
@@ -119,6 +120,7 @@ function AboutMe(){
                     </div>
                 </div>
             </div>
+            <ContactButton/>
             <Footer/>
 
         </>

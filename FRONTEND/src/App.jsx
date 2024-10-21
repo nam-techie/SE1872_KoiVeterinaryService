@@ -11,6 +11,9 @@ import GoogleLoginSuccess from "./pages/GoogleLoginSuccess.jsx";
 import BookingPage from "./pages/customer_Pages/BookingPage.jsx";
 import LoadingCat from "./components/LoadingCat.jsx";
 import DoctorAppointment from "./pages/doctor_Pages/DoctorAppointment.jsx";
+import ForgotPassword from "./pages/ForgotPassWord.jsx";
+import VerifyOTP from "./pages/Verify-OTP.jsx";
+import ResetPassword from "./pages/ResetPassword.jsx";
 
 function App() {
 
@@ -19,6 +22,13 @@ function App() {
     <>
       <Router>
         <Routes>
+          {/*Trang công khai với tất cả mọi actor*/}
+          <Route path="/forgot-password" element={<ForgotPassword/>}/>
+          <Route path="/verify-otp" element={<VerifyOTP/>}/>
+          <Route path="/reset-password" element={<ResetPassword/>}/>
+
+
+
           {/* Trang công khai, nhưng bác sĩ không được truy cập */}
           <Route path="/" element={<PublicRoute><HomePage /></PublicRoute>}/>
           <Route path="/homepage" element={<PublicRoute><HomePage /></PublicRoute>}/>
@@ -31,14 +41,14 @@ function App() {
           <Route path="/login" element={<RestrictedRoute><Login /></RestrictedRoute>} />
           <Route path="/register" element={<RestrictedRoute><Register /></RestrictedRoute>} />
 
-           Trang chỉ customer và admin truy cập được (doctor không truy cập được)
+           {/*Trang chỉ customer và admin truy cập được (doctor không truy cập được)*/}
           <Route path="/customer/booking-page" element={
             <RoleBasedRoute allowedRoles={['CUSTOMER', 'ADMIN']}>
                 <BookingPage/>
             </RoleBasedRoute>
           } />
 
-           Trang chỉ doctor và admin truy cập được
+          {/*Trang chỉ doctor và admin truy cập được*/}
           <Route path="/doctor/doctor-dashboard" element={
             <RoleBasedRoute allowedRoles={['DOCTOR', 'ADMIN']}>
               <DoctorDashBoard/>
