@@ -1,12 +1,11 @@
 import styles from "../styles/AboutMe.module.css"
 import {CustomerNavBar} from "../components/Navbar.jsx";
-    // import Footer from "../components/Footer.jsx";
-import { IoIosArrowForward } from "react-icons/io";
+import {IoIosArrowForward} from "react-icons/io";
 import Location from "../assets/aboutMe_images/Location.jpg"
 import Footer from "../components/Footer.jsx";
 
-function AboutMe(){
-    return(
+function AboutMe() {
+    return (
         <>
             <CustomerNavBar/>
             <div className={styles.aboutMeContainer}>
