@@ -10,7 +10,8 @@ export const useDoctorInfo = () => {
     const fetchAllDoctors = async () => {
         try {
             setLoading(true);
-            const response = await axiosInstance.get('/api/admin/listAllVeterinary');
+            const response = await axiosInstance.get('/admin/listAllVeterinary');
+            // Đảm bảo rằng mỗi bác sĩ trong response.data có trường id
             setDoctors(response.data);
             setLoading(false);
         } catch (err) {
@@ -21,7 +22,7 @@ export const useDoctorInfo = () => {
 
     const deleteDoctor = async (id) => {
         try {
-            await axiosInstance.delete(`/api/admin/deleteVeterinaryInfo?id=${id}`);
+            await axiosInstance.delete(`/admin/deleteVeterinaryInfo?id=${id}`);
             await fetchAllDoctors(); // Cập nhật lại danh sách sau khi xóa
         } catch (err) {
             throw new Error('Có lỗi xảy ra khi xóa thông tin bác sĩ');
@@ -30,7 +31,7 @@ export const useDoctorInfo = () => {
 
     const updateDoctorInfo = async (doctorData) => {
         try {
-            const response = await axiosInstance.put('/api/admin/updateDoctorInfo', doctorData);
+            const response = await axiosInstance.put('/admin/updateDoctorInfo', doctorData);
             await fetchAllDoctors(); // Cập nhật lại danh sách sau khi cập nhật
             return response.data;
         } catch (err) {
@@ -40,7 +41,7 @@ export const useDoctorInfo = () => {
 
     const getDoctorDetail = async (doctorId) => {
         try {
-            const response = await axiosInstance.get(`/api/admin/getInfoDoctor/${doctorId}`);
+            const response = await axiosInstance.get(`/admin/getInfoDoctor/${doctorId}`);
             return response.data;
         } catch (err) {
             throw new Error('Có lỗi xảy ra khi lấy thông tin chi tiết bác sĩ');

@@ -12,6 +12,7 @@ import com.namtechie.org.model.response.AccountResponse;
 import com.namtechie.org.model.request.VeterinaryRequest;
 import com.namtechie.org.model.response.AdminAccountResponse;
 import com.namtechie.org.model.response.DoctorInfoResponse;
+import com.namtechie.org.repository.DoctorRepository;
 import com.namtechie.org.service.AuthenticationService;
 import com.namtechie.org.service.CustomerService;
 import com.namtechie.org.service.DoctorService;
@@ -38,9 +39,13 @@ public class AdminController {
     DoctorService doctorService;
 
     @Autowired
-    CustomerService customerService;
+    DoctorRepository doctorRepository;
+
     @Autowired
-    private ModelMapper modelMapper;
+    CustomerService customerService;
+
+    @Autowired
+    ModelMapper modelMapper;
 
     //APi down is provide for ADMIN
     @PutMapping("/setAccountVeterinary/{email}")
@@ -101,9 +106,9 @@ public class AdminController {
     }
 
     @GetMapping("/listAllVeterinary")
-    public ResponseEntity getAllDoctor() {
-        List<Doctor> doctors = doctorService.getAllDoctors();
-        return ResponseEntity.ok(doctors);
+    public List<Doctor> getAllDoctor() {
+        List<Doctor> listDoctor = doctorRepository.findAll();
+        return listDoctor;
     }
 
     @DeleteMapping("/deleteVeterinaryInfo")

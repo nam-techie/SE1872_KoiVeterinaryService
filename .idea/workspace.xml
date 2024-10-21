@@ -4,11 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d2cec660-9bd4-4c6d-9559-8cd458d3cf90" name="Changes" comment="update css of dashboard account">
-      <change beforePath="$PROJECT_DIR$/FRONTEND/src/admin_pages/AccountDashboard.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/FRONTEND/src/admin_pages/AccountDashboard.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FRONTEND/src/admin_pages/hooks/useDoctorInfo.js" beforeDir="false" afterPath="$PROJECT_DIR$/FRONTEND/src/admin_pages/hooks/useDoctorInfo.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FRONTEND/src/admin_pages/styles/AccountDashboard.css" beforeDir="false" afterPath="$PROJECT_DIR$/FRONTEND/src/admin_pages/styles/AccountDashboard.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FRONTEND/src/admin_pages/styles/AdminDashboard.css" beforeDir="false" afterPath="$PROJECT_DIR$/FRONTEND/src/admin_pages/styles/AdminDashboard.css" afterDir="false" />
+    <list default="true" id="d2cec660-9bd4-4c6d-9559-8cd458d3cf90" name="Changes" comment="change some off css of AccountDashboard.css and change the register (turn off send email)">
+      <change beforePath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/controller/DoctorController.java" beforeDir="false" afterPath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/controller/DoctorController.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -139,7 +136,7 @@
       <workItem from="1728735479717" duration="7657000" />
       <workItem from="1728902718685" duration="1396000" />
       <workItem from="1729218095908" duration="1953000" />
-      <workItem from="1729256619124" duration="63116000" />
+      <workItem from="1729256619124" duration="64106000" />
     </task>
     <task id="LOCAL-00001" summary="push all because forgot">
       <option name="closed" value="true" />
@@ -261,7 +258,15 @@
       <option name="project" value="LOCAL" />
       <updated>1729525960726</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="change some off css of AccountDashboard.css and change the register (turn off send email)">
+      <option name="closed" value="true" />
+      <created>1729528726248</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1729528726248</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -295,6 +300,7 @@
     <MESSAGE value="update two class entity" />
     <MESSAGE value="done dashboard for manage and change information account of user in web" />
     <MESSAGE value="update css of dashboard account" />
-    <option name="LAST_COMMIT_MESSAGE" value="update css of dashboard account" />
+    <MESSAGE value="change some off css of AccountDashboard.css and change the register (turn off send email)" />
+    <option name="LAST_COMMIT_MESSAGE" value="change some off css of AccountDashboard.css and change the register (turn off send email)" />
   </component>
 </project>
