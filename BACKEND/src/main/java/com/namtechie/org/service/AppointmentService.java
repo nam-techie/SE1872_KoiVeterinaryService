@@ -211,11 +211,13 @@ public class AppointmentService {
         List<Doctor> allDoctors = doctorRepository.findAll();
 
         for (Doctor doctor : allDoctors) {
-            Map<String, List<Schedule>> freeSchedules = scheduleService.findFreeScheduleByVeterianId(doctor.getId());
+            Map<String, List<Schedule>> freeSchedules = scheduleService.findFreeScheduleByDoctorId(doctor.getId());
 
             Date bookingDateSQL = Date.valueOf(bookingDate);
+            System.out.println("freeSchedules: " + freeSchedules);
+            System.out.println("bookingDate: " + bookingDateSQL);
 
-            List<Schedule> schedulesForDay = freeSchedules.get(bookingDateSQL);
+            List<Schedule> schedulesForDay = freeSchedules.get(bookingDate);
             System.out.println("12345" + schedulesForDay);
             for(Schedule schedule : schedulesForDay) {
                 if((schedule.getDate().equals(bookingDateSQL) && schedule.getStartTime().equals(Time.valueOf(bookingTime)) && schedule.isAvailable()) ||

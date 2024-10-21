@@ -28,7 +28,6 @@ import java.util.Map;
 @RequestMapping("/api")
 @RestController
 @SecurityRequirement(name = "api")
-@CrossOrigin(origins = "http://localhost:5741/")
 public class AppointmentController {
 
     @Autowired
@@ -53,7 +52,7 @@ public class AppointmentController {
     public ResponseEntity<Map<String, List<Schedule>>> getFreeScheduleByDoctorId(@Valid @RequestHeader("AuthenticationToken") String authorizationHeader, @RequestParam long doctorId) {
         String token = tokenService.getToken(authorizationHeader);
         if (tokenService.getAccountByToken(token) != null) {
-            return ResponseEntity.ok(scheduleService.findFreeScheduleByVeterianId(doctorId));
+            return ResponseEntity.ok(scheduleService.findFreeScheduleByDoctorId(doctorId));
         }
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }

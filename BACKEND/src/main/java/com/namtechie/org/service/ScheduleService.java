@@ -96,8 +96,6 @@ public class ScheduleService {
                             isFreeThisTime = true;
                             break;
                         }
-
-
                     }
                     if (!isFreeThisTime) { // Nếu đéo có lịch trống thì cho bận luôn
                         schedules.add(new Schedule(Date.valueOf(today), Time.valueOf(timeSlot + ":00:00"), Time.valueOf((timeSlot + 1) + ":00:00"), false));
@@ -113,11 +111,11 @@ public class ScheduleService {
     }
 
     // Lấy lịch làm việc trống trong 7 ngày tiếp theo của bác sĩ theo giờ và id bác sĩ
-    public Map<String, List<Schedule>> findFreeScheduleByVeterianId(Long veterianId) {
-        Map<Date, List<DoctorSchedules>> veterianSchedules = findNextSevenDayScheduleByVeterianId(veterianId);
+    public Map<String, List<Schedule>> findFreeScheduleByDoctorId(Long doctorId) {
+        Map<Date, List<DoctorSchedules>> doctorSchedules = findNextSevenDayScheduleByVeterianId(doctorId);
         Map<String, List<Schedule>> freeSchedules = new HashMap<>();
 
-        for (Map.Entry<Date, List<DoctorSchedules>> entry : veterianSchedules.entrySet()) {
+        for (Map.Entry<Date, List<DoctorSchedules>> entry : doctorSchedules.entrySet()) {
             Date date = entry.getKey();
             List<DoctorSchedules> schedules = entry.getValue();
             List<Schedule> scheduleRequests = new ArrayList<>(); // Cái này là lịch theo ngày nà
@@ -125,7 +123,7 @@ public class ScheduleService {
             for (DoctorSchedules schedule : schedules) {
                 boolean isMorning = schedule.getStartTime().before(NOON);
                 List<Integer> timeSlots = isMorning ? Arrays.asList(7, 8, 9, 10) : Arrays.asList(13, 14, 15, 16);
-                List<Appointment> appointments = appointmentService.findAllAppointmentOfSession(veterianId, date, isMorning);
+                List<Appointment> appointments = appointmentService.findAllAppointmentOfSession(doctorId, date, isMorning);
 
                 if (appointments.size() == 1 && appointments.get(0).getServiceType().getId() != 3) {
                     for (int hour : timeSlots) {

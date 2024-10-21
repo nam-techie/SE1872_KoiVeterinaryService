@@ -24,7 +24,7 @@ public class Doctor {
     @OneToMany(mappedBy = "doctor", cascade = CascadeType.ALL)
     @JsonManagedReference
     @JsonIgnore
-    private List<DoctorSchedule> doctorSchedules;
+    private List<DoctorSchedules> doctorSchedules;
 
     @OneToMany(mappedBy = "doctor", cascade = CascadeType.ALL)
     @JsonManagedReference

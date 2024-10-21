@@ -1,6 +1,7 @@
 package com.namtechie.org.service;
 
 import com.namtechie.org.entity.Account;
+import com.namtechie.org.entity.Customer;
 import com.namtechie.org.entity.Role;
 import com.namtechie.org.exception.BadCredentialsException;
 import com.namtechie.org.exception.DuplicateEntity;
@@ -9,6 +10,7 @@ import com.namtechie.org.model.*;
 import com.namtechie.org.model.request.*;
 import com.namtechie.org.model.response.AccountResponse;
 import com.namtechie.org.repository.AccountRepository;
+import com.namtechie.org.repository.CustomerRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,6 +52,9 @@ public class AuthenticationService implements UserDetailsService {
     @Autowired
     EmailService emailService;
 
+    @Autowired
+    CustomerRepository CustomerRepository;
+
     // xử lí logic, nghiệp vụ
     public AccountResponse register(RegisterRequest registerRequest) {
         // Kiểm tra confirmPassword trước khi tiếp tục
@@ -78,6 +83,12 @@ public class AuthenticationService implements UserDetailsService {
 
             // Lưu tài khoản vào database
             Account newAccount = accountRepository.save(account);
+
+            //Sau khi lưu xong thì tạo luôn bảng Customer tương ứng!
+            Customer customer = new Customer();
+            customer.setAccount(newAccount);
+
+            CustomerRepository.save(customer);
 
             // Gửi email thông báo đăng kí thành công
             EmailDetail emailDetail = new EmailDetail();
