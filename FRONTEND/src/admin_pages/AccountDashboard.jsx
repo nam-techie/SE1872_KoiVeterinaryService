@@ -1,6 +1,6 @@
 // eslint-disable-next-line no-unused-vars
 import React, {useState, useEffect} from 'react';
-import {FaTrash, FaEdit, FaUserPlus, FaUserMd, FaUndo} from 'react-icons/fa';
+import {FaTrash, FaEdit, FaUserPlus, FaUserMd, FaUndo, FaSort} from 'react-icons/fa';
 import './styles/AccountDashboard.css';
 import {useAccountInfo} from './hooks/useAccountInfo';
 import AccountUpdateProfile from './AccountUpdateProfile';
@@ -11,6 +11,7 @@ const AccountDashboard = ({ setActiveTab, setSelectedAccount }) => {
     const [sortBy, setSortBy] = useState('username');
     const [sortOrder, setSortOrder] = useState('asc');
     const [editingAccount, setEditingAccount] = useState(null);
+    const [dateSearch, setDateSearch] = useState('');
 
     useEffect(() => {
         fetchAllAccounts();
@@ -40,9 +41,10 @@ const AccountDashboard = ({ setActiveTab, setSelectedAccount }) => {
     });
 
     const filteredAccounts = sortedAccounts.filter(account =>
-        account.username.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        (account.username.toLowerCase().includes(searchTerm.toLowerCase()) ||
         account.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        account.role.toLowerCase().includes(searchTerm.toLowerCase())
+        account.role.toLowerCase().includes(searchTerm.toLowerCase())) &&
+        (!dateSearch || account.createdAt.includes(dateSearch))
     );
 
     const handleDelete = async (email) => {
@@ -102,7 +104,7 @@ const AccountDashboard = ({ setActiveTab, setSelectedAccount }) => {
                 </div>
             </div>
             <div className="search-sort-container">
-                <div className="search-container">
+                <div className="search-box">
                     <input
                         type="text"
                         placeholder="Tìm kiếm..."
@@ -110,28 +112,36 @@ const AccountDashboard = ({ setActiveTab, setSelectedAccount }) => {
                         onChange={(e) => setSearchTerm(e.target.value)}
                         className="search-input"
                     />
+                
                 </div>
-                <div className="sort-container">
+                <div className="date-box">
+                    <input
+                        type="date"
+                        value={dateSearch}
+                        onChange={(e) => setDateSearch(e.target.value)}
+                        className="date-input"
+                    />
+   
+                </div>
+                <div className="sort-box">
                     <select
                         value={sortBy}
-                        onChange={(e) => handleSort(e.target.value)}
+                        onChange={(e) => setSortBy(e.target.value)}
                         className="sort-select"
                     >
                         <option value="username">Sắp xếp theo Username</option>
                         <option value="email">Sắp xếp theo Email</option>
                         <option value="role">Sắp xếp theo Vai trò</option>
                         <option value="createdAt">Sắp xếp theo Ngày tạo</option>
-                        <option value="status">Sắp xếp theo Trạng thái</option>
                     </select>
                 </div>
-                <div className="sort-order-container">
-                    <button
-                        onClick={() => setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc')}
-                        className="sort-order-btn"
-                    >
-                        {sortOrder === 'asc' ? 'Theo thứ tự A - Z' : 'Theo thứ tự Z - A'}
-                    </button>
-                </div>
+                <button
+                    onClick={() => setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc')}
+                    className="sort-order-btn"
+                >
+                    {sortOrder === 'asc' ? 'Theo thứ tự A - Z' : 'Theo thứ tự Z - A'}
+                    <FaSort />
+                </button>
             </div>
             <div className="table-container">
                 <table className="accounts-table">
@@ -195,6 +205,7 @@ const AccountDashboard = ({ setActiveTab, setSelectedAccount }) => {
                     onUpdate={handleUpdateAccount}
                 />
             )}
+            
         </div>
     );
 };

@@ -112,61 +112,68 @@
 
 .search-sort-container {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    gap: 10px;
     margin-bottom: 20px;
     background-color: #fff;
-    padding: 10px;
+    padding: 15px;
     border-radius: 8px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.search-container,
-.sort-container,
-.sort-order-container {
+.search-box, .date-box, .sort-box, .sort-order-btn {
+    display: flex;
     flex: 1;
-    margin: 0 5px;
+    position: relative;
 }
 
-.search-input,
-.sort-select,
-.sort-order-btn {
+
+.search-input, .date-input, .sort-select, .sort-order-btn {
     width: 100%;
     padding: 10px;
+    padding-right: 30px;
     border: 1px solid #ddd;
-    border-radius: 5px;
+    border-radius: 4px;
     font-size: 14px;
 }
 
-.sort-select {
-    flex: 1;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    font-size: 14px;
-    background-color: #fff;
-    appearance: none;
-    background-image: url('data:image/svg+xml;utf8,<svg fill="black" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/><path d="M0 0h24v24H0z" fill="none"/></svg>');
-    background-repeat: no-repeat;
-    background-position-x: 95%;
-    background-position-y: 50%;
-    margin-right: 10px;
+.search-icon, .calendar-icon {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #888;
 }
 
 .sort-order-btn {
-    flex: 1;
-    margin-top: 10px;
-    padding: 10px 15px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     background-color: #f0f0f0;
-    border: 1px solid #ddd;
-    border-radius: 5px;
     cursor: pointer;
-    font-size: 14px;
-    text-align: center;
+    transition: background-color 0.3s;
 }
 
 .sort-order-btn:hover {
     background-color: #e0e0e0;
+}
+
+.reset-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    background-color: #f44336;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-top: 10px;
+}
+
+.reset-btn:hover {
+    background-color: #d32f2f;
 }
 
 .accounts-table th {
@@ -191,20 +198,31 @@
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    text-decoration: none;
     font-size: 14px;
+    transition: background-color 0.3s ease, transform 0.1s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.add-account-btn:hover {
+    background-color: #45a049;
+    transform: translateY(-2px);
+}
+
+.add-account-btn:active {
+    transform: translateY(0);
+}
+
+.add-account-btn svg {
+    margin-right: 8px;
+    font-size: 16px;
 }
 
 .add-account-btn.doctor-btn {
     background-color: #2196F3;
 }
 
-.add-account-btn svg {
-    margin-right: 5px;
-}
-
-.add-account-btn:hover {
-    opacity: 0.9;
+.add-account-btn.doctor-btn:hover {
+    background-color: #1e88e5;
 }
 
 .restore-btn {

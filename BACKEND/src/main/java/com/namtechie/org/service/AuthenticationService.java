@@ -10,8 +10,8 @@ import com.namtechie.org.model.*;
 import com.namtechie.org.model.request.*;
 import com.namtechie.org.model.response.AccountResponse;
 import com.namtechie.org.model.response.AdminAccountResponse;
-import com.namtechie.org.model.response.InfoCustomerResponse;
 import com.namtechie.org.repository.AccountRepository;
+import com.namtechie.org.repository.CustomerRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,6 +53,10 @@ public class AuthenticationService implements UserDetailsService {
 
     @Autowired
     EmailService emailService;
+    @Autowired
+    private CustomerService customerService;
+    @Autowired
+    private CustomerRepository customerRepository;
 
     // xử lí logic, nghiệp vụ
     public AccountResponse register(RegisterRequest registerRequest) {
@@ -83,13 +87,19 @@ public class AuthenticationService implements UserDetailsService {
 
             // Lưu tài khoản vào database
             Account newAccount = accountRepository.save(account);
+            Customers newCustomers = new Customers();
+//            // Gửi email thông báo đăng kí thành công
+//            EmailDetail emailDetail = new EmailDetail();
+//            emailDetail.setReceiver(newAccount);
+//            emailDetail.setSubject("Welcome to KoiKung Center!");
+//            emailDetail.setLink("https://www.google.com/");
+//            emailService.sendEmail(emailDetail);
 
-            // Gửi email thông báo đăng kí thành công
-            EmailDetail emailDetail = new EmailDetail();
-            emailDetail.setReceiver(newAccount);
-            emailDetail.setSubject("Welcome to KoiKung Center!");
-            emailDetail.setLink("https://www.google.com/");
-            emailService.sendEmail(emailDetail);
+            //Sau khi lưu xong thì tạo luôn bảng Customer tương ứng!
+            Customers customer = new Customers();
+            customer.setAccount(newAccount);
+
+            customerRepository.save(customer);
 
             return modelMapper.map(newAccount, AccountResponse.class);
         } catch (DataIntegrityViolationException e) {

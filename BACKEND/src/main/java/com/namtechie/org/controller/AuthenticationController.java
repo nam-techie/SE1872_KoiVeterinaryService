@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api")
 @RestController
 @SecurityRequirement(name = "api")
-@CrossOrigin(origins = "http://localhost:5741")
 public class AuthenticationController {
     // DI: Dependency Injection
     @Autowired
