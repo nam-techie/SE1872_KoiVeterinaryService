@@ -7,6 +7,7 @@ import com.namtechie.org.entity.DoctorInfo;
 import com.namtechie.org.entity.Role;
 import com.namtechie.org.model.UpdateDoctorLogin;
 import com.namtechie.org.model.request.DoctorRequest;
+import com.namtechie.org.model.response.DoctorInfoResponse;
 import com.namtechie.org.repository.AccountRepository;
 import com.namtechie.org.repository.DoctorInfoRepository;
 import com.namtechie.org.repository.DoctorRepository;
@@ -64,14 +65,21 @@ public class DoctorService {
         return doctorRepository.findDoctorById(curruntAccount.getId());
     }
 
-    public List<DoctorInfo> getAllDoctorInfo(long doctorId){
-        List<DoctorInfo> doctorInfos = doctorInfoRepository.findAll();
-        return doctorInfos;
-    }
 
-    public DoctorInfo getDoctorInfo(long doctorId){
+    public DoctorInfoResponse getAllInfoDoctor(long doctorId){
+        DoctorInfoResponse doctorInfoResponse = new DoctorInfoResponse();
+
+        Doctor doctor = doctorRepository.findDoctorById(doctorId);
+        doctorInfoResponse.setFullName(doctor.getFullName());
+        doctorInfoResponse.setPhone(doctor.getPhone());
+        doctorInfoResponse.setExperience(doctor.getExperience());
+
         DoctorInfo doctorInfo = doctorInfoRepository.findDoctorInfoByDoctorId(doctorId);
-        return doctorInfo;
+        doctorInfoResponse.setDescription(doctorInfo.getDescription());
+        doctorInfoResponse.setQualification(doctorInfo.getQualification());
+        doctorInfoResponse.setSpecialty(doctorInfo.getSpecialty());
+
+        return doctorInfoResponse;
     }
 
 

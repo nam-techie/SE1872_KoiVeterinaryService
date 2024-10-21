@@ -3,9 +3,10 @@ import React, {useState, useEffect} from 'react';
 import {FaTrash, FaEdit, FaUserPlus, FaUserMd, FaUndo} from 'react-icons/fa';
 import './styles/AccountDashboard.css';
 import {useAccountInfo} from './hooks/useAccountInfo';
+import AccountUpdateProfile from './AccountUpdateProfile';
 
-const AccountDashboard = ({ setActiveTab }) => {
-    const {accounts, loading, error, fetchAllAccounts, deleteAccount, restoreAccount, updateAccountRole} = useAccountInfo();
+const AccountDashboard = ({ setActiveTab, setSelectedAccount }) => {
+    const {accounts, loading, error, fetchAllAccounts, deleteAccount, restoreAccount} = useAccountInfo();
     const [searchTerm, setSearchTerm] = useState('');
     const [sortBy, setSortBy] = useState('username');
     const [sortOrder, setSortOrder] = useState('asc');
@@ -67,20 +68,21 @@ const AccountDashboard = ({ setActiveTab }) => {
             }
         }
     };
-
-    const handleEditRole = (account) => {
-        setEditingAccount(account);
+    const handleEditAccount = (account) => {
+        setSelectedAccount({
+            originalUsername: account.username, 
+            username: account.username,
+            email: account.email,
+            role: account.role
+        });
+        setActiveTab('editAccount');
     };
 
-    const handleRoleChange = async (email, newRole) => {
-        try {
-            await updateAccountRole(email, newRole);
-            setEditingAccount(null);
-            alert('Role đã được cập nhật thành công.');
-        } catch (err) {
-            console.error('Lỗi khi cập nhật role:', err);
-            alert('Có lỗi xảy ra khi cập nhật role. Vui lòng thử lại.');
-        }
+    const handleUpdateAccount = (updatedAccount) => {
+        // Xử lý cập nhật tài khoản trong danh sách
+        // Có thể gọi API ở đây hoặc cập nhật state
+        console.log('Tài khoản đã được cập nhật:', updatedAccount);
+        setEditingAccount(null);
     };
 
     if (loading) return <div>Đang tải...</div>;
@@ -154,18 +156,7 @@ const AccountDashboard = ({ setActiveTab }) => {
                                 </td>
                                 <td>{account.email}</td>
                                 <td>
-                                    {editingAccount && editingAccount.id === account.id ? (
-                                        <select
-                                            value={account.role}
-                                            onChange={(e) => handleRoleChange(account.email, e.target.value)}
-                                        >
-                                            <option value="CUSTOMER">CUSTOMER</option>
-                                            <option value="VETERINARY">VETERINARY</option>
-                                            <option value="ADMIN">ADMIN</option>
-                                        </select>
-                                    ) : (
-                                        account.role
-                                    )}
+                                   {account.role}
                                 </td>
                                 <td>{account.createdAt}</td>
                                 <td>
@@ -174,11 +165,9 @@ const AccountDashboard = ({ setActiveTab }) => {
                                     </span>
                                 </td>
                                 <td>
-                                    {!editingAccount || editingAccount.id !== account.id ? (
-                                        <button className="edit-btn" onClick={() => handleEditRole(account)}>
-                                            <FaEdit />
-                                        </button>
-                                    ) : null}
+                                    <button className="edit-btn" onClick={() => handleEditAccount(account)}>
+                                        <FaEdit />
+                                    </button>
                                     <button 
                                         className="delete-btn" 
                                         onClick={() => handleDelete(account.email)}
@@ -199,6 +188,13 @@ const AccountDashboard = ({ setActiveTab }) => {
                     </tbody>
                 </table>
             </div>
+            {editingAccount && (
+                <AccountUpdateProfile
+                    account={editingAccount}
+                    onClose={() => setEditingAccount(null)}
+                    onUpdate={handleUpdateAccount}
+                />
+            )}
         </div>
     );
 };

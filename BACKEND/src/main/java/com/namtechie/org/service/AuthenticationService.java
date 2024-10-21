@@ -9,6 +9,7 @@ import com.namtechie.org.exception.NotFoundException;
 import com.namtechie.org.model.*;
 import com.namtechie.org.model.request.*;
 import com.namtechie.org.model.response.AccountResponse;
+import com.namtechie.org.model.response.AdminAccountResponse;
 import com.namtechie.org.model.response.InfoCustomerResponse;
 import com.namtechie.org.repository.AccountRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -267,7 +268,7 @@ public class AuthenticationService implements UserDetailsService {
         }
     }
 
-    public void updateRole(String email, String role){
+    public void updateRole(String email, String role) {
         if (accountRepository.existsByEmail(email)) {
             Account newUpdate = accountRepository.findAccountByEmail(email);
 
@@ -389,7 +390,7 @@ public class AuthenticationService implements UserDetailsService {
 //        String email = oauth2User.getAttribute("email");
 //        String name = oauth2User.getAttribute("name");
 //
-//        // Kiểm tra xem email đã tồn tại trong cơ sở dữ liệu hay chưa
+//        // Kiểm tra xem email đã tồn tại trong cơ sở dữ li��u hay chưa
 //        Account account = accountRepository.findAccountByEmail(email);
 //
 //        if (account == null) {
@@ -510,6 +511,38 @@ public class AuthenticationService implements UserDetailsService {
             throw new RuntimeException("Đã xảy ra lỗi trong quá trình cập nhật thông tin admin.");
         }
     }
+
+    public void updateAccountInfo(AdminAccountResponse adminAccountResponse) {
+        try {
+            Account currentAccount = accountRepository.findAccountByUsername(adminAccountResponse.getOriginalUsername());
+            if (currentAccount == null) {
+                throw new NotFoundException("Tài khoản không tồn tại.");
+            }
+
+            Account accountByUsername = accountRepository.findAccountByUsername(adminAccountResponse.getUsername());
+            if (accountByUsername != null && !accountByUsername.getId().equals(currentAccount.getId())) {
+                throw new DuplicateEntity("Username đã được sử dụng bởi tài khoản khác.");
+            }
+
+            Account accountByEmail = accountRepository.findAccountByEmail(adminAccountResponse.getEmail());
+            if (accountByEmail != null && !accountByEmail.getId().equals(currentAccount.getId())) {
+                throw new DuplicateEntity("Email đã được sử dụng bởi tài khoản khác.");
+            }
+
+            // Cập nhật thông tin
+            currentAccount.setUsername(adminAccountResponse.getUsername());
+            currentAccount.setEmail(adminAccountResponse.getEmail());
+            currentAccount.setRole(adminAccountResponse.getRole());
+
+            accountRepository.save(currentAccount);
+
+        } catch (NotFoundException | DuplicateEntity e) {
+            throw e;
+        } catch (Exception e) {
+            throw new RuntimeException("Đã xảy ra lỗi trong quá trình cập nhật thông tin admin.");
+        }
+    }
+
 
 
 }

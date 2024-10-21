@@ -4,11 +4,14 @@ import com.namtechie.org.entity.Account;
 import com.namtechie.org.entity.Customers;
 import com.namtechie.org.entity.Doctor;
 import com.namtechie.org.exception.DuplicateEntity;
+import com.namtechie.org.exception.NotFoundException;
 import com.namtechie.org.model.request.AdminAccountRequest;
 import com.namtechie.org.model.request.AdminInfoRequest;
 import com.namtechie.org.model.request.CustomerInfoRequest;
 import com.namtechie.org.model.response.AccountResponse;
 import com.namtechie.org.model.request.VeterinaryRequest;
+import com.namtechie.org.model.response.AdminAccountResponse;
+import com.namtechie.org.model.response.DoctorInfoResponse;
 import com.namtechie.org.service.AuthenticationService;
 import com.namtechie.org.service.CustomerService;
 import com.namtechie.org.service.DoctorService;
@@ -91,10 +94,11 @@ public class AdminController {
         return new ResponseEntity<>("Đã cập nhật thành công.", HttpStatus.ACCEPTED);
     }
 
-
-
-
-
+    @GetMapping("/getInfoDoctor/{doctorId}")
+    public DoctorInfoResponse getInfoDoctor(@PathVariable long doctorId){
+        DoctorInfoResponse doctorInfoResponse = doctorService.getAllInfoDoctor(doctorId);
+        return doctorInfoResponse;
+    }
 
     @GetMapping("/listAllVeterinary")
     public ResponseEntity getAllDoctor() {
@@ -126,6 +130,21 @@ public class AdminController {
     public List<Customers> getAllInfoCustomer() {
         return customerService.getAllCustomers();
     }
+
+    @PutMapping("/updateInfoAccount")
+    public ResponseEntity<String> updateInfoAccount(@RequestBody AdminAccountResponse adminAccountResponse) {
+        try {
+            authenticationService.updateAccountInfo(adminAccountResponse);
+            return ResponseEntity.ok("Cập nhật thông tin tài khoản thành công");
+        } catch (NotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (DuplicateEntity e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
+
 
 
 }

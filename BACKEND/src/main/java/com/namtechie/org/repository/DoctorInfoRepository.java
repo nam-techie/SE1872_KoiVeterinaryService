@@ -8,4 +8,6 @@ public interface DoctorInfoRepository extends JpaRepository<DoctorInfo, Long> {
     DoctorInfo findDoctorInfoByDoctorId(long doctor_id);
 
 
+
+
 }

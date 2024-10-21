@@ -4,12 +4,23 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d2cec660-9bd4-4c6d-9559-8cd458d3cf90" name="Changes" comment="done dashboard for manage account">
+    <list default="true" id="d2cec660-9bd4-4c6d-9559-8cd458d3cf90" name="Changes" comment="update two class entity">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/controller/AdminController.java" beforeDir="false" afterPath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/controller/AdminController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/controller/DoctorController.java" beforeDir="false" afterPath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/controller/DoctorController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/entity/Doctor.java" beforeDir="false" afterPath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/entity/Doctor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/entity/DoctorsSchedules.java" beforeDir="false" afterPath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/entity/DoctorsSchedules.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/entity/DoctorInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/entity/DoctorInfo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/repository/DoctorInfoRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/repository/DoctorInfoRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/service/AuthenticationService.java" beforeDir="false" afterPath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/service/AuthenticationService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/service/DoctorService.java" beforeDir="false" afterPath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/service/DoctorService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BACKEND/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/BACKEND/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FRONTEND/src/App.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/FRONTEND/src/App.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FRONTEND/src/admin_pages/AccountDashboard.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/FRONTEND/src/admin_pages/AccountDashboard.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FRONTEND/src/admin_pages/CreateAccount.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/FRONTEND/src/admin_pages/CreateAccount.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FRONTEND/src/admin_pages/Dashboard.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/FRONTEND/src/admin_pages/Dashboard.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FRONTEND/src/admin_pages/VeterinaryAccount.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/FRONTEND/src/admin_pages/VeterinaryAccount.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FRONTEND/src/admin_pages/hooks/useAccountInfo.js" beforeDir="false" afterPath="$PROJECT_DIR$/FRONTEND/src/admin_pages/hooks/useAccountInfo.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FRONTEND/src/admin_pages/styles/CreateAccount.css" beforeDir="false" afterPath="$PROJECT_DIR$/FRONTEND/src/admin_pages/styles/CreateAccount.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FRONTEND/src/admin_pages/styles/VeterinaryAccount.css" beforeDir="false" afterPath="$PROJECT_DIR$/FRONTEND/src/admin_pages/styles/VeterinaryAccount.css" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -24,6 +35,7 @@
         <option value="CSS File" />
         <option value="JSX File" />
         <option value="JavaScript File" />
+        <option value="Interface" />
         <option value="Class" />
       </list>
     </option>
@@ -139,7 +151,7 @@
       <workItem from="1728735479717" duration="7657000" />
       <workItem from="1728902718685" duration="1396000" />
       <workItem from="1729218095908" duration="1953000" />
-      <workItem from="1729256619124" duration="33872000" />
+      <workItem from="1729256619124" duration="58767000" />
     </task>
     <task id="LOCAL-00001" summary="push all because forgot">
       <option name="closed" value="true" />
@@ -237,7 +249,15 @@
       <option name="project" value="LOCAL" />
       <updated>1729344508152</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="update two class entity">
+      <option name="closed" value="true" />
+      <created>1729439796974</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1729439796974</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -268,6 +288,7 @@
     <MESSAGE value="done status in view account for admin" />
     <MESSAGE value="done create account for ever role when adim want and create account for veterianry" />
     <MESSAGE value="done dashboard for manage account" />
-    <option name="LAST_COMMIT_MESSAGE" value="done dashboard for manage account" />
+    <MESSAGE value="update two class entity" />
+    <option name="LAST_COMMIT_MESSAGE" value="update two class entity" />
   </component>
 </project>

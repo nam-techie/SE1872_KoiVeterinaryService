@@ -27,6 +27,20 @@ export const useAccountInfo = () => {
         }
     };
 
+    const getAccountInfo = async (username) => {
+        try {
+            setLoading(true);
+            const response = await axiosInstance.get(`/admin/getInfoAccount/${username}`);
+            return response.data;
+        } catch (err) {
+            console.error('Lỗi khi lấy thông tin tài khoản cụ thể:', err);
+            setError('Không thể lấy thông tin tài khoản. Vui lòng thử lại sau.');
+            return null;
+        } finally {
+            setLoading(false);
+        }
+    };
+
     const updateAccountStatus = async (accountId, newStatus) => {
         try {
             const response = await axiosInstance.put(`/admin/updateAccountStatus/${accountId}`, {
@@ -97,6 +111,37 @@ export const useAccountInfo = () => {
         }
     };
 
+    const updateAccount = async (id, updatedData) => {
+        try {
+            setLoading(true);
+            const response = await axiosInstance.put(`/admin/updateAccount/${id}`, updatedData);
+            setAccounts(accounts.map(account => account.id === id ? response.data : account));
+            return response.data;
+        } catch (err) {
+            console.error('Lỗi khi cập nhật tài khoản:', err);
+            setError('Không thể cập nhật tài khoản. Vui lòng thử lại sau.');
+            throw err;
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const updateAccountInfo = async (accountData) => {
+        try {
+            const response = await axiosInstance.put('/admin/updateInfoAccount', {
+                originalUsername: accountData.originalUsername,
+                username: accountData.username,
+                email: accountData.email,
+                role: accountData.role
+            });
+            await fetchAllAccounts(); // Cập nhật lại danh sách tài khoản sau khi cập nhật
+            return response.data;
+        } catch (error) {
+            console.error('Lỗi khi cập nhật thông tin tài khoản:', error);
+            throw error;
+        }
+    };
+
     return { 
         accounts, 
         loading, 
@@ -107,6 +152,9 @@ export const useAccountInfo = () => {
         createVeterinaryAccount,
         deleteAccount,
         restoreAccount,
-        updateAccountRole
+        updateAccountRole,
+        getAccountInfo,
+        updateAccount,
+        updateAccountInfo
     };
 };

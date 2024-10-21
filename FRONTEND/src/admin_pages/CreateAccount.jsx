@@ -1,6 +1,5 @@
 // eslint-disable-next-line no-unused-vars
 import React, { useState } from 'react';
-import { FaArrowLeft } from 'react-icons/fa';
 import { useAccountInfo } from './hooks/useAccountInfo';
 import '../admin_pages/styles/CreateAccount.css';
 
@@ -8,7 +7,7 @@ const CreateAccount = ({ setActiveTab }) => {
     const [formData, setFormData] = useState({
         username: '',
         email: '',
-        role: '' // Đảm bảo role được khởi tạo
+        role: ''
     });
     const [error, setError] = useState('');
     const { createAccount } = useAccountInfo();
@@ -23,22 +22,17 @@ const CreateAccount = ({ setActiveTab }) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log('FormData being sent:', formData); // Thay dataToSend bằng formData
         try {
-            const newAccount = await createAccount(formData); // Sử dụng trực tiếp formData
+            const newAccount = await createAccount(formData);
             console.log('Tài khoản mới được tạo:', newAccount);
             setActiveTab('accounts');
         } catch (err) {
-            console.error('Lỗi từ createAccount:', err);
             setError(err.message || 'Có lỗi xảy ra khi tạo tài khoản. Vui lòng thử lại.');
         }
     };
 
     return (
         <div className="create-account-page">
-            <button onClick={() => setActiveTab('accounts')} className="back-btn">
-                <FaArrowLeft /> Quay lại
-            </button>
             <div className="create-account-container">
                 <h2>Tạo Tài Khoản Mới</h2>
                 {error && <p className="error-message">{error}</p>}
@@ -84,7 +78,10 @@ const CreateAccount = ({ setActiveTab }) => {
                         <label>Mật khẩu:</label>
                         <p>Mật khẩu tự động: 123456</p>
                     </div>
-                    <button type="submit" className="submit-btn">Tạo Tài Khoản</button>
+                    <div className="button-group">
+                        <button type="submit" className="submit-btn">Tạo Tài Khoản</button>
+                        <button type="button" onClick={() => setActiveTab('accounts')} className="cancel-btn">Hủy</button>
+                    </div>
                 </form>
             </div>
         </div>

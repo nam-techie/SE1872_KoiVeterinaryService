@@ -23,7 +23,7 @@ function App() {
     return (
         <Router>
             <Routes>
-                <Route path="/dashboard/*" element={<AdminDashboard />} />
+                <Route path="/dashboard" element={<AdminDashboard />} />
                 <Route path="*" element={
                     <div>
                         <Navbar />

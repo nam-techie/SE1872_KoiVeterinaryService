@@ -1,6 +1,5 @@
 // eslint-disable-next-line no-unused-vars
 import React, { useState } from 'react';
-import { FaArrowLeft } from 'react-icons/fa';
 import { useAccountInfo } from './hooks/useAccountInfo';
 import '../admin_pages/styles/VeterinaryAccount.css';
 
@@ -15,6 +14,7 @@ const VeterinaryAccount = ({ setActiveTab }) => {
         try {
             await createVeterinaryAccount({ email });
             setActiveTab('accounts');
+            // eslint-disable-next-line no-unused-vars
         } catch (err) {
             setError('Có lỗi xảy ra khi tạo tài khoản bác sĩ. Vui lòng thử lại.');
         }
@@ -22,9 +22,6 @@ const VeterinaryAccount = ({ setActiveTab }) => {
 
     return (
         <div className="veterinary-account-page">
-            <button onClick={() => setActiveTab('accounts')} className="back-btn">
-                <FaArrowLeft /> Quay lại
-            </button>
             <div className="veterinary-account-container">
                 <h2>Tạo Tài Khoản Bác Sĩ</h2>
                 {error && <p className="error-message">{error}</p>}
@@ -47,7 +44,10 @@ const VeterinaryAccount = ({ setActiveTab }) => {
                         <label>Tên đăng nhập:</label>
                         <p>Tự động tạo từ email</p>
                     </div>
-                    <button type="submit" className="submit-btn">Tạo Tài Khoản Bác Sĩ</button>
+                    <div className="button-group">
+                        <button type="submit" className="submit-btn">Tạo Tài Khoản Bác Sĩ</button>
+                        <button type="button" onClick={() => setActiveTab('accounts')} className="cancel-btn">Hủy</button>
+                    </div>
                 </form>
             </div>
         </div>

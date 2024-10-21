@@ -2,22 +2,29 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../admin_pages/styles/AdminDashboard.css';
-import { FaHome, FaCalendarAlt, FaUsers, FaUserMd, FaCog, FaComments, FaSignOutAlt, FaUser, FaUserPlus } from 'react-icons/fa';
+import { FaHome, FaCalendarAlt, FaUsers, FaUserMd, FaCog, FaComments, FaSignOutAlt, FaUser } from 'react-icons/fa';
 import AdminProfile from './AdminProfile';
 import AccountDashboard from './AccountDashboard';
 import CreateAccount from './CreateAccount';
 import VeterinaryAccount from './VeterinaryAccount';
+import AccountUpdateProfile from './AccountUpdateProfile';
 
 const AdminDashboard = () => {
     const navigate = useNavigate();
     const [username, setUsername] = useState('');
     const [activeTab, setActiveTab] = useState('home');
+    const [selectedAccount, setSelectedAccount] = useState(null);
+
     useEffect(() => {
         const storedUsername = localStorage.getItem('username');
         if (storedUsername) {
             setUsername(storedUsername);
         }
-    }, []);
+        const storedAccount = localStorage.getItem('selectedAccount');
+        if (storedAccount) {
+            setSelectedAccount(JSON.parse(storedAccount));
+        }
+    }, [activeTab]);
 
     const handleLogout = () => {
         // Xóa token và thông tin người dùng khỏi localStorage
@@ -76,11 +83,27 @@ const AdminDashboard = () => {
             case 'profile':
                 return <AdminProfile />;
             case 'accounts':
-                return <AccountDashboard setActiveTab={setActiveTab} />;
+                return <AccountDashboard 
+                    setActiveTab={setActiveTab} 
+                    setSelectedAccount={setSelectedAccount}
+                />;
             case 'createAccount':
                 return <CreateAccount setActiveTab={setActiveTab} />;
             case 'createVeterinaryAccount':
                 return <VeterinaryAccount setActiveTab={setActiveTab} />;
+            case 'editAccount':
+                return selectedAccount ? (
+                    <AccountUpdateProfile 
+                        account={selectedAccount} 
+                        onClose={() => setActiveTab('accounts')}
+                        onUpdate={(updatedAccount) => {
+                            console.log('Tài khoản đã được cập nhật:', updatedAccount);
+                            setActiveTab('accounts');
+                        }}
+                    />
+                ) : (
+                    <div>Không có tài khoản được chọn để chỉnh sửa</div>
+                );
             default:
                 return <div>Nội dung chưa được tạo</div>;
         }
@@ -107,7 +130,7 @@ const AdminDashboard = () => {
                     <li className="menu-item"><FaUsers /> Quản lý khách hàng</li>
                     <li className="menu-item"><FaUserMd /> Quản lý dịch vụ</li>
                     <li className="menu-item"><FaCog /> Quản lý bác sĩ</li>
-                    <li className={`menu-item ${activeTab === 'accounts' || activeTab === 'createAccount' || activeTab === 'createVeterinaryAccount' ? 'active' : ''}`} onClick={() => setActiveTab('accounts')}>
+                    <li className={`menu-item ${activeTab === 'accounts' ? 'active' : ''}`} onClick={() => setActiveTab('accounts')}>
                         <FaUsers /> Quản lý tài khoản
                     </li>
                     <li className={`menu-item ${activeTab === 'profile' ? 'active' : ''}`} onClick={() => setActiveTab('profile')}>

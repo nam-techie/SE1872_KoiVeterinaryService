@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/veterinary")
 @RestController
 @PreAuthorize("hasAuthority('VETERINARY')") // set từng thằng
+@CrossOrigin(origins = "http://localhost:5741")
 @SecurityRequirement(name = "api")
 
 public class DoctorController {
