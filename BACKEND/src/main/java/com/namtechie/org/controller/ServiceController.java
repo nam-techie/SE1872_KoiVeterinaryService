@@ -36,7 +36,7 @@ public class ServiceController {
     //Gửi danh sách thời gian rảnh của bác sĩ
     @CrossOrigin(origins =  "http://localhost:5741")
     @GetMapping(value = "/free-schedule", produces = "application/json")
-    public ResponseEntity<List<ServiceType>> getFreeServiceType(@Valid @RequestBody long veterianId) {
+    public ResponseEntity<List<ServiceType>> getFreeServiceType(@Valid @RequestBody long doctorId) {
         return null;
     }
 

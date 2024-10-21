@@ -18,7 +18,7 @@ public class AccountController {
     @GetMapping(value = "/getVeterians", produces = "application/json")
     public ResponseEntity getSchedules() {
         System.out.println("Hllo");
-        return ResponseEntity.ok(appointmentService.findAllVeterian());
+        return ResponseEntity.ok(appointmentService.findAllDoctor());
     }
 
 }

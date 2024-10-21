@@ -4,10 +4,10 @@
 //import static org.junit.jupiter.api.Assertions.*;
 //
 //import com.example.org.entity.Appointment;
-//import com.example.org.entity.VeterianSchedule;
+//import com.example.org.entity.DoctorSchedule;
 //import com.example.org.model.ScheduleRequest;
 //import com.example.org.repository.AppointmentRepository;
-//import com.example.org.repository.VeterianScheduleRepository;
+//import com.example.org.repository.DoctorScheduleRepository;
 //import com.example.org.repository.ServiceTypeRepository;
 //import com.example.org.repository.ZoneRepository;
 //import com.example.org.service.AppointmentService;
@@ -31,7 +31,7 @@
 //    private ZoneRepository zoneRepository;
 //
 //    @Mock
-//    private VeterianScheduleRepository veterianScheduleRepository;
+//    private DoctorScheduleRepository veterianScheduleRepository;
 //
 //    @Mock
 //    private AppointmentRepository appointmentRepository;
@@ -53,10 +53,10 @@
 //        Time startTimeAfternoon = Time.valueOf("13:00:00");
 //        Time endTimeAfternoon = Time.valueOf("16:00:00");
 //
-//        // Mock dữ liệu cho VeterianSchedule
-//        VeterianSchedule morningSchedule = new VeterianSchedule();
+//        // Mock dữ liệu cho DoctorSchedule
+//        DoctorSchedule morningSchedule = new DoctorSchedule();
 //        morningSchedule.setStartTime(startTimeMorning);
-//        VeterianSchedule afternoonSchedule = new VeterianSchedule();
+//        DoctorSchedule afternoonSchedule = new DoctorSchedule();
 //        afternoonSchedule.setStartTime(startTimeAfternoon);
 //
 //        // Trả về lịch làm việc giả lập

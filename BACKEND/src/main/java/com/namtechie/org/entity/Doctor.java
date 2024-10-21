@@ -11,7 +11,7 @@ import java.util.List;
 
 @Entity
 @Data
-public class Veterian {
+public class Doctor {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,21 +22,21 @@ public class Veterian {
     @JsonBackReference
     private Account account;
 
-    @OneToMany(mappedBy = "veterian", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "doctor", cascade = CascadeType.ALL)
     @JsonManagedReference
     @JsonIgnore
-    private List<VeterianSchedule> veterianSchedules;
+    private List<DoctorSchedule> veterianSchedules;
 
-    @OneToMany(mappedBy = "veterian", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "doctor", cascade = CascadeType.ALL)
     @JsonManagedReference
-    @JsonIgnoreProperties({"veterian"})
+    @JsonIgnoreProperties({"doctor"})
     @JsonIgnore
     private List<Appointment> appointment;
 
-    @OneToOne(mappedBy = "veterian", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "doctor", cascade = CascadeType.ALL)
     @JsonManagedReference
     @JsonIgnore
-    private VeterianInfo veterianInfo;
+    private DoctorInfo doctorInfo;
 
     @Column(length = 255)
     private String fullname;

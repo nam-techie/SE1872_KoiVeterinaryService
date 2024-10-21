@@ -22,9 +22,9 @@ public class Appointment {
     private Customer customer;
 
     @ManyToOne
-    @JoinColumn(name = "veterian_id", nullable = false)
+    @JoinColumn(name = "doctor_id", nullable = false)
     @JsonIgnoreProperties({"appointment"})
-    private Veterian veterian;
+    private Doctor doctor;
 
     @ManyToOne
     @JoinColumn(name = "service_type_id", nullable = false)
@@ -47,7 +47,7 @@ public class Appointment {
     private List<AppointmentStatus> appointmentStatus;
 
     @Column(nullable = false)
-    private boolean isVeterianAssigned;
+    private boolean isDoctorAssigned;
 
     @Column(nullable = false)
     private boolean isCancel;

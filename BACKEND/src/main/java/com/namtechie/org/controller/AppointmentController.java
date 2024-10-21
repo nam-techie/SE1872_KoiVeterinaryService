@@ -3,10 +3,10 @@ package com.namtechie.org.controller;
 import com.namtechie.org.entity.Account;
 import com.namtechie.org.entity.Appointment;
 import com.namtechie.org.entity.AppointmentStatus;
-import com.namtechie.org.entity.Veterian;
+import com.namtechie.org.entity.Doctor;
 import com.namtechie.org.model.AppointmentRequest;
 import com.namtechie.org.model.ServiceRequest;
-import com.namtechie.org.model.VeterianConfirmRequest;
+import com.namtechie.org.model.DoctorConfirmRequest;
 import com.namtechie.org.service.AppointmentService;
 import com.namtechie.org.service.TokenService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -62,9 +62,9 @@ public class AppointmentController {
     // Thử nghiệm
     @CrossOrigin(origins = "http://localhost:5741")
     @GetMapping(value = "/testFreeSchedule", produces = "application/json")
-    public ResponseEntity testFreeSchedule(@Valid @RequestParam long veterianId) {
+    public ResponseEntity testFreeSchedule(@Valid @RequestParam long doctorId) {
         System.out.println("Hellllo");
-        return ResponseEntity.ok(appointmentService.findFreeScheduleByVeterianId(veterianId));
+        return ResponseEntity.ok(appointmentService.findFreeScheduleByDoctorId(doctorId));
     }
 
 
@@ -84,17 +84,17 @@ public class AppointmentController {
     }
 
 
-    @PutMapping("/isVeterianConfirm")
+    @PutMapping("/isDoctorConfirm")
     @PreAuthorize("hasAuthority('VETERIAN')")
-    public ResponseEntity isConfirm(@Valid @RequestBody VeterianConfirmRequest veterianConfirmRequest) {
-        AppointmentStatus appointmentStatus = appointmentService.confirmVeterianAppointment(veterianConfirmRequest);
+    public ResponseEntity isConfirm(@Valid @RequestBody DoctorConfirmRequest doctorConfirmRequest) {
+        AppointmentStatus appointmentStatus = appointmentService.confirmDoctorAppointment(doctorConfirmRequest);
         return ResponseEntity.ok(appointmentStatus);
     }
 
     @GetMapping("/getVeterianAuto")
     public ResponseEntity getVeterianAuto(@Param("BookingDate")String bookingDate, @Param("BookingTime") String bookingTimeStr) {
-        Veterian veterian = appointmentService.findAvailableVeterian(bookingDate, bookingTimeStr);
-        return ResponseEntity.ok(veterian);
+        Doctor doctor = appointmentService.findAvailableVeterian(bookingDate, bookingTimeStr);
+        return ResponseEntity.ok(doctor);
     }
 
 }

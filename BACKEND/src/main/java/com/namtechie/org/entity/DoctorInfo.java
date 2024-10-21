@@ -6,16 +6,16 @@ import lombok.Data;
 
 @Entity
 @Data
-public class VeterianInfo {
+public class DoctorInfo {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @OneToOne
-    @JoinColumn(name = "veterian_id", nullable = false)
+    @JoinColumn(name = "doctor_id", nullable = false)
     @JsonBackReference
-    private Veterian veterian;
+    private Doctor doctor;
 
     @Column(columnDefinition = "TEXT")
     private String description;

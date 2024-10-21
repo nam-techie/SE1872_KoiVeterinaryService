@@ -56,7 +56,7 @@ public class Account implements UserDetails {
 
     @OneToOne(mappedBy = "account", cascade = CascadeType.ALL)
     @JsonManagedReference
-    private Veterian veterian;
+    private Doctor doctor;
 
     //Con thieu Staff
 

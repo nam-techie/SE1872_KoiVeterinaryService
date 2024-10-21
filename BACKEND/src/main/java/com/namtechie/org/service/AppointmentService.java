@@ -3,9 +3,8 @@ package com.namtechie.org.service;
 
 import com.namtechie.org.entity.*;
 import com.namtechie.org.model.AppointmentRequest;
-import com.namtechie.org.model.AppointmentResponse;
 import com.namtechie.org.model.ScheduleRequest;
-import com.namtechie.org.model.VeterianConfirmRequest;
+import com.namtechie.org.model.DoctorConfirmRequest;
 import com.namtechie.org.repository.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +28,7 @@ public class AppointmentService {
     private ZoneRepository zoneRepository;
 
     @Autowired
-    private VeterianScheduleRepository veterianScheduleRepository;
+    private DoctorScheduleRepository doctorScheduleRepository;
 
     @Autowired
     private AppointmentRepository appointmentRepository;
@@ -41,7 +40,7 @@ public class AppointmentService {
     private AppointmentStatusRepository appointmentStatusRepository;
 
     @Autowired
-    private VeterianRepository veterianRepository;
+    private DoctorRepository doctorRepository;
     @Autowired
     private ModelMapper modelMapper;
     @Autowired
@@ -49,8 +48,8 @@ public class AppointmentService {
     @Autowired
     private CustomerRepository customerRepository;
 
-    public List<Veterian> findAllVeterian() {
-        return veterianRepository.findAll();
+    public List<Doctor> findAllDoctor() {
+        return doctorRepository.findAll();
     }
 
     private static final Time NOON = Time.valueOf("12:00:00");
@@ -63,21 +62,21 @@ public class AppointmentService {
         return zoneRepository.findAll();
     }
 
-    public List<VeterianSchedule> findAllVeterianScheduleByVeterianId(Long veterianId) {
-        return veterianScheduleRepository.findByVeterianId(veterianId);
+    public List<DoctorSchedule> findAllDoctorScheduleByVeterianId(Long doctorId) {
+        return doctorScheduleRepository.findByDoctorId(doctorId);
     }
 
-    public List<VeterianSchedule> findVeterianScheduleByVeterianIdAndWorkDay(Long veterianId, DayOfWeek dayOfWeek) {
-        return veterianScheduleRepository.findVeterianScheduleByVeterianIdAndWorkDay(veterianId, dayOfWeek.name());
+    public List<DoctorSchedule> findDoctorScheduleByDoctorIdAndWorkDay(Long veterianId, DayOfWeek dayOfWeek) {
+        return doctorScheduleRepository.findDoctorScheduleByDoctorIdAndWorkDay(veterianId, dayOfWeek.name());
     }
 
-    public List<Appointment> findAppointmentsByVeterianIdAndBookingDate(long veterianId, Date appointmentBookingDate) {
-        return appointmentRepository.findAppointmentsByVeterianIdAndBookingDate(veterianId, appointmentBookingDate);
+    public List<Appointment> findAppointmentsByDoctorIdAndBookingDate(long doctorId, Date appointmentBookingDate) {
+        return appointmentRepository.findAppointmentsByDoctorIdAndBookingDate(doctorId, appointmentBookingDate);
     }
 
     // Lấy lịch sáng chiều của 1 ngày
-    public List<Appointment> findAllAppointmentOfSession(Long veterianId, Date appointmentBookingDate, boolean isMorning) {
-        List<Appointment> appointmentList = findAppointmentsByVeterianIdAndBookingDate(veterianId, appointmentBookingDate);
+    public List<Appointment> findAllAppointmentOfSession(Long doctorId, Date appointmentBookingDate, boolean isMorning) {
+        List<Appointment> appointmentList = findAppointmentsByDoctorIdAndBookingDate(doctorId, appointmentBookingDate);
         List<Appointment> newAppointmentList = new ArrayList<>();
 
         for (Appointment appointment : appointmentList) {
@@ -93,19 +92,19 @@ public class AppointmentService {
     }
 
     // Lấy lịch làm việc trống trong 7 ngày tiếp theo của bác sĩ
-    public Map<Date, List<ScheduleRequest>> findFreeScheduleByVeterianId(Long veterianId) {
-        Map<Date, List<VeterianSchedule>> veterianSchedules = findNextSevenDayScheduleByVeterianId(veterianId);
+    public Map<Date, List<ScheduleRequest>> findFreeScheduleByDoctorId(Long doctorId) {
+        Map<Date, List<DoctorSchedule>> doctorSchedules = findNextSevenDayScheduleByDoctorId(doctorId);
         Map<Date, List<ScheduleRequest>> freeSchedules = new HashMap<>();
 
-        for (Map.Entry<Date, List<VeterianSchedule>> entry : veterianSchedules.entrySet()) {
+        for (Map.Entry<Date, List<DoctorSchedule>> entry : doctorSchedules.entrySet()) {
             Date date = entry.getKey();
-            List<VeterianSchedule> schedules = entry.getValue();
+            List<DoctorSchedule> schedules = entry.getValue();
             List<ScheduleRequest> scheduleRequests = new ArrayList<>();
 
-            for (VeterianSchedule schedule : schedules) {
+            for (DoctorSchedule schedule : schedules) {
                 boolean isMorning = schedule.getStartTime().before(NOON);
                 List<Integer> timeSlots = isMorning ? Arrays.asList(7, 8, 9, 10) : Arrays.asList(13, 14, 15, 16);
-                List<Appointment> appointments = findAllAppointmentOfSession(veterianId, date, isMorning);
+                List<Appointment> appointments = findAllAppointmentOfSession(doctorId, date, isMorning);
 
                 for (int hour : timeSlots) {
                     Time currentStart = Time.valueOf(hour + ":00:00");
@@ -130,8 +129,8 @@ public class AppointmentService {
     }
 
     // Lấy lịch bảy ngày tiếp theo của bác sĩ
-    public Map<Date, List<VeterianSchedule>> findNextSevenDayScheduleByVeterianId(Long veterianId) {
-        Map<Date, List<VeterianSchedule>> sevendayschedules = new HashMap<>();
+    public Map<Date, List<DoctorSchedule>> findNextSevenDayScheduleByDoctorId(Long doctorId) {
+        Map<Date, List<DoctorSchedule>> sevendayschedules = new HashMap<>();
         LocalDate today = LocalDate.now();
         int count = 0;
 
@@ -140,7 +139,7 @@ public class AppointmentService {
             DayOfWeek dayOfWeek = today.getDayOfWeek();
 
             if (dayOfWeek != DayOfWeek.SATURDAY && dayOfWeek != DayOfWeek.SUNDAY) {
-                List<VeterianSchedule> schedules = findVeterianScheduleByVeterianIdAndWorkDay(veterianId, dayOfWeek);
+                List<DoctorSchedule> schedules = findDoctorScheduleByDoctorIdAndWorkDay(doctorId, dayOfWeek);
                 sevendayschedules.put(Date.valueOf(today), schedules);
                 count++;
             }
@@ -148,58 +147,9 @@ public class AppointmentService {
         return sevendayschedules;
     }
 
-//    public List<AppointmentResponse> getAllAppointments() {
-//        List<Appointment> appointments = appointmentRepository.findAll();
-//
-//        // Map danh sách từ Appointment sang AppointmentResponse
-//        List<AppointmentResponse> appointmentResponses = appointments.stream()
-//                .map(appointment -> {
-//                    AppointmentResponse response = modelMapper.map(appointment, AppointmentResponse.class);
-//
-//                    // Map các trường bổ sung nếu cần
-//                    response.setId(appointment.getId());
-//                    response.setCustomerName(appointment.getCustomer().getFullname());
-//                    response.setVeterianName(appointment.getVeterian().getFullname());
-//                    response.setServiceName(appointment.getServiceType().getName());
-//                    AppointmentDetail detail = appointmentDetailRepository.findByAppointmentId(appointment.getId());
-//                    AppointmentStatus status = appointmentStatusRepository.findByAppointmentId(appointment.getId());
-//                    response.setAppointmentDate(detail.getAppointmentBookingDate());
-//                    response.setAppointmentTime(detail.getAppointmentBookingTime());
-//                    response.setCreateDate(status.getCreate_date());
-//                    response.setStatus(status.getStatus());
-//
-//                    return response;
-//                })
-//                .collect(Collectors.toList());
-//
-//        return appointmentResponses;
-//
-//    }
 
 
-    public AppointmentResponse convertEntityToDTO(Appointment appointment) {
-        AppointmentResponse appointmentResponse = new AppointmentResponse();
-        appointmentResponse.setId(appointment.getId());
-        appointmentResponse.setCustomerID(appointment.getCustomer().getId());
-        appointmentResponse.setVeterianID(appointment.getVeterian().getId());
-        appointmentResponse.setServiceID(appointment.getServiceType().getId());
-        appointmentResponse.setAppointmentDetailID(appointment.getAppointmentDetail().getId());
-        AppointmentStatus status = appointmentStatusRepository.findByAppointmentId(appointment.getId());
-        appointmentResponse.setAppointmentStatusID(status.getId());
-        appointmentResponse.setZoneID(appointment.getZone().getId());
-        appointmentResponse.setCancel(appointment.isCancel());
-        appointmentResponse.setDoctorAssigned(appointment.isVeterianAssigned());
-        return appointmentResponse;
-    }
 
-//    public List<AppointmentResponse> getAllAppointments() {
-//        List<Appointment> appointments = appointmentRepository.findAll(); // Lấy danh sách tất cả các Appointment
-//        List<AppointmentResponse> appointmentResponseList = appointments.stream()
-//                .map(this::convertEntityToDTO) // Chuyển đổi từng Appointment sang AppointmentResponse
-//                .collect(Collectors.toList()); // Thu thập tất cả các đối tượng vào danh sách
-//
-//        return appointmentResponseList;
-//    }
 
 
     public Appointment createAppointment(AppointmentRequest appointmentRequest) {
@@ -232,9 +182,9 @@ public class AppointmentService {
             }
 
 
-            Veterian veterian = null;
-            if(appointmentRequest.getVeterianId() != 0) {
-                 veterian = veterianRepository.findById(appointmentRequest.getVeterianId());
+            Doctor doctor = null;
+            if(appointmentRequest.getDoctorId() != 0) {
+                doctor = doctorRepository.findById(appointmentRequest.getDoctorId());
             }
 
             //khám tại trung tam
@@ -242,38 +192,38 @@ public class AppointmentService {
                 Zone centerZone = zoneRepository.findById(1);
                 appointment.setZone(centerZone);
                 //khách hàng chọn bác sĩ
-                if(veterian != null) {
-                    appointment.setVeterianAssigned(true); // đánh dấu khách hàng có chọn bác sĩ
-                    appointment.setVeterian(veterian);
+                if(doctor != null) {
+                    appointment.setDoctorAssigned(true); // đánh dấu khách hàng có chọn bác sĩ
+                    appointment.setDoctor(doctor);
                     appointmentDetail.setAppointmentBookingDate(appointmentRequest.getBookingDate());
                     appointmentDetail.setAppointmentBookingTime(appointmentRequest.getBookingTime());
 
                 }else { //khách hàng ko chọn bác sĩ
                     appointmentDetail.setAppointmentBookingDate(appointmentRequest.getBookingDate());
                     appointmentDetail.setAppointmentBookingTime(appointmentRequest.getBookingTime());
-                    veterian = findAvailableVeterian(String.valueOf(appointmentRequest.getBookingDate()), String.valueOf(appointmentRequest.getBookingTime()));
-                    appointment.setVeterianAssigned(false);
-                    appointment.setVeterian(veterian);
+                    doctor = findAvailableVeterian(String.valueOf(appointmentRequest.getBookingDate()), String.valueOf(appointmentRequest.getBookingTime()));
+                    appointment.setDoctorAssigned(false);
+                    appointment.setDoctor(doctor);
 
                 }
 
             }else if(appointmentRequest.getServiceTypeId() == 2 || appointmentRequest.getServiceTypeId() == 4) { // khám tại nhà
-                if(veterian == null) {
-                    veterian = findAvailableVeterian(String.valueOf(appointmentRequest.getBookingDate()), String.valueOf(appointmentRequest.getBookingTime()));
-                    appointment.setVeterianAssigned(false);
-                    appointment.setVeterian(veterian);
+                if(doctor == null) {
+                    doctor = findAvailableVeterian(String.valueOf(appointmentRequest.getBookingDate()), String.valueOf(appointmentRequest.getBookingTime()));
+                    appointment.setDoctorAssigned(false);
+                    appointment.setDoctor(doctor);
                     appointmentDetail.setAppointmentBookingDate(appointmentRequest.getBookingDate());
                     appointmentDetail.setAppointmentBookingTime(appointmentRequest.getBookingTime());
                     appointment.setZone(zone);
                 }
             }else if(appointmentRequest.getServiceTypeId() == 1) { // dịch vụ tư vấn
-                if(veterian == null) {
+                if(doctor == null) {
                     Time appointmentTime = appointmentRequest.getBookingTime();
                     Time updateAppointmentTime = new Time(appointmentTime.getTime() + 15 * 60 * 1000); // 15 phút sau
                     System.out.println("15Minutes: " + updateAppointmentTime);
-                    veterian = findAvailableVeterian(String.valueOf(appointmentRequest.getBookingDate()), String.valueOf(updateAppointmentTime));
-                    appointment.setVeterianAssigned(false);
-                    appointment.setVeterian(veterian);
+                    doctor = findAvailableVeterian(String.valueOf(appointmentRequest.getBookingDate()), String.valueOf(updateAppointmentTime));
+                    appointment.setDoctorAssigned(false);
+                    appointment.setDoctor(doctor);
                     Zone onlineZone = zoneRepository.findById(15);
                     appointment.setZone(onlineZone);
                     appointmentDetail.setAppointmentBookingDate(appointmentRequest.getBookingDate());
@@ -303,15 +253,15 @@ public class AppointmentService {
     }
 
 
-    public Veterian findAvailableVeterian(String bookingDate, String bookingTime) {
+    public Doctor findAvailableVeterian(String bookingDate, String bookingTime) {
         // Lấy danh sách tất cả các bác sĩ
-        List<Veterian> allVeterians = veterianRepository.findAll();
+        List<Doctor> allDoctors = doctorRepository.findAll();
 
         System.out.println("date findavaille" + bookingDate.toString());
         System.out.println("time findavaille" + bookingTime);
 
-        for (Veterian v : allVeterians) {
-            Map<Date, List<ScheduleRequest>> freeSchedules = findFreeScheduleByVeterianId(v.getId());
+        for (Doctor doctor : allDoctors) {
+            Map<Date, List<ScheduleRequest>> freeSchedules = findFreeScheduleByDoctorId(doctor.getId());
 
             Date bookingDateSQL = Date.valueOf(bookingDate);
             System.out.println("freeSchedules: " + freeSchedules);
@@ -322,9 +272,8 @@ public class AppointmentService {
             for(ScheduleRequest schedule : schedulesForDay) {
                 if((schedule.getDate().equals(bookingDateSQL) && schedule.getStartTime().equals(Time.valueOf(bookingTime)) && schedule.isAvailable()) ||
                         (schedule.getDate().equals(bookingDateSQL) && Time.valueOf(bookingTime).after(schedule.getStartTime()) && Time.valueOf(bookingTime).before(schedule.getEndTime()) && schedule.isAvailable())) {
-                    return v;
+                    return doctor;
                 }
-
             }
         }
         return null;
@@ -335,17 +284,17 @@ public class AppointmentService {
         return appointmentRepository.findAll();
     }
 
-    public AppointmentStatus confirmVeterianAppointment(VeterianConfirmRequest veterianConfirmRequest) {
+    public AppointmentStatus confirmDoctorAppointment(DoctorConfirmRequest doctorConfirmRequest) {
         try {
-            AppointmentStatus updateAppointmentStatus = appointmentStatusRepository.findByAppointmentId(veterianConfirmRequest.getId());
+            AppointmentStatus updateAppointmentStatus = appointmentStatusRepository.findByAppointmentId(doctorConfirmRequest.getId());
 
             AppointmentStatus status = new AppointmentStatus();
             status.setAppointment(updateAppointmentStatus.getAppointment());
-            if (veterianConfirmRequest.isConfirmed() == true) {
-                status.setNotes(veterianConfirmRequest.getNote());
+            if (doctorConfirmRequest.isConfirmed() == true) {
+                status.setNotes(doctorConfirmRequest.getNote());
                 status.setStatus("Confirmed");
             } else {
-                status.setNotes(veterianConfirmRequest.getNote());
+                status.setNotes(doctorConfirmRequest.getNote());
                 status.setStatus("Canceled");
             }
             return appointmentStatusRepository.save(status);

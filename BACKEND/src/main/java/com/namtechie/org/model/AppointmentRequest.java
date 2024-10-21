@@ -13,7 +13,7 @@ public class AppointmentRequest {
     String description;
     long zoneId;
     String address;
-    long veterianId;
+    long doctorId;
     Date bookingDate;
     Time bookingTime;
 

@@ -1,15 +1,15 @@
 package com.namtechie.org.repository;
 
-import com.namtechie.org.entity.Veterian;
+import com.namtechie.org.entity.Doctor;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Repository
-public interface VeterianRepository extends JpaRepository<Veterian, Long> {
+public interface DoctorRepository extends JpaRepository<Doctor, Long> {
 
     // Chưa hoàn thiện
-    public List<Veterian> findAll();
-    Veterian findById(long id);
+    public List<Doctor> findAll();
+    Doctor findById(long id);
 }

@@ -9,7 +9,7 @@ import java.sql.Date;
 public class AppointmentResponse {
      long id;
      long customerID;
-     long veterianID;
+     long doctorID;
      long serviceID;
      long appointmentDetailID;
      long appointmentStatusID;

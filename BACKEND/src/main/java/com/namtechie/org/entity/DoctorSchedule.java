@@ -9,16 +9,16 @@ import java.sql.Time;
 
 @Entity
 @Data
-public class VeterianSchedule {
+public class DoctorSchedule {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @ManyToOne
-    @JoinColumn(name = "veterian_id", nullable = false)
+    @JoinColumn(name = "doctor_id", nullable = false)
     @JsonBackReference
-    private Veterian veterian;
+    private Doctor doctor;
 
     @Column(nullable = false)
     private String workDay;
