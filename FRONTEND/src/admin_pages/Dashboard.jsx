@@ -2,12 +2,13 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../admin_pages/styles/AdminDashboard.css';
-import { FaHome, FaCalendarAlt, FaUsers, FaUserMd, FaCog, FaComments, FaSignOutAlt, FaUser } from 'react-icons/fa';
+import { FaHome, FaCalendarAlt, FaUsers, FaUserMd, FaComments, FaSignOutAlt, FaUser } from 'react-icons/fa';
 import AdminProfile from './AdminProfile';
 import AccountDashboard from './AccountDashboard';
 import CreateAccount from './CreateAccount';
 import VeterinaryAccount from './VeterinaryAccount';
 import AccountUpdateProfile from './AccountUpdateProfile';
+import DoctorDashboard from './DoctorDashboard';
 
 const AdminDashboard = () => {
     const navigate = useNavigate();
@@ -104,6 +105,8 @@ const AdminDashboard = () => {
                 ) : (
                     <div>Không có tài khoản được chọn để chỉnh sửa</div>
                 );
+            case 'doctors':
+                return <DoctorDashboard />;
             default:
                 return <div>Nội dung chưa được tạo</div>;
         }
@@ -129,7 +132,9 @@ const AdminDashboard = () => {
                     <li className="menu-item"><FaCalendarAlt /> Quản lý lịch hẹn</li>
                     <li className="menu-item"><FaUsers /> Quản lý khách hàng</li>
                     <li className="menu-item"><FaUserMd /> Quản lý dịch vụ</li>
-                    <li className="menu-item"><FaCog /> Quản lý bác sĩ</li>
+                    <li className={`menu-item ${activeTab === 'doctors' ? 'active' : ''}`} onClick={() => setActiveTab('doctors')}>
+                        <FaUserMd /> Quản lý bác sĩ
+                    </li>
                     <li className={`menu-item ${activeTab === 'accounts' ? 'active' : ''}`} onClick={() => setActiveTab('accounts')}>
                         <FaUsers /> Quản lý tài khoản
                     </li>
@@ -140,6 +145,7 @@ const AdminDashboard = () => {
                     <li className="menu-item" onClick={handleLogout}>
                         <FaSignOutAlt /> Đăng xuất
                     </li>
+
                 </ul>
             </div>
             <div className="main-content">
