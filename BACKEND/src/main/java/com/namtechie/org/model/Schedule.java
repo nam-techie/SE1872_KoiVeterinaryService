@@ -1,11 +1,13 @@
 package com.namtechie.org.model;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.sql.Time;
-import java.util.Date;
+import java.sql.Date;
 
 @Data
+@NoArgsConstructor
 public class Schedule {
     Date date;
     Time startTime;
@@ -18,4 +20,5 @@ public class Schedule {
         this.endTime = endTime;
         this.isAvailable = isAvailable;
     }
+
 }

@@ -1,6 +1,7 @@
 package com.namtechie.org.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -48,6 +49,17 @@ public class Account implements UserDetails {
     @JsonIgnore // Để nó k trả về và bắt mình nhập thông tin này
     boolean isDeleted = false;
 
+
+    @OneToOne(mappedBy = "account", cascade = CascadeType.ALL)
+    @JsonManagedReference
+    private Customer customer;
+
+    @OneToOne(mappedBy = "account", cascade = CascadeType.ALL)
+    @JsonManagedReference
+    private Doctor doctor;
+
+
+    //Con thieu Staff
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

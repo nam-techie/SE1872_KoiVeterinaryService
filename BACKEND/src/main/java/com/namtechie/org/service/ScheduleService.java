@@ -3,8 +3,8 @@ package com.namtechie.org.service;
 import com.namtechie.org.entity.Appointment;
 import com.namtechie.org.entity.Doctor;
 import com.namtechie.org.model.Schedule;
-import com.namtechie.org.entity.DoctorsSchedules;
-import com.namtechie.org.repository.DoctorsSchedulesRepository;
+import com.namtechie.org.entity.DoctorSchedules;
+import com.namtechie.org.repository.DoctorSchedulesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +18,7 @@ import java.util.*;
 public class ScheduleService {
 
     @Autowired
-    private DoctorsSchedulesRepository doctorsSchedulesRepository;
+    private DoctorSchedulesRepository doctorsSchedulesRepository;
 
     @Autowired
     DoctorService doctorService;
@@ -28,7 +28,7 @@ public class ScheduleService {
 
     private static final Time NOON = Time.valueOf("12:00:00");
 
-    public List<DoctorsSchedules> findDoctorsSchedulesByDoctorIdAndWorkDay(Long doctorId, String workDay) {
+    public List<DoctorSchedules> findDoctorsSchedulesByDoctorIdAndWorkDay(Long doctorId, String workDay) {
         return doctorsSchedulesRepository.findDoctorsSchedulesByDoctorIdAndWorkDay(doctorId, workDay);
     }
 
@@ -114,15 +114,15 @@ public class ScheduleService {
 
     // Lấy lịch làm việc trống trong 7 ngày tiếp theo của bác sĩ theo giờ và id bác sĩ
     public Map<String, List<Schedule>> findFreeScheduleByVeterianId(Long veterianId) {
-        Map<Date, List<DoctorsSchedules>> veterianSchedules = findNextSevenDayScheduleByVeterianId(veterianId);
+        Map<Date, List<DoctorSchedules>> veterianSchedules = findNextSevenDayScheduleByVeterianId(veterianId);
         Map<String, List<Schedule>> freeSchedules = new HashMap<>();
 
-        for (Map.Entry<Date, List<DoctorsSchedules>> entry : veterianSchedules.entrySet()) {
+        for (Map.Entry<Date, List<DoctorSchedules>> entry : veterianSchedules.entrySet()) {
             Date date = entry.getKey();
-            List<DoctorsSchedules> schedules = entry.getValue();
+            List<DoctorSchedules> schedules = entry.getValue();
             List<Schedule> scheduleRequests = new ArrayList<>(); // Cái này là lịch theo ngày nà
 
-            for (DoctorsSchedules schedule : schedules) {
+            for (DoctorSchedules schedule : schedules) {
                 boolean isMorning = schedule.getStartTime().before(NOON);
                 List<Integer> timeSlots = isMorning ? Arrays.asList(7, 8, 9, 10) : Arrays.asList(13, 14, 15, 16);
                 List<Appointment> appointments = appointmentService.findAllAppointmentOfSession(veterianId, date, isMorning);
@@ -155,8 +155,8 @@ public class ScheduleService {
     }
 
     // Lấy lịch bảy ngày tiếp theo của bác sĩ
-    public Map<Date, List<DoctorsSchedules>> findNextSevenDayScheduleByVeterianId(Long veterianId) {
-        Map<Date, List<DoctorsSchedules>> sevendayschedules = new HashMap<>();
+    public Map<Date, List<DoctorSchedules>> findNextSevenDayScheduleByVeterianId(Long veterianId) {
+        Map<Date, List<DoctorSchedules>> sevendayschedules = new HashMap<>();
         LocalDate today = LocalDate.now();
 
         int count = 0;
@@ -168,7 +168,7 @@ public class ScheduleService {
             System.out.print("Looc 2: " + String.valueOf(dayOfWeek) + " | ");
 
             if (dayOfWeek != DayOfWeek.SATURDAY && dayOfWeek != DayOfWeek.SUNDAY) {
-                List<DoctorsSchedules> schedules =  findDoctorsSchedulesByDoctorIdAndWorkDay(veterianId, String.valueOf(dayOfWeek));
+                List<DoctorSchedules> schedules =  findDoctorsSchedulesByDoctorIdAndWorkDay(veterianId, String.valueOf(dayOfWeek));
                 sevendayschedules.put(Date.valueOf(today), schedules);
                 count++;
             }

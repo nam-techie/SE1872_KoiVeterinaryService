@@ -2,10 +2,12 @@ package com.namtechie.org.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
-import java.util.Set;
+
+import java.util.List;
 
 @Entity
 @Data
@@ -14,26 +16,38 @@ public class Doctor {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "account_id", nullable = false)
     @JsonBackReference
     private Account account;
 
-    private String fullname;
-    private String specialty;
-    private String phone;
-    private String introduction;
-    private String training;
-    private String workExperience;
-    private String achievements;
-    private String researchPapers;
-
-    @OneToMany(mappedBy = "doctor", cascade = CascadeType.ALL)
-    @JsonIgnore
-    private Set<DoctorsSchedules> schedules;
-
     @OneToMany(mappedBy = "doctor", cascade = CascadeType.ALL)
     @JsonManagedReference
     @JsonIgnore
-    private Set<Appointment> appointments;
+    private List<DoctorSchedule> doctorSchedules;
+
+    @OneToMany(mappedBy = "doctor", cascade = CascadeType.ALL)
+    @JsonManagedReference
+    @JsonIgnoreProperties({"doctor"})
+    @JsonIgnore
+    private List<Appointment> appointment;
+
+    @OneToOne(mappedBy = "doctor", cascade = CascadeType.ALL)
+    @JsonManagedReference
+    @JsonIgnore
+    private DoctorInfo doctorInfo;
+
+    @Column(length = 255)
+    private String fullname;
+
+
+    @Column(length = 255)
+    private String phone;
+
+    @Column
+    private Integer experience;
+
+    @Column(columnDefinition = "TEXT")
+    private String imageUrl;
+
 }

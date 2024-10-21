@@ -53,7 +53,15 @@ public class Filter extends OncePerRequestFilter {
             "/api/getFreeScheduleByDoctorId",
             "/api/getFreeSchedule",
             "/api/getFreeScheduleWithTime",
-            "/api/testFreeScheduleWithTime"
+            "/api/testFreeScheduleWithTime",
+            "/api/service-types",
+            "/api/zones",
+            "/api/free-schedule",
+            "/api/testFreeSchedule",
+            "/api/getAllDoctor",
+            "/api/getDoctorAuto",
+            "/api/getFeedback"
+
     );
 
     public boolean checkIsPublicAPI(String uri) {
@@ -101,19 +109,12 @@ public class Filter extends OncePerRequestFilter {
                 return;
             }
 
-            // => token chuẩn
-            // => cho phép truy cập
-            // => lưu lại thông tin account
             UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
                     account, token, account.getAuthorities());
             authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
             SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-            // token ok, cho vào
             filterChain.doFilter(request, response);
         }
     }
 
-
-
-    // Bearer asdasdasdsadasdasd => lấy từ index 7 bỏ qua thằng bearer
 }

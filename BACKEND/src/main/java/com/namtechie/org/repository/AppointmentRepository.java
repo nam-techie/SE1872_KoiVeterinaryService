@@ -15,8 +15,11 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
 
     List<Appointment> findAll();
 
+    Appointment findAppointmentById(long id);
+
     @Query("SELECT a FROM Appointment a JOIN a.appointmentDetail ad WHERE a.doctor.id = :doctorId AND ad.appointmentBookingDate = :bookingDate")
     List<Appointment> findAppointmentsByDoctorIdAndBookingDate(@Param("doctorId") long doctorId, @Param("bookingDate") Date bookingDate);
+
 
     @Query("SELECT a FROM Appointment a JOIN a.appointmentDetail ad " +
             "WHERE a.doctor.id = :doctorId " +
@@ -25,9 +28,5 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
             "AND EXTRACT(MINUTE FROM ad.appointmentBookingTime) = EXTRACT(MINUTE FROM :bookingTime) " +
             "AND EXTRACT(SECOND FROM ad.appointmentBookingTime) = EXTRACT(SECOND FROM :bookingTime)")
     Appointment findAppointmentByDoctorIdAndBookingDateAndBookingTime(@Param("doctorId") long doctorId, @Param("bookingDate") Date bookingDate, @Param("bookingTime") Time bookingTime);
-
-//    @Query("SELECT a FROM Appointment a JOIN a.appointmentDetail ad WHERE FUNCTION('CAST', ad.appointmentBookingTime AS time) = :bookingTime")
-//    List<Appointment> findAppointmentByBookingTime(@Param("bookingTime") Time bookingTime);
-
 
 }

@@ -6,10 +6,12 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Repository
 public interface ZoneRepository extends JpaRepository<Zone, Long> {
     Zone findByName(String name);
 
     boolean existsByName(String name);
 
     List<Zone> findAll();
+    Zone findById(long id);
 }

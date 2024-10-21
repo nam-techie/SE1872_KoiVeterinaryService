@@ -81,24 +81,6 @@ public class DoctorService {
             if (!doctorRequest.getPhone().equals(doctor.getPhone())) {
                 doctor.setPhone(doctorRequest.getPhone());
             }
-            if (!doctorRequest.getSpecialty().equals(doctor.getSpecialty())) {
-                doctor.setSpecialty(doctorRequest.getSpecialty());
-            }
-            if (!doctorRequest.getIntroduction().equals(doctor.getIntroduction())) {
-                doctor.setIntroduction(doctorRequest.getIntroduction());
-            }
-            if (!doctorRequest.getTraining().equals(doctor.getTraining())) {
-                doctor.setTraining(doctorRequest.getTraining());
-            }
-            if (!doctorRequest.getWorkExperience().equals(doctor.getWorkExperience())) {
-                doctor.setWorkExperience(doctorRequest.getWorkExperience());
-            }
-            if (!doctorRequest.getAchievements().equals(doctor.getAchievements())) {
-                doctor.setAchievements(doctorRequest.getAchievements());
-            }
-            if (!doctorRequest.getResearchPapers().equals(doctor.getResearchPapers())) {
-                doctor.setResearchPapers(doctorRequest.getResearchPapers());
-            }
 
             // Lưu đối tượng Doctor vào cơ sở dữ liệu
             return doctorRepository.save(doctor);
