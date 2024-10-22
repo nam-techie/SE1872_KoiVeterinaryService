@@ -21,7 +21,7 @@ import java.util.List;
 public class Account implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;  // Khóa chính với auto-increment (IDENTITY)
+    private Long id;
 
     @NotBlank(message = "Tên đăng nhập không được để trống")
     @Size(min = 3, message = "Tên đăng nhập phải có từ 3 ký tự trở lên!!!")

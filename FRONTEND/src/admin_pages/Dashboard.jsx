@@ -9,12 +9,17 @@ import CreateAccount from './CreateAccount';
 import VeterinaryAccount from './VeterinaryAccount';
 import AccountUpdateProfile from './AccountUpdateProfile';
 import DoctorDashboard from './DoctorDashboard';
+import DoctorDetailInfo from './DoctorDetailInfo';
+import UpdateDoctor from './UpdateDoctor';
 
 const AdminDashboard = () => {
     const navigate = useNavigate();
     const [username, setUsername] = useState('');
     const [activeTab, setActiveTab] = useState('home');
     const [selectedAccount, setSelectedAccount] = useState(null);
+    const [selectedDoctorId, setSelectedDoctorId] = useState(null);
+    const [selectedDoctorInfo, setSelectedDoctorInfo] = useState(null);
+    const [isEditing, setIsEditing] = useState(false);
 
     useEffect(() => {
         const storedUsername = localStorage.getItem('username');
@@ -106,7 +111,41 @@ const AdminDashboard = () => {
                     <div>Không có tài khoản được chọn để chỉnh sửa</div>
                 );
             case 'doctors':
-                return <DoctorDashboard />;
+                if (selectedDoctorId) {
+                    return isEditing ? (
+                        <UpdateDoctor 
+                            doctor={selectedDoctorInfo}
+                            onClose={() => {
+                                setIsEditing(false);
+                                setSelectedDoctorId(null);
+                                setSelectedDoctorInfo(null);
+                            }}
+                            onUpdate={(updatedDoctor) => {
+                                console.log('Bác sĩ đã được cập nhật:', updatedDoctor);
+                                setIsEditing(false);
+                                setSelectedDoctorInfo(updatedDoctor);
+                            }}
+                        />
+                    ) : (
+                        <DoctorDetailInfo 
+                            doctorId={selectedDoctorId}
+                            onClose={() => setSelectedDoctorId(null)}
+                            onEdit={(doctorInfo) => {
+                                setSelectedDoctorInfo(doctorInfo);
+                                setIsEditing(true);
+                            }}
+                        />
+                    );
+                } else {
+                    return (
+                        <DoctorDashboard 
+                            onViewDetails={(id) => {
+                                setSelectedDoctorId(id);
+                                setActiveTab('doctors');
+                            }}
+                        />
+                    );
+                }
             default:
                 return <div>Nội dung chưa được tạo</div>;
         }

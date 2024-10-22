@@ -4,8 +4,8 @@ package com.namtechie.org.service;
 import com.namtechie.org.entity.Account;
 import com.namtechie.org.entity.Doctor;
 import com.namtechie.org.entity.DoctorInfo;
-import com.namtechie.org.entity.Role;
-import com.namtechie.org.model.UpdateDoctorLogin;
+import com.namtechie.org.exception.DuplicateEntity;
+import com.namtechie.org.exception.NotFoundException;
 import com.namtechie.org.model.request.DoctorRequest;
 import com.namtechie.org.model.response.DoctorInfoResponse;
 import com.namtechie.org.repository.AccountRepository;
@@ -80,6 +80,36 @@ public class DoctorService {
         doctorInfoResponse.setSpecialty(doctorInfo.getSpecialty());
 
         return doctorInfoResponse;
+    }
+
+    public void updateInfoDoctor(String phone, DoctorRequest doctorRequest) {
+        try {
+            // Lấy bác sĩ hiện tại theo số điện thoại (phone)
+            Doctor updateDoctor = doctorRepository.findDoctorByPhone(phone);
+            DoctorInfo updateDoctorInfo = doctorInfoRepository.findDoctorInfoByDoctorId(updateDoctor.getId());
+
+            // Kiểm tra nếu số điện thoại trong request khác với số hiện tại và đã tồn tại trong cơ sở dữ liệu
+            if (!doctorRequest.getPhone().equals(phone) && doctorRepository.existsByPhone(doctorRequest.getPhone())) {
+                throw new DuplicateEntity("Số điện thoại đã được sử dụng bởi cá nhân khác.");
+            }
+
+            // Cập nhật thông tin
+            updateDoctor.setFullName(doctorRequest.getFullName());
+            updateDoctor.setPhone(doctorRequest.getPhone()); // Cho phép cập nhật số điện thoại mới
+            updateDoctor.setExperience(doctorRequest.getExperience());
+            updateDoctorInfo.setDescription(doctorRequest.getDescription());
+            updateDoctorInfo.setQualification(doctorRequest.getQualification());
+            updateDoctorInfo.setSpecialty(doctorRequest.getSpecialty());
+
+            // Lưu thông tin cập nhật
+            doctorRepository.save(updateDoctor);
+            doctorInfoRepository.save(updateDoctorInfo);
+
+        } catch (DuplicateEntity e) {
+            throw e;
+        } catch (Exception e) {
+            throw new RuntimeException("Đã xảy ra lỗi trong quá trình cập nhật thông tin bác sĩ.");
+        }
     }
 
 

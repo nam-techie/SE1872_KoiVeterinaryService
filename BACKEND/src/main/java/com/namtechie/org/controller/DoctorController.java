@@ -1,8 +1,6 @@
 package com.namtechie.org.controller;
 
 import com.namtechie.org.entity.Doctor;
-import com.namtechie.org.model.UpdateDoctorLogin;
-import com.namtechie.org.model.request.DoctorRequest;
 import com.namtechie.org.repository.DoctorRepository;
 import com.namtechie.org.service.DoctorService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;

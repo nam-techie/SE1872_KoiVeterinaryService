@@ -5,7 +5,7 @@ import './styles/DoctorDashboard.css';
 import { useDoctorInfo } from './hooks/useDoctorInfo';
 import DoctorDetailInfo from './DoctorDetailInfo'; // Đảm bảo import này tồn tại
 
-const DoctorDashboard = () => {
+const DoctorDashboard = ({ onViewDetails }) => {
     const { doctors, loading, error, fetchAllDoctors } = useDoctorInfo();
     const [searchTerm, setSearchTerm] = useState('');
     const [sortBy, setSortBy] = useState('fullName');
@@ -26,7 +26,7 @@ const DoctorDashboard = () => {
     };
 
     const handleViewDetails = (doctorId) => {
-        setSelectedDoctorId(doctorId);
+        onViewDetails(doctorId);
     };
 
     if (loading) return <div>Đang tải...</div>;

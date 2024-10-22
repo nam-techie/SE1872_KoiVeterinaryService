@@ -5,11 +5,8 @@ import com.namtechie.org.entity.Customers;
 import com.namtechie.org.entity.Doctor;
 import com.namtechie.org.exception.DuplicateEntity;
 import com.namtechie.org.exception.NotFoundException;
-import com.namtechie.org.model.request.AdminAccountRequest;
-import com.namtechie.org.model.request.AdminInfoRequest;
-import com.namtechie.org.model.request.CustomerInfoRequest;
+import com.namtechie.org.model.request.*;
 import com.namtechie.org.model.response.AccountResponse;
-import com.namtechie.org.model.request.VeterinaryRequest;
 import com.namtechie.org.model.response.AdminAccountResponse;
 import com.namtechie.org.model.response.DoctorInfoResponse;
 import com.namtechie.org.repository.DoctorRepository;
@@ -100,7 +97,7 @@ public class AdminController {
     }
 
     @GetMapping("/getInfoDoctor/{doctorId}")
-    public DoctorInfoResponse getInfoDoctor(@PathVariable long doctorId){
+    public DoctorInfoResponse getInfoDoctor(@PathVariable long doctorId) {
         DoctorInfoResponse doctorInfoResponse = doctorService.getAllInfoDoctor(doctorId);
         return doctorInfoResponse;
     }
@@ -150,6 +147,17 @@ public class AdminController {
         }
     }
 
+    @PutMapping("/updateDoctorInfo/{phone}")
+    public ResponseEntity<String> updateDoctorInfo(@PathVariable String phone, @RequestBody DoctorRequest doctorRequest) {
+        try {
+            doctorService.updateInfoDoctor(phone, doctorRequest);
+            return ResponseEntity.ok("Cập nhật thông tin bác sĩ thành công");
+        } catch (DuplicateEntity e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
 
 
 }
