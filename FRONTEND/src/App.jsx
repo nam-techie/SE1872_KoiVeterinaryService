@@ -14,6 +14,7 @@ import ForgotPassword from "./pages/ForgotPassWord.jsx";
 import VerifyOTP from "./pages/Verify-OTP.jsx";
 import ResetPassword from "./pages/ResetPassword.jsx";
 import FAQPage from "./pages/FAQPage.jsx";
+import TermAndRefund from "./pages/TermAndRefund.jsx";
 
 
 function App() {
@@ -23,14 +24,13 @@ function App() {
         <>
             <Router>
                 <Routes>
-                    {/* Trang công khai*/}
                     {/*Trang công khai với tất cả mọi actor*/}
                     <Route path="/forgot-password" element={<ForgotPassword/>}/>
                     <Route path="/verify-otp" element={<VerifyOTP/>}/>
                     <Route path="/reset-password" element={<ResetPassword/>}/>
 
 
-                    {/* Trang công khai, nhưng bác sĩ không được truy cập */}
+                    {/* Trang công khai */}
                     <Route path="/" element={<PublicRoute><HomePage/></PublicRoute>}/>
                     <Route path="/homepage" element={<PublicRoute><HomePage/></PublicRoute>}/>
                     <Route path="/service" element={<PublicRoute><ServiceIntro/></PublicRoute>}/>
@@ -38,6 +38,7 @@ function App() {
                     <Route path="/success" element={<PublicRoute><GoogleLoginSuccess/></PublicRoute>}/>
                     <Route path="/loading" element={<PublicRoute><LoadingCat/></PublicRoute>}/>
                     <Route path="/faqs" element={<PublicRoute><FAQPage/></PublicRoute>}/>
+                    <Route path="/terms" element={<PublicRoute><TermAndRefund/></PublicRoute>}/>
 
                     {/* Trang không cho phép truy cập nếu đã đăng nhập (có token) */}
                     <Route path="/login" element={<RestrictedRoute><Login/></RestrictedRoute>}/>

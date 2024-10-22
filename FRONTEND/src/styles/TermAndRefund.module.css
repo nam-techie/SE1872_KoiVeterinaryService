@@ -2,20 +2,13 @@
 .termsContainer {
     padding: 50px;
     max-width: 960px;
-    margin: 100px auto 10px auto;
+    margin: 30px auto 10px auto;
     font-family: 'Arial', sans-serif;
     background-color: #fff;
     border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-/* Tiêu đề của trang */
-.header h1 {
-    text-align: center;
-    color: white;
-    margin-bottom: 30px;
-    font-size: 28px;
-}
 
 /* Phần điều khoản */
 .termsSection h2 {
@@ -78,4 +71,5 @@
 .footer p {
     margin: 10px 0 0;
     font-size: 14px;
+    padding: 10px 0;
 }
