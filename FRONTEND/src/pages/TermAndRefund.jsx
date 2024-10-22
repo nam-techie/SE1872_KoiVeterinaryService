@@ -239,6 +239,7 @@ function TermAndRefund() {
             <ContactButton/>
             <Footer/>
         </>
+
     );
 }
 
