@@ -1,6 +1,7 @@
 import styles from "../styles/TermAndRefund.module.css"
 import {CustomerNavBar} from "../components/Navbar.jsx";
 import Footer from "../components/Footer.jsx";
+import ContactButton from "../components/ContactButton.jsx";
 
 function TermAndRefund() {
     return (
@@ -77,6 +78,7 @@ function TermAndRefund() {
                     </p>
                 </div>
             </div>
+            <ContactButton/>
             <Footer/>
         </>
     );

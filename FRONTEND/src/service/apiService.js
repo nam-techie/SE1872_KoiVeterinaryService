@@ -25,12 +25,3 @@ export const getDistrictList = async() => {
     }
 }
 
-export const postBookingData = async (bookingData) =>{
-    try{
-        const response = await axiosInstance.post('http://localhost:8080/api/...', bookingData);
-        return response.data;
-    }catch (error) {
-        console.error("Error posting data: ", error);
-        return [];
-    }
-}

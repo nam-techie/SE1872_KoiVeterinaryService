@@ -6,7 +6,7 @@ import { GrContact } from "react-icons/gr";
 function ContactButton() {
     return (
         <div className={styles.buttonContainer}>
-            <Link to="/bookingpage">
+            <Link to="/customer/booking-page">
                 <LiaCalendarPlus
                     size={50}
                     className={styles.userIcon}

@@ -118,6 +118,8 @@ export function useBookingPage() {
             createdDate: createdDate.toISOString(),
         };
 
+        console.log(bookingData)
+
         try {
             const response = await postBookingData(bookingData);
             if (response.status === 200 || response.status === 201) {
@@ -174,6 +176,7 @@ export function useBookingPage() {
         selectedDistrict,
         setSelectedDistrict,
         selectedDoctor,
+        setSelectedDoctor,
         availableTimes,
         dateOptions,
         errors,

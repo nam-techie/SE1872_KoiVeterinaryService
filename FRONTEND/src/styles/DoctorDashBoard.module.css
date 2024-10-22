@@ -1,0 +1,107 @@
+/* Center the container on the page */
+.doctorDashBoardWrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f0f2f5;
+    padding-left: 100px; /* Adjusted padding */
+}
+
+.doctorDashBoardContainer {
+    display: flex;
+    justify-content: space-between;
+    width: 75%; /* Reduced width */
+    padding: 20px;
+    background-color: white;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.doctorInfoSection {
+    flex: 1;
+    padding: 30px; /* Reduced padding */
+    border-right: 1px solid #ddd;
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    margin-right: 40px; /* Reduced margin */
+}
+
+
+.doctorAvatar {
+    width: 200px; /* Reduced size */
+    height: 200px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 15px; /* Adjusted spacing */
+}
+
+.doctorInfoSection h2 {
+    font-size: 1.8em; /* Reduced size */
+    margin-bottom: 15px;
+}
+
+.doctorInfoSection p {
+    margin: 5px 0;
+    font-size: 1.2em; /* Slightly reduced */
+    color: #333;
+}
+
+/* Styling for the stat cards */
+.statCard {
+    transition: all 0.3s ease;
+    text-align: left;
+    font-size: 1.2em; /* Reduced font size */
+    cursor: pointer;
+    background-color: white;
+    padding: 30px; /* Reduced padding */
+    border-radius: 10px;
+    height: 160px; /* Reduced height */
+    width: 700px; /* Reduced width */
+    position: relative;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+    transform: skew(10deg) rotate(180deg);
+    overflow: hidden;
+}
+
+/* Ensure the inner content isn't skewed or rotated */
+.statCard > * {
+    transform: skew(-10deg) rotate(180deg);
+}
+
+.statCard:hover {
+    transform: translateY(-8px) skew(10deg) rotate(180deg);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+}
+
+.appointmentsCard {
+    background-color: #ff7875;
+    color: white;
+    margin-left: 5px; /* Adjusted margin */
+}
+
+.unconfirmedCard {
+    background-color: #ffc53d;
+    color: white;
+    margin-left: 30px;
+}
+
+.feedbackCard {
+    background-color: #73d13d;
+    color: white;
+    margin-left: 60px;
+}
+
+/* Styling for the h1 and p tags in each card */
+.statCard h1 {
+    margin-top: 10px; /* Reduced margin */
+    font-size: 1.3em; /* Reduced font size */
+    color: whitesmoke;
+    margin-bottom: 5px; /* Adjusted spacing */
+}
+
+.statCard p {
+    margin: 0;
+    font-size: 1em; /* Reduced font size */
+}

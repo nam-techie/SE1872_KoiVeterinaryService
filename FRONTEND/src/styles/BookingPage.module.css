@@ -112,8 +112,17 @@
     transition: background-color 0.3s ease;
 }
 
+/* Nút submit khi hover */
 .submitButton:hover {
-    background-color: #e69500; /* Màu cam đậm hơn khi hover */
+    background-color: orangered; /* Màu cam đậm hơn khi hover */
+}
+
+/* Nút submit khi bị disable */
+.submitButton:disabled {
+    background-color: #e0e0e0; /* Nền xám khi disable */
+    color: white; /* Chữ trắng khi disable */
+    cursor: not-allowed; /* Con trỏ chuột không cho phép tương tác */
+    opacity: 0.6; /* Độ mờ để thể hiện trạng thái bị disable */
 }
 
 .confirmationOverlay {
