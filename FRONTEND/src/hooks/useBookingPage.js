@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react';
-import { getdoctorScheduleHome, getdoctorScheduleCenter, getdoctorScheduleCenterByID } from '../service/apiDoctor.js';
-import { useNavigate } from "react-router-dom";
-import { postBookingData } from "../service/apiService.js";
+import {useState, useEffect} from 'react';
+import {getdoctorScheduleHome, getdoctorScheduleCenter, getdoctorScheduleCenterByID} from '../service/apiDoctor.js';
+import {useNavigate} from "react-router-dom";
+import {postBookingData} from "../service/apiAppointments.js";
 
 export function useBookingPage() {
     const [serviceType, setServiceType] = useState('');
@@ -14,7 +14,13 @@ export function useBookingPage() {
     const [selectedDoctor, setSelectedDoctor] = useState('dr0');
     const [availableTimes, setAvailableTimes] = useState([]);
     const [dateOptions, setDateOptions] = useState([]);
-    const [errors, setErrors] = useState({ phoneNumber: '', detailedAddress: '', selectedDate: '', selectedTime: '', selectedDistrict: '' });
+    const [errors, setErrors] = useState({
+        phoneNumber: '',
+        detailedAddress: '',
+        selectedDate: '',
+        selectedTime: '',
+        selectedDistrict: ''
+    });
     const [showConfirm, setShowConfirm] = useState(false);
     const [agree, setAgree] = useState(false);  // Thêm trạng thái checkbox
     const navigate = useNavigate();
@@ -132,7 +138,13 @@ export function useBookingPage() {
 
     const handleSubmit = () => {
         let hasErrors = false;
-        const newErrors = { phoneNumber: '', detailedAddress: '', selectedDate: '', selectedTime: '', selectedDistrict: '' };
+        const newErrors = {
+            phoneNumber: '',
+            detailedAddress: '',
+            selectedDate: '',
+            selectedTime: '',
+            selectedDistrict: ''
+        };
 
         if (!phoneNumber) {
             newErrors.phoneNumber = 'Số điện thoại là bắt buộc';

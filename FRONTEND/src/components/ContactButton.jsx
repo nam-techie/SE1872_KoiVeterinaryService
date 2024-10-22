@@ -1,7 +1,7 @@
 import styles from "../styles/ContactButton.module.css";
-import { Link } from "react-router-dom";
-import { LiaCalendarPlus } from "react-icons/lia";
-import { GrContact } from "react-icons/gr";
+import {Link} from "react-router-dom";
+import {LiaCalendarPlus} from "react-icons/lia";
+import {GrContact} from "react-icons/gr";
 
 function ContactButton() {
     return (
