@@ -1,28 +1,33 @@
-//package com.namtechie.org.service;
-//
-//import com.namtechie.org.entity.Account;
-//import com.namtechie.org.entity.Customers;
+package com.namtechie.org.service;
+
+import com.namtechie.org.entity.Account;
+import com.namtechie.org.entity.Customers;
 //import com.namtechie.org.model.request.CustomerInfoRequest;
-//import com.namtechie.org.model.response.InfoCustomerResponse;
-//import com.namtechie.org.repository.CustomerRepository;
-//import org.modelmapper.ModelMapper;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.stereotype.Service;
-//
-//import java.util.List;
-//import java.util.Objects;
-//
-//@Service
-//public class CustomerService {
-//    @Autowired
-//    CustomerRepository customerRepository;
-//
+import com.namtechie.org.model.response.InfoCustomerResponse;
+import com.namtechie.org.repository.CustomerRepository;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Objects;
+
+@Service
+public class CustomerService {
+    @Autowired
+    CustomerRepository customerRepository;
+
 //    @Autowired
 //    AuthenticationService authenticationService;
 //
 //    @Autowired
 //    ModelMapper modelMapper;
 //
+    public Customers createCustomer(Customers customer){
+        return customerRepository.save(customer);
+
+    }
+
 //    public InfoCustomerResponse getInfoCustomer() {
 //        try {
 //            // Lấy tài khoản hiện tại
@@ -91,6 +96,6 @@
 //    public List<Customers> getAllCustomers() {
 //        return customerRepository.findAll();
 //    }
-//
-//
-//}
+
+
+}

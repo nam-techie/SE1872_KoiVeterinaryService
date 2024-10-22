@@ -4,9 +4,8 @@ import lombok.Data;
 
 @Data
 public class AccountResponse {
-    long id;
-    String username;
-    String email;
-    String role;
     String token;
+    public AccountResponse(String token) {
+        this.token = token;
+    }
 }

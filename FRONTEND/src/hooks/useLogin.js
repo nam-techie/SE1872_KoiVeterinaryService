@@ -26,8 +26,7 @@ export const useLogin = () => {
 
             // Lưu token, username và role vào localStorage
             localStorage.setItem('authToken', response.token);
-            localStorage.setItem('username', response.username);
-            localStorage.setItem('role', response.role); // Lưu role vào localStorage
+
 
             // Chuyển hướng đến LoadingCat trước
             navigate('/loading');
@@ -110,13 +109,6 @@ export const useTokenHandler = () => {
     }, [navigate, location]);  // Đảm bảo chỉ chạy khi `location` hoặc `navigate` thay đổi
 };
 
-export const handleLogout = () => {
-
-    localStorage.clear();
-
-    
-    window.location.href = "/homepage";
-};
 
 
 

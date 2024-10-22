@@ -34,13 +34,21 @@ public class TokenService {
     }
 
     // Tạo token mới
-    public String generateToken(Account account) {
+    public String createToken(Map<String, Object> claims, String username) {
         return Jwts.builder()
-                .subject(account.getId() + "")
+                .setClaims(claims)
+                .setSubject(username)
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 30)) // Token sống trong 30 phút
                 .signWith(getSignKey())
                 .compact();
+    }
+    //Chua cai
+    public String generateToken(Account account) {
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("id", account.getId());
+        claims.put("role", account.getRole());
+        return createToken(claims, account.getUsername());
     }
 
     public String generateTokenByEmail(String email) {
@@ -62,6 +70,16 @@ public class TokenService {
 
         // Lưu token vào danh sách đen với thời gian hết hạn
         blacklistedTokens.put(token, claims.getExpiration());
+    }
+
+    public String extractUsername(String token) {
+        return extractClaims(token).getSubject();
+    }
+
+    public Claims extractClaims(String token) {
+        return Jwts.parser().setSigningKey(SECRET_KEY).build()
+                .parseClaimsJws(token).getBody();
+
     }
 
     // Kiểm tra và lấy thông tin Account từ token

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { getdoctorScheduleHome, getdoctorScheduleCenter, getdoctorScheduleCenterByID } from '../service/apiDoctor.js';
 import { useNavigate } from "react-router-dom";
-import { postBookingData } from "../service/apiService.js";
+import {postBookingData} from "../service/apiAppointments.js";
 
 export function useBookingPage() {
     const [serviceType, setServiceType] = useState('');
@@ -115,13 +115,24 @@ export function useBookingPage() {
             detailedAddress: finalDetailedAddress,
             selectedDistrict: finalSelectedDistrict,
             selectedDoctor: finalSelectedDoctor,
-            createdDate: createdDate.toISOString(),
         };
 
+        function transformBookingData(bookingData){
+            return {
+                serviceTypeId: bookingData.serviceType,  // Chuyển thành serviceTypeId
+                phone: bookingData.phoneNumber,  // Chuyển thành phone
+                description: bookingData.description,  // Không đổi
+                bookingDate: bookingData.selectedDate,  // Chuyển thành bookingDate
+                bookingTime: bookingData.selectedTime,  // Chuyển thành bookingTime
+                address: bookingData.detailedAddress,  // Chuyển thành address
+                zoneId: bookingData.selectedDistrict,  // Chuyển thành zoneId cho quận
+                doctorId: bookingData.selectedDoctor,  // Chuyển thành doctorId
+            };
+        }
         console.log(bookingData)
 
         try {
-            const response = await postBookingData(bookingData);
+            const response = await postBookingData(transformBookingData);
             if (response.status === 200 || response.status === 201) {
                 navigate("/booking-service-history");
             }

@@ -1,6 +1,7 @@
 package com.namtechie.org.service;
 
 import com.namtechie.org.entity.Account;
+import com.namtechie.org.entity.Customers;
 import com.namtechie.org.entity.Role;
 import com.namtechie.org.exception.BadCredentialsException;
 import com.namtechie.org.exception.DuplicateEntity;
@@ -35,6 +36,8 @@ public class AuthenticationService implements UserDetailsService {
     @Autowired
     AccountRepository accountRepository;
 
+    @Autowired
+    CustomerService customerService;
     @Autowired
     PasswordEncoder passwordEncoder;
 
@@ -78,6 +81,7 @@ public class AuthenticationService implements UserDetailsService {
 
             // Lưu tài khoản vào database
             Account newAccount = accountRepository.save(account);
+            customerService.createCustomer(new Customers(account));
 
             // Gửi email thông báo đăng kí thành công
             EmailDetail emailDetail = new EmailDetail();
@@ -109,9 +113,7 @@ public class AuthenticationService implements UserDetailsService {
             }
 
             // Tạo token cho tài khoản
-            AccountResponse accountResponse = modelMapper.map(account, AccountResponse.class);
-            accountResponse.setToken(tokenService.generateToken(account));
-
+            AccountResponse accountResponse = new AccountResponse(tokenService.generateToken(account));
             return accountResponse;
         } catch (NotFoundException e) {
             // Nếu tài khoản bị vô hiệu hóa
@@ -143,7 +145,7 @@ public class AuthenticationService implements UserDetailsService {
 
     private String generateUsername() {
         // Tìm kiếm số lượng bác sĩ hiện có để tạo username tiếp theo
-        List<Account> veterinaryAccounts = accountRepository.findByRoleIgnoreCase(Role.VETERINARY.name());
+        List<Account> veterinaryAccounts = accountRepository.findByRoleIgnoreCase(Role.DOCTOR.name());
         int nextNumber = veterinaryAccounts.size() + 1;
         String generatedUsername = "veterinary" + String.format("%02d", nextNumber);
 
@@ -168,7 +170,7 @@ public class AuthenticationService implements UserDetailsService {
             account.setEmail(veterinaryRequest.getEmail());
             account.setUsername(generatedUsername);
             account.setPassword(passwordEncoder.encode("123456"));
-            account.setRole(Role.VETERINARY.name());
+            account.setRole(Role.DOCTOR.name());
 
             // Lưu tài khoản bác sĩ vào database
             Account newAccount = accountRepository.save(account);
@@ -196,7 +198,7 @@ public class AuthenticationService implements UserDetailsService {
         }
 
         // Đặt role VETERINARY
-        veterinaryAccount.setRole(Role.VETERINARY.name());
+        veterinaryAccount.setRole(Role.DOCTOR.name());
 
         // Lưu vào cơ sở dữ liệu
         Account updatedAccount = accountRepository.save(veterinaryAccount);
@@ -384,17 +386,10 @@ public class AuthenticationService implements UserDetailsService {
 
         // Nếu tài khoản đã tồn tại thì bỏ qua việc cập nhật và tạo mới
 
-        // Tạo JWT cho người dùng
-        String token = tokenService.generateToken(account);
 
-        // Trả về thông tin người dùng, role và token
-        AccountResponse response = new AccountResponse();
-        response.setUsername(account.getUsername());
-        response.setEmail(account.getEmail());
-        response.setRole(account.getRole());  // Trả về role của người dùng
-        response.setToken(token);  // Trả về token
+        // Trả về thông tin  token cho người dùng
+        return new AccountResponse(tokenService.generateToken(account));
 
-        return response;
     }
 
 }

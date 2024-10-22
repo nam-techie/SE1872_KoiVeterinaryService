@@ -37,10 +37,9 @@ public class AuthenticationController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity login(@Valid @RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<AccountResponse> login(@Valid @RequestBody LoginRequest loginRequest) {
         // nhờ thằng AuthenticationService => tạo dùm cái account
-        AccountResponse newAccount = authenticationService.login(loginRequest);
-        return ResponseEntity.ok(newAccount);
+        return ResponseEntity.ok(authenticationService.login(loginRequest));
     }
 
     @PutMapping("/updateAccount")

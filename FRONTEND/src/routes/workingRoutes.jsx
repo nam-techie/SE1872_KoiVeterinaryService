@@ -1,10 +1,10 @@
-import { Navigate } from 'react-router-dom';
-import PropTypes from 'prop-types'; // Import PropTypes
+import {Navigate} from 'react-router-dom';
+import PropTypes from 'prop-types';
+import {useAuthValidation} from "../utils/Validation.js"; // Import PropTypes
 
 // PublicRoute: Không cho phép bác sĩ truy cập trang công khai
 export const PublicRoute = ({ children }) => {
-    const role = localStorage.getItem('role')?.trim();  // Lưu vai trò của người dùng và loại bỏ khoảng trắng
-
+    const { role } = useAuthValidation();
     // Nếu vai trò là doctor, điều hướng đến trang khác (ví dụ: trang dashboard của bác sĩ)
     if (role === 'DOCTOR') {
         return <Navigate to="/doctor/doctor-dashboard" />;
@@ -21,9 +21,9 @@ PublicRoute.propTypes = {
 
 // RestrictedRoute: Chỉ cho phép truy cập nếu chưa có token
 export const RestrictedRoute = ({ children }) => {
-    const token = localStorage.getItem('authToken'); // Lấy token từ localStorage
-    const role = localStorage.getItem('role'); // Lấy role từ localStorage
-
+    const token = localStorage.getItem('authToken');
+    const { role } = useAuthValidation();// Lấy token từ localStorage
+     // Lấy role từ localStorage
     // Nếu đã có token và role là DOCTOR, điều hướng về dashboard của doctor
     if (token && role === 'DOCTOR') {
         return <Navigate to="/doctor/doctor-dashboard" />;
@@ -56,12 +56,12 @@ PrivateRoute.propTypes = {
 // RoleBasedRoute: Yêu cầu token và vai trò phù hợp để truy cập
 export const RoleBasedRoute = ({ children, allowedRoles }) => {
     const token = localStorage.getItem('authToken');
-    const userRole = localStorage.getItem('role')?.trim();  // Lấy vai trò của người dùng và loại bỏ khoảng trắng
+    const { role } = useAuthValidation();
 
     // Nếu không có token hoặc vai trò không hợp lệ
-    if (!token || !allowedRoles.includes(userRole)) {
+    if (!token || !allowedRoles.includes(role)) {
         // Điều hướng khác nhau dựa trên vai trò người dùng
-        if (userRole === 'DOCTOR') {
+        if (role === 'DOCTOR') {
             return <Navigate to="/doctor/doctor-dashboard" />;
         } else {
             return <Navigate to="/login" />;

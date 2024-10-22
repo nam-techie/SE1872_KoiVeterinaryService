@@ -1,36 +1,42 @@
-import { useState, useEffect } from "react";
+import{ useState, useEffect } from 'react'; // Ensure you import React
+import {jwtDecode} from "jwt-decode";
 
 export const useAuthValidation = () => {
-    const [username, setUsername] = useState("");
-    const [role, setRole] = useState(""); // Thêm state để quản lý role
+    const [username, setUsername] = useState('');
+    const [role, setRole] = useState('');
     const [isLoggedIn, setIsLoggedIn] = useState(false);
 
     useEffect(() => {
-        const token = localStorage.getItem("authToken"); // Lấy token từ localStorage
-        const storedUsername = localStorage.getItem("username"); // Lấy username
-        const storedRole = localStorage.getItem("role"); // Lấy role
-
+        const token = localStorage.getItem("authToken");
         if (token) {
-            setIsLoggedIn(true);
-        }
-        if (storedUsername) {
-            setUsername(storedUsername);
-        }
-        if (storedRole) {
-            setRole(storedRole);
+            try {
+                const decoded = jwtDecode(token);
+                const currentTime = Date.now() / 1000;
+                if (decoded.exp && decoded.exp < currentTime) {
+                    handleLogout();
+                } else {
+                    setUsername(decoded.sub);
+                    setRole(decoded.role);
+                    setIsLoggedIn(true);
+                }
+            } catch (error) {
+                console.error("Error decoding token:", error);
+                handleLogout();
+            }
         }
     }, []);
 
     const handleLogout = () => {
-        localStorage.clear(); // Xoá toàn bộ thông tin đăng nhập
+        localStorage.clear();
         setIsLoggedIn(false);
-        window.location.href = "/homepage"; // Chuyển hướng về trang chủ
+        window.location.href = "/homepage";
     };
 
     return {
         username,
-        role, // Trả về role trong hook
+        role,
         isLoggedIn,
         handleLogout,
     };
 };
+

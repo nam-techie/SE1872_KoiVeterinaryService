@@ -29,4 +29,12 @@ public class Customers {
 
     @Column(name = "address", length = 255)
     private String address;
+
+    public Customers() {
+
+    }
+
+    public Customers(Account account) {
+        this.account = account;
+    }
 }

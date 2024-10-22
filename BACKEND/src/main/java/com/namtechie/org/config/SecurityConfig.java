@@ -43,6 +43,7 @@ public class SecurityConfig {
     @Autowired
     ModelMapper modelMapper;
 
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -100,8 +101,9 @@ public class SecurityConfig {
             AccountResponse accountResponse = authenticationService.loginByGoogle(email, name);
 
             // Mã hóa các thông tin để gửi qua URL
-            String encodedToken = URLEncoder.encode(accountResponse.getToken(), "UTF-8");
-            String encodedUsername = URLEncoder.encode(accountResponse.getUsername(), "UTF-8");
+            String token = accountResponse.getToken();
+            String encodedToken = URLEncoder.encode(token, "UTF-8");
+            String encodedUsername = URLEncoder.encode(tokenService.extractUsername(token), "UTF-8");
             String redirectUrl = "http://localhost:5741/login/success?token=" + encodedToken + "&username=" + encodedUsername;
             response.sendRedirect(redirectUrl);
 
