@@ -2,6 +2,7 @@ package com.namtechie.org.entity;
 
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,6 +10,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.sql.Date;
+import java.util.List;
 
 @Entity
 @Data
@@ -23,6 +25,11 @@ public class AppointmentStatus {
     @JoinColumn(name = "appointment_id", nullable = false)
     @JsonBackReference
     private Appointment appointment;
+
+    @OneToMany
+    @JoinColumn(name = "appointmentStatus",nullable = false)
+    @JsonManagedReference
+    private List<TransactionLog> transaction;
 
     @Column
     private String status;
