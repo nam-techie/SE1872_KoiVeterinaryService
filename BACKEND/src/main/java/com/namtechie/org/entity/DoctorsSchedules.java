@@ -1,5 +1,4 @@
 package com.namtechie.org.entity;
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -14,7 +13,6 @@ public class DoctorsSchedules {
 
     @ManyToOne
     @JoinColumn(name = "doctor_id", nullable = false)
-    @JsonBackReference
     private Doctor doctor;
 
     private String workDay;

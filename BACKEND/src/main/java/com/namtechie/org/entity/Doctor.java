@@ -38,7 +38,7 @@ public class Doctor {
     private DoctorInfo doctorInfo;
 
     @Column(length = 255)
-    private String fullname;
+    private String fullName;
 
 
     @Column(length = 255)

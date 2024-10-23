@@ -112,9 +112,6 @@ public class AppointmentService {
             customer.setPhone(appointmentRequest.getPhone()); // lưu số đth khách hàng
 
 
-
-
-
             // Step 3: Tìm ServiceType từ serviceID trong AppointmentRequest
             ServiceType serviceType = serviceTypeRepository.findById(appointmentRequest.getServiceTypeId());
             appointment.setServiceType(serviceType);

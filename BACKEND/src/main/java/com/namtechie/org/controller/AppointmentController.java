@@ -115,7 +115,7 @@ public class AppointmentController {
     }
 
     @PutMapping("/isDoctorConfirm")
-    @PreAuthorize("hasAuthority('VETERIAN')")
+    @PreAuthorize("hasAuthority('VETERINARY')")
     public ResponseEntity isConfirm(@Valid @RequestBody DoctorConfirmRequest doctorConfirmRequest) {
         AppointmentStatus appointmentStatus = appointmentService.confirmDoctorAppointment(doctorConfirmRequest);
         return ResponseEntity.ok(appointmentStatus);

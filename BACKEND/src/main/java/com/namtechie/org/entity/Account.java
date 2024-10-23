@@ -58,12 +58,8 @@ public class Account implements UserDetails {
     @JsonManagedReference
     private Doctor doctor;
 
-    @OneToOne(mappedBy = "account", cascade = CascadeType.ALL)
-    @JsonManagedReference
-    private Staffs staffs;
 
 
-    //Con thieu Staffs
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

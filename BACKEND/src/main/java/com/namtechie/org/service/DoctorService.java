@@ -65,8 +65,8 @@ public class DoctorService {
             }
 
             // Xét trường hợp nếu user ko nhập gì thì ko update
-            if (!doctorRequest.getFullName().equals(doctor.getFullname())) {
-                doctor.setFullname(doctorRequest.getFullName());
+            if (!doctorRequest.getFullName().equals(doctor.getFullName())) {
+                doctor.setFullName(doctorRequest.getFullName());
             }
             if (!doctorRequest.getPhone().equals(doctor.getPhone())) {
                 doctor.setPhone(doctorRequest.getPhone());
