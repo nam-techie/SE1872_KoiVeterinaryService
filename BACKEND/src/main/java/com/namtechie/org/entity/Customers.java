@@ -26,7 +26,7 @@ public class Customers {
     private List<Appointment> appointment;
 
 
-    @Column(name = "fullname", length = 255)
+    @Column(name = "fullName", length = 255)
     private String fullName;
 
 
