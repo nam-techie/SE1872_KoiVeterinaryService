@@ -43,7 +43,7 @@ public class CustomerService {
             InfoCustomerResponse response = new InfoCustomerResponse();
             response.setUsername(currentAccount.getUsername());
             response.setEmail(currentAccount.getEmail());
-            response.setPhone(currentCustomer.getPhoneNumber());
+            response.setPhone(currentCustomer.getPhone());
             response.setFullName(currentCustomer.getFullName());
             response.setAddress(currentCustomer.getAddress());
 
@@ -78,8 +78,8 @@ public class CustomerService {
             if (!Objects.equals(customerInfo.getFullName(), customer.getFullName())){
                 customer.setFullName(customerInfo.getFullName());
             }
-            if (!Objects.equals(customerInfo.getPhoneNumber(), customer.getPhoneNumber())) {
-                customer.setPhoneNumber(customerInfo.getPhoneNumber());
+            if (!Objects.equals(customerInfo.getPhoneNumber(), customer.getPhone())) {
+                customer.setPhone(customerInfo.getPhoneNumber());
             }
             if (!Objects.equals(customerInfo.getAddress(), customer.getAddress())) {
                 customer.setAddress(customerInfo.getAddress());

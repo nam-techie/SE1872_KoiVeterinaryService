@@ -167,23 +167,24 @@ public class AuthenticationService implements UserDetailsService {
 
 
     public AccountResponse registerVeterinary(VeterinaryRequest veterinaryRequest) {
-
         Account account = new Account();
         modelMapper.map(veterinaryRequest, Account.class);
         try {
-            // Mật khẩu mặc định cho bác sĩ
-            String generatedUsername = generateUsername();
-            // Tạo account mới
+            // Kiểm tra nếu email null trước khi thực hiện logic liên quan đến email
+            if (veterinaryRequest.getEmail() == null || veterinaryRequest.getEmail().isEmpty()) {
+                throw new IllegalArgumentException("Email không được để trống");
+            }
 
+            // Các bước logic khác như trước
+            String generatedUsername = generateUsername();
             account.setEmail(veterinaryRequest.getEmail());
             account.setUsername(generatedUsername);
             account.setPassword(passwordEncoder.encode("123456"));
             account.setRole(Role.VETERINARY.name());
 
-            // Lưu tài khoản bác sĩ vào database
+            // Lưu account mới
             Account newAccount = accountRepository.save(account);
 
-            // Chuyển đổi thành AccountResponse và trả về
             return modelMapper.map(newAccount, AccountResponse.class);
         } catch (Exception e) {
             if (e.getMessage().contains(account.getEmail())) {
@@ -192,7 +193,6 @@ public class AuthenticationService implements UserDetailsService {
                 throw new RuntimeException("Đã xảy ra lỗi trong quá trình đăng ký, vui lòng thử lại sau.");
             }
         }
-
     }
 
 
@@ -552,7 +552,6 @@ public class AuthenticationService implements UserDetailsService {
             throw new RuntimeException("Đã xảy ra lỗi trong quá trình cập nhật thông tin admin.");
         }
     }
-
 
 
 }

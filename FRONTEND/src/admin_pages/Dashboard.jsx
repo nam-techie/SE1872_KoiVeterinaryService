@@ -11,6 +11,7 @@ import AccountUpdateProfile from './AccountUpdateProfile';
 import DoctorDashboard from './DoctorDashboard';
 import DoctorDetailInfo from './DoctorDetailInfo';
 import UpdateDoctor from './UpdateDoctor';
+import AddDoctor from './AddDoctor';
 
 const AdminDashboard = () => {
     const navigate = useNavigate();
@@ -20,6 +21,7 @@ const AdminDashboard = () => {
     const [selectedDoctorId, setSelectedDoctorId] = useState(null);
     const [selectedDoctorInfo, setSelectedDoctorInfo] = useState(null);
     const [isEditing, setIsEditing] = useState(false);
+    const [isAddingDoctor, setIsAddingDoctor] = useState(false);
 
     useEffect(() => {
         const storedUsername = localStorage.getItem('username');
@@ -40,6 +42,20 @@ const AdminDashboard = () => {
         
         // Chuyển hướng về trang đăng nhập
         navigate('/login');
+    };
+
+    const handleAddDoctor = () => {
+        setIsAddingDoctor(true);
+    };
+
+    const handleAddDoctorClose = () => {
+        setIsAddingDoctor(false);
+    };
+
+    const handleDoctorAdded = (newDoctor) => {
+        // Xử lý sau khi thêm bác sĩ thành công
+        setIsAddingDoctor(false);
+        // Có thể cập nhật danh sách bác sĩ ở đây nếu cần
     };
 
     const renderContent = () => {
@@ -111,7 +127,9 @@ const AdminDashboard = () => {
                     <div>Không có tài khoản được chọn để chỉnh sửa</div>
                 );
             case 'doctors':
-                if (selectedDoctorId) {
+                if (isAddingDoctor) {
+                    return <AddDoctor onClose={handleAddDoctorClose} onAdd={handleDoctorAdded} />;
+                } else if (selectedDoctorId) {
                     return isEditing ? (
                         <UpdateDoctor 
                             doctor={selectedDoctorInfo}
@@ -143,6 +161,7 @@ const AdminDashboard = () => {
                                 setSelectedDoctorId(id);
                                 setActiveTab('doctors');
                             }}
+                            onAddDoctor={handleAddDoctor}
                         />
                     );
                 }

@@ -60,6 +60,24 @@ export const useDoctorInfo = () => {
         fetchAllDoctors();
     }, []);
 
+    const addDoctor = async (email, doctorData) => {
+        try {
+            setLoading(true);
+            const response = await axiosInstance.post(`/admin/addDoctor/${email}`, doctorData);
+            await fetchAllDoctors(); // Cập nhật danh sách bác sĩ sau khi thêm mới
+            setLoading(false);
+            return response.data;
+        } catch (err) {
+            setLoading(false);
+            if (err.response) {
+                setError(err.response.data);
+            } else {
+                setError('Đã xảy ra lỗi khi kết nối đến server');
+            }
+            throw err;
+        }
+    };
+
     return {
         doctors,
         loading,
@@ -67,6 +85,7 @@ export const useDoctorInfo = () => {
         fetchAllDoctors,
         deleteDoctor,
         updateDoctorInfo,
-        getDoctorDetail
+        getDoctorDetail,
+        addDoctor
     };
 };

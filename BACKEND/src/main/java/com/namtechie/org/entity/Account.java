@@ -1,6 +1,7 @@
 package com.namtechie.org.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -21,7 +22,7 @@ import java.util.List;
 public class Account implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long id;  // Khóa chính với auto-increment (IDENTITY)
 
     @NotBlank(message = "Tên đăng nhập không được để trống")
     @Size(min = 3, message = "Tên đăng nhập phải có từ 3 ký tự trở lên!!!")
@@ -42,10 +43,22 @@ public class Account implements UserDetails {
     private String role;
 
     @CreationTimestamp
-    @Column(name = "created_at", nullable = false, updatable = false)
-    private Date createdAt;
+    @Column(nullable = false, updatable = false)
+    private Date created_at;
 
-    boolean isDeleted;
+    @JsonIgnore // Để nó k trả về và bắt mình nhập thông tin này
+    boolean isDeleted = false;
+
+
+    @OneToOne(mappedBy = "account", cascade = CascadeType.ALL)
+    @JsonManagedReference
+    private Customers customer;
+
+    @OneToOne(mappedBy = "account", cascade = CascadeType.ALL)
+    @JsonManagedReference
+    private Doctor doctor;
+
+
 
 
     @Override

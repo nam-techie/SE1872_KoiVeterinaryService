@@ -5,7 +5,7 @@ import './styles/DoctorDashboard.css';
 import { useDoctorInfo } from './hooks/useDoctorInfo';
 import DoctorDetailInfo from './DoctorDetailInfo'; // Đảm bảo import này tồn tại
 
-const DoctorDashboard = ({ onViewDetails }) => {
+const DoctorDashboard = ({ onViewDetails, onAddDoctor }) => {
     const { doctors, loading, error, fetchAllDoctors } = useDoctorInfo();
     const [searchTerm, setSearchTerm] = useState('');
     const [sortBy, setSortBy] = useState('fullName');
@@ -53,10 +53,9 @@ const DoctorDashboard = ({ onViewDetails }) => {
             <div className="dashboard-header">
                 <h2>Quản lý Bác sĩ</h2>
                 <div className="action-buttons">
-                    <button className="add-doctor-btn">
+                    <button className="add-doctor-btn" onClick={onAddDoctor}>
                         <FaUserMd /> Thêm Bác sĩ
                     </button>
-                    
                 </div>
             </div>
             <div className="search-sort-container">

@@ -159,5 +159,18 @@ public class AdminController {
         }
     }
 
+    @PostMapping("/addDoctor/{email}")
+    public ResponseEntity<String> addDoctor(@RequestBody UpdateDoctor updateDoctor) {
+        try {
+            doctorService.addDoctor(updateDoctor);
+            return ResponseEntity.status(HttpStatus.CREATED).body("Bác sĩ đã được thêm thành công");
+        } catch (DuplicateEntity e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Đã xảy ra lỗi trong quá trình thêm bác sĩ");
+        }
+    }
+
+
 
 }
