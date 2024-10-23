@@ -1,7 +1,5 @@
 package com.namtechie.org.entity;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -13,7 +11,7 @@ import java.util.List;
 
 @Entity
 @Data
-public class Customer {
+public class Customers {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -23,8 +21,8 @@ public class Customer {
     @JsonBackReference
     private Account account;
 
-    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
-    @JsonIgnoreProperties({"customer"})
+    @OneToMany(mappedBy = "customers", cascade = CascadeType.ALL)
+    @JsonIgnoreProperties({"customers"})
     private List<Appointment> appointment;
 
 

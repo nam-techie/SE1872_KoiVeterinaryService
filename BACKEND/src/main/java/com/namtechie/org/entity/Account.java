@@ -52,14 +52,18 @@ public class Account implements UserDetails {
 
     @OneToOne(mappedBy = "account", cascade = CascadeType.ALL)
     @JsonManagedReference
-    private Customer customer;
+    private Customers customer;
 
     @OneToOne(mappedBy = "account", cascade = CascadeType.ALL)
     @JsonManagedReference
     private Doctor doctor;
 
+    @OneToOne(mappedBy = "account", cascade = CascadeType.ALL)
+    @JsonManagedReference
+    private Staffs staffs;
 
-    //Con thieu Staff
+
+    //Con thieu Staffs
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

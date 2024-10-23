@@ -15,7 +15,7 @@ public class FeedBack {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "appointment_id", nullable = false)
     private Appointment appointment;
 

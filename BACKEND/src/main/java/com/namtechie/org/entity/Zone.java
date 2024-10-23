@@ -15,10 +15,8 @@ public class Zone {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
     private String name;
-
-    @Column(nullable = false)
+    
     private long fee;
 
     @OneToMany(mappedBy = "zone", cascade = CascadeType.ALL)

@@ -11,7 +11,7 @@ import java.sql.Timestamp;
 
 @Entity
 @Data
-public class AppointmentDetail {
+public class AppointmentInfo {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,5 +35,7 @@ public class AppointmentDetail {
     @CreationTimestamp
     private Timestamp createdDate;
 
+    //này là miêu tả nội dung điều trị (note hay description gì cũng được)
     private String descriptions;
+
 }

@@ -31,6 +31,7 @@ public class AppointmentStatus {
     @CreationTimestamp
     private Date create_date;
 
+    //ghi chú tình trạng đơn hàng
     @Column
     private String notes;
 }

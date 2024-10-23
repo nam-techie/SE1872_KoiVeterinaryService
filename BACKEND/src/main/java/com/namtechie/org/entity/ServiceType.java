@@ -16,13 +16,13 @@ public class ServiceType {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+
     private String name;
 
-    @Column(nullable = false)
-    private long basePrice;
 
-    @Column(nullable = false)
+    private long base_price;
+
+
     private String description;
 
     @OneToMany(mappedBy = "serviceType", cascade = CascadeType.ALL)

@@ -7,7 +7,7 @@ import java.sql.Time;
 
 @Entity
 @Data
-public class DoctorSchedules {
+public class DoctorsSchedules {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

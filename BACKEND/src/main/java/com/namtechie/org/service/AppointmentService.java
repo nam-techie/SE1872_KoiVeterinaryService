@@ -15,8 +15,6 @@ import org.springframework.stereotype.Service;
 
 import java.sql.Date;
 import java.sql.Time;
-import java.time.DayOfWeek;
-import java.time.LocalDate;
 import java.util.*;
 
 @Service
@@ -30,13 +28,13 @@ public class AppointmentService {
     private ZoneRepository zoneRepository;
 
     @Autowired
-    private DoctorSchedulesRepository doctorSchedulesRepository;
+    private DoctorsSchedulesRepository doctorSchedulesRepository;
 
     @Autowired
     private AppointmentRepository appointmentRepository;
 
     @Autowired
-    private AppointmentDetailRepository appointmentDetailRepository;
+    private AppointmentInfoRepository appointmentDetailRepository;
 
     @Autowired
     private AppointmentStatusRepository appointmentStatusRepository;
@@ -48,7 +46,7 @@ public class AppointmentService {
     @Autowired
     private AccountRepository accountRepository;
     @Autowired
-    private CustomerRepository customerRepository;
+    private CustomersRepository customersRepository;
     @Autowired
     ScheduleService scheduleService;
 
@@ -78,7 +76,7 @@ public class AppointmentService {
         List<Appointment> newAppointmentList = new ArrayList<>();
 
         for (Appointment appointment : appointmentList) {
-            Time appointmentTime = appointment.getAppointmentDetail().getAppointmentBookingTime();
+            Time appointmentTime = appointment.getAppointmentInfo().getAppointmentBookingTime();
             boolean isBeforeNoon = appointmentTime.before(NOON);
             if (isMorning && isBeforeNoon) {
                 newAppointmentList.add(appointment);
@@ -108,10 +106,11 @@ public class AppointmentService {
         Appointment appointment = new Appointment();
         try {
             Account account = (Account) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            appointment.setCustomer(account.getCustomer());
+            appointment.setCustomers(account.getCustomer());
 
-            Customer customer = account.getCustomer();
+            Customers customer = account.getCustomer();
             customer.setPhone(appointmentRequest.getPhone()); // lưu số đth khách hàng
+
 
 
 
@@ -124,9 +123,11 @@ public class AppointmentService {
 
 
             // Step 5: Tạo mới AppointmentDetail từ dữ liệu chi tiết
-            AppointmentDetail appointmentDetail = new AppointmentDetail();
-            appointmentDetail.setAppointment(appointment);
-            appointmentDetail.setAddress(appointmentRequest.getAddress());
+            AppointmentInfo appointmentInfo = new AppointmentInfo();
+            appointmentInfo.setAppointment(appointment);
+            appointmentInfo.setAddress(appointmentRequest.getAddress());
+            customer.setAddress(appointmentRequest.getAddress());
+            customersRepository.save(customer);
 
             Zone zone = null;
             if(appointmentRequest.getZoneId() != 0){
@@ -147,12 +148,12 @@ public class AppointmentService {
                 if(doctor != null) {
                     appointment.setDoctorAssigned(true); // đánh dấu khách hàng có chọn bác sĩ
                     appointment.setDoctor(doctor);
-                    appointmentDetail.setAppointmentBookingDate(appointmentRequest.getBookingDate());
-                    appointmentDetail.setAppointmentBookingTime(appointmentRequest.getBookingTime());
+                    appointmentInfo.setAppointmentBookingDate(appointmentRequest.getBookingDate());
+                    appointmentInfo.setAppointmentBookingTime(appointmentRequest.getBookingTime());
 
                 }else { //khách hàng ko chọn bác sĩ
-                    appointmentDetail.setAppointmentBookingDate(appointmentRequest.getBookingDate());
-                    appointmentDetail.setAppointmentBookingTime(appointmentRequest.getBookingTime());
+                    appointmentInfo.setAppointmentBookingDate(appointmentRequest.getBookingDate());
+                    appointmentInfo.setAppointmentBookingTime(appointmentRequest.getBookingTime());
                     doctor = findAvailableDoctor(String.valueOf(appointmentRequest.getBookingDate()), String.valueOf(appointmentRequest.getBookingTime()));
                     appointment.setDoctorAssigned(false);
                     appointment.setDoctor(doctor);
@@ -164,8 +165,8 @@ public class AppointmentService {
                     doctor = findAvailableDoctor(String.valueOf(appointmentRequest.getBookingDate()), String.valueOf(appointmentRequest.getBookingTime()));
                     appointment.setDoctorAssigned(false);
                     appointment.setDoctor(doctor);
-                    appointmentDetail.setAppointmentBookingDate(appointmentRequest.getBookingDate());
-                    appointmentDetail.setAppointmentBookingTime(appointmentRequest.getBookingTime());
+                    appointmentInfo.setAppointmentBookingDate(appointmentRequest.getBookingDate());
+                    appointmentInfo.setAppointmentBookingTime(appointmentRequest.getBookingTime());
                     appointment.setZone(zone);
                 }
             }else if(appointmentRequest.getServiceTypeId() == 1) { // dịch vụ tư vấn
@@ -178,13 +179,13 @@ public class AppointmentService {
                     appointment.setDoctor(doctor);
                     Zone onlineZone = zoneRepository.findById(15);
                     appointment.setZone(onlineZone);
-                    appointmentDetail.setAppointmentBookingDate(appointmentRequest.getBookingDate());
-                    appointmentDetail.setAppointmentBookingTime(updateAppointmentTime);
+                    appointmentInfo.setAppointmentBookingDate(appointmentRequest.getBookingDate());
+                    appointmentInfo.setAppointmentBookingTime(updateAppointmentTime);
                 }
             }
 
-            appointmentDetail.setDescriptions(appointmentRequest.getDescription());
-            appointment.setAppointmentDetail(appointmentDetail);
+            appointmentInfo.setDescriptions(appointmentRequest.getDescription());
+            appointment.setAppointmentInfo(appointmentInfo);
 
 
             List<AppointmentStatus> list = new ArrayList<>();

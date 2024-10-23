@@ -3,10 +3,13 @@ package com.namtechie.org.service;
 import com.namtechie.org.entity.Appointment;
 import com.namtechie.org.entity.FeedBack;
 import com.namtechie.org.model.request.FeedbackRequest;
+import com.namtechie.org.model.response.FeedbackResponse;
 import com.namtechie.org.repository.AppointmentRepository;
 import com.namtechie.org.repository.FeedbackRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 
 @Service
@@ -30,7 +33,11 @@ public class FeedbackService {
         }
     }
 
-//    public List<FeedBack> getFeedback() {
-//        return feedbackRepository.findAll();
-//    }
+    public List<FeedBack> getFeedback() {
+        return feedbackRepository.findAll();
+    }
+
+    public FeedBack getFeedbackCustomer(long appointmentId ) {
+        return feedbackRepository.findByAppointmentId(appointmentId);
+    }
 }

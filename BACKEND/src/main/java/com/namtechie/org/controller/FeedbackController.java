@@ -9,6 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 
 @RestController
 @RequestMapping("/api")
@@ -23,9 +25,15 @@ public class FeedbackController {
         return ResponseEntity.ok(feedBack1);
     }
 
-//    @GetMapping("/getFeedback")
-//    public ResponseEntity getFeedback() {
-//        List<FeedbackResponse> feedBack = feedbackService.getFeedback();
-//        return ResponseEntity.ok(feedBack);
-//    }
+    @GetMapping("/getFeedbackAdmin")
+    public ResponseEntity getFeedbackAdmin() {
+        List<FeedBack> feedBack = feedbackService.getFeedback();
+        return ResponseEntity.ok(feedBack);
+    }
+
+    @GetMapping("/getFeedbackCustomer/{id}")
+    public ResponseEntity getFeedbackCustomer(@PathVariable long id) {
+        FeedBack feedBack = feedbackService.getFeedbackCustomer(id);
+        return ResponseEntity.ok(feedBack);
+    }
 }

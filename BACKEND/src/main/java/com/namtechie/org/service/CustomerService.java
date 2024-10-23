@@ -4,7 +4,7 @@
 //import com.namtechie.org.entity.Customers;
 //import com.namtechie.org.model.request.CustomerInfoRequest;
 //import com.namtechie.org.model.response.InfoCustomerResponse;
-//import com.namtechie.org.repository.CustomerRepository;
+//import com.namtechie.org.repository.CustomersRepository;
 //import org.modelmapper.ModelMapper;
 //import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.stereotype.Service;
@@ -15,7 +15,7 @@
 //@Service
 //public class CustomerService {
 //    @Autowired
-//    CustomerRepository customerRepository;
+//    CustomersRepository customerRepository;
 //
 //    @Autowired
 //    AuthenticationService authenticationService;
@@ -64,7 +64,7 @@
 //            // Kiểm tra xem khách hàng có tồn tại không, nếu không thì khởi tạo mới
 //            Customers customer = customerRepository.findByAccountId(curruntAccount.getId());
 //            if (customer == null) {
-//                customer = new Customers();  // Khởi tạo đối tượng Customer mới
+//                customer = new Customers();  // Khởi tạo đối tượng Customers mới
 //                customer.setAccount(curruntAccount);  // Liên kết với tài khoản
 //            }
 //

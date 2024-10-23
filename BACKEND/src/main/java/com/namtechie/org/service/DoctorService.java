@@ -3,8 +3,6 @@ package com.namtechie.org.service;
 
 import com.namtechie.org.entity.Account;
 import com.namtechie.org.entity.Doctor;
-import com.namtechie.org.entity.Role;
-import com.namtechie.org.model.UpdateDoctorLogin;
 import com.namtechie.org.model.request.DoctorRequest;
 import com.namtechie.org.repository.AccountRepository;
 import com.namtechie.org.repository.DoctorRepository;
@@ -24,14 +22,6 @@ public class DoctorService {
     @Autowired
     AccountRepository accountRepository;
 
-    @Autowired
-    AuthenticationService authenticationService;
-
-    @Autowired
-    PasswordEncoder passwordEncoder;
-
-    @Autowired
-    ModelMapper modelMapper;
 
     public Account getCurrentAccount() {
         Account account = (Account) SecurityContextHolder.getContext().getAuthentication().getPrincipal();

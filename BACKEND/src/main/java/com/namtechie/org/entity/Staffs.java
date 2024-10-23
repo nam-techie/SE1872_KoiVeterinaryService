@@ -1,7 +1,6 @@
 package com.namtechie.org.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.namtechie.org.entity.Account;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.*;
@@ -13,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Staff {
+public class Staffs {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long staffID;
@@ -28,8 +27,5 @@ public class Staff {
 
     @Column(nullable = false)
     private String phone;
-
-    @Column
-    private Boolean sex;
 
 }

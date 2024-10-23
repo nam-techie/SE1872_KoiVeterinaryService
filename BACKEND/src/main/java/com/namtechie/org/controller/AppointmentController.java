@@ -82,13 +82,9 @@ public class AppointmentController {
 
     @PostMapping("/createAppointment")
     @PreAuthorize("hasAuthority('CUSTOMER')")
-    public ResponseEntity createAppointment(@Valid @RequestBody AppointmentRequest appointmentRequest,  @RequestHeader("AuthenticationToken") String authorizationHeader) {
-        String token = tokenService.getToken(authorizationHeader);
-        if(tokenService.getAccountByToken(token) != null) {
+    public ResponseEntity createAppointment(@Valid @RequestBody AppointmentRequest appointmentRequest) {
             Appointment appointment = appointmentService.createAppointment(appointmentRequest);
             return ResponseEntity.ok(appointment);
-        }
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }
 
 

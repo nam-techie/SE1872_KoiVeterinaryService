@@ -17,11 +17,11 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
 
     Appointment findAppointmentById(long id);
 
-    @Query("SELECT a FROM Appointment a JOIN a.appointmentDetail ad WHERE a.doctor.id = :doctorId AND ad.appointmentBookingDate = :bookingDate")
+    @Query("SELECT a FROM Appointment a JOIN a.appointmentInfo ad WHERE a.doctor.id = :doctorId AND ad.appointmentBookingDate = :bookingDate")
     List<Appointment> findAppointmentsByDoctorIdAndBookingDate(@Param("doctorId") long doctorId, @Param("bookingDate") Date bookingDate);
 
 
-    @Query("SELECT a FROM Appointment a JOIN a.appointmentDetail ad " +
+    @Query("SELECT a FROM Appointment a JOIN a.appointmentInfo ad " +
             "WHERE a.doctor.id = :doctorId " +
             "AND ad.appointmentBookingDate = :bookingDate " +
             "AND EXTRACT(HOUR FROM ad.appointmentBookingTime) = EXTRACT(HOUR FROM :bookingTime) " +

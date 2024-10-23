@@ -19,9 +19,9 @@ public class Appointment {
     private long id;
 
     @ManyToOne
-    @JoinColumn(name = "customer_id", nullable = false)
+    @JoinColumn(name = "customers_id", nullable = false)
     @JsonIgnoreProperties({"appointment"})
-    private Customer customer;
+    private Customers customers;
 
     @ManyToOne
     @JoinColumn(name = "doctor_id", nullable = false)
@@ -38,12 +38,12 @@ public class Appointment {
     @JsonIgnoreProperties({"appointment"})
     private Zone zone;
 
-    //Quan he hai chieu voi appointmentdetail
+    //Quan he hai chieu voi appointment_info
     @OneToOne(mappedBy = "appointment", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonManagedReference
-    private AppointmentDetail appointmentDetail;
+    private AppointmentInfo appointmentInfo;
 
-    //Quan he hai chieu voi appointmentdetail
+    //Quan he hai chieu voi appointmentStatus
     @OneToMany(mappedBy = "appointment", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonManagedReference
     private List<AppointmentStatus> appointmentStatus;
@@ -54,9 +54,9 @@ public class Appointment {
     @Column(nullable = false)
     private boolean isCancel;
 
-    @OneToMany(mappedBy = "appointment", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToOne(mappedBy = "appointment", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonManagedReference
     @JsonIgnore
-    private List<FeedBack> feedBack;
+    private FeedBack feedBack;
 
 }
