@@ -35,7 +35,7 @@ export const useDistrictList = () => {
             try {
                 setDistrictsLoading(true);
                 const data = await getDistrictList();
-                console.log(data)
+                console.log("district list" +data)
                 setDistricts(data);
 
             } catch (err) {

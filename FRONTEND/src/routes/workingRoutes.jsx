@@ -1,10 +1,10 @@
 import {Navigate} from 'react-router-dom';
 import PropTypes from 'prop-types';
-import {useAuthValidation} from "../utils/Validation.js"; // Import PropTypes
 
 // PublicRoute: Không cho phép bác sĩ truy cập trang công khai
 export const PublicRoute = ({ children }) => {
-    const { role } = useAuthValidation();
+    const role = localStorage.getItem('role')
+    console.log(role)
     // Nếu vai trò là doctor, điều hướng đến trang khác (ví dụ: trang dashboard của bác sĩ)
     if (role === 'DOCTOR') {
         return <Navigate to="/doctor/doctor-dashboard" />;
@@ -22,11 +22,18 @@ PublicRoute.propTypes = {
 // RestrictedRoute: Chỉ cho phép truy cập nếu chưa có token
 export const RestrictedRoute = ({ children }) => {
     const token = localStorage.getItem('authToken');
-    const { role } = useAuthValidation();// Lấy token từ localStorage
+    const role = localStorage.getItem('role')
+    console.log(role)
      // Lấy role từ localStorage
     // Nếu đã có token và role là DOCTOR, điều hướng về dashboard của doctor
-    if (token && role === 'DOCTOR') {
-        return <Navigate to="/doctor/doctor-dashboard" />;
+
+    if (token) {
+        if(role === 'DOCTOR'){
+            return <Navigate to="/doctor/doctor-dashboard" />;
+        }else if( role === 'CUSTOMER'){
+            return <Navigate to="/homepage"/>
+        }
+
     }
 
     // Nếu đã có token nhưng role không phải DOCTOR, điều hướng về /homepage
@@ -44,6 +51,7 @@ RestrictedRoute.propTypes = {
 export const PrivateRoute = ({ children }) => {
     const token = localStorage.getItem('authToken');
 
+
     // Nếu không có token, điều hướng về trang đăng nhập
     return token ? children : <Navigate to="/login" />;
 };
@@ -56,7 +64,8 @@ PrivateRoute.propTypes = {
 // RoleBasedRoute: Yêu cầu token và vai trò phù hợp để truy cập
 export const RoleBasedRoute = ({ children, allowedRoles }) => {
     const token = localStorage.getItem('authToken');
-    const { role } = useAuthValidation();
+    const role = localStorage.getItem('role')
+    console.log(role)
 
     // Nếu không có token hoặc vai trò không hợp lệ
     if (!token || !allowedRoles.includes(role)) {

@@ -79,6 +79,7 @@ public class AppointmentController {
     //Cái này còn hơi đắng đo mà chắc cần token mà
     @GetMapping(value = "/getAllZone", produces = "application/json")
     public ResponseEntity<List<Zone>> getAllZone(@Valid @RequestHeader("AuthenticationToken") String authorizationHeader) {
+        System.out.println("Received token: " + authorizationHeader);
         String token = tokenService.getToken(authorizationHeader);
         if (tokenService.getAccountByToken(token) != null) {
             return ResponseEntity.ok(zoneService.findAll());

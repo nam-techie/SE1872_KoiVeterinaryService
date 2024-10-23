@@ -5,6 +5,7 @@ import com.namtechie.org.exception.ExpiredJwtException;
 import com.namtechie.org.repository.AccountRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.http.HttpServletRequest;
@@ -40,7 +41,7 @@ public class TokenService {
                 .setSubject(username)
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 30)) // Token sống trong 30 phút
-                .signWith(getSignKey())
+                .signWith(getSignKey(), SignatureAlgorithm.HS384)
                 .compact();
     }
     //Chua cai
@@ -51,14 +52,14 @@ public class TokenService {
         return createToken(claims, account.getUsername());
     }
 
-    public String generateTokenByEmail(String email) {
-        return Jwts.builder()
-                .setSubject(email)
-                .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 30)) // Token sống trong 30 phút
-                .signWith(getSignKey())
-                .compact();
-    }
+//    public String generateTokenByEmail(String email) {
+//        return Jwts.builder()
+//                .setSubject(email)
+//                .setIssuedAt(new Date(System.currentTimeMillis()))
+//                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 30)) // Token sống trong 30 phút
+//                .signWith(getSignKey(), SignatureAlgorithm.HS384)
+//                .compact();
+//    }
 
     // Đưa token vào danh sách đen với thời gian hết hạn
     public void invalidateToken(String token) {
@@ -70,6 +71,8 @@ public class TokenService {
 
         // Lưu token vào danh sách đen với thời gian hết hạn
         blacklistedTokens.put(token, claims.getExpiration());
+        System.out.println("Token blacklisted: " + token);
+
     }
 
     public String extractUsername(String token) {
@@ -77,7 +80,7 @@ public class TokenService {
     }
 
     public Claims extractClaims(String token) {
-        return Jwts.parser().setSigningKey(SECRET_KEY).build()
+        return Jwts.parser().setSigningKey(getSignKey()).build()
                 .parseClaimsJws(token).getBody();
 
     }
@@ -97,10 +100,9 @@ public class TokenService {
                     .parseClaimsJws(token)
                     .getBody();
 
-            String idString = claims.getSubject();
-            long id = Long.parseLong(idString);
+            String username = claims.getSubject();
 
-            return accountRepository.findAccountById(id);
+            return accountRepository.findAccountByUsername(username);
         } catch (ExpiredJwtException e) {
             throw new RuntimeException("Token đã hết hạn. Vui lòng đăng nhập lại.");
         } catch (Exception e) {

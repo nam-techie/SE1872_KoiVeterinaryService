@@ -27,8 +27,6 @@ function App() {
           <Route path="/verify-otp" element={<VerifyOTP/>}/>
           <Route path="/reset-password" element={<ResetPassword/>}/>
 
-
-
           {/* Trang công khai, nhưng bác sĩ không được truy cập */}
           <Route path="/" element={<PublicRoute><HomePage /></PublicRoute>}/>
           <Route path="/homepage" element={<PublicRoute><HomePage /></PublicRoute>}/>

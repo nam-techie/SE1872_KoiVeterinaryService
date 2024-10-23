@@ -1,52 +1,59 @@
 import { useState, useEffect } from 'react';
 import {useNavigate, useLocation} from "react-router-dom";
 import { login } from '../service/apiLogin.js'; // Service đăng nhập
-
-
+import {decodeToken} from "../utils/Validation.js"
 
 // Hook xử lý login
 export const useLogin = () => {
-    const [username, setUsername] = useState('');  // Sử dụng username thay vì email
+    const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
     const navigate = useNavigate();
+    const token = decodeToken();
 
     const handleSubmit = async (e) => {
-        e.preventDefault();  // Ngăn chặn hành vi mặc định của form
-        console.log("Form submitted with:", { username, password });  // Log kiểm tra form
-
+        e.preventDefault();
+        console.log("Form submitted with:", { username, password });
         setLoading(true);
-        setError('');  // Reset lỗi trước khi thực hiện đăng nhập
+        setError('');
+
 
         try {
-            // Gọi API đăng nhập thực sự
-            const response = await login(username, password);  // Gọi API từ apiLogin.js
-            console.log('Đăng nhập thành công, dữ liệu trả về:', response);  // Hiển thị dữ liệu trả về từ server
+            // Gọi API đăng nhập
+            const response = await login(username, password);
+            console.log('Đăng nhập thành công, dữ liệu trả về:', response);
 
-            // Lưu token, username và role vào localStorage
+            // Lưu token vào localStorage
             localStorage.setItem('authToken', response.token);
 
+            // Giải mã token và lưu thông tin vào localStorage
 
+            localStorage.setItem('username', token.sub); // Lưu username từ token
+            localStorage.setItem('role', token.role);    // Lưu role từ token
+
+            console.log(token);
             // Chuyển hướng đến LoadingCat trước
             navigate('/loading');
 
-            // Điều hướng đến trang thành công sau 2 giây
+            // Điều hướng đến trang tương ứng dựa trên role
             setTimeout(() => {
-                navigate('/homepage')
-            }, 3000);
-            // Thời gian hiển thị LoadingCat
+                if (token.role === 'ADMIN') {
+                    navigate('/dashboard');
+                } else {
+                    navigate('/homepage');
+                }
+            }, 3000); // Thời gian hiển thị LoadingCat
 
         } catch (error) {
-            // Hiển thị thông báo lỗi trực tiếp từ backend
             setError(error.message || 'Đăng nhập thất bại, hãy thử lại');
         } finally {
-            setLoading(false);  // Tắt trạng thái loading
+            setLoading(false);
         }
     };
 
+    // Hàm xử lý đăng nhập Google
     const handleGoogleLogin = () => {
-        // Chuyển hướng người dùng tới backend để bắt đầu quá trình đăng nhập Google
         window.location.href = 'http://localhost:8080/oauth2/authorization/google';
     };
 
@@ -58,11 +65,9 @@ export const useLogin = () => {
         loading,
         error,
         handleSubmit,
-        handleGoogleLogin,
+        handleGoogleLogin,  // Trả về hàm xử lý đăng nhập Google
     };
 };
-
-
 // Hook xử lý token và username sau khi Google login thành công
 export const useTokenHandler = () => {
     const navigate = useNavigate();
