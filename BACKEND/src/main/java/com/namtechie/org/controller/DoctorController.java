@@ -3,6 +3,7 @@ package com.namtechie.org.controller;
 import com.namtechie.org.entity.Doctor;
 import com.namtechie.org.model.UpdateDoctorLogin;
 import com.namtechie.org.model.request.DoctorRequest;
+import com.namtechie.org.model.request.MedicalFishResquest;
 import com.namtechie.org.service.DoctorService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,25 @@ public class DoctorController {
     public ResponseEntity getDoctor() {
         Doctor findDoctor = doctorService.getDoctorById();
         return ResponseEntity.ok(findDoctor);
+    }
+
+
+    @PutMapping("/updateWorkingStatus/{id}/{notes}")
+    public ResponseEntity updateWorkingStatus(@PathVariable long id, @PathVariable String notes) {
+        doctorService.updateWorkingStatus(id, notes);
+        return ResponseEntity.ok("Da tiep nhan dich vu");
+    }
+
+    @PutMapping("/doneWorkingStatus/{id}/{notes}")
+    public ResponseEntity doneWorkingStatus(@PathVariable  long id, @PathVariable String notes) {
+        doctorService.doneWorkingStatus(id, notes);
+        return ResponseEntity.ok("Da hoan thanh");
+    }
+
+    @PostMapping("/createInfoFish")
+    public ResponseEntity<MedicalFishResquest> addInfoFish(@RequestBody MedicalFishResquest medicalFishResquest) {
+        MedicalFishResquest createFish = doctorService.createFishInfor(medicalFishResquest);
+        return  ResponseEntity.ok(createFish);
     }
 
 }

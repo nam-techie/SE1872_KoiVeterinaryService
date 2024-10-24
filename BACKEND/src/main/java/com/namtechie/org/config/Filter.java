@@ -61,7 +61,9 @@ public class Filter extends OncePerRequestFilter {
             "/api/getAllDoctor",
             "/api/getDoctorAuto",
             "/api/getFeedback",
-            "/api/payment/{id}"
+            "/api/PaymentTotal",
+            "/api/generatePayment/{id}"
+
 
     );
 

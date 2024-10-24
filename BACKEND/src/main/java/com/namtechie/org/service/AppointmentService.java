@@ -140,13 +140,14 @@ public class AppointmentService {
             //khám tại trung tam
             if(appointmentRequest.getServiceTypeId() == 3) {
                 Zone centerZone = zoneRepository.findById(1);
-                appointment.setZone(centerZone);
                 //khách hàng chọn bác sĩ
                 if(doctor != null) {
                     appointment.setDoctorAssigned(true); // đánh dấu khách hàng có chọn bác sĩ
                     appointment.setDoctor(doctor);
                     appointmentInfo.setAppointmentBookingDate(appointmentRequest.getBookingDate());
                     appointmentInfo.setAppointmentBookingTime(appointmentRequest.getBookingTime());
+                    appointment.setZone(centerZone);
+
 
                 }else { //khách hàng ko chọn bác sĩ
                     appointmentInfo.setAppointmentBookingDate(appointmentRequest.getBookingDate());

@@ -1,11 +1,10 @@
 package com.namtechie.org.service;
 
 
-import com.namtechie.org.entity.Account;
-import com.namtechie.org.entity.Doctor;
+import com.namtechie.org.entity.*;
 import com.namtechie.org.model.request.DoctorRequest;
-import com.namtechie.org.repository.AccountRepository;
-import com.namtechie.org.repository.DoctorRepository;
+import com.namtechie.org.model.request.MedicalFishResquest;
+import com.namtechie.org.repository.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -21,6 +20,14 @@ public class DoctorService {
 
     @Autowired
     AccountRepository accountRepository;
+    @Autowired
+    AppointmentRepository appointmentRepository;
+
+    @Autowired
+    AppointmentStatusRepository appointmentStatusRepository;
+
+    @Autowired
+    MedicalRecordedRepository medicalRecordedRepository;
 
 
     public Account getCurrentAccount() {
@@ -81,4 +88,44 @@ public class DoctorService {
             throw new RuntimeException("Đã xảy ra lỗi trong quá trình thêm thông tin bác sĩ. Vui lòng thử lại sau.");
         }
     }
+
+    public void updateWorkingStatus(long id, String notes) {
+
+        Appointment appointment = appointmentRepository.findAppointmentById(id);
+        AppointmentStatus appointmentStatus  = new AppointmentStatus();
+
+        appointmentStatus.setAppointment(appointment);
+        appointmentStatus.setStatus("Dang cung cap dich vu");
+        appointmentStatus.setNotes(notes);
+
+        appointmentStatusRepository.save(appointmentStatus);
+    }
+
+    public void doneWorkingStatus(long id, String notes) {
+
+        Appointment appointment = appointmentRepository.findAppointmentById(id);
+        AppointmentStatus appointmentStatus  = new AppointmentStatus();
+
+        appointmentStatus.setAppointment(appointment);
+        appointmentStatus.setStatus("Done");
+        appointmentStatus.setNotes(notes);
+
+        appointmentStatusRepository.save(appointmentStatus);
+    }
+
+    public MedicalFishResquest createFishInfor(MedicalFishResquest medicalFishResquest) {
+        MedicalRecorded medicalRecorded = new MedicalRecorded();
+
+        medicalRecorded.setName(medicalFishResquest.getName());
+        medicalRecorded.setBreed(medicalFishResquest.getBreed());
+        medicalRecorded.setAge(medicalFishResquest.getAge());
+        medicalRecorded.setColor(medicalFishResquest.getColor());
+        medicalRecorded.setWeight(medicalFishResquest.getWeight());
+        medicalRecorded.setHealthStatus(medicalFishResquest.getHealthStatus());
+
+        medicalRecordedRepository.save(medicalRecorded);
+        return medicalFishResquest;
+    }
+
+
 }

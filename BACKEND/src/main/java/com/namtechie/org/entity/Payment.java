@@ -20,10 +20,9 @@ public class Payment {
     @JsonBackReference
     private Appointment appointment;
 
-    @OneToMany
-    @JoinColumn(name = "transaction_id",nullable = false)
+    @OneToMany(mappedBy = "payment", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonBackReference
-    private List<TransactionLog> transactions;
+    private List<TransactionRecords> transactions;
 
     @Column
     private long totalFee;

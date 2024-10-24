@@ -9,7 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
-import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.List;
 
 @Entity
@@ -26,17 +26,13 @@ public class AppointmentStatus {
     @JsonBackReference
     private Appointment appointment;
 
-    @OneToMany
-    @JoinColumn(name = "appointmentStatus",nullable = false)
-    @JsonManagedReference
-    private List<TransactionLog> transaction;
 
     @Column
     private String status;
 
     @Column
     @CreationTimestamp
-    private Date create_date;
+    private Timestamp create_date;
 
     //ghi chú tình trạng đơn hàng
     @Column
