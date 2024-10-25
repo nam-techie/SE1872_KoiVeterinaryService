@@ -4,15 +4,21 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d2cec660-9bd4-4c6d-9559-8cd458d3cf90" name="Changes" comment="update entity customer">
+    <list default="true" id="d2cec660-9bd4-4c6d-9559-8cd458d3cf90" name="Changes" comment="update all entity">
+      <change afterPath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/entity/MedicalRecorded.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/entity/Payment.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/entity/TransactionRecords.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FRONTEND/src/admin_pages/FeedbackDashboard.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FRONTEND/src/admin_pages/styles/FeedbackDashboard.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/controller/AdminController.java" beforeDir="false" afterPath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/controller/AdminController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/entity/Account.java" beforeDir="false" afterPath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/entity/Account.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/entity/Appointment.java" beforeDir="false" afterPath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/entity/Appointment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/entity/AppointmentInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/entity/AppointmentInfo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/entity/AppointmentStatus.java" beforeDir="false" afterPath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/entity/AppointmentStatus.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/entity/Customers.java" beforeDir="false" afterPath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/entity/Customers.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/entity/DoctorsSchedules.java" beforeDir="false" afterPath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/entity/DoctorsSchedules.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/entity/FeedBack.java" beforeDir="false" afterPath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/entity/FeedBack.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/entity/ServiceType.java" beforeDir="false" afterPath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/entity/ServiceType.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FRONTEND/src/admin_pages/AddDoctor.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/FRONTEND/src/admin_pages/AddDoctor.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FRONTEND/src/admin_pages/hooks/useAccountInfo.js" beforeDir="false" afterPath="$PROJECT_DIR$/FRONTEND/src/admin_pages/hooks/useAccountInfo.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FRONTEND/src/admin_pages/hooks/useDoctorInfo.js" beforeDir="false" afterPath="$PROJECT_DIR$/FRONTEND/src/admin_pages/hooks/useDoctorInfo.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FRONTEND/src/admin_pages/Dashboard.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/FRONTEND/src/admin_pages/Dashboard.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -150,7 +156,7 @@
       <workItem from="1729555305578" duration="18499000" />
       <workItem from="1729642261982" duration="21591000" />
       <workItem from="1729694397114" duration="4664000" />
-      <workItem from="1729815555199" duration="1704000" />
+      <workItem from="1729815555199" duration="5230000" />
     </task>
     <task id="LOCAL-00001" summary="push all because forgot">
       <option name="closed" value="true" />
@@ -312,7 +318,15 @@
       <option name="project" value="LOCAL" />
       <updated>1729688804963</updated>
     </task>
-    <option name="localTasksCounter" value="21" />
+    <task id="LOCAL-00021" summary="update some of file">
+      <option name="closed" value="true" />
+      <created>1729817517033</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1729817517033</updated>
+    </task>
+    <option name="localTasksCounter" value="22" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -351,6 +365,8 @@
     <MESSAGE value="done update information for doctor" />
     <MESSAGE value="update entity and more file" />
     <MESSAGE value="update entity customer" />
-    <option name="LAST_COMMIT_MESSAGE" value="update entity customer" />
+    <MESSAGE value="update some of file" />
+    <MESSAGE value="update all entity" />
+    <option name="LAST_COMMIT_MESSAGE" value="update all entity" />
   </component>
 </project>

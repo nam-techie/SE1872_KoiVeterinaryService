@@ -12,6 +12,7 @@ import DoctorDashboard from './DoctorDashboard';
 import DoctorDetailInfo from './DoctorDetailInfo';
 import UpdateDoctor from './UpdateDoctor';
 import AddDoctor from './AddDoctor';
+import FeedbackDashboard from './FeedbackDashboard';
 
 const AdminDashboard = () => {
     const navigate = useNavigate();
@@ -165,6 +166,8 @@ const AdminDashboard = () => {
                         />
                     );
                 }
+            case 'feedback':
+                return <FeedbackDashboard />;
             default:
                 return <div>Nội dung chưa được tạo</div>;
         }
@@ -199,7 +202,9 @@ const AdminDashboard = () => {
                     <li className={`menu-item ${activeTab === 'profile' ? 'active' : ''}`} onClick={() => setActiveTab('profile')}>
                         <FaUser /> Tài khoản của tôi
                     </li>
-                    <li className="menu-item"><FaComments /> Đánh giá</li>
+                    <li className={`menu-item ${activeTab === 'feedback' ? 'active' : ''}`} onClick={() => setActiveTab('feedback')}>
+                        <FaComments /> Đánh giá
+                    </li>
                     <li className="menu-item" onClick={handleLogout}>
                         <FaSignOutAlt /> Đăng xuất
                     </li>

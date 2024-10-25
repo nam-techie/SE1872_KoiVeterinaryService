@@ -59,4 +59,12 @@ public class Appointment {
     @JsonIgnore
     private FeedBack feedBack;
 
+    @OneToOne(mappedBy = "appointment", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JsonManagedReference
+    private Payment payment;
+
+    @OneToMany(mappedBy = "appointment",cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JsonManagedReference
+    private List<MedicalRecorded> medicalRecorded;
+
 }
