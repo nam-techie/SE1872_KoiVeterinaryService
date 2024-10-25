@@ -1,7 +1,5 @@
 package com.namtechie.org.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -52,10 +50,6 @@ public class Appointment {
     @JsonManagedReference
     private Payment payment;
 
-    @OneToMany(mappedBy = "appointment", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JsonManagedReference
-    private List<AppointmentStatus> appointmentStatuses;
-
     @Column(nullable = false)
     private boolean isDoctorAssigned;
 
@@ -66,10 +60,6 @@ public class Appointment {
     @JsonManagedReference
     @JsonIgnore
     private FeedBack feedBack;
-
-    @OneToOne(mappedBy = "appointment", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JsonManagedReference
-    private Payment payment;
 
     @OneToMany(mappedBy = "appointment",cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonManagedReference
