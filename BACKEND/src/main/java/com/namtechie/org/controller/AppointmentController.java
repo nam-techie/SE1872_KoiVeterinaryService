@@ -114,10 +114,10 @@ public class AppointmentController {
         return ResponseEntity.ok(serviceTypesService.findAll());
     }
 
-    @PutMapping("/isDoctorConfirm")
+    @PutMapping("/isDoctorConfirm/{appointmentId}")
     @PreAuthorize("hasAuthority('VETERINARY')")
-    public ResponseEntity isConfirm(@Valid @RequestBody DoctorConfirmRequest doctorConfirmRequest) {
-        AppointmentStatus appointmentStatus = appointmentService.confirmDoctorAppointment(doctorConfirmRequest);
+    public ResponseEntity isConfirm(@PathVariable long appointmentId,@Valid @RequestBody DoctorConfirmRequest doctorConfirmRequest) {
+        AppointmentStatus appointmentStatus = appointmentService.confirmDoctorAppointment(appointmentId,doctorConfirmRequest);
         return ResponseEntity.ok(appointmentStatus);
     }
 

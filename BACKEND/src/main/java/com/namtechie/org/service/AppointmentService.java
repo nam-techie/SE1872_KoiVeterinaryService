@@ -155,6 +155,8 @@ public class AppointmentService {
                     doctor = findAvailableDoctor(String.valueOf(appointmentRequest.getBookingDate()), String.valueOf(appointmentRequest.getBookingTime()));
                     appointment.setDoctorAssigned(false);
                     appointment.setDoctor(doctor);
+                    appointment.setZone(centerZone);
+
 
                 }
 
@@ -233,9 +235,9 @@ public class AppointmentService {
         return appointmentRepository.findAll();
     }
 
-    public AppointmentStatus confirmDoctorAppointment(DoctorConfirmRequest doctorConfirmRequest) {
+    public AppointmentStatus confirmDoctorAppointment(long appointmentId, DoctorConfirmRequest doctorConfirmRequest) {
         try {
-            AppointmentStatus updateAppointmentStatus = appointmentStatusRepository.findByAppointmentId(doctorConfirmRequest.getId());
+            AppointmentStatus updateAppointmentStatus = appointmentStatusRepository.findByAppointmentId(appointmentId);
 
             AppointmentStatus status = new AppointmentStatus();
             status.setAppointment(updateAppointmentStatus.getAppointment());

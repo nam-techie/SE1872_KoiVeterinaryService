@@ -35,15 +35,15 @@ public class DoctorController {
     }
 
 
-    @PutMapping("/updateWorkingStatus/{id}/{notes}")
-    public ResponseEntity updateWorkingStatus(@PathVariable long id, @PathVariable String notes) {
-        doctorService.updateWorkingStatus(id, notes);
+    @PutMapping("/updateWorkingStatus/{appointmentId}")
+    public ResponseEntity updateWorkingStatus(@PathVariable long appointmentId, @RequestBody String notes) {
+        doctorService.updateWorkingStatus(appointmentId, notes);
         return ResponseEntity.ok("Da tiep nhan dich vu");
     }
 
-    @PutMapping("/doneWorkingStatus/{id}/{notes}")
-    public ResponseEntity doneWorkingStatus(@PathVariable  long id, @PathVariable String notes) {
-        doctorService.doneWorkingStatus(id, notes);
+    @PutMapping("/doneWorkingStatus/{appointmentId}")
+    public ResponseEntity doneWorkingStatus(@PathVariable  long appointmentId, @RequestBody String notes) {
+        doctorService.doneWorkingStatus(appointmentId, notes);
         return ResponseEntity.ok("Da hoan thanh");
     }
 

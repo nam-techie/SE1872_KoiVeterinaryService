@@ -21,15 +21,40 @@ public class PaymentController {
 //        return ResponseEntity.ok(paymentResponse);
 //    }
 
-    @GetMapping("/generatePayment/{id}")
+    @PostMapping("/generatePayment/{id}")
     public ResponseEntity  generatePayment(@PathVariable long id) {
         PaymentDepositResponse paymentDepositResponse = paymentService.generatePaymentDeposit(id);
         return ResponseEntity.ok(paymentDepositResponse);
     }
 
-    @PostMapping("/PaymentTotal")
-    public ResponseEntity paymentTotal(@RequestBody ServiceTypeRequestAll serviceTypeRequestAll) {
-        paymentService.updateTotalFee(serviceTypeRequestAll);
+    @PostMapping("/PaymentTotal/{appointmentId}")
+    public ResponseEntity paymentTotal(@PathVariable long appointmentId,@RequestBody ServiceTypeRequestAll serviceTypeRequestAll) {
+        paymentService.updateTotalFee(appointmentId,serviceTypeRequestAll);
         return ResponseEntity.ok("Da luu thanh cong");
+    }
+
+    @GetMapping("/create-paymentDeposit-url/{appointmentId}")
+    public ResponseEntity<String> createPaymentDepositUrl(@PathVariable long appointmentId) {
+        System.out.println("hello" + appointmentId);
+        try {
+            String paymentUrl = paymentService.sendPaymentDeposit(appointmentId);
+            return ResponseEntity.ok(paymentUrl);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Đã xảy ra lỗi khi tạo URL thanh toán.");
+        }
+    }
+
+    @PostMapping("/create-paymentTotal-url/{appointmentId}")
+    public ResponseEntity<String> createPaymentTotalUrl(@PathVariable long appointmentId, @RequestBody  ServiceTypeRequestAll serviceTypeRequestAll) {
+        try {
+            String paymentUrl = paymentService.sendPaymentTotal(appointmentId, serviceTypeRequestAll);
+            return ResponseEntity.ok(paymentUrl);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Đã xảy ra lỗi khi tạo URL thanh toán.");
+        }
     }
 }
