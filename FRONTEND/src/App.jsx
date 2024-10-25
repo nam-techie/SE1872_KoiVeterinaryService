@@ -16,6 +16,7 @@ import ResetPassword from "./pages/ResetPassword.jsx";
 import FAQPage from "./pages/FAQPage.jsx";
 import TermAndRefund from "./pages/TermAndRefund.jsx";
 import FindDoctor from './pages/FindDoctor';
+import Dashboard from "./pages/admin_Pages/Dashboard.jsx";
 
 
 function App() {
@@ -73,12 +74,12 @@ function App() {
                     {/*  </RoleBasedRoute>*/}
                     {/*} />*/}
 
-                    {/*/!* Trang chỉ admin truy cập được *!/*/}
-                    {/*<Route path="/admin" element={*/}
-                    {/*  <RoleBasedRoute allowedRoles={['admin']}>*/}
-                    {/*    <AdminPage />*/}
-                    {/*  </RoleBasedRoute>*/}
-                    {/*} />*/}
+                    {/* Trang chỉ admin truy cập được */}
+                    <Route path="/admin" element={
+                      <RoleBasedRoute allowedRoles={['ADMIN']}>
+                        <Dashboard />
+                      </RoleBasedRoute>
+                    } />
 
                     {/* Trang không tìm thấy */}
                     {/*<Route path="*" element={<NotFoundPage />} />*/}

@@ -1,0 +1,230 @@
+.account-dashboard {
+    background-color: #fcc151;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-left: 40px;
+}
+
+.dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.dashboard-header h2 {
+    font-size: 24px;
+    color: #333;
+}
+
+.add-account-btn {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 14px;
+}
+
+.table-container {
+    background-color: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.accounts-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.accounts-table th, .accounts-table td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.accounts-table th {
+    background-color: #f8f9fa;
+    font-weight: 600;
+    color: #333;
+    cursor: pointer;
+}
+
+.accounts-table th:hover {
+    background-color: #e9ecef;
+}
+
+.accounts-table tr:last-child td {
+    border-bottom: none;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.user-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+}
+
+.status-badge {
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.status-badge.active {
+    background-color: #e8f5e9;
+    color: #4caf50;
+}
+
+.status-badge.inactive {
+    background-color: #ffebee;
+    color: #f44336;
+}
+
+.edit-btn, .delete-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    margin-right: 10px;
+    font-size: 16px;
+}
+
+.edit-btn {
+    color: #2196F3;
+}
+
+.delete-btn {
+    color: #f44336;
+}
+
+.search-sort-container {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    background-color: #fff;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.search-box, .date-box, .sort-box, .sort-order-btn {
+    display: flex;
+    flex: 1;
+    position: relative;
+}
+
+
+.search-input, .date-input, .sort-select, .sort-order-btn {
+    width: 100%;
+    padding: 10px;
+    padding-right: 30px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.search-icon, .calendar-icon {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #888;
+}
+
+.sort-order-btn {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #f0f0f0;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.sort-order-btn:hover {
+    background-color: #e0e0e0;
+}
+
+.reset-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    background-color: #f44336;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-top: 10px;
+}
+
+.reset-btn:hover {
+    background-color: #d32f2f;
+}
+
+.accounts-table th {
+    cursor: pointer;
+}
+
+.accounts-table th:hover {
+    background-color: #e9ecef;
+}
+
+.account-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.add-account-btn {
+    display: flex;
+    align-items: center;
+    padding: 10px 15px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease, transform 0.1s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.add-account-btn:hover {
+    background-color: #45a049;
+    transform: translateY(-2px);
+}
+
+.add-account-btn:active {
+    transform: translateY(0);
+}
+
+.add-account-btn svg {
+    margin-right: 8px;
+    font-size: 16px;
+}
+
+.add-account-btn.doctor-btn {
+    background-color: #2196F3;
+}
+
+.add-account-btn.doctor-btn:hover {
+    background-color: #1e88e5;
+}
+
+.restore-btn {
+    background-color: #4CAF50;
+}
