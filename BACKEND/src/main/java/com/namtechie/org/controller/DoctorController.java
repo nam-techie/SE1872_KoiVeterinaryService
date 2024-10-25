@@ -41,11 +41,11 @@ public class DoctorController {
         return ResponseEntity.ok("Da tiep nhan dich vu");
     }
 
-    @PutMapping("/doneWorkingStatus/{appointmentId}")
-    public ResponseEntity doneWorkingStatus(@PathVariable  long appointmentId, @RequestBody String notes) {
-        doctorService.doneWorkingStatus(appointmentId, notes);
-        return ResponseEntity.ok("Da hoan thanh");
-    }
+//    @PutMapping("/doneWorkingStatus/{appointmentId}")
+//    public ResponseEntity doneWorkingStatus(@PathVariable  long appointmentId, @RequestBody String notes) {
+//        doctorService.doneWorkingStatus(appointmentId, notes);
+//        return ResponseEntity.ok("Da hoan thanh");
+//    }
 
     @PostMapping("/createInfoFish")
     public ResponseEntity<MedicalFishResquest> addInfoFish(@RequestBody MedicalFishResquest medicalFishResquest) {

@@ -9,4 +9,5 @@ public class ServiceTypeRequestAll {
     boolean serviceTypeId7;
     boolean serviceTypeId8;
     boolean serviceTypeId9;
+    String notes;
 }

@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.sql.Date;
 import java.sql.Time;
+import java.time.LocalDate;
 import java.util.*;
 
 @Service
@@ -135,6 +136,15 @@ public class AppointmentService {
             Doctor doctor = null;
             if(appointmentRequest.getDoctorId() != 0) {
                 doctor = doctorRepository.findDoctorById(appointmentRequest.getDoctorId());
+                // **Kiểm tra xem bác sĩ có lịch vào thời gian đó hay không**
+                Appointment existingAppointment = appointmentRepository.findAppointmentByDoctorIdAndBookingDateAndBookingTime(
+                        doctor.getId(), appointmentRequest.getBookingDate(), appointmentRequest.getBookingTime()
+                );
+
+                // **Nếu đã có cuộc hẹn trong khung giờ đó, tìm bác sĩ khác hoặc thông báo lỗi**
+                if (existingAppointment != null) {
+                    throw new RuntimeException("Khung giờ bác sĩ đã có lịch khám. Mời bạn chọn bác sĩ khác");
+                }
             }
 
             //khám tại trung tam
@@ -157,12 +167,11 @@ public class AppointmentService {
                     appointment.setDoctor(doctor);
                     appointment.setZone(centerZone);
 
-
                 }
 
             }else if(appointmentRequest.getServiceTypeId() == 2 || appointmentRequest.getServiceTypeId() == 4) { // khám tại nhà
                 if(doctor == null) {
-                    doctor = findAvailableDoctor(String.valueOf(appointmentRequest.getBookingDate()), String.valueOf(appointmentRequest.getBookingTime()));
+                    doctor = findAvailableDoctorForSession(String.valueOf(appointmentRequest.getBookingDate()), String.valueOf(appointmentRequest.getBookingTime()));
                     appointment.setDoctorAssigned(false);
                     appointment.setDoctor(doctor);
                     appointmentInfo.setAppointmentBookingDate(appointmentRequest.getBookingDate());
@@ -229,6 +238,47 @@ public class AppointmentService {
         }
         return null;
     }
+
+
+    public Doctor findAvailableDoctorForSession(String bookingDate, String bookingTime) {
+        // Gọi hàm findFreeScheduleOfSession để lấy lịch trống của tất cả các bác sĩ
+        Map<String, List<Schedule>> freeSchedules = scheduleService.findFreeScheduleOfSession();
+
+        // Chuyển đổi bookingDate từ String sang LocalDate
+        LocalDate bookingLocalDate = LocalDate.parse(bookingDate);
+
+        boolean isMorningSession = bookingTime.equals("07:00:00");
+        boolean isAfternoonSession = bookingTime.equals("13:00:00");
+
+
+        if (!isMorningSession && !isAfternoonSession) {
+            throw new IllegalArgumentException("Invalid booking time, must be 07:00:00 or 13:00:00.");
+        }
+
+        List<Doctor> doctors = doctorRepository.findAll();
+        for (Doctor doctor : doctors) {
+            // Lấy lịch trống của từng bác sĩ cho ngày đã chọn
+            List<Schedule> schedulesForDay = freeSchedules.get(String.valueOf(bookingLocalDate));
+
+            if (schedulesForDay != null && !schedulesForDay.isEmpty()) {
+                for (Schedule schedule : schedulesForDay) {
+                    // Kiểm tra xem lịch trống có khớp với buổi sáng hoặc buổi chiều theo yêu cầu không
+                    if (isMorningSession && schedule.getStartTime().equals(Time.valueOf("07:00:00")) && schedule.isAvailable()) {
+                        return doctor;  // Trả về bác sĩ rảnh cho buổi sáng
+                    }
+                    if (isAfternoonSession && schedule.getStartTime().equals(Time.valueOf("13:00:00")) && schedule.isAvailable()) {
+                        return doctor;  // Trả về bác sĩ rảnh cho buổi chiều
+                    }
+                }
+            }
+        }
+        return null;  // Nếu không tìm thấy bác sĩ nào rảnh
+    }
+
+
+
+
+
 
 
     public List<Appointment> getAllAppointments() {

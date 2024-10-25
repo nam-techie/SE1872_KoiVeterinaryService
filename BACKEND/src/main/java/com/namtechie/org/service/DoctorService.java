@@ -101,17 +101,17 @@ public class DoctorService {
         appointmentStatusRepository.save(appointmentStatus);
     }
 
-    public void doneWorkingStatus(long id, String notes) {
-
-        Appointment appointment = appointmentRepository.findAppointmentById(id);
-        AppointmentStatus appointmentStatus  = new AppointmentStatus();
-
-        appointmentStatus.setAppointment(appointment);
-        appointmentStatus.setStatus("Done");
-        appointmentStatus.setNotes(notes);
-
-        appointmentStatusRepository.save(appointmentStatus);
-    }
+//    public void doneWorkingStatus(long id, String notes) {
+//
+//        Appointment appointment = appointmentRepository.findAppointmentById(id);
+//        AppointmentStatus appointmentStatus  = new AppointmentStatus();
+//
+//        appointmentStatus.setAppointment(appointment);
+//        appointmentStatus.setStatus("Done");
+//        appointmentStatus.setNotes(notes);
+//
+//        appointmentStatusRepository.save(appointmentStatus);
+//    }
 
     public MedicalFishResquest createFishInfor(MedicalFishResquest medicalFishResquest) {
         MedicalRecorded medicalRecorded = new MedicalRecorded();

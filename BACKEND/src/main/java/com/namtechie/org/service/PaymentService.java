@@ -17,6 +17,7 @@ import java.security.NoSuchAlgorithmException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.TreeMap;
@@ -60,6 +61,32 @@ public class PaymentService {
 //        return paymentResponse;
 //    }
 
+    public void generateTransactionRecords(long appointmentId,Payment payment, long price,String notes) {
+        Payment paymentTotal = paymentRepository.findByAppointmentId(appointmentId);
+
+        TransactionRecords transactionLogs = transactionRecordsRepository.findByPaymentIdAndPrice(paymentTotal.getId(), price);
+
+        if(transactionLogs != null){
+            transactionLogs.setStatus(true);
+            transactionLogs.setNotes(notes);
+            transactionRecordsRepository.save(transactionLogs);
+        }else{
+            TransactionRecords transactionLog = new TransactionRecords();
+            transactionLog.setPayment(payment);
+            transactionLog.setTransactionType("Chuyen khoan");
+            transactionLog.setTransactionMethod("VNPay");
+            transactionLog.setStatus(false);
+            transactionLog.setPrice(price);
+            transactionLog.setNotes(notes);
+            transactionRecordsRepository.save(transactionLog);
+        }
+
+    }
+
+    public void updateTransactionRecords(){
+
+    }
+
     public String sendPaymentDeposit(long appointmentId) throws Exception {
         // Lấy thông tin cuộc hẹn từ AppointmentService
         Appointment appointment = appointmentRepository.findAppointmentById(appointmentId);
@@ -75,6 +102,20 @@ public class PaymentService {
 
         // Lấy giá tiền đặt cọc từ loại dịch vụ
         long depositPrice = serviceType.getBase_price();
+        PaymentDepositResponse paymentDepositResponse = new PaymentDepositResponse();
+        paymentDepositResponse.setAppointmentId(appointmentId);
+        paymentDepositResponse.setDepositPrice(depositPrice);
+
+        Payment paymentTotal = paymentRepository.findByAppointmentId(appointmentId);
+
+            // Nếu chưa có, tạo bản ghi mới
+            paymentTotal = new Payment();
+            paymentTotal.setAppointment(appointment);
+            paymentTotal.setTotalFee(serviceType.getBase_price());
+            paymentRepository.save(paymentTotal);  // Lưu Payment mới
+
+        generateTransactionRecords(appointmentId, paymentTotal, depositPrice, "Đang chờ giao dịch chuyển tiền cọc dịch vụ!");
+
 
         // Gọi hàm createUrl để tạo URL thanh toán và trả về chuỗi đó
         String urlToPayment = createUrl(appointmentId, depositPrice);
@@ -100,26 +141,12 @@ public class PaymentService {
         paymentDepositResponse.setDepositPrice(depositPrice);
 
         Payment paymentTotal = paymentRepository.findByAppointmentId(appointmentId);
-        if (paymentTotal != null) {
-            // Nếu đã có Payment, sử dụng bản ghi đó
-            paymentTotal.setTotalFee(paymentTotal.getTotalFee() + depositPrice);
-            paymentTotal.setUpdateTime(new Timestamp(System.currentTimeMillis()));
-        } else {
-            // Nếu chưa có, tạo bản ghi mới
-            paymentTotal = new Payment();
-            paymentTotal.setAppointment(appointment);
-            paymentTotal.setTotalFee(serviceType.getBase_price());
-            paymentRepository.save(paymentTotal);  // Lưu Payment mới
-        }
 
-        TransactionRecords transactionLog = new TransactionRecords();
-        transactionLog.setPayment(paymentTotal);
-        transactionLog.setTransactionType("Chuyen khoan");
-        transactionLog.setTransactionMethod("VNPay");
-        transactionLog.setStatus(true);
-        transactionLog.setPrice(depositPrice);
-        transactionLog.setNotes("Chuyen tien dich vu ban dau");
-        transactionRecordsRepository.save(transactionLog);
+//        TransactionRecords transactionLog = transactionRecordsRepository.findByPaymentId(paymentTotal.getId());
+//        transactionLog.setStatus(true);
+//        transactionRecordsRepository.save(transactionLog);
+
+        generateTransactionRecords(appointmentId,paymentTotal,depositPrice,"Đã nhận tiền cọc dịch vụ!");
 
 
         AppointmentStatus appointmentStatus = new AppointmentStatus();
@@ -139,26 +166,9 @@ public class PaymentService {
 
         long zonePrice = zone.getFee();
         Payment paymentTotal = paymentRepository.findByAppointmentId(appointmentId);
-        if (paymentTotal != null) {
-            // Nếu đã có Payment, sử dụng bản ghi đó
-            paymentTotal.setTotalFee(paymentTotal.getTotalFee() + zonePrice);
-            paymentTotal.setUpdateTime(new Timestamp(System.currentTimeMillis()));
-        } else {
-            // Nếu chưa có, tạo bản ghi mới
-            paymentTotal = new Payment();
-            paymentTotal.setAppointment(appointment);
-            paymentTotal.setTotalFee(zonePrice);
-            paymentRepository.save(paymentTotal);  // Lưu Payment mới
-        }
 
-        TransactionRecords transactionLog = new TransactionRecords();
-        transactionLog.setPayment(paymentTotal);
-        transactionLog.setTransactionType("Chuyen khoan");
-        transactionLog.setTransactionMethod("VNPay");
-        transactionLog.setStatus(true);
-        transactionLog.setPrice(zonePrice);
-        transactionLog.setNotes("Chuyen tien phi di chuyen");
-        transactionRecordsRepository.save(transactionLog);
+
+      generateTransactionRecords(appointmentId, paymentTotal, zonePrice, "Đã chuyển tiền phí di chuyển!");
 
     }
 
@@ -169,26 +179,9 @@ public class PaymentService {
 
         long serviceTypeFee = serviceType.getBase_price();
         Payment paymentTotal = paymentRepository.findByAppointmentId(appointmentId);
-        if (paymentTotal != null) {
-            // Nếu đã có Payment, sử dụng bản ghi đó
-            paymentTotal.setTotalFee(paymentTotal.getTotalFee() + serviceTypeFee);
-            paymentTotal.setUpdateTime(new Timestamp(System.currentTimeMillis()));
-        } else {
-            // Nếu chưa có, tạo bản ghi mới
-            paymentTotal = new Payment();
-            paymentTotal.setAppointment(appointment);
-            paymentTotal.setTotalFee(serviceTypeFee);
-            paymentRepository.save(paymentTotal);  // Lưu Payment mới
-        }
 
-        TransactionRecords transactionLog = new TransactionRecords();
-        transactionLog.setPayment(paymentTotal);
-        transactionLog.setTransactionType("Chuyen khoan");
-        transactionLog.setTransactionMethod("VNPay");
-        transactionLog.setStatus(true);
-        transactionLog.setPrice(serviceTypeFee);
-        transactionLog.setNotes("Chuyen tien dich vu them " + serviceType.getName());
-        transactionRecordsRepository.save(transactionLog);
+
+      generateTransactionRecords(appointmentId, paymentTotal,serviceTypeFee, "Tiền phí dịch vụ kèm thêm!");
 
     }
 
@@ -197,20 +190,27 @@ public class PaymentService {
         Appointment appointment = appointmentRepository.findAppointmentById(appointmentId);
         long totalPrice = 0;
         totalPrice += appointment.getZone().getFee();
+        generatePaymentZone(appointmentId);
         if (serviceTypeRequestAll.isServiceTypeId5() == true) {
             totalPrice += serviceTypeRepository.findById(5).getBase_price();
+            generatePaymentServiceType(appointmentId, 5);
+
         }
         if (serviceTypeRequestAll.isServiceTypeId6() == true) {
             totalPrice += serviceTypeRepository.findById(6).getBase_price();
+            generatePaymentServiceType(appointmentId, 6);
         }
         if (serviceTypeRequestAll.isServiceTypeId7() == true) {
             totalPrice += serviceTypeRepository.findById(7).getBase_price();
+            generatePaymentServiceType(appointmentId, 7);
         }
         if (serviceTypeRequestAll.isServiceTypeId8() == true) {
             totalPrice += serviceTypeRepository.findById(8).getBase_price();
+            generatePaymentServiceType(appointmentId, 8);
         }
         if (serviceTypeRequestAll.isServiceTypeId9() == true) {
             totalPrice += serviceTypeRepository.findById(9).getBase_price();
+            generatePaymentServiceType(appointmentId, 9);
         }
 
         if (appointment == null) {
@@ -223,8 +223,6 @@ public class PaymentService {
             throw new IllegalArgumentException("Không tìm thấy loại dịch vụ cho cuộc hẹn với ID: " + appointmentId);
         }
 
-        // Lấy giá tiền đặt cọc từ loại dịch vụ
-        long depositPrice = serviceType.getBase_price();
 
         // Gọi hàm createUrl để tạo URL thanh toán và trả về chuỗi đó
         String urlToPayment = createUrl(appointmentId, totalPrice);
@@ -232,7 +230,27 @@ public class PaymentService {
         appointmentStatus.setAppointment(appointment);
         appointmentStatus.setStatus("Pending Total Payment");
 
+        Payment paymentTotal = paymentRepository.findByAppointmentId(appointmentId);
+        if (paymentTotal != null) {
+            // Nếu đã có Payment, sử dụng bản ghi đó
+            paymentTotal.setTotalFee(paymentTotal.getTotalFee() + totalPrice);
+            paymentTotal.setUpdateTime(new Timestamp(System.currentTimeMillis()));
+        } else {
+            // Nếu chưa có, tạo bản ghi mới
+            paymentTotal = new Payment();
+            paymentTotal.setAppointment(appointment);
+            paymentTotal.setTotalFee(totalPrice);
+            paymentRepository.save(paymentTotal);  // Lưu Payment mới
+        }
+
+        AppointmentStatus doneWorking  = new AppointmentStatus();
+
+        doneWorking.setAppointment(appointment);
+        doneWorking.setStatus("Done");
+        doneWorking.setNotes(serviceTypeRequestAll.getNotes());
+
         appointmentStatusRepository.save(appointmentStatus);
+        appointmentStatusRepository.save(doneWorking);
 
         return urlToPayment; // Trả về URL thanh toán
     }

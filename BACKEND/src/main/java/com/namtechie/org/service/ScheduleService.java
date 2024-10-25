@@ -153,6 +153,28 @@ public class ScheduleService {
     }
 
     // Lấy lịch bảy ngày tiếp theo của bác sĩ
+//    public Map<Date, List<DoctorsSchedules>> findNextSevenDayScheduleByVeterianId(Long veterianId) {
+//        Map<Date, List<DoctorsSchedules>> sevendayschedules = new HashMap<>();
+//        LocalDate today = LocalDate.now();
+//
+//        int count = 0;
+//
+//        while (count < 7) {
+//            today = today.plusDays(1);
+//            System.out.print("Looc 1: " + String.valueOf(today) + " | ");
+//            DayOfWeek dayOfWeek = today.getDayOfWeek();
+//            System.out.print("Looc 2: " + String.valueOf(dayOfWeek) + " | ");
+//
+//            if (dayOfWeek != DayOfWeek.SATURDAY && dayOfWeek != DayOfWeek.SUNDAY) {
+//                List<DoctorsSchedules> schedules =  findDoctorsSchedulesByDoctorIdAndWorkDay(veterianId, String.valueOf(dayOfWeek));
+//                sevendayschedules.put(Date.valueOf(today), schedules);
+//                count++;
+//            }
+//        }
+//        return sevendayschedules;
+//    }
+
+
     public Map<Date, List<DoctorsSchedules>> findNextSevenDayScheduleByVeterianId(Long veterianId) {
         Map<Date, List<DoctorsSchedules>> sevendayschedules = new HashMap<>();
         LocalDate today = LocalDate.now();
@@ -160,18 +182,17 @@ public class ScheduleService {
         int count = 0;
 
         while (count < 7) {
-            today = today.plusDays(1);
-            System.out.print("Looc 1: " + String.valueOf(today) + " | ");
             DayOfWeek dayOfWeek = today.getDayOfWeek();
-            System.out.print("Looc 2: " + String.valueOf(dayOfWeek) + " | ");
 
             if (dayOfWeek != DayOfWeek.SATURDAY && dayOfWeek != DayOfWeek.SUNDAY) {
-                List<DoctorsSchedules> schedules =  findDoctorsSchedulesByDoctorIdAndWorkDay(veterianId, String.valueOf(dayOfWeek));
+                List<DoctorsSchedules> schedules = findDoctorsSchedulesByDoctorIdAndWorkDay(veterianId, String.valueOf(dayOfWeek));
                 sevendayschedules.put(Date.valueOf(today), schedules);
                 count++;
             }
+            today = today.plusDays(1); // Cộng ngày sau khi đã xử lý
         }
         return sevendayschedules;
     }
+
 
 }
