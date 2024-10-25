@@ -4,20 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d2cec660-9bd4-4c6d-9559-8cd458d3cf90" name="Changes" comment="done update information for doctor">
+    <list default="true" id="d2cec660-9bd4-4c6d-9559-8cd458d3cf90" name="Changes" comment="update entity customer">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/controller/AdminController.java" beforeDir="false" afterPath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/controller/AdminController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/entity/Account.java" beforeDir="false" afterPath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/entity/Account.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/entity/Customers.java" beforeDir="false" afterPath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/entity/Customers.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/entity/Doctor.java" beforeDir="false" afterPath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/entity/Doctor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/service/AuthenticationService.java" beforeDir="false" afterPath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/service/AuthenticationService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/service/DoctorService.java" beforeDir="false" afterPath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/service/DoctorService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FRONTEND/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/FRONTEND/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/entity/DoctorsSchedules.java" beforeDir="false" afterPath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/entity/DoctorsSchedules.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/entity/ServiceType.java" beforeDir="false" afterPath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/entity/ServiceType.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/FRONTEND/src/admin_pages/AddDoctor.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/FRONTEND/src/admin_pages/AddDoctor.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FRONTEND/src/admin_pages/Dashboard.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/FRONTEND/src/admin_pages/Dashboard.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FRONTEND/src/admin_pages/DoctorDashboard.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/FRONTEND/src/admin_pages/DoctorDashboard.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FRONTEND/src/admin_pages/hooks/useAccountInfo.js" beforeDir="false" afterPath="$PROJECT_DIR$/FRONTEND/src/admin_pages/hooks/useAccountInfo.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/FRONTEND/src/admin_pages/hooks/useDoctorInfo.js" beforeDir="false" afterPath="$PROJECT_DIR$/FRONTEND/src/admin_pages/hooks/useDoctorInfo.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FRONTEND/src/admin_pages/styles/AddDoctor.css" beforeDir="false" afterPath="$PROJECT_DIR$/FRONTEND/src/admin_pages/styles/AddDoctor.css" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -82,27 +77,27 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ASKED_MARK_IGNORED_FILES_AS_EXCLUDED": "true",
-    "RequestMappingsPanelOrder0": "0",
-    "RequestMappingsPanelOrder1": "1",
-    "RequestMappingsPanelWidth0": "75",
-    "RequestMappingsPanelWidth1": "75",
-    "Spring Boot.KoiVeterinaryServiceCenterApplication.executor": "Run",
-    "git-widget-placeholder": "nam",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/Phuong Nam/Desktop/Front_End/Group03_SE1872_KoiVeterinaryServiceCenter",
-    "list.type.of.created.stylesheet": "CSS",
-    "node.js.detected.package.eslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "advanced.settings",
-    "ts.external.directory.path": "C:\\Program Files\\JetBrains\\IntelliJ IDEA 2024.2.1\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_MARK_IGNORED_FILES_AS_EXCLUDED&quot;: &quot;true&quot;,
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;Spring Boot.KoiVeterinaryServiceCenterApplication.executor&quot;: &quot;Run&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;nam&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Phuong Nam/Desktop/SWP391/DEMO/Group03_SE1872_KoiVeterinaryServiceCenter&quot;,
+    &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;advanced.settings&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2024.2.1\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\Phuong Nam\Desktop\SWP391\Group03_SE1872_KoiVeterinaryServiceCenter\.idea" />
@@ -153,7 +148,9 @@
       <workItem from="1729218095908" duration="1953000" />
       <workItem from="1729256619124" duration="65501000" />
       <workItem from="1729555305578" duration="18499000" />
-      <workItem from="1729642261982" duration="13882000" />
+      <workItem from="1729642261982" duration="21591000" />
+      <workItem from="1729694397114" duration="4664000" />
+      <workItem from="1729815555199" duration="1704000" />
     </task>
     <task id="LOCAL-00001" summary="push all because forgot">
       <option name="closed" value="true" />
@@ -299,7 +296,23 @@
       <option name="project" value="LOCAL" />
       <updated>1729617600949</updated>
     </task>
-    <option name="localTasksCounter" value="19" />
+    <task id="LOCAL-00019" summary="update entity and more file">
+      <option name="closed" value="true" />
+      <created>1729686138891</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1729686138891</updated>
+    </task>
+    <task id="LOCAL-00020" summary="update entity customer">
+      <option name="closed" value="true" />
+      <created>1729688804963</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1729688804963</updated>
+    </task>
+    <option name="localTasksCounter" value="21" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -336,6 +349,8 @@
     <MESSAGE value="change some off css of AccountDashboard.css and change the register (turn off send email)" />
     <MESSAGE value="done first of dashboard for veterinary" />
     <MESSAGE value="done update information for doctor" />
-    <option name="LAST_COMMIT_MESSAGE" value="done update information for doctor" />
+    <MESSAGE value="update entity and more file" />
+    <MESSAGE value="update entity customer" />
+    <option name="LAST_COMMIT_MESSAGE" value="update entity customer" />
   </component>
 </project>

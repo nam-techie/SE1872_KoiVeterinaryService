@@ -7,6 +7,16 @@ export const useAccountInfo = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
+    const formatDate = (dateString) => {
+        if (!dateString) return '';
+        const date = new Date(dateString);
+        if (isNaN(date.getTime())) {
+            console.warn('Ngày không hợp lệ:', dateString);
+            return '';
+        }
+        return date.toISOString().split('T')[0]; // Định dạng 'YYYY-MM-DD'
+    };
+
     const fetchAllAccounts = async () => {
         try {
             setLoading(true);
@@ -15,7 +25,7 @@ export const useAccountInfo = () => {
             const formattedAccounts = data.map(account => ({
                 ...account,
                 status: account.isDeleted ? 'Đã vô hiệu hóa' : 'Đang sử dụng',
-                createdAt: new Date(account.createdAt).toISOString().split('T')[0] // Định dạng năm-tháng-ngày
+                createdAt: formatDate(account.created_at) // Sử dụng tên trường 'created_at'
             }));
             setAccounts(formattedAccounts);
             setError(null);

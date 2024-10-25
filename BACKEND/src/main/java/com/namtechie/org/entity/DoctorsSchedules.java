@@ -3,6 +3,8 @@ package com.namtechie.org.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.sql.Time;
+
 @Entity
 @Data
 public class DoctorsSchedules {
@@ -15,6 +17,6 @@ public class DoctorsSchedules {
     private Doctor doctor;
 
     private String workDay;
-    private String startTime;
-    private String endTime;
+    private Time startTime;
+    private Time endTime;
 }

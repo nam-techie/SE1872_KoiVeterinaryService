@@ -159,7 +159,7 @@ public class AdminController {
         }
     }
 
-    @PostMapping("/addDoctor/{email}")
+    @PostMapping("/addDoctor")
     public ResponseEntity<String> addDoctor(@RequestBody UpdateDoctor updateDoctor) {
         try {
             doctorService.addDoctor(updateDoctor);
