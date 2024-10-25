@@ -1,9 +1,7 @@
 package com.namtechie.org.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import jakarta.persistence.*;
 import lombok.Data;
 
 @Entity
@@ -13,6 +11,11 @@ public class MedicalRecorded {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+
+    @ManyToOne
+    @JoinColumn(name = "appointment_id", nullable = false)
+    @JsonBackReference
+    private Appointment appointment;
 
     private String name;
 

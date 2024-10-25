@@ -11,6 +11,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -113,19 +114,36 @@ public class DoctorService {
 //        appointmentStatusRepository.save(appointmentStatus);
 //    }
 
-    public MedicalFishResquest createFishInfor(MedicalFishResquest medicalFishResquest) {
-        MedicalRecorded medicalRecorded = new MedicalRecorded();
+    public List<MedicalFishResquest> createFishInfor(long appointmentId, List<MedicalFishResquest> medicalFishRequests) {
+        // Tìm Appointment theo ID
+        Appointment appointment = appointmentRepository.findAppointmentById(appointmentId);
+        if (appointment == null) {
+            throw new IllegalArgumentException("Không tìm thấy đơn hàng khám bệnh với ID: " + appointmentId);
+        }
 
-        medicalRecorded.setName(medicalFishResquest.getName());
-        medicalRecorded.setBreed(medicalFishResquest.getBreed());
-        medicalRecorded.setAge(medicalFishResquest.getAge());
-        medicalRecorded.setColor(medicalFishResquest.getColor());
-        medicalRecorded.setWeight(medicalFishResquest.getWeight());
-        medicalRecorded.setHealthStatus(medicalFishResquest.getHealthStatus());
+        // Lưu thông tin cho mỗi loại cá koi
+        List<MedicalRecorded> medicalRecordedList = new ArrayList<>();
+        for (MedicalFishResquest medicalFishRequest : medicalFishRequests) {
+            MedicalRecorded medicalRecorded = new MedicalRecorded();
+            medicalRecorded.setAppointment(appointment); // Liên kết với đơn hàng (appointment)
+            medicalRecorded.setName(medicalFishRequest.getName());
+            medicalRecorded.setBreed(medicalFishRequest.getBreed());
+            medicalRecorded.setAge(medicalFishRequest.getAge());
+            medicalRecorded.setColor(medicalFishRequest.getColor());
+            medicalRecorded.setWeight(medicalFishRequest.getWeight());
+            medicalRecorded.setHealthStatus(medicalFishRequest.getHealthStatus());
 
-        medicalRecordedRepository.save(medicalRecorded);
-        return medicalFishResquest;
+            medicalRecordedList.add(medicalRecorded);
+            medicalRecordedRepository.save(medicalRecorded); // Lưu từng loại cá koi
+        }
+
+        // Cập nhật lại danh sách MedicalRecorded cho Appointment
+        appointment.setMedicalRecorded(medicalRecordedList);
+        appointmentRepository.save(appointment);
+
+        return medicalFishRequests; // Trả về danh sách các MedicalFishResquest đã lưu
     }
+
 
 
 }

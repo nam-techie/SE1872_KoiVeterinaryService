@@ -47,10 +47,11 @@ public class DoctorController {
 //        return ResponseEntity.ok("Da hoan thanh");
 //    }
 
-    @PostMapping("/createInfoFish")
-    public ResponseEntity<MedicalFishResquest> addInfoFish(@RequestBody MedicalFishResquest medicalFishResquest) {
-        MedicalFishResquest createFish = doctorService.createFishInfor(medicalFishResquest);
-        return  ResponseEntity.ok(createFish);
+    @PostMapping("/createInfoFish/{appointmentId}")
+    public ResponseEntity<List<MedicalFishResquest>> addInfoFish(@PathVariable long appointmentId, @RequestBody List<MedicalFishResquest> medicalFishResquests) {
+        List<MedicalFishResquest> createFish = doctorService.createFishInfor(appointmentId, medicalFishResquests);
+        return ResponseEntity.ok(createFish);
     }
+
 
 }
