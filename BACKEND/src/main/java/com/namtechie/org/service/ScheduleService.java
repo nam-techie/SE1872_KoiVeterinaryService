@@ -96,8 +96,6 @@ public class ScheduleService {
                             isFreeThisTime = true;
                             break;
                         }
-
-
                     }
                     if (!isFreeThisTime) { // Nếu đéo có lịch trống thì cho bận luôn
                         schedules.add(new Schedule(Date.valueOf(today), Time.valueOf(timeSlot + ":00:00"), Time.valueOf((timeSlot + 1) + ":00:00"), false));
@@ -113,11 +111,11 @@ public class ScheduleService {
     }
 
     // Lấy lịch làm việc trống trong 7 ngày tiếp theo của bác sĩ theo giờ và id bác sĩ
-    public Map<String, List<Schedule>> findFreeScheduleByVeterianId(Long veterianId) {
-        Map<Date, List<DoctorsSchedules>> veterianSchedules = findNextSevenDayScheduleByVeterianId(veterianId);
+    public Map<String, List<Schedule>> findFreeScheduleByDoctorId(Long doctorId) {
+        Map<Date, List<DoctorsSchedules>> doctorSchedules = findNextSevenDayScheduleByVeterianId(doctorId);
         Map<String, List<Schedule>> freeSchedules = new HashMap<>();
 
-        for (Map.Entry<Date, List<DoctorsSchedules>> entry : veterianSchedules.entrySet()) {
+        for (Map.Entry<Date, List<DoctorsSchedules>> entry : doctorSchedules.entrySet()) {
             Date date = entry.getKey();
             List<DoctorsSchedules> schedules = entry.getValue();
             List<Schedule> scheduleRequests = new ArrayList<>(); // Cái này là lịch theo ngày nà
@@ -125,7 +123,7 @@ public class ScheduleService {
             for (DoctorsSchedules schedule : schedules) {
                 boolean isMorning = schedule.getStartTime().before(NOON);
                 List<Integer> timeSlots = isMorning ? Arrays.asList(7, 8, 9, 10) : Arrays.asList(13, 14, 15, 16);
-                List<Appointment> appointments = appointmentService.findAllAppointmentOfSession(veterianId, date, isMorning);
+                List<Appointment> appointments = appointmentService.findAllAppointmentOfSession(doctorId, date, isMorning);
 
                 if (appointments.size() == 1 && appointments.get(0).getServiceType().getId() != 3) {
                     for (int hour : timeSlots) {
@@ -140,7 +138,7 @@ public class ScheduleService {
                     Time currentStart = Time.valueOf(hour + ":00:00");
                     Time currentEnd = Time.valueOf((hour + 1) + ":00:00");
                     boolean isOccupied = appointments.stream().anyMatch(appointment -> {
-                        Time start = appointment.getAppointmentDetail().getAppointmentBookingTime();
+                        Time start = appointment.getAppointmentInfo().getAppointmentBookingTime();
                         Time end = new Time(start.getTime() + 3600000); // Cộng 1 giờ
                         return (currentStart.equals(start) || currentStart.after(start)) && currentStart.before(end);
                     });
@@ -155,6 +153,28 @@ public class ScheduleService {
     }
 
     // Lấy lịch bảy ngày tiếp theo của bác sĩ
+//    public Map<Date, List<DoctorsSchedules>> findNextSevenDayScheduleByVeterianId(Long veterianId) {
+//        Map<Date, List<DoctorsSchedules>> sevendayschedules = new HashMap<>();
+//        LocalDate today = LocalDate.now();
+//
+//        int count = 0;
+//
+//        while (count < 7) {
+//            today = today.plusDays(1);
+//            System.out.print("Looc 1: " + String.valueOf(today) + " | ");
+//            DayOfWeek dayOfWeek = today.getDayOfWeek();
+//            System.out.print("Looc 2: " + String.valueOf(dayOfWeek) + " | ");
+//
+//            if (dayOfWeek != DayOfWeek.SATURDAY && dayOfWeek != DayOfWeek.SUNDAY) {
+//                List<DoctorsSchedules> schedules =  findDoctorsSchedulesByDoctorIdAndWorkDay(veterianId, String.valueOf(dayOfWeek));
+//                sevendayschedules.put(Date.valueOf(today), schedules);
+//                count++;
+//            }
+//        }
+//        return sevendayschedules;
+//    }
+
+
     public Map<Date, List<DoctorsSchedules>> findNextSevenDayScheduleByVeterianId(Long veterianId) {
         Map<Date, List<DoctorsSchedules>> sevendayschedules = new HashMap<>();
         LocalDate today = LocalDate.now();
@@ -162,18 +182,17 @@ public class ScheduleService {
         int count = 0;
 
         while (count < 7) {
-            today = today.plusDays(1);
-            System.out.print("Looc 1: " + String.valueOf(today) + " | ");
             DayOfWeek dayOfWeek = today.getDayOfWeek();
-            System.out.print("Looc 2: " + String.valueOf(dayOfWeek) + " | ");
 
             if (dayOfWeek != DayOfWeek.SATURDAY && dayOfWeek != DayOfWeek.SUNDAY) {
-                List<DoctorsSchedules> schedules =  findDoctorsSchedulesByDoctorIdAndWorkDay(veterianId, String.valueOf(dayOfWeek));
+                List<DoctorsSchedules> schedules = findDoctorsSchedulesByDoctorIdAndWorkDay(veterianId, String.valueOf(dayOfWeek));
                 sevendayschedules.put(Date.valueOf(today), schedules);
                 count++;
             }
+            today = today.plusDays(1); // Cộng ngày sau khi đã xử lý
         }
         return sevendayschedules;
     }
+
 
 }

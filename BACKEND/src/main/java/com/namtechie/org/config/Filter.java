@@ -24,7 +24,6 @@ import java.io.IOException;
 import java.rmi.ServerException;
 import java.rmi.server.ServerCloneException;
 import java.util.List;
-import java.util.Locale;
 
 @Component
 public class Filter extends OncePerRequestFilter {
@@ -55,7 +54,20 @@ public class Filter extends OncePerRequestFilter {
             "/api/getFreeSchedule",
             "/api/getFreeScheduleWithTime",
             "/api/testFreeScheduleWithTime",
-            "/api/payment/create-payment-url/{appointmentId}"
+            "/api/service-types",
+            "/api/zones",
+            "/api/free-schedule",
+            "/api/testFreeSchedule",
+            "/api/getAllDoctor",
+            "/api/getDoctorAuto",
+            "/api/getFeedback",
+            "/api/PaymentTotal/{appointmentId}",
+            "/api/generatePayment/{id}",
+            "/api/create-paymentDeposit-url/{appointmentId}",
+            "/api/create-paymentTotal-url/{appointmentId}",
+            "/api/createInfoFish/{appointmentId}"
+
+
     );
 
     public boolean checkIsPublicAPI(String uri) {
@@ -103,19 +115,12 @@ public class Filter extends OncePerRequestFilter {
                 return;
             }
 
-            // => token chuẩn
-            // => cho phép truy cập
-            // => lưu lại thông tin account
             UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
                     account, token, account.getAuthorities());
             authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
             SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-            // token ok, cho vào
             filterChain.doFilter(request, response);
         }
     }
 
-
-
-    // Bearer asdasdasdsadasdasd => lấy từ index 7 bỏ qua thằng bearer
 }

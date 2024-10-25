@@ -1,10 +1,13 @@
 package com.namtechie.org.entity;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.util.Set;
+import java.util.List;
+
 
 @Entity
 @Data
@@ -13,20 +16,31 @@ public class Customers {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "account_id", nullable = false)
+    @JsonBackReference
     private Account account;
 
     @OneToMany(mappedBy = "customers", cascade = CascadeType.ALL)
-    @JsonManagedReference
-    private Set<Appointment> appointments;
+    @JsonIgnoreProperties({"customers"})
+    private List<Appointment> appointment;
 
-    @Column(name = "fullname", length = 255)
-    private String fullname;
+
+    @Column(name = "fullName", length = 255)
+    private String fullName;
+
 
     @Column(name = "phone", length = 50)
     private String phone;
 
     @Column(name = "address", length = 255)
     private String address;
+
+    public Customers() {
+
+    }
+
+    public Customers(Account account) {
+        this.account = account;
+    }
 }

@@ -1,6 +1,7 @@
 package com.namtechie.org.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -45,7 +46,19 @@ public class Account implements UserDetails {
     @Column(nullable = false, updatable = false)
     private Date created_at;
 
-    boolean isDeleted = false;
+
+    boolean isDeleted;
+
+
+    @OneToOne(mappedBy = "account", cascade = CascadeType.ALL)
+    @JsonManagedReference
+    private Customers customer;
+
+    @OneToOne(mappedBy = "account", cascade = CascadeType.ALL)
+    @JsonManagedReference
+    private Doctor doctor;
+
+
 
 
     @Override

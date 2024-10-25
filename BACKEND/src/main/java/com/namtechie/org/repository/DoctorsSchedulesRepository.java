@@ -1,6 +1,5 @@
 package com.namtechie.org.repository;
 
-import com.namtechie.org.entity.Doctor;
 import com.namtechie.org.entity.DoctorsSchedules;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

@@ -1,12 +1,10 @@
 package com.namtechie.org.controller;
 
 import com.namtechie.org.entity.Account;
-import com.namtechie.org.entity.Customers;
 import com.namtechie.org.entity.Doctor;
-import com.namtechie.org.model.response.AccountResponse;
 import com.namtechie.org.model.request.VeterinaryRequest;
+import com.namtechie.org.model.response.AccountResponse;
 import com.namtechie.org.service.AuthenticationService;
-//import com.namtechie.org.service.CustomerService;
 import com.namtechie.org.service.DoctorService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
@@ -29,8 +27,6 @@ public class AdminController {
     @Autowired
     DoctorService doctorService;
 
-//    @Autowired
-//    CustomerService customerService;
 
     //APi down is provide for ADMIN
     @PutMapping("/setAccountVeterinary/{email}")

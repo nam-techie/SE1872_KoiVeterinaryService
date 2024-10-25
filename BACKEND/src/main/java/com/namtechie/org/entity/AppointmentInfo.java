@@ -3,6 +3,7 @@ package com.namtechie.org.entity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Data;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.sql.Date;
 import java.sql.Time;
@@ -10,7 +11,7 @@ import java.sql.Timestamp;
 
 @Entity
 @Data
-public class AppointmentDetail {
+public class AppointmentInfo {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,6 +22,7 @@ public class AppointmentDetail {
     @JsonBackReference
     private Appointment appointment;
 
+    @Column
     private String address;
 
     @Column(nullable = false)
@@ -30,8 +32,10 @@ public class AppointmentDetail {
     private Time appointmentBookingTime;
 
     @Column(nullable = false)
+    @CreationTimestamp
     private Timestamp createdDate;
 
-    private String note;
+    //này là miêu tả nội dung điều trị (note hay description gì cũng được)
+    private String descriptions;
 
 }

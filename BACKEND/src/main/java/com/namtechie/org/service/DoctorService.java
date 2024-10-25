@@ -1,19 +1,17 @@
 package com.namtechie.org.service;
 
 
-import com.namtechie.org.entity.Account;
-import com.namtechie.org.entity.Doctor;
-import com.namtechie.org.entity.Role;
-import com.namtechie.org.model.UpdateDoctorLogin;
+import com.namtechie.org.entity.*;
 import com.namtechie.org.model.request.DoctorRequest;
-import com.namtechie.org.repository.AccountRepository;
-import com.namtechie.org.repository.DoctorRepository;
+import com.namtechie.org.model.request.MedicalFishResquest;
+import com.namtechie.org.repository.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -23,15 +21,15 @@ public class DoctorService {
 
     @Autowired
     AccountRepository accountRepository;
+    @Autowired
+    AppointmentRepository appointmentRepository;
 
     @Autowired
-    AuthenticationService authenticationService;
+    AppointmentStatusRepository appointmentStatusRepository;
 
     @Autowired
-    PasswordEncoder passwordEncoder;
+    MedicalRecordedRepository medicalRecordedRepository;
 
-    @Autowired
-    ModelMapper modelMapper;
 
     public Account getCurrentAccount() {
         Account account = (Account) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -75,29 +73,11 @@ public class DoctorService {
             }
 
             // Xét trường hợp nếu user ko nhập gì thì ko update
-            if (!doctorRequest.getFullName().equals(doctor.getFullname())) {
-                doctor.setFullname(doctorRequest.getFullName());
+            if (!doctorRequest.getFullName().equals(doctor.getFullName())) {
+                doctor.setFullName(doctorRequest.getFullName());
             }
             if (!doctorRequest.getPhone().equals(doctor.getPhone())) {
                 doctor.setPhone(doctorRequest.getPhone());
-            }
-            if (!doctorRequest.getSpecialty().equals(doctor.getSpecialty())) {
-                doctor.setSpecialty(doctorRequest.getSpecialty());
-            }
-            if (!doctorRequest.getIntroduction().equals(doctor.getIntroduction())) {
-                doctor.setIntroduction(doctorRequest.getIntroduction());
-            }
-            if (!doctorRequest.getTraining().equals(doctor.getTraining())) {
-                doctor.setTraining(doctorRequest.getTraining());
-            }
-            if (!doctorRequest.getWorkExperience().equals(doctor.getWorkExperience())) {
-                doctor.setWorkExperience(doctorRequest.getWorkExperience());
-            }
-            if (!doctorRequest.getAchievements().equals(doctor.getAchievements())) {
-                doctor.setAchievements(doctorRequest.getAchievements());
-            }
-            if (!doctorRequest.getResearchPapers().equals(doctor.getResearchPapers())) {
-                doctor.setResearchPapers(doctorRequest.getResearchPapers());
             }
 
             // Lưu đối tượng Doctor vào cơ sở dữ liệu
@@ -109,4 +89,61 @@ public class DoctorService {
             throw new RuntimeException("Đã xảy ra lỗi trong quá trình thêm thông tin bác sĩ. Vui lòng thử lại sau.");
         }
     }
+
+    public void updateWorkingStatus(long id, String notes) {
+
+        Appointment appointment = appointmentRepository.findAppointmentById(id);
+        AppointmentStatus appointmentStatus  = new AppointmentStatus();
+
+        appointmentStatus.setAppointment(appointment);
+        appointmentStatus.setStatus("Dang cung cap dich vu");
+        appointmentStatus.setNotes(notes);
+
+        appointmentStatusRepository.save(appointmentStatus);
+    }
+
+//    public void doneWorkingStatus(long id, String notes) {
+//
+//        Appointment appointment = appointmentRepository.findAppointmentById(id);
+//        AppointmentStatus appointmentStatus  = new AppointmentStatus();
+//
+//        appointmentStatus.setAppointment(appointment);
+//        appointmentStatus.setStatus("Done");
+//        appointmentStatus.setNotes(notes);
+//
+//        appointmentStatusRepository.save(appointmentStatus);
+//    }
+
+    public List<MedicalFishResquest> createFishInfor(long appointmentId, List<MedicalFishResquest> medicalFishRequests) {
+        // Tìm Appointment theo ID
+        Appointment appointment = appointmentRepository.findAppointmentById(appointmentId);
+        if (appointment == null) {
+            throw new IllegalArgumentException("Không tìm thấy đơn hàng khám bệnh với ID: " + appointmentId);
+        }
+
+        // Lưu thông tin cho mỗi loại cá koi
+        List<MedicalRecorded> medicalRecordedList = new ArrayList<>();
+        for (MedicalFishResquest medicalFishRequest : medicalFishRequests) {
+            MedicalRecorded medicalRecorded = new MedicalRecorded();
+            medicalRecorded.setAppointment(appointment); // Liên kết với đơn hàng (appointment)
+            medicalRecorded.setName(medicalFishRequest.getName());
+            medicalRecorded.setBreed(medicalFishRequest.getBreed());
+            medicalRecorded.setAge(medicalFishRequest.getAge());
+            medicalRecorded.setColor(medicalFishRequest.getColor());
+            medicalRecorded.setWeight(medicalFishRequest.getWeight());
+            medicalRecorded.setHealthStatus(medicalFishRequest.getHealthStatus());
+
+            medicalRecordedList.add(medicalRecorded);
+            medicalRecordedRepository.save(medicalRecorded); // Lưu từng loại cá koi
+        }
+
+        // Cập nhật lại danh sách MedicalRecorded cho Appointment
+        appointment.setMedicalRecorded(medicalRecordedList);
+        appointmentRepository.save(appointment);
+
+        return medicalFishRequests; // Trả về danh sách các MedicalFishResquest đã lưu
+    }
+
+
+
 }

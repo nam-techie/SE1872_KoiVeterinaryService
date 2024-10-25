@@ -3,6 +3,7 @@ package com.namtechie.org.controller;
 import com.namtechie.org.entity.Doctor;
 import com.namtechie.org.model.UpdateDoctorLogin;
 import com.namtechie.org.model.request.DoctorRequest;
+import com.namtechie.org.model.request.MedicalFishResquest;
 import com.namtechie.org.service.DoctorService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,5 +33,25 @@ public class DoctorController {
         Doctor findDoctor = doctorService.getDoctorById();
         return ResponseEntity.ok(findDoctor);
     }
+
+
+    @PutMapping("/updateWorkingStatus/{appointmentId}")
+    public ResponseEntity updateWorkingStatus(@PathVariable long appointmentId, @RequestBody String notes) {
+        doctorService.updateWorkingStatus(appointmentId, notes);
+        return ResponseEntity.ok("Da tiep nhan dich vu");
+    }
+
+//    @PutMapping("/doneWorkingStatus/{appointmentId}")
+//    public ResponseEntity doneWorkingStatus(@PathVariable  long appointmentId, @RequestBody String notes) {
+//        doctorService.doneWorkingStatus(appointmentId, notes);
+//        return ResponseEntity.ok("Da hoan thanh");
+//    }
+
+    @PostMapping("/createInfoFish/{appointmentId}")
+    public ResponseEntity<List<MedicalFishResquest>> addInfoFish(@PathVariable long appointmentId, @RequestBody List<MedicalFishResquest> medicalFishResquests) {
+        List<MedicalFishResquest> createFish = doctorService.createFishInfor(appointmentId, medicalFishResquests);
+        return ResponseEntity.ok(createFish);
+    }
+
 
 }
