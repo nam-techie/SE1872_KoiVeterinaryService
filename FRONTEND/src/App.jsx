@@ -15,6 +15,7 @@ import VerifyOTP from "./pages/Verify-OTP.jsx";
 import ResetPassword from "./pages/ResetPassword.jsx";
 import FAQPage from "./pages/FAQPage.jsx";
 import TermAndRefund from "./pages/TermAndRefund.jsx";
+import FindDoctor from './pages/FindDoctor';
 
 
 function App() {
@@ -39,6 +40,7 @@ function App() {
                     <Route path="/loading" element={<PublicRoute><LoadingCat/></PublicRoute>}/>
                     <Route path="/faqs" element={<PublicRoute><FAQPage/></PublicRoute>}/>
                     <Route path="/terms" element={<PublicRoute><TermAndRefund/></PublicRoute>}/>
+                    <Route path="/doctor-list" element={<PublicRoute><FindDoctor/></PublicRoute>}/>
 
                     {/* Trang không cho phép truy cập nếu đã đăng nhập (có token) */}
                     <Route path="/login" element={<RestrictedRoute><Login/></RestrictedRoute>}/>
@@ -53,13 +55,13 @@ function App() {
 
                     Trang chỉ doctor và admin truy cập được
                     <Route path="/doctor/doctor-dashboard" element={
-                        <RoleBasedRoute allowedRoles={['DOCTOR', 'ADMIN']}>
+                        <RoleBasedRoute allowedRoles={['VETERINARY', 'ADMIN']}>
                             <DoctorDashBoard/>
                         </RoleBasedRoute>
                     }/>
 
                     <Route path="/doctor/doctor-appointment" element={
-                        <RoleBasedRoute allowedRoles={['DOCTOR', 'ADMIN']}>
+                        <RoleBasedRoute allowedRoles={['VETERINARY', 'ADMIN']}>
                             <DoctorAppointment/>
                         </RoleBasedRoute>
                     }/>

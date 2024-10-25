@@ -6,7 +6,7 @@ export const PublicRoute = ({ children }) => {
     const role = localStorage.getItem('role')?.trim();  // Lưu vai trò của người dùng và loại bỏ khoảng trắng
 
     // Nếu vai trò là doctor, điều hướng đến trang khác (ví dụ: trang dashboard của bác sĩ)
-    if (role === 'DOCTOR') {
+    if (role === 'VETERINARY') {
         return <Navigate to="/doctor/doctor-dashboard" />;
     }
 
@@ -25,7 +25,7 @@ export const RestrictedRoute = ({ children }) => {
     const role = localStorage.getItem('role'); // Lấy role từ localStorage
 
     // Nếu đã có token và role là DOCTOR, điều hướng về dashboard của doctor
-    if (token && role === 'DOCTOR') {
+    if (token && role === 'VETERINARY') {
         return <Navigate to="/doctor/doctor-dashboard" />;
     }
 
@@ -61,7 +61,7 @@ export const RoleBasedRoute = ({ children, allowedRoles }) => {
     // Nếu không có token hoặc vai trò không hợp lệ
     if (!token || !allowedRoles.includes(userRole)) {
         // Điều hướng khác nhau dựa trên vai trò người dùng
-        if (userRole === 'DOCTOR') {
+        if (userRole === 'VETERINARY') {
             return <Navigate to="/doctor/doctor-dashboard" />;
         } else {
             return <Navigate to="/login" />;
