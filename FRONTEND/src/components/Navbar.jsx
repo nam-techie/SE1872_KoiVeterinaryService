@@ -133,7 +133,7 @@ export const DoctorNavBar = () => {
                 <a className={styles.DoctorSidebarLink} href="/doctor/doctor-dashboard">
                     <FaUserDoctor className={styles.icon} size={40}/> Dashboard
                 </a>
-                <a className={styles.DoctorSidebarLink} href="#patients">
+                <a className={styles.DoctorSidebarLink} href="/doctor/doctor-work-schedule">
                     <AiFillSchedule className={styles.icon} size={40}/> Lịch Làm Việc
                 </a>
                 <a className={styles.DoctorSidebarLink} href="/doctor/doctor-appointment">

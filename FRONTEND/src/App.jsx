@@ -17,6 +17,7 @@ import FAQPage from "./pages/FAQPage.jsx";
 import TermAndRefund from "./pages/TermAndRefund.jsx";
 import FindDoctor from './pages/FindDoctor';
 import Dashboard from "./pages/admin_Pages/Dashboard.jsx";
+import DoctorWorkSchedule from "./pages/doctor_Pages/DoctorWorkSchedule.jsx";
 
 
 function App() {
@@ -64,6 +65,12 @@ function App() {
                     <Route path="/doctor/doctor-appointment" element={
                         <RoleBasedRoute allowedRoles={['VETERINARY', 'ADMIN']}>
                             <DoctorAppointment/>
+                        </RoleBasedRoute>
+                    }/>
+
+                    <Route path="/doctor/doctor-work-schedule" element={
+                        <RoleBasedRoute allowedRoles={['VETERINARY', 'ADMIN']}>
+                            <DoctorWorkSchedule/>
                         </RoleBasedRoute>
                     }/>
 

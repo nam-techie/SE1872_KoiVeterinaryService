@@ -4,57 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d2cec660-9bd4-4c6d-9559-8cd458d3cf90" name="Changes" comment="update all entity">
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/controller/AdminController.java" beforeDir="false" afterPath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/controller/AdminController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/controller/AuthenticationController.java" beforeDir="false" afterPath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/controller/AuthenticationController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/controller/DoctorController.java" beforeDir="false" afterPath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/controller/DoctorController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/model/request/CustomerInfoRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/model/request/CustomerInfoRequest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/repository/CustomersRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/repository/CustomerRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/service/AppointmentService.java" beforeDir="false" afterPath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/service/AppointmentService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/service/AuthenticationService.java" beforeDir="false" afterPath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/service/AuthenticationService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BACKEND/target/classes/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/BACKEND/target/classes/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FRONTEND/src/admin_pages/AccountDashboard.jsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/FRONTEND/src/admin_pages/AccountUpdateProfile.jsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/FRONTEND/src/admin_pages/AddDoctor.jsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/FRONTEND/src/admin_pages/AdminProfile.jsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/FRONTEND/src/admin_pages/AdminUpdateProfile.jsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/FRONTEND/src/admin_pages/CreateAccount.jsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/FRONTEND/src/admin_pages/Dashboard.jsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/FRONTEND/src/admin_pages/DoctorDashboard.jsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/FRONTEND/src/admin_pages/DoctorDetailInfo.jsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/FRONTEND/src/admin_pages/FeedbackDashboard.jsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/FRONTEND/src/admin_pages/UpdateDoctor.jsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/FRONTEND/src/admin_pages/VeterinaryAccount.jsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/FRONTEND/src/admin_pages/hooks/useAccountInfo.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/FRONTEND/src/admin_pages/hooks/useAdminInfo.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/FRONTEND/src/admin_pages/hooks/useDoctorInfo.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/FRONTEND/src/admin_pages/styles/AccountDashboard.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/FRONTEND/src/admin_pages/styles/AccountUpdateProfile.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/FRONTEND/src/admin_pages/styles/AddDoctor.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/FRONTEND/src/admin_pages/styles/AdminDashboard.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/FRONTEND/src/admin_pages/styles/AdminProfile.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/FRONTEND/src/admin_pages/styles/AdminUpdateProfile.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/FRONTEND/src/admin_pages/styles/CreateAccount.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/FRONTEND/src/admin_pages/styles/DoctorDashboard.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/FRONTEND/src/admin_pages/styles/DoctorDetailInfo.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/FRONTEND/src/admin_pages/styles/FeedbackDashboard.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/FRONTEND/src/admin_pages/styles/UpdateDoctor.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/FRONTEND/src/admin_pages/styles/VeterinaryAccount.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/FRONTEND/src/hooks/useAccountInfo.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/FRONTEND/src/pages/admin_Pages/AccountDashboard.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/FRONTEND/src/pages/admin_Pages/AccountDashboard.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FRONTEND/src/pages/admin_Pages/AccountUpdateProfile.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/FRONTEND/src/pages/admin_Pages/AccountUpdateProfile.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FRONTEND/src/pages/admin_Pages/AddDoctor.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/FRONTEND/src/pages/admin_Pages/AddDoctor.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FRONTEND/src/pages/admin_Pages/AdminProfile.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/FRONTEND/src/pages/admin_Pages/AdminProfile.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FRONTEND/src/pages/admin_Pages/AdminUpdateProfile.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/FRONTEND/src/pages/admin_Pages/AdminUpdateProfile.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FRONTEND/src/pages/admin_Pages/CreateAccount.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/FRONTEND/src/pages/admin_Pages/CreateAccount.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FRONTEND/src/pages/admin_Pages/hooks/useAccountInfo.js" beforeDir="false" afterPath="$PROJECT_DIR$/FRONTEND/src/pages/admin_Pages/hooks/useAccountInfo.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FRONTEND/src/service/apiRequest.js" beforeDir="false" afterPath="$PROJECT_DIR$/FRONTEND/src/service/apiRequest.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/useAccountInfo.js" beforeDir="false" />
-    </list>
+    <list default="true" id="d2cec660-9bd4-4c6d-9559-8cd458d3cf90" name="Changes" comment="update all entity" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -87,12 +37,12 @@
     &quot;assignee&quot;: &quot;nam-techie&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings">{
-  &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/nam-techie/Group03_SE1872_KoiVeterinaryServiceCenter.git&quot;,
-    &quot;accountId&quot;: &quot;1ddcab4d-9cbe-47ed-9803-b6305e329a4b&quot;
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/nam-techie/Group03_SE1872_KoiVeterinaryServiceCenter.git",
+    "accountId": "8472be3a-f9cd-410e-940e-9a6479941986"
   }
-}</component>
+}]]></component>
   <component name="KubernetesApiPersistence">{}</component>
   <component name="KubernetesApiProvider">{
   &quot;isMigrated&quot;: true
@@ -126,9 +76,9 @@
     "RequestMappingsPanelWidth0": "75",
     "RequestMappingsPanelWidth1": "75",
     "Spring Boot.KoiVeterinaryServiceCenterApplication.executor": "Run",
-    "git-widget-placeholder": "nam",
+    "git-widget-placeholder": "thang-lh",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/Phuong Nam/Desktop/SWP391/DEMO/Group03_SE1872_KoiVeterinaryServiceCenter/FRONTEND",
+    "last_opened_file_path": "D:/Project_SWP391/Group03_SE1872_KoiVeterinaryServiceCenter",
     "list.type.of.created.stylesheet": "CSS",
     "node.js.detected.package.eslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -173,8 +123,8 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-9823dce3aa75-b114ca120d71-intellij.indexing.shared.core-IU-242.21829.142" />
-        <option value="bundled-js-predefined-d6986cc7102b-7c0b70fcd90d-JavaScript-IU-242.21829.142" />
+        <option value="bundled-jdk-9823dce3aa75-28b599e66164-intellij.indexing.shared.core-IU-242.23726.103" />
+        <option value="bundled-js-predefined-d6986cc7102b-5c90d61e3bab-JavaScript-IU-242.23726.103" />
       </set>
     </attachedChunks>
   </component>
@@ -201,6 +151,7 @@
       <workItem from="1729906299174" duration="1696000" />
       <workItem from="1729932099399" duration="56000" />
       <workItem from="1729932173837" duration="2023000" />
+      <workItem from="1729952721899" duration="17000" />
     </task>
     <task id="LOCAL-00001" summary="push all because forgot">
       <option name="closed" value="true" />
