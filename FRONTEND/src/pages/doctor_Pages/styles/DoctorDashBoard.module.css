@@ -1,107 +1,138 @@
-/* Center the container on the page */
+/* Đảm bảo html và body chiếm toàn bộ chiều cao và không có cuộn ngang */
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden; /* Ẩn cuộn ngang */
+    box-sizing: border-box;
+}
+
+/* Wrapper toàn trang */
 .doctorDashBoardWrapper {
     display: flex;
     justify-content: center;
-    align-items: center;
-    height: 100vh;
-    background-color: #f0f2f5;
-    padding-left: 100px; /* Adjusted padding */
+    align-items: flex-start;
+    min-height: 100vh; /* Chiều cao tối thiểu 100% khung nhìn */
+    width: 100vw; /* Chiếm toàn bộ chiều rộng khung nhìn */
+    background-color: #f9fafc;
+    padding: 0; /* Loại bỏ khoảng trống */
+    margin: 0;
+    overflow: hidden; /* Loại bỏ cuộn dọc không cần thiết */
 }
 
+/* Container cho nội dung chính */
 .doctorDashBoardContainer {
     display: flex;
-    justify-content: space-between;
-    width: 75%; /* Reduced width */
-    padding: 20px;
-    background-color: white;
-    border-radius: 15px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    flex-direction: row;
+    justify-content: space-between; /* Tách đều các phần */
+    width: 100%; /* Chiếm toàn bộ chiều rộng */
+    max-width: 1200px; /* Giới hạn chiều rộng tối đa */
+    padding: 0 20px; /* Thêm một ít padding trái phải */
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
+    height: 100vh; /* Chiều cao tối đa của container */
 }
 
+/* Phần thông tin bác sĩ */
 .doctorInfoSection {
     flex: 1;
-    padding: 30px; /* Reduced padding */
-    border-right: 1px solid #ddd;
-    display: flex;
-    flex-direction: column;
-    text-align: left;
-    margin-right: 40px; /* Reduced margin */
+    padding: 20px;
+    text-align: center;
+    border-right: 1px solid #eee;
+    box-sizing: border-box;
 }
 
-
 .doctorAvatar {
-    width: 200px; /* Reduced size */
-    height: 200px;
+    width: 150px;
+    height: 150px;
     border-radius: 50%;
     object-fit: cover;
-    margin-bottom: 15px; /* Adjusted spacing */
+    margin-bottom: 20px;
 }
 
 .doctorInfoSection h2 {
-    font-size: 1.8em; /* Reduced size */
-    margin-bottom: 15px;
-}
-
-.doctorInfoSection p {
-    margin: 5px 0;
-    font-size: 1.2em; /* Slightly reduced */
+    font-size: 1.8em;
+    font-weight: bold;
     color: #333;
 }
 
-/* Styling for the stat cards */
+.doctorInfoSection p {
+    margin: 10px 0;
+    font-size: 1.1em;
+    color: #555;
+}
+
+/* Phần thẻ thống kê */
+.dashboardStatsSection {
+    flex: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding-left: 20px;
+    padding-right: 20px; /* Thêm padding phải để căn chỉnh khung phải */
+    box-sizing: border-box;
+    width: 100%; /* Chiếm toàn bộ chiều rộng */
+    justify-content: center;
+    align-items: center; /* Căn giữa các mục trong khung */
+}
+
+/* Thẻ thống kê */
 .statCard {
-    transition: all 0.3s ease;
-    text-align: left;
-    font-size: 1.2em; /* Reduced font size */
+    background-color: #fff;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s, box-shadow 0.2s;
     cursor: pointer;
-    background-color: white;
-    padding: 30px; /* Reduced padding */
-    border-radius: 10px;
-    height: 160px; /* Reduced height */
-    width: 700px; /* Reduced width */
-    position: relative;
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
-    transform: skew(10deg) rotate(180deg);
-    overflow: hidden;
+    width: 100%; /* Đảm bảo thẻ chiếm toàn bộ chiều rộng của container */
+    margin-bottom: 10px;
 }
-
-/* Ensure the inner content isn't skewed or rotated */
-.statCard > * {
-    transform: skew(-10deg) rotate(180deg);
-}
-
 .statCard:hover {
-    transform: translateY(-8px) skew(10deg) rotate(180deg);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
 }
 
-.appointmentsCard {
-    background-color: #ff7875;
-    color: white;
-    margin-left: 5px; /* Adjusted margin */
-}
-
-.unconfirmedCard {
-    background-color: #ffc53d;
-    color: white;
-    margin-left: 30px;
-}
-
-.feedbackCard {
-    background-color: #73d13d;
-    color: white;
-    margin-left: 60px;
-}
-
-/* Styling for the h1 and p tags in each card */
 .statCard h1 {
-    margin-top: 10px; /* Reduced margin */
-    font-size: 1.3em; /* Reduced font size */
-    color: whitesmoke;
-    margin-bottom: 5px; /* Adjusted spacing */
+    font-size: 1.4em;
+    color: #333;
+    margin-bottom: 10px;
 }
 
 .statCard p {
+    font-size: 1em;
+    color: #666;
     margin: 0;
-    font-size: 1em; /* Reduced font size */
 }
+
+/* Màu sắc thẻ */
+.appointmentsCard {
+    border-left: 5px solid #ff7875;
+}
+
+.unconfirmedCard {
+    border-left: 5px solid #ffc53d;
+}
+
+.feedbackCard {
+    border-left: 5px solid #73d13d;
+}
+
+/* Responsive Design cho màn hình nhỏ */
+@media (max-width: 768px) {
+    .doctorDashBoardContainer {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .doctorInfoSection {
+        border-right: none;
+        border-bottom: 1px solid #eee;
+    }
+
+    .dashboardStatsSection {
+        padding-left: 0;
+    }
+}
+

@@ -1,12 +1,12 @@
 import styles from "../styles/NavBar.module.css";
 import {FaMapMarkerAlt, FaPhoneAlt, FaClock} from "react-icons/fa";
-import {FaUserLarge, FaUserDoctor} from "react-icons/fa6";
 import Logo from "../assets/homePage_images/logo.png";
 import {AiFillSchedule} from "react-icons/ai";
 import {PiNewspaperClippingFill} from "react-icons/pi";
 import {IoLogOutSharp} from "react-icons/io5";
 import {RiFeedbackFill} from "react-icons/ri";
 import {FaRegCalendarPlus} from "react-icons/fa";
+import { MdDashboard } from 'react-icons/md';
 
 import {Link, NavLink} from "react-router-dom";
 import {IoLogInOutline, IoLogInSharp} from "react-icons/io5";
@@ -131,16 +131,13 @@ export const DoctorNavBar = () => {
             </div>
             <div className={styles.DoctorSidebarLinks}>
                 <a className={styles.DoctorSidebarLink} href="/doctor/doctor-dashboard">
-                    <FaUserDoctor className={styles.icon} size={40}/> Dashboard
+                    <MdDashboard className={styles.icon} size={40}/> Tổng quan
                 </a>
                 <a className={styles.DoctorSidebarLink} href="/doctor/doctor-work-schedule">
                     <AiFillSchedule className={styles.icon} size={40}/> Lịch Làm Việc
                 </a>
                 <a className={styles.DoctorSidebarLink} href="/doctor/doctor-appointment">
                     <PiNewspaperClippingFill className={styles.icon} size={40}/> Lịch Đặt
-                </a>
-                <a className={styles.DoctorSidebarLink} href="#appointments">
-                    <RiFeedbackFill className={styles.icon} size={40}/> FeedBack
                 </a>
                 <a className={styles.DoctorSidebarLink} href="#appointments">
                     <FaRegCalendarPlus className={styles.icon} size={40}/> Dịch Vụ Đặt Thêm

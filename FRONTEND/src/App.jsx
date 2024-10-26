@@ -55,7 +55,7 @@ function App() {
                         </RoleBasedRoute>
                     }/>
 
-                    Trang chỉ doctor và admin truy cập được
+                    {/*Trang chỉ doctor và admin truy cập được*/}
                     <Route path="/doctor/doctor-dashboard" element={
                         <RoleBasedRoute allowedRoles={['VETERINARY', 'ADMIN']}>
                             <DoctorDashBoard/>
@@ -74,13 +74,6 @@ function App() {
                         </RoleBasedRoute>
                     }/>
 
-                    {/*/!* Trang dashboard của doctor *!/*/}
-                    {/*<Route path="/doctor-dashboard" element={*/}
-                    {/*  <RoleBasedRoute allowedRoles={['doctor']}>*/}
-                    {/*    <DoctorDashboard />*/}
-                    {/*  </RoleBasedRoute>*/}
-                    {/*} />*/}
-
                     {/* Trang chỉ admin truy cập được */}
                     <Route path="/admin" element={
                       <RoleBasedRoute allowedRoles={['ADMIN']}>
@@ -88,8 +81,6 @@ function App() {
                       </RoleBasedRoute>
                     } />
 
-                    {/* Trang không tìm thấy */}
-                    {/*<Route path="*" element={<NotFoundPage />} />*/}
                 </Routes>
             </Router>
 

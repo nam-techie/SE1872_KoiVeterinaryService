@@ -1,29 +1,35 @@
 .doctorAppointmentContainer {
     padding-top: 50px;
-    max-width: 1000px;
+    max-width: 1200px;
     margin: 0 auto;
-    padding-left: 190px;
-
+    padding-left: 20px;
+    padding-right: 20px;
 }
 
 .doctorAppointmentHeader {
     text-align: center;
-    margin-bottom: 20px;
+    margin-bottom: 30px;
+    font-size: 28px;
+    color: #1890ff;
 }
 
 .doctorAppointmentList {
-    background-color: #f0f2f5;
+    background-color: #ffffff;
     padding: 20px;
     border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .doctorAppointmentListItem {
-    background-color: white;
-    padding: 15px;
-    border-radius: 10px;
-    margin-bottom: 10px;
-    display: flex;
-    justify-content: space-between;
+    background-color: #f8f8f8;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    transition: all 0.3s ease;
+}
+
+.doctorAppointmentListItem:hover {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 }
 
 .doctorAppointmentActions {
@@ -36,15 +42,37 @@
     color: white;
     border: none;
     border-radius: 5px;
-    padding: 10px 15px;
+    padding: 8px 15px;
     cursor: pointer;
+    transition: all 0.3s ease;
 }
 
 .doctorAppointmentButton:hover {
     background-color: #40a9ff;
+    transform: translateY(-2px);
 }
 
-.doctorAppointmentButton:disabled {
-    background-color: grey;
-    cursor: not-allowed;
+.doctorAppointmentButton.danger {
+    background-color: #ff4d4f;
+}
+
+.doctorAppointmentButton.danger:hover {
+    background-color: #ff7875;
+}
+
+/* Add some responsive styles */
+@media (max-width: 768px) {
+    .doctorAppointmentContainer {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    .doctorAppointmentActions {
+        flex-direction: column;
+    }
+
+    .doctorAppointmentButton {
+        width: 100%;
+        margin-bottom: 5px;
+    }
 }
