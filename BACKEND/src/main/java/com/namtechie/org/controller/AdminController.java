@@ -116,10 +116,16 @@ public class AdminController {
 
 
     @GetMapping("/getInfoAdmin")
-    public ResponseEntity getInfoAdmin() {
-        Account currentAccount = authenticationService.getCurrentAccount();
-        AdminInfoRequest accountAdmin = modelMapper.map(currentAccount, AdminInfoRequest.class);
-        return ResponseEntity.ok(accountAdmin);
+    public ResponseEntity<?> getInfoAdmin() {
+        try {
+            Account currentAccount = authenticationService.getCurrentAccount();
+            AdminInfoRequest accountAdmin = modelMapper.map(currentAccount, AdminInfoRequest.class);
+            return ResponseEntity.ok(accountAdmin);
+        } catch (Exception e) {
+            e.printStackTrace(); // Log lỗi
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                                 .body("Lỗi khi lấy thông tin admin: " + e.getMessage());
+        }
     }
 
     @PutMapping("/updateInfoAdmin")

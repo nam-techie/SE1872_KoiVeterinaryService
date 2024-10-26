@@ -4,8 +4,9 @@ import com.namtechie.org.entity.Account;
 import com.namtechie.org.model.UpdateDoctorLogin;
 import com.namtechie.org.model.request.*;
 import com.namtechie.org.model.response.AccountResponse;
+import com.namtechie.org.model.response.InfoCustomerResponse;
 import com.namtechie.org.service.AuthenticationService;
-//import com.namtechie.org.service.CustomerService;
+import com.namtechie.org.service.CustomerService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,8 +24,8 @@ public class AuthenticationController {
     @Autowired
     AuthenticationService authenticationService;
 
-//    @Autowired
-//    CustomerService customerService;
+    @Autowired
+    CustomerService customerService;
 
     //API provide for CUSTOMER
 
@@ -113,17 +114,17 @@ public class AuthenticationController {
 //    }
 
 
-//    @GetMapping("/getInfoCustomer")
-//    public ResponseEntity getInfoCustomer() {
-//        InfoCustomerResponse customerInfo = customerService.getInfoCustomer();
-//        return ResponseEntity.ok(customerInfo);
-//    }
+    @GetMapping("/getInfoCustomer")
+    public ResponseEntity getInfoCustomer() {
+        InfoCustomerResponse customerInfo = customerService.getInfoCustomer();
+        return ResponseEntity.ok(customerInfo);
+    }
 
-//    @PutMapping("/updateInfoCustomer")
-//    public ResponseEntity updateInfoCustomer(@ModelAttribute CustomerInfoRequest customerInfo) {
-//        CustomerInfoRequest newUpdate = customerService.updateCustomerInfo(customerInfo);
-//        return ResponseEntity.ok(newUpdate);
-//    }
+    @PutMapping("/updateInfoCustomer")
+    public ResponseEntity updateInfoCustomer(@ModelAttribute CustomerInfoRequest customerInfo) {
+        CustomerInfoRequest newUpdate = customerService.updateCustomerInfo(customerInfo);
+        return ResponseEntity.ok(newUpdate);
+    }
 
 
 

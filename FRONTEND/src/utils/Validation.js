@@ -2,34 +2,42 @@ import { useState, useEffect } from "react";
 
 export const useAuthValidation = () => {
     const [username, setUsername] = useState("");
-    const [role, setRole] = useState(""); // Thêm state để quản lý role
+    const [role, setRole] = useState("");
     const [isLoggedIn, setIsLoggedIn] = useState(false);
 
     useEffect(() => {
-        const token = localStorage.getItem("authToken"); // Lấy token từ localStorage
-        const storedUsername = localStorage.getItem("username"); // Lấy username
-        const storedRole = localStorage.getItem("role"); // Lấy role
+        const token = localStorage.getItem("authToken");
+        const storedUsername = localStorage.getItem("username");
+        const storedRole = localStorage.getItem("role");
 
         if (token) {
             setIsLoggedIn(true);
-        }
-        if (storedUsername) {
-            setUsername(storedUsername);
-        }
-        if (storedRole) {
-            setRole(storedRole);
+            if (storedUsername) {
+                setUsername(storedUsername);
+            }
+            if (storedRole) {
+                setRole(storedRole);
+            }
+        } else {
+            setIsLoggedIn(false);
+            setUsername("");
+            setRole("");
         }
     }, []);
 
     const handleLogout = () => {
-        localStorage.clear(); // Xoá toàn bộ thông tin đăng nhập
+        localStorage.removeItem("authToken");
+        localStorage.removeItem("username");
+        localStorage.removeItem("role");
         setIsLoggedIn(false);
-        window.location.href = "/homepage"; // Chuyển hướng về trang chủ
+        setUsername("");
+        setRole("");
+        window.location.href = "/homepage";
     };
 
     return {
         username,
-        role, // Trả về role trong hook
+        role,
         isLoggedIn,
         handleLogout,
     };

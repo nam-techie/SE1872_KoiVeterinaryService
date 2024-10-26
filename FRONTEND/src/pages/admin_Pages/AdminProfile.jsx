@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { FaEdit, FaSave, FaEye, FaEyeSlash } from 'react-icons/fa';
 import '../admin_pages/styles/AdminProfile.css';
-import { useAdminInfo } from './hooks/useAdminInfo';
+import {useAdminInfo} from "./hooks/useAdminInfo.js";
 
 const AdminProfile = () => {
     const { admin, loading, error, updateAdminInfo } = useAdminInfo();

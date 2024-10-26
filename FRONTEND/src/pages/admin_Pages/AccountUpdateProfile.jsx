@@ -3,9 +3,11 @@ import React, { useState } from 'react';
 import { useAccountInfo } from './hooks/useAccountInfo';
 import '../admin_pages/styles/AccountUpdateProfile.css';
 
+// eslint-disable-next-line react/prop-types
 const AccountUpdateProfile = ({ account, onClose, onUpdate }) => {
     const [editingAccount, setEditingAccount] = useState({
         ...account,
+        // eslint-disable-next-line react/prop-types
         originalUsername: account.originalUsername || account.username
     });
     const [error, setError] = useState('');

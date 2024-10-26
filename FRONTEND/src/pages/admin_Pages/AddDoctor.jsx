@@ -2,8 +2,9 @@
 import React, { useState } from 'react';
 import { FaArrowLeft, FaUserMd } from 'react-icons/fa';
 import { useDoctorInfo } from './hooks/useDoctorInfo';
-import './styles/AddDoctor.css';
+import '././styles/AddDoctor.css';
 
+// eslint-disable-next-line react/prop-types
 const AddDoctor = ({ onClose, onAdd }) => {
     const [doctorInfo, setDoctorInfo] = useState({
         email: '',

@@ -20,13 +20,14 @@ export const useAccountInfo = () => {
         try {
             setLoading(true);
             const response = await axiosInstance.get('/admin/listAccount');
+            console.log('API response:', response.data); // Log để kiểm tra
             const data = response.data;
-            const formattedAccounts = data.map(account => ({
-                ...account,
-                status: account.isDeleted ? 'Đã vô hiệu hóa' : 'Đang sử dụng',
-                createdAt: formatDate(account.created_at) // Sử dụng tên trường 'created_at'
-            }));
-            setAccounts(formattedAccounts);
+            
+            if (Array.isArray(data)) {
+                setAccounts(data);
+            } else {
+                throw new Error('Dữ liệu tài khoản không hợp lệ');
+            }
             setError(null);
         } catch (err) {
             console.error('Lỗi khi lấy thông tin tài khoản:', err);

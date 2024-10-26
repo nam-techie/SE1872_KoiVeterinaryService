@@ -53,8 +53,10 @@ public class AuthenticationService implements UserDetailsService {
 
     @Autowired
     EmailService emailService;
+
     @Autowired
     private CustomerService customerService;
+
     @Autowired
     private CustomerRepository customerRepository;
 
@@ -147,8 +149,17 @@ public class AuthenticationService implements UserDetailsService {
     }
 
     public Account getCurrentAccount() {
-        Account account = (Account) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return accountRepository.findAccountByEmail(account.getEmail());
+        try {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            if (authentication != null && authentication.getPrincipal() instanceof Account) {
+                Account account = (Account) authentication.getPrincipal();
+                return accountRepository.findAccountByEmail(account.getEmail());
+            }
+            throw new RuntimeException("Không thể lấy thông tin tài khoản hiện tại");
+        } catch (Exception e) {
+            e.printStackTrace(); // Log lỗi
+            throw new RuntimeException("Lỗi khi lấy thông tin tài khoản hiện tại", e);
+        }
     }
 
     private String generateUsername() {
@@ -400,7 +411,7 @@ public class AuthenticationService implements UserDetailsService {
 //        String email = oauth2User.getAttribute("email");
 //        String name = oauth2User.getAttribute("name");
 //
-//        // Kiểm tra xem email đã tồn tại trong cơ sở dữ li��u hay chưa
+//        // Kiểm tra xem email đã tồn tại trong cơ sở dữ liu hay chưa
 //        Account account = accountRepository.findAccountByEmail(email);
 //
 //        if (account == null) {
@@ -482,7 +493,7 @@ public class AuthenticationService implements UserDetailsService {
                 throw new DuplicateEntity("Username đã tồn tại, vui lòng chọn username khác!");
             }
 
-            // Kiểm tra trùng lặp email, nếu email mới đã tồn tại và không phải của tài khoản hiện tại
+            // Kiểm tra trùng lặp email, n���u email mới đã tồn tại và không phải của tài khoản hiện tại
             if (!Objects.equals(currentAccount.getEmail(), adminInfoRequest.getEmail()) &&
                     accountRepository.existsByEmail(adminInfoRequest.getEmail())) {
                 throw new DuplicateEntity("Email đã tồn tại, vui lòng chọn email khác!");

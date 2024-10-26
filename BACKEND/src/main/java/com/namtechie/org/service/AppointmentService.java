@@ -47,7 +47,7 @@ public class AppointmentService {
     @Autowired
     private AccountRepository accountRepository;
     @Autowired
-    private CustomersRepository customersRepository;
+    private CustomerRepository customersRepository;
     @Autowired
     ScheduleService scheduleService;
 

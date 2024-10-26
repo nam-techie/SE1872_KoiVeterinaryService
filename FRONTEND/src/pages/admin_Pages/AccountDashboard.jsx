@@ -5,6 +5,7 @@ import './styles/AccountDashboard.css';
 import {useAccountInfo} from "./hooks/useAccountInfo.js";
 import AccountUpdateProfile from "./AccountUpdateProfile.jsx";
 
+// eslint-disable-next-line react/prop-types
 const AccountDashboard = ({ setActiveTab, setSelectedAccount }) => {
     const {accounts, loading, error, fetchAllAccounts, deleteAccount, restoreAccount} = useAccountInfo();
     const [searchTerm, setSearchTerm] = useState('');
@@ -165,9 +166,7 @@ const AccountDashboard = ({ setActiveTab, setSelectedAccount }) => {
                                     </div>
                                 </td>
                                 <td>{account.email}</td>
-                                <td>
-                                   {account.role}
-                                </td>
+                                <td>{account.role}</td>
                                 <td>{account.createdAt}</td>
                                 <td>
                                     <span className={`status-badge ${account.deleted ? 'inactive' : 'active'}`}>

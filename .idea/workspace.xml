@@ -5,20 +5,55 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d2cec660-9bd4-4c6d-9559-8cd458d3cf90" name="Changes" comment="update all entity">
-      <change afterPath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/entity/MedicalRecorded.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/entity/Payment.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/entity/TransactionRecords.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/FRONTEND/src/admin_pages/FeedbackDashboard.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/FRONTEND/src/admin_pages/styles/FeedbackDashboard.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/entity/Appointment.java" beforeDir="false" afterPath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/entity/Appointment.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/entity/AppointmentInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/entity/AppointmentInfo.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/entity/AppointmentStatus.java" beforeDir="false" afterPath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/entity/AppointmentStatus.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/entity/Customers.java" beforeDir="false" afterPath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/entity/Customers.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/entity/DoctorsSchedules.java" beforeDir="false" afterPath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/entity/DoctorsSchedules.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/entity/FeedBack.java" beforeDir="false" afterPath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/entity/FeedBack.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/entity/ServiceType.java" beforeDir="false" afterPath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/entity/ServiceType.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FRONTEND/src/admin_pages/Dashboard.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/FRONTEND/src/admin_pages/Dashboard.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/controller/AdminController.java" beforeDir="false" afterPath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/controller/AdminController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/controller/AuthenticationController.java" beforeDir="false" afterPath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/controller/AuthenticationController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/controller/DoctorController.java" beforeDir="false" afterPath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/controller/DoctorController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/model/request/CustomerInfoRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/model/request/CustomerInfoRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/repository/CustomersRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/repository/CustomerRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/service/AppointmentService.java" beforeDir="false" afterPath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/service/AppointmentService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/service/AuthenticationService.java" beforeDir="false" afterPath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/service/AuthenticationService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BACKEND/target/classes/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/BACKEND/target/classes/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FRONTEND/src/admin_pages/AccountDashboard.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/FRONTEND/src/admin_pages/AccountUpdateProfile.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/FRONTEND/src/admin_pages/AddDoctor.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/FRONTEND/src/admin_pages/AdminProfile.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/FRONTEND/src/admin_pages/AdminUpdateProfile.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/FRONTEND/src/admin_pages/CreateAccount.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/FRONTEND/src/admin_pages/Dashboard.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/FRONTEND/src/admin_pages/DoctorDashboard.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/FRONTEND/src/admin_pages/DoctorDetailInfo.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/FRONTEND/src/admin_pages/FeedbackDashboard.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/FRONTEND/src/admin_pages/UpdateDoctor.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/FRONTEND/src/admin_pages/VeterinaryAccount.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/FRONTEND/src/admin_pages/hooks/useAccountInfo.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/FRONTEND/src/admin_pages/hooks/useAdminInfo.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/FRONTEND/src/admin_pages/hooks/useDoctorInfo.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/FRONTEND/src/admin_pages/styles/AccountDashboard.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/FRONTEND/src/admin_pages/styles/AccountUpdateProfile.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/FRONTEND/src/admin_pages/styles/AddDoctor.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/FRONTEND/src/admin_pages/styles/AdminDashboard.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/FRONTEND/src/admin_pages/styles/AdminProfile.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/FRONTEND/src/admin_pages/styles/AdminUpdateProfile.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/FRONTEND/src/admin_pages/styles/CreateAccount.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/FRONTEND/src/admin_pages/styles/DoctorDashboard.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/FRONTEND/src/admin_pages/styles/DoctorDetailInfo.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/FRONTEND/src/admin_pages/styles/FeedbackDashboard.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/FRONTEND/src/admin_pages/styles/UpdateDoctor.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/FRONTEND/src/admin_pages/styles/VeterinaryAccount.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/FRONTEND/src/hooks/useAccountInfo.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/FRONTEND/src/pages/admin_Pages/AccountDashboard.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/FRONTEND/src/pages/admin_Pages/AccountDashboard.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FRONTEND/src/pages/admin_Pages/AccountUpdateProfile.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/FRONTEND/src/pages/admin_Pages/AccountUpdateProfile.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FRONTEND/src/pages/admin_Pages/AddDoctor.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/FRONTEND/src/pages/admin_Pages/AddDoctor.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FRONTEND/src/pages/admin_Pages/AdminProfile.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/FRONTEND/src/pages/admin_Pages/AdminProfile.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FRONTEND/src/pages/admin_Pages/AdminUpdateProfile.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/FRONTEND/src/pages/admin_Pages/AdminUpdateProfile.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FRONTEND/src/pages/admin_Pages/CreateAccount.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/FRONTEND/src/pages/admin_Pages/CreateAccount.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FRONTEND/src/pages/admin_Pages/hooks/useAccountInfo.js" beforeDir="false" afterPath="$PROJECT_DIR$/FRONTEND/src/pages/admin_Pages/hooks/useAccountInfo.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FRONTEND/src/service/apiRequest.js" beforeDir="false" afterPath="$PROJECT_DIR$/FRONTEND/src/service/apiRequest.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/useAccountInfo.js" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -83,27 +118,32 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ASKED_MARK_IGNORED_FILES_AS_EXCLUDED&quot;: &quot;true&quot;,
-    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
-    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
-    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
-    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
-    &quot;Spring Boot.KoiVeterinaryServiceCenterApplication.executor&quot;: &quot;Run&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;nam&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/Phuong Nam/Desktop/SWP391/DEMO/Group03_SE1872_KoiVeterinaryServiceCenter&quot;,
-    &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;advanced.settings&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2024.2.1\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_MARK_IGNORED_FILES_AS_EXCLUDED": "true",
+    "RequestMappingsPanelOrder0": "0",
+    "RequestMappingsPanelOrder1": "1",
+    "RequestMappingsPanelWidth0": "75",
+    "RequestMappingsPanelWidth1": "75",
+    "Spring Boot.KoiVeterinaryServiceCenterApplication.executor": "Run",
+    "git-widget-placeholder": "nam",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/Phuong Nam/Desktop/SWP391/DEMO/Group03_SE1872_KoiVeterinaryServiceCenter/FRONTEND",
+    "list.type.of.created.stylesheet": "CSS",
+    "node.js.detected.package.eslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "advanced.settings",
+    "ts.external.directory.path": "C:\\Program Files\\JetBrains\\IntelliJ IDEA 2024.2.1\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external",
+    "vue.rearranger.settings.migration": "true"
+  },
+  "keyToStringList": {
+    "DatabaseDriversLRU": [
+      "sqlserver"
+    ]
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\Phuong Nam\Desktop\SWP391\Group03_SE1872_KoiVeterinaryServiceCenter\.idea" />
@@ -156,7 +196,11 @@
       <workItem from="1729555305578" duration="18499000" />
       <workItem from="1729642261982" duration="21591000" />
       <workItem from="1729694397114" duration="4664000" />
-      <workItem from="1729815555199" duration="5230000" />
+      <workItem from="1729815555199" duration="7613000" />
+      <workItem from="1729902269534" duration="608000" />
+      <workItem from="1729906299174" duration="1696000" />
+      <workItem from="1729932099399" duration="56000" />
+      <workItem from="1729932173837" duration="2023000" />
     </task>
     <task id="LOCAL-00001" summary="push all because forgot">
       <option name="closed" value="true" />
@@ -326,7 +370,15 @@
       <option name="project" value="LOCAL" />
       <updated>1729817517033</updated>
     </task>
-    <option name="localTasksCounter" value="22" />
+    <task id="LOCAL-00022" summary="update all entity">
+      <option name="closed" value="true" />
+      <created>1729871056546</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1729871056546</updated>
+    </task>
+    <option name="localTasksCounter" value="23" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
