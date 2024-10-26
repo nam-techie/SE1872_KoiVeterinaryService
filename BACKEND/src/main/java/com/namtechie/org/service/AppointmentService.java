@@ -1,6 +1,7 @@
 package com.namtechie.org.service;
 
 import com.namtechie.org.entity.Appointment;
+import com.namtechie.org.exception.NotFoundException;
 import com.namtechie.org.repository.AppointmentRepository;
 
 import com.namtechie.org.entity.*;
@@ -210,7 +211,7 @@ public class AppointmentService {
             // Step 6: Lưu Appointment vào cơ sở dữ liệu
             return appointmentRepository.save(appointment);
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new NotFoundException("Không có bác sĩ nào rảnh trong khung giờ bạn chọn");
         }
     }
 
@@ -284,6 +285,55 @@ public class AppointmentService {
     public List<Appointment> getAllAppointments() {
         return appointmentRepository.findAll();
     }
+
+
+
+    public List<Appointment> findAppointmentByAccountId(long accountId) {
+
+        Doctor doctor = doctorRepository.findByAccountId(accountId);
+
+        List<Appointment> list = appointmentRepository.findAppointmentByDoctorId(doctor.getId());
+
+        return list;
+    }
+
+//    public long getAppointmentIdForUser(long accountId) {
+//        long  customerId = customersRepository.findCustomersIdByAccountId(accountId);
+//
+//        List<Appointment> list = appointmentRepository.findAppointmentByCustomersId(customerId);
+//
+//        for(Appointment appointment : list) {
+//            List<AppointmentStatus> appointmentStatus = appointment.getAppointmentStatus();
+//            for(AppointmentStatus status : appointmentStatus) {
+//
+//                if(status.getStatus().equals("Waiting veterian confirm")){
+//                    return appointment.getId();
+//                }
+//            }
+//        }
+//        return 0;
+//    }
+//
+//
+//
+//
+//    public long findAppointmentIdStep(long accountId) {
+//        Doctor doctor = doctorRepository.findByAccountId(accountId);
+//
+//        List<Appointment> list = appointmentRepository.findAppointmentByDoctorId(doctor.getId());
+//
+//        for(Appointment appointment : list) {
+//            List<AppointmentStatus> appointmentStatus = appointment.getAppointmentStatus();
+//            for(AppointmentStatus status : appointmentStatus) {
+//                if(status.getStatus().equals("Waiting veterian confirm")){
+//                    return appointment.getId();
+//                }
+//            }
+//        }
+//        return 0;
+//    }
+
+
 
     public AppointmentStatus confirmDoctorAppointment(long appointmentId, DoctorConfirmRequest doctorConfirmRequest) {
         try {

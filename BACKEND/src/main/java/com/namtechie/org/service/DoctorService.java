@@ -114,7 +114,7 @@ public class DoctorService {
 //        appointmentStatusRepository.save(appointmentStatus);
 //    }
 
-    public List<MedicalFishResquest> createFishInfor(long appointmentId, List<MedicalFishResquest> medicalFishRequests) {
+    public MedicalFishResquest createFishInfor(long appointmentId, MedicalFishResquest medicalFishRequests) {
         // Tìm Appointment theo ID
         Appointment appointment = appointmentRepository.findAppointmentById(appointmentId);
         if (appointment == null) {
@@ -122,23 +122,20 @@ public class DoctorService {
         }
 
         // Lưu thông tin cho mỗi loại cá koi
-        List<MedicalRecorded> medicalRecordedList = new ArrayList<>();
-        for (MedicalFishResquest medicalFishRequest : medicalFishRequests) {
-            MedicalRecorded medicalRecorded = new MedicalRecorded();
+        MedicalRecorded medicalRecorded = new MedicalRecorded();
             medicalRecorded.setAppointment(appointment); // Liên kết với đơn hàng (appointment)
-            medicalRecorded.setName(medicalFishRequest.getName());
-            medicalRecorded.setBreed(medicalFishRequest.getBreed());
-            medicalRecorded.setAge(medicalFishRequest.getAge());
-            medicalRecorded.setColor(medicalFishRequest.getColor());
-            medicalRecorded.setWeight(medicalFishRequest.getWeight());
-            medicalRecorded.setHealthStatus(medicalFishRequest.getHealthStatus());
+            medicalRecorded.setName(medicalFishRequests.getName());
+            medicalRecorded.setBreed(medicalFishRequests.getBreed());
+            medicalRecorded.setAge(medicalFishRequests.getAge());
+            medicalRecorded.setColor(medicalFishRequests.getColor());
+            medicalRecorded.setWeight(medicalFishRequests.getWeight());
+            medicalRecorded.setHealthStatus(medicalFishRequests.getHealthStatus());
 
-            medicalRecordedList.add(medicalRecorded);
             medicalRecordedRepository.save(medicalRecorded); // Lưu từng loại cá koi
-        }
+
 
         // Cập nhật lại danh sách MedicalRecorded cho Appointment
-        appointment.setMedicalRecorded(medicalRecordedList);
+        appointment.setMedicalRecorded(medicalRecorded);
         appointmentRepository.save(appointment);
 
         return medicalFishRequests; // Trả về danh sách các MedicalFishResquest đã lưu

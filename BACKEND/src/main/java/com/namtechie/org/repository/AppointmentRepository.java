@@ -29,4 +29,7 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
             "AND EXTRACT(SECOND FROM ad.appointmentBookingTime) = EXTRACT(SECOND FROM :bookingTime)")
     Appointment findAppointmentByDoctorIdAndBookingDateAndBookingTime(@Param("doctorId") long doctorId, @Param("bookingDate") Date bookingDate, @Param("bookingTime") Time bookingTime);
 
+    List<Appointment> findAppointmentByDoctorId(long doctorId);
+
+    List<Appointment> findAppointmentByCustomersId(long customerId);
 }

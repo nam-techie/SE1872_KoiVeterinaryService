@@ -133,5 +133,27 @@ public class AppointmentController {
         return ResponseEntity.ok(doctor);
     }
 
+    @GetMapping("/findAppointmentDoctorById/{accountId}")
+    @PreAuthorize("hasAuthority('VETERINARY')")
+    public ResponseEntity findAppointmentDoctorById(@PathVariable long accountId) {
+        List<Appointment> appointmentResponses = appointmentService.findAppointmentByAccountId(accountId);
+        return ResponseEntity.ok(appointmentResponses);
+    }
+
+//    @GetMapping("/findAppoinmentId/{accountId}")
+//    @PreAuthorize("hasAuthority('VETERINARY')")
+//    public ResponseEntity findAppoinmentId(@PathVariable long accountId) {
+//        long appointmentId = appointmentService.findAppointmentIdStep(accountId);
+//        return ResponseEntity.ok(appointmentId);
+//    }
+//
+//    @GetMapping("/getAppointmentIdForUser/{accountId}")
+//    @PreAuthorize("hasAuthority('CUSTOMER')")
+//    public ResponseEntity getAppointmentIdForUser(@PathVariable long accountId) {
+//        long appointmentId = appointmentService.getAppointmentIdForUser(accountId);
+//        return ResponseEntity.ok(appointmentId);
+//    }
+
+
 }
 

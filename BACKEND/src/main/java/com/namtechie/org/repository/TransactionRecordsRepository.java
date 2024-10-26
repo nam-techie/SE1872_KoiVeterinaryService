@@ -12,4 +12,5 @@ public interface TransactionRecordsRepository extends JpaRepository<TransactionR
 
     TransactionRecords findByPaymentIdAndPrice(Long paymentId, long price);
 
+    List<TransactionRecords> findByPaymentIdAndStatus(Long paymentId, boolean status);
 }

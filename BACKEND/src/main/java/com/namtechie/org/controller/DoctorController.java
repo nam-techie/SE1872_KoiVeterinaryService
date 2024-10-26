@@ -48,8 +48,9 @@ public class DoctorController {
 //    }
 
     @PostMapping("/createInfoFish/{appointmentId}")
-    public ResponseEntity<List<MedicalFishResquest>> addInfoFish(@PathVariable long appointmentId, @RequestBody List<MedicalFishResquest> medicalFishResquests) {
-        List<MedicalFishResquest> createFish = doctorService.createFishInfor(appointmentId, medicalFishResquests);
+    @PreAuthorize("hasAuthority('VETERINARY')")
+    public ResponseEntity  addInfoFish(@PathVariable long appointmentId, @RequestBody MedicalFishResquest medicalFishResquests) {
+        MedicalFishResquest createFish = doctorService.createFishInfor(appointmentId, medicalFishResquests);
         return ResponseEntity.ok(createFish);
     }
 

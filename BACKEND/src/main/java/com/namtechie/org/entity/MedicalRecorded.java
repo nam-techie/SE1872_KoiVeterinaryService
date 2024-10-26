@@ -12,8 +12,8 @@ public class MedicalRecorded {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @ManyToOne
-    @JoinColumn(name = "appointment_id", nullable = false)
+    @OneToOne
+    @JoinColumn(name = "appointment_id",nullable = false)
     @JsonBackReference
     private Appointment appointment;
 

@@ -91,11 +91,11 @@ public class AuthenticationService implements UserDetailsService {
             CustomerRepository.save(customer);
 
             // Gửi email thông báo đăng kí thành công
-            EmailDetail emailDetail = new EmailDetail();
-            emailDetail.setReceiver(newAccount);
-            emailDetail.setSubject("Welcome to KoiKung Center!");
-            emailDetail.setLink("https://www.google.com/");
-            emailService.sendEmail(emailDetail);
+//            EmailDetail emailDetail = new EmailDetail();
+//            emailDetail.setReceiver(newAccount);
+//            emailDetail.setSubject("Welcome to KoiKung Center!");
+//            emailDetail.setLink("https://www.google.com/");
+//            emailService.sendEmail(emailDetail);
 
             return modelMapper.map(newAccount, AccountResponse.class);
         } catch (DataIntegrityViolationException e) {
