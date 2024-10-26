@@ -134,17 +134,17 @@ export const DoctorNavBar = () => {
                     <MdDashboard className={styles.icon} size={40}/> Tổng quan
                 </a>
                 <a className={styles.DoctorSidebarLink} href="/doctor/doctor-work-schedule">
-                    <AiFillSchedule className={styles.icon} size={40}/> Lịch Làm Việc
+                    <AiFillSchedule className={styles.icon} size={40}/> Lịch làm việc
                 </a>
                 <a className={styles.DoctorSidebarLink} href="/doctor/doctor-appointment">
-                    <PiNewspaperClippingFill className={styles.icon} size={40}/> Lịch Đặt
+                    <PiNewspaperClippingFill className={styles.icon} size={40}/> Lịch đặt
                 </a>
                 <a className={styles.DoctorSidebarLink} href="/doctor/doctor-booking">
-                    <FaRegCalendarPlus className={styles.icon} size={40}/> Dịch Vụ Đặt Thêm
+                    <FaRegCalendarPlus className={styles.icon} size={40}/> Thêm Dịch vụ
                 </a>
                 <hr className={styles.separator}/>
                 <a className={styles.DoctorSidebarLink} href="#logout" onClick={handleLogout}>
-                    <IoLogOutSharp className={styles.icon} size={40}/> Đăng Xuất
+                    <IoLogOutSharp className={styles.icon} size={40}/> Đăng xuất
                 </a>
             </div>
         </div>
