@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Button, Modal, Form, Input, List } from 'antd';
-import styles from '../../styles/DoctorAppointment.module.css';
+import styles from '../doctor_Pages/styles/DoctorAppointment.module.css';
 import {DoctorNavBar} from "../../components/Navbar.jsx"; // Assuming you're using CSS Modules
 
 function DoctorAppointment() {

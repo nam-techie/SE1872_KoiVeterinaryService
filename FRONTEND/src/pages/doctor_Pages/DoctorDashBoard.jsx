@@ -1,7 +1,7 @@
 import { DoctorNavBar } from "../../components/Navbar.jsx";
 import { Card, Row, Col } from 'antd';
-import styles from "../../styles/DoctorDashBoard.module.css";
-import  avatar from "../../assets/homePage_images/doctorAvatar.jpg"
+import styles from '../doctor_Pages/styles/DoctorDashBoard.module.css';
+import  avatar from "../../assets/homePage_images/doctorAvatar.jpg";
 
 function DoctorDashBoard() {
     // Mock data for doctor information with image URL
