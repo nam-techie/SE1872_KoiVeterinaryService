@@ -1,58 +1,91 @@
-
-import '../styles/Footer.css'; // Tạo file CSS riêng để định dạng
-import logo from "../assets/images/logo.png"
+import styles from "../styles/Footer.module.css";
+import '@fortawesome/fontawesome-free/css/all.min.css'; // FontAwesome for icons
 
 function Footer() {
-  return (
-    <footer className="footer-container">
-      <div className="footer-content">
-        <div className="footer-section logo-section">
-          <img src={logo} alt="Koikung Logo" />
-          <p>Tận tâm, chuyên nghiệp - Tạo nên sự khác biệt</p>
-          <p>Copyright © 2024 Koikung</p>
-          <div className="social-icons">
-            <a href="#"><i className="fab fa-facebook"></i></a>
-            <a href="#"><i className="fab fa-instagram"></i></a>
-          </div>
-        </div>
-        <div className="footer-section links-section">
-          <h3>Về Koikung</h3>
-          <ul>
-            <li><a href="#">Tầm nhìn</a></li>
-            <li><a href="#">Chuyên gia</a></li>
-            <li><a href="#">Quy trình</a></li>
-            <li><a href="#">Chính sách</a></li>
-          </ul>
-        </div>
-        <div className="footer-section links-section">
-          <h3>Dịch vụ</h3>
-          <ul>
-            <li><a href="#">Tư vấn trực tuyến </a></li>
-            <li><a href="#">Khảo sát tại tại nhà</a></li>
-            <li><a href="#">Đặt lịch tại trung tâm</a></li>
-            <li><a href="#">Y tế tại nhà</a></li>
-          </ul>
-        </div>
-        <div className="footer-section map-section">
-          <iframe
-            src="https://www.google.com/maps/embed?pb=..."
-            width="300"
-            height="200"
-            allowFullScreen=""
-            loading="lazy"
-            title="Google Map"
-          ></iframe>
-        </div>
-      </div>
-      <div className="footer-bottom">
-        <p>
-          Các thông tin trên website Koikung chỉ nhằm mục đích tham khảo. Tất cả
-          ý kiến, nội dung và thông tin không thay thế cho chẩn đoán và điều trị
-          của bác sĩ. Cảm ơn quý khách đã tin tưởng dịch vụ chăm sóc của Koikung.
-        </p>
-      </div>
-    </footer>
-  );
-};
+    return (
+        <footer className={styles.footerContainer}>
+            <div className={styles.footerContent}>
+                {/* Phần Về Koikung */}
+                <div className={styles.footerSection}>
+                    <h3 className={styles.footerSectionTitle}>Về KoiKung</h3>
+                    <ul className={styles.footerList}>
+                        <li className={styles.footerListItem}><a href="#" className={styles.footerLink}>Giới thiệu</a>
+                        </li>
+                        <li className={styles.footerListItem}><a href="#" className={styles.footerLink}>Bác sĩ</a></li>
+                        <li className={styles.footerListItem}><a href="#" className={styles.footerLink}>Điều khoản Dịch
+                            vụ</a></li>
+                        <li className={styles.footerListItem}><a href="#" className={styles.footerLink}>Câu hỏi thường
+                            gặp</a></li>
+                    </ul>
+                </div>
+
+                {/* Phần Dịch vụ */}
+                <div className={styles.footerSection}>
+                    <h3 className={styles.footerSectionTitle}>Dịch vụ</h3>
+                    <ul className={styles.footerList}>
+                        <li className={styles.footerListItem}><a href="#" className={styles.footerLink}>Tư vấn trực
+                            tuyến</a></li>
+                        <li className={styles.footerListItem}><a href="#" className={styles.footerLink}>Khảo sát tại
+                            nhà</a></li>
+                        <li className={styles.footerListItem}><a href="#" className={styles.footerLink}>Đặt lịch tại
+                            trung tâm</a></li>
+                        <li className={styles.footerListItem}><a href="#" className={styles.footerLink}>Y tế tại nhà</a>
+                        </li>
+                    </ul>
+                </div>
+
+                {/* Phần Liên hệ */}
+                <div className={`${styles.footerSection} ${styles.contactSection}`}>
+                    <h3 className={styles.footerSectionTitle}>Liên hệ với chúng tôi</h3>
+                    <ul className={styles.footerList}>
+                        <li className={styles.footerListItem}>
+                            <i className={`fas fa-envelope ${styles.contactSectionIcon}`}></i>
+                            <span>Koikungcenter@gmail.com</span>
+                        </li>
+                        <li className={styles.footerListItem}>
+                            <i className={`fas fa-phone ${styles.contactSectionIcon}`}></i>
+                            <span>1800.999 (Miễn phí)</span>
+                        </li>
+                        <li className={styles.footerListItem}>
+                            <i className={`fas fa-map-marker-alt ${styles.contactSectionIcon}`}></i>
+                            <span> Lô E2a-7, Đường D1, Long Thạnh Mỹ, Thủ Đức, TP.HCM</span>
+                        </li>
+                    </ul>
+                </div>
+
+                {/* Phần Google Maps */}
+                <div className={styles.mapSection}>
+                    <iframe
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3918.6100105370124!2d106.80730807480579!3d10.841127589311634!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752731176b07b1%3A0xb752b24b379bae5e!2sFPT%20University%20HCMC!5e0!3m2!1sen!2s!4v1728661899242!5m2!1sen!2s"
+                        width="300"
+                        height="200"
+                        style={{border: "0"}}
+                        allowFullScreen=""
+                        loading="lazy"
+                        title="Google Map"
+                        referrerPolicy="no-referrer-when-downgrade"
+                    ></iframe>
+                </div>
+            </div>
+
+            {/* Phần mạng xã hội */}
+            <div className={styles.socialMedia}>
+                <a href="#" className={styles.socialIcon}><i className="fab fa-facebook-f"></i></a>
+                <a href="#" className={styles.socialIcon}><i className="fab fa-youtube"></i></a>
+            </div>
+
+            {/* Phần Footer Bottom */}
+            <div className={styles.footerBottom}>
+                <p>
+                    Các thông tin trên Website Koikung chỉ nhằm mục đích tham khảo. Tất cả ý kiến, nội dung và thông tin
+                    không thay thế cho chẩn đoán và điều trị của bác sĩ. Cảm ơn Quý khách đã tin tưởng dịch vụ chăm sóc
+                    của
+                    chúng tôi.
+                </p>
+                <p>© 2024 Trung tâm KoiKung. Tất cả các quyền được bảo lưu.</p>
+            </div>
+        </footer>
+    );
+}
 
 export default Footer;

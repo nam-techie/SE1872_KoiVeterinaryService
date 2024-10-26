@@ -1,0 +1,150 @@
+.aboutMeContainer{
+    font-family: Arial, Helvetica, sans-serif;
+    padding: 120px 20px 20px; /* padding-top, padding-left/right, padding-bottom */
+    width: 100%;
+    max-width: 1300px;
+    margin: 0 auto; /* Căn giữa */
+    position: relative;
+}
+
+.orangeLine{
+    width: 40%;
+    height: 0;
+    border: 0.1rem solid orangered;
+    margin-top: 20px;
+    margin-bottom: 30px;
+}
+
+.breadCrumb {
+    display: flex; /* Sử dụng flexbox cho breadcrumb */
+    align-items: center; /* Căn giữa biểu tượng và văn bản */
+    padding-left: 20px;
+}
+
+.breadCrumb a { /* Xóa gạch chân cho link */
+ /* Màu sắc cho chữ */
+    margin-right: 5px; /* Khoảng cách giữa link và biểu tượng */
+    text-decoration: underline;
+    color: purple;
+}
+
+.breadCrumb span{
+    color: darkorange;
+}
+
+.aboutMeFirst {
+    padding-top: 20px;
+    width: 100%; /* Đảm bảo container chiếm toàn bộ chiều rộng */
+}
+
+.aboutMeFirstContent {
+    display: flex; /* Sử dụng flexbox để chia thành 2 cột */
+    width: 100%; /* Đảm bảo nội dung chiếm toàn bộ chiều rộng */
+}
+
+.aboutMeFirstContentLeft,
+.aboutMeFirstContentRight {
+    flex: 1; /* Mỗi phần sẽ chiếm 50% chiều rộng */
+    padding: 20px; /* Thêm khoảng cách cho các phần bên trong */
+}
+
+.aboutMeFirstContentLeft {
+    background-color: #ffdcb5;
+}
+
+.aboutMeFirstContentRight {
+    flex: 0 0 50%; /* Đặt phần hình ảnh chiếm 50% chiều rộng */
+    display: flex; /* Để căn giữa hình ảnh */
+    justify-content: center; /* Căn giữa hình ảnh theo chiều ngang */
+    align-items: center; /* Căn giữa hình ảnh theo chiều dọc */
+    color: #FF8C00;
+}
+
+.aboutMeFirstContentRight img {
+    max-width: 100%; /* Đảm bảo hình ảnh không vượt quá chiều rộng của container */
+    height: auto;
+    padding-left: 120px/* Để hình ảnh duy trì tỷ lệ khung hình */
+}
+
+.aboutMeSecond{
+    padding-top: 20px;
+    font-size: 1.2rem;
+}
+
+.aboutMeCardContent {
+    display: flex; /* Sử dụng flexbox để căn giữa các thẻ */
+    justify-content: space-between; /* Căn giữa các thẻ */
+    gap: 20px; /* Khoảng cách giữa các thẻ */
+    padding: 20px; /* Padding cho các phần */
+    font-family: Arial, sans-serif; /* Font chữ chung */
+}
+
+.aboutmeCard {
+    background-color: #fff; /* Màu nền cho thẻ */
+    border-radius: 15px; /* Bo tròn góc */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Bóng đổ cho thẻ */
+    padding: 20px; /* Padding cho thẻ */
+    width: 30%; /* Chiếm 30% chiều rộng */
+    transition: transform 0.3s ease-in-out; /* Hiệu ứng khi hover */
+}
+
+.aboutmeCard:hover {
+    transform: translateY(-10px); /* Nâng thẻ lên khi hover */
+}
+
+.aboutmeCardTitle {
+    font-size: 18px; /* Kích thước chữ cho tiêu đề */
+    font-weight: bold; /* Chữ đậm */
+    margin-bottom: 10px; /* Khoảng cách dưới tiêu đề */
+}
+
+.aboutmeCardText {
+    font-size: 16px; /* Kích thước chữ cho văn bản */
+    line-height: 1.6; /* Khoảng cách giữa các dòng */
+    color: #333; /* Màu chữ */
+}
+
+.aboutmeCard h3{
+    color: #ff9966; /* Màu cho tiêu đề thẻ thứ hai */
+}
+
+.aboutmeThird {
+    padding: 50px; /* Padding cho phần */
+    font-family: Arial, sans-serif; /* Font chữ chung */
+}
+
+.aboutmeThirdContent {
+    display: flex; /* Sử dụng flexbox để chia thành 2 cột */
+    justify-content: space-between; /* Căn giữa các phần */
+    gap: 20px; /* Khoảng cách giữa các phần */
+}
+
+.aboutmeThirdLeft {
+    flex: 1; /* Chiếm 50% chiều rộng */
+    background-color: #f8d9bc; /* Màu nền cho phần bên trái (có thể thay đổi nếu cần) */
+    padding: 20px; /* Padding cho nội dung bên trái */
+}
+
+.aboutmeThirdLeft h2 {
+    font-size: 24px; /* Kích thước chữ cho tiêu đề */
+    text-align: left; /* Căn trái */
+}
+
+.aboutmeThirdLeft p {
+    font-size: 16px; /* Kích thước chữ cho văn bản */
+    line-height: 1.6; /* Khoảng cách giữa các dòng */
+    color: #333; /* Màu chữ cho văn bản */
+}
+
+.aboutmeThirdRight {
+    flex: 0 0 35%; /* Đặt phần hình ảnh chiếm 35% chiều rộng */
+    display: flex; /* Để căn giữa hình ảnh */
+    justify-content: center; /* Căn giữa hình ảnh theo chiều ngang */
+    align-items: center; /* Căn giữa hình ảnh theo chiều dọc */
+}
+
+.aboutmeThirdRight img {
+    max-width: 100%; /* Đảm bảo hình ảnh không vượt quá chiều rộng của container */
+    height: auto; /* Để hình ảnh duy trì tỷ lệ khung hình */
+}
+

@@ -1,6 +1,5 @@
 package com.namtechie.org.config;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.namtechie.org.model.response.AccountResponse;
 import com.namtechie.org.service.AuthenticationService;
 import com.namtechie.org.service.TokenService;

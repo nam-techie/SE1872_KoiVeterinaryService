@@ -1,0 +1,23 @@
+.buttonContainer {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-family: Arial, sans-serif;
+    z-index:500000;
+}
+
+.userIcon {
+    width: 50px;
+    height: 50px;
+}
+
+.zaloButton {
+    background-color: white;
+    border-radius: 50%;
+    padding: 10px;
+    color: white;
+    text-decoration: none;
+}

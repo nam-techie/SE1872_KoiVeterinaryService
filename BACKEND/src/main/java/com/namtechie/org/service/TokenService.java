@@ -7,6 +7,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -106,6 +107,13 @@ public class TokenService {
     public boolean isTokenBlacklisted(String token) {
         cleanUpBlacklistedTokens(); // Xóa các token đã hết hạn trước khi kiểm tra
         return blacklistedTokens.containsKey(token);
+    }
+
+    public String getToken(String authHeader) {
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            return null;
+        }
+        return authHeader.substring(7); // Bỏ qua "Bearer "
     }
 
 }

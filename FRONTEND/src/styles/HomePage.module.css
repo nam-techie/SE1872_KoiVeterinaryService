@@ -1,0 +1,251 @@
+.homePageContainer {
+    font-family: Arial, Helvetica, sans-serif;
+    padding: 150px 20px 20px; /* padding-top, padding-left/right, padding-bottom */
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto; /* Căn giữa */
+    position: relative;
+}
+
+.sliderItem {
+    position: relative;
+}
+
+.sliderImage {
+    width: 100%;
+    height: 400px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.homePageFirstContent {
+    position: relative;
+}
+
+.buttonsContainer {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    z-index: 10;
+    width: 50%;
+    color: white;
+}
+
+.homePageFirstContent h1 {
+    color: white;
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.homePageFirstContent span {
+    padding-top: 20px;
+    color: white;
+    font-size: 1.2rem;
+}
+
+.myMasonryGrid {
+    display: flex;
+    width: 100%;
+}
+
+.myMasonryGridColumn {
+    padding: 10px;
+}
+
+.functionButton {
+    display: flex;
+    align-items: center;
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 10px 15px;
+    margin-right: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    color: #FF8C00;
+    font-weight: bold;
+    text-align: left;
+    width: auto;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+.functionButton:hover {
+    background-color: #ea8045;
+}
+.functionButton:hover h4{
+    color: white;
+}
+
+.functionIcon {
+    color: #FF8C00;
+    margin-right: 10px;
+}
+
+.functionButton h4 {
+    margin: 0;
+    color: #FF8C00;
+}
+
+/* Cấu trúc cho phần thứ hai */
+.homePageSecond {
+    padding: 40px 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.orangeLine{
+  width: 40%;
+  height: 0;
+  border: 0.1rem solid orangered;
+  margin-top: 20px;
+  margin-bottom: 30px;
+}
+
+.homePageSecondTitle {
+    margin-bottom: 40px;
+    padding-left: 0;
+}
+
+.homePageSecondTitle h1 .homePageThird h1 .homePageFourth h1{
+    text-align: left;
+    font-size: 2.5rem;
+    color: #333;
+    margin: 0;
+}
+
+.homePageSecondContent {
+    display: flex;
+    justify-content: space-between;
+    gap: 40px;
+    padding: 40px 20px;
+    text-align: left;
+}
+
+/* Phần bên phải chia 4 ô */
+.homePageSecordRightPart {
+    flex-basis: 45%;
+    display: flex;
+    flex-direction: column; /* Thay đổi thành sắp xếp theo chiều dọc */
+    align-items: center; /* Căn giữa icon và tiêu đề */
+    gap: 10px; /* Khoảng cách giữa các phần */
+    text-align: left;
+}
+
+.hPSRPIcon {
+    color: #FF4500;
+    font-size: 40px;
+    margin-bottom: 10px; /* Khoảng cách dưới icon */
+    text-align: left;
+}
+
+.hPSRPContent {
+    font-size: 16px;
+    color: #333;
+    line-height: 1.5;
+}
+
+h2 {
+    font-size: 20px;
+    color: #FF4500;
+    margin-bottom: 10px;
+}
+
+/* Đảm bảo phần hình ảnh bên trái */
+.homePageSecondLeft {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.homePageSecondLeft img {
+    width: 70%;
+    height: auto;
+    border-radius: 10px;
+    margin-right: 20px;
+    margin-bottom: 30px;
+}
+
+.homePageSecondRight {
+    flex: 1;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content:left;
+    gap: 20px;
+}
+
+.doctorCard {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 10px;
+    background-color: white;
+    transition: transform 0.2s ease-in-out;
+    width: 250px;
+    margin: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Thêm bóng cho thẻ */
+}
+
+.doctorCard:hover {
+    transform: scale(1.05);
+}
+
+.doctorImage {
+    width: 100px; /* Hoặc điều chỉnh kích thước theo ý muốn */
+    height: 100px; /* Hoặc điều chỉnh kích thước theo ý muốn */
+    border-radius: 50%; /* Bo cong thành hình tròn */
+    object-fit: cover; /* Đảm bảo hình ảnh không bị biến dạng */
+    margin-bottom: 15px; /* Khoảng cách giữa hình và thông tin */
+    border: 2px solid #ddd; /* Đường viền cho hình ảnh */
+}
+
+.doctorInf {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.doctorName {
+    font-size: 1.5rem;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.doctorDetail {
+    font-size: 1rem;
+    color: #666;
+    margin-bottom: 5px;
+    line-height: 1.4; /* Khoảng cách giữa các dòng */
+}
+
+.homePageFourth{
+    padding-top: 30px;
+}
+
+.myMansoryGrid2{
+    display: flex;
+    justify-content: center;
+    margin: 0 auto;
+    padding: 0 20px;
+    width: 100%;
+    max-width: 1200px;
+}
+ .MansoryGrid2Colum{
+     padding-left: 10px;
+     background-clip: padding-box;
+ }
+
+ .myMansoryGrid2 img{
+     width: 100%;
+     display: block;
+     border-radius: 10px;
+     object-fit: cover;
+     max-height: 150px;
+     margin-bottom: 10px;
+ }

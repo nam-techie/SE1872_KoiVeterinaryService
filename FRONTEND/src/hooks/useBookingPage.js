@@ -1,33 +1,40 @@
-import { useState, useEffect } from 'react';
-import { VeterianScheduleHome, VeterianScheduleCenterByID, VeterianScheduleCenter } from '../services/apiVeterian.js';
+import {useState, useEffect} from 'react';
+import {getdoctorScheduleHome, getdoctorScheduleCenter, getdoctorScheduleCenterByID} from '../service/apiDoctor.js';
 import {useNavigate} from "react-router-dom";
+import {postBookingData} from "../service/apiAppointments.js";
 
-export default function useBookingPage() {
-    const [serviceType, setServiceType] = useState('');  // Loại dịch vụ
-    const [phoneNumber, setPhoneNumber] = useState('');  // Số điện thoại
-    const [description, setDescription] = useState('');  // Mô tả
-    const [selectedDate, setSelectedDate] = useState('');  // Ngày đã chọn
-    const [selectedTime, setSelectedTime] = useState('');  // Thời gian đã chọn
-    const [detailedAddress, setDetailedAddress] = useState('');  // Địa chỉ chi tiết
-    const [selectedDistrict, setSelectedDistrict] = useState('');  // Quận/Huyện đã chọn
-    const [selectedDoctor, setSelectedDoctor] = useState('dr0');  // Bác sĩ đã chọn
-    const [availableTimes, setAvailableTimes] = useState([]);  // Các khung thời gian có sẵn
-    const [dateOptions, setDateOptions] = useState([]);  // Các ngày có sẵn
-    const [errors, setErrors] = useState({ phoneNumber: '', detailedAddress: '', selectedDate: '', selectedTime: '', selectedDistrict: '' });  // Lỗi
-    const [showConfirm, setShowConfirm] = useState(false);  // Trạng thái hiển thị xác nhận
-    const navgigate = useNavigate();
+export function useBookingPage() {
+    const [serviceType, setServiceType] = useState('');
+    const [phoneNumber, setPhoneNumber] = useState('');
+    const [description, setDescription] = useState('');
+    const [selectedDate, setSelectedDate] = useState('');
+    const [selectedTime, setSelectedTime] = useState('');
+    const [detailedAddress, setDetailedAddress] = useState('');
+    const [selectedDistrict, setSelectedDistrict] = useState('');
+    const [selectedDoctor, setSelectedDoctor] = useState('dr0');
+    const [availableTimes, setAvailableTimes] = useState([]);
+    const [dateOptions, setDateOptions] = useState([]);
+    const [errors, setErrors] = useState({
+        phoneNumber: '',
+        detailedAddress: '',
+        selectedDate: '',
+        selectedTime: '',
+        selectedDistrict: ''
+    });
+    const [showConfirm, setShowConfirm] = useState(false);
+    const [agree, setAgree] = useState(false);  // Thêm trạng thái checkbox
+    const navigate = useNavigate();
+
     const sortDates = (dates) => {
-        return dates.sort((a, b) => new Date(a) - new Date(b));  // Sắp xếp ngày theo thứ tự tăng dần
+        return dates.sort((a, b) => new Date(a) - new Date(b));
     };
 
     const fetchHomeServiceTimes = async () => {
         try {
-            const data = await VeterianScheduleHome();
+            const data = await getdoctorScheduleHome();
             let filteredDates = Object.keys(data).filter((date) => data[date].some(slot => slot.available));
-
             filteredDates = sortDates(filteredDates);
             setDateOptions(filteredDates);
-
             const availableTimesData = data[selectedDate]?.filter(time => time.available) || [];
             setAvailableTimes(availableTimesData);
         } catch (error) {
@@ -37,12 +44,10 @@ export default function useBookingPage() {
 
     const fetchCenterService = async () => {
         try {
-            const data = await VeterianScheduleCenter();
+            const data = await getdoctorScheduleCenter();
             let filteredDates = Object.keys(data).filter((date) => data[date].some(slot => slot.available));
-
             filteredDates = sortDates(filteredDates);
             setDateOptions(filteredDates);
-
             const availableTimesData = data[selectedDate]?.filter(time => time.available) || [];
             setAvailableTimes(availableTimesData);
         } catch (error) {
@@ -52,11 +57,9 @@ export default function useBookingPage() {
 
     const fetchCenterServiceTimesByID = async () => {
         try {
-            const data = await VeterianScheduleCenterByID(selectedDoctor);
-
+            const data = await getdoctorScheduleCenterByID(selectedDoctor);
             const availableTimesData = data[selectedDate]?.filter(time => time.available) || [];
             setAvailableTimes(availableTimesData);
-
             let dateList = Object.keys(data);
             dateList = sortDates(dateList);
             setDateOptions(dateList);
@@ -83,32 +86,26 @@ export default function useBookingPage() {
         }
     }, [selectedDate, selectedDoctor, serviceType]);
 
-    useEffect(() => {
-        if (selectedDate) {
-            console.log('Selected Date has been updated:', selectedDate);
-        }
-    }, [selectedDate]);
-
     const handleDoctorSelect = (doctorId) => {
         setSelectedDoctor(doctorId);
-        setSelectedDate('');  // Reset ngày khi chọn bác sĩ khác
+        setSelectedDate(''); // Reset ngày và thời gian khi chọn bác sĩ khác
         setAvailableTimes([]);
         setDateOptions([]);
     };
 
     const handleConfirm = () => {
         const hasErrors = handleSubmit();
-        if (!hasErrors) {
-            setShowConfirm(true);  // Hiển thị modal xác nhận
+        if (!hasErrors && agree) {  // Chỉ cho phép tiếp tục nếu đồng ý điều khoản
+            setShowConfirm(true);
+        } else if (!agree) {
+            alert('Bạn cần đồng ý với Điều Khoản và Dịch Vụ trước khi tiếp tục.');
         }
     };
 
     const handleFinalSubmit = async () => {
-        setShowConfirm(false);  // Đóng modal xác nhận và gửi form
-
+        setShowConfirm(false);
         const createdDate = new Date();
         const currentTime = `${createdDate.getHours()}:${createdDate.getMinutes()}:${createdDate.getSeconds()}`;
-
         const finalSelectedDate = serviceType === '1' ? createdDate.toISOString().split('T')[0] : selectedDate;
         const finalSelectedTime = serviceType === '1' ? currentTime : selectedTime;
         const finalDetailedAddress = (serviceType === '1' || serviceType === '3') ? null : detailedAddress;
@@ -127,15 +124,27 @@ export default function useBookingPage() {
             createdDate: createdDate.toISOString(),
         };
 
-        console.log('Booking data submitted:', bookingData);
-        // Call the API to submit bookingData here
+        console.log(bookingData)
 
-        navgigate("/booking-service-history");
+        try {
+            const response = await postBookingData(bookingData);
+            if (response.status === 200 || response.status === 201) {
+                navigate("/booking-service-history");
+            }
+        } catch (error) {
+            console.error('Error submitting booking:', error);
+        }
     };
 
     const handleSubmit = () => {
         let hasErrors = false;
-        const newErrors = { phoneNumber: '', detailedAddress: '', selectedDate: '', selectedTime: '', selectedDistrict: '' };
+        const newErrors = {
+            phoneNumber: '',
+            detailedAddress: '',
+            selectedDate: '',
+            selectedTime: '',
+            selectedDistrict: ''
+        };
 
         if (!phoneNumber) {
             newErrors.phoneNumber = 'Số điện thoại là bắt buộc';
@@ -144,7 +153,7 @@ export default function useBookingPage() {
 
         if ((serviceType === '2' || serviceType === '4') && !detailedAddress) {
             newErrors.detailedAddress = 'Vui lòng nhập địa chỉ chi tiết cho dịch vụ tại nhà';
-            newErrors.selectedDistrict = 'Vui lòng chọn hãy chọn quận ';
+            newErrors.selectedDistrict = 'Vui lòng chọn quận';
             hasErrors = true;
         }
 
@@ -179,6 +188,7 @@ export default function useBookingPage() {
         selectedDistrict,
         setSelectedDistrict,
         selectedDoctor,
+        setSelectedDoctor,
         availableTimes,
         dateOptions,
         errors,
@@ -187,5 +197,8 @@ export default function useBookingPage() {
         handleFinalSubmit,
         handleSubmit,
         showConfirm,
+        setShowConfirm,
+        agree,
+        setAgree,  // Trả về setAgree để quản lý checkbox
     };
 }

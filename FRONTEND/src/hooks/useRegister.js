@@ -1,5 +1,5 @@
 import {useState} from 'react';
-import {register} from '../services/apiRegister.js'; // Service đăng ký
+import {register} from '../service/apiRegister.js'; // Service đăng ký
 
 export const useRegister = () => {
     const [username, setUsername] = useState('');
