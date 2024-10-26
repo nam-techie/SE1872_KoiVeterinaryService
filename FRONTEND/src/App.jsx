@@ -18,6 +18,7 @@ import TermAndRefund from "./pages/TermAndRefund.jsx";
 import FindDoctor from './pages/FindDoctor';
 import Dashboard from "./pages/admin_Pages/Dashboard.jsx";
 import DoctorWorkSchedule from "./pages/doctor_Pages/DoctorWorkSchedule.jsx";
+import DoctorBooking from "./pages/doctor_Pages/DoctorBooking.jsx";
 
 
 function App() {
@@ -71,6 +72,12 @@ function App() {
                     <Route path="/doctor/doctor-work-schedule" element={
                         <RoleBasedRoute allowedRoles={['VETERINARY', 'ADMIN']}>
                             <DoctorWorkSchedule/>
+                        </RoleBasedRoute>
+                    }/>
+
+                    <Route path="/doctor/doctor-booking" element={
+                        <RoleBasedRoute allowedRoles={['VETERINARY', 'ADMIN']}>
+                            <DoctorBooking/>
                         </RoleBasedRoute>
                     }/>
 

@@ -139,7 +139,7 @@ export const DoctorNavBar = () => {
                 <a className={styles.DoctorSidebarLink} href="/doctor/doctor-appointment">
                     <PiNewspaperClippingFill className={styles.icon} size={40}/> Lịch Đặt
                 </a>
-                <a className={styles.DoctorSidebarLink} href="#appointments">
+                <a className={styles.DoctorSidebarLink} href="/doctor/doctor-booking">
                     <FaRegCalendarPlus className={styles.icon} size={40}/> Dịch Vụ Đặt Thêm
                 </a>
                 <hr className={styles.separator}/>

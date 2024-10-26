@@ -1,0 +1,77 @@
+.pageLayout {
+    display: flex;
+    min-height: 100vh;
+}
+
+.sideMenu {
+    width: 220px; /* Tăng chiều rộng một chút */
+    background-color: #FF7245; /* Màu cam như trong hình */
+    padding: 20px 0;
+}
+
+.mainContent {
+    flex-grow: 1;
+    padding: 20px 30px;
+    background-color: #f5f5f5;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+h1 {
+    margin-bottom: 30px;
+    color: #333;
+}
+
+.controls {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.searchInput {
+    width: 300px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.sortSelect {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.bookingTable {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: white;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.bookingTable th {
+    background-color: #4CAF50;
+    color: white;
+    padding: 12px;
+    text-align: left;
+}
+
+.bookingTable td {
+    padding: 12px;
+    border-bottom: 1px solid #ddd;
+}
+
+.bookingTable tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.addOrderButton {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+}
