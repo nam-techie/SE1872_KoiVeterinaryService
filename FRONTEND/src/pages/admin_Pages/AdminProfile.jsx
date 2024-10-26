@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { FaEdit, FaSave, FaEye, FaEyeSlash } from 'react-icons/fa';
 import '../admin_pages/styles/AdminProfile.css';
 import {useAdminInfo} from "./hooks/useAdminInfo.js";
+import LoadingCat from '../../components/LoadingCat.jsx';
 
 const AdminProfile = () => {
     const { admin, loading, error, updateAdminInfo } = useAdminInfo();
@@ -56,7 +57,7 @@ const AdminProfile = () => {
         setShowPassword(!showPassword);
     };
 
-    if (loading) return <div className="admin-profile">Đang tải thông tin...</div>;
+    if (loading) return <LoadingCat />;
     if (error) return <div className="admin-profile">Lỗi: {error}</div>;
 
     return (

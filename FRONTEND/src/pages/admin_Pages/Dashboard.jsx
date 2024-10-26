@@ -191,7 +191,7 @@ const AdminDashboard = () => {
                         <FaHome /> Trang chủ
                     </li>
                     <li className="menu-item"><FaCalendarAlt /> Quản lý lịch hẹn</li>
-                    <li className="menu-item"><FaUsers /> Quản lý khách hàng</li>
+                    <li className="menu-item"><FaUsers /> Quản lý hồ sơ cá Koi</li>
                     <li className="menu-item"><FaUserMd /> Quản lý dịch vụ</li>
                     <li className={`menu-item ${activeTab === 'doctors' ? 'active' : ''}`} onClick={() => setActiveTab('doctors')}>
                         <FaUserMd /> Quản lý bác sĩ

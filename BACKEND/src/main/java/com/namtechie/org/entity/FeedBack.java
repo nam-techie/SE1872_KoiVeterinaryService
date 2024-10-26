@@ -28,4 +28,7 @@ public class FeedBack {
     @Column(nullable = false)
     @CreationTimestamp
     private Date created_date;
+
+    boolean isDeleted;
+
 }

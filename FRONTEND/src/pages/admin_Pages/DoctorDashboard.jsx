@@ -4,6 +4,7 @@ import { FaSearch, FaSort, FaUserMd } from 'react-icons/fa';
 import './styles/DoctorDashboard.css';
 import {useDoctorInfo} from "./hooks/useDoctorInfo.js";
 import DoctorDetailInfo from "./DoctorDetailInfo.jsx"; // Đảm bảo import này tồn tại
+import LoadingCat from '../../components/LoadingCat.jsx';
 
 const DoctorDashboard = ({ onViewDetails, onAddDoctor }) => {
     const { doctors, loading, error, fetchAllDoctors } = useDoctorInfo();
@@ -29,7 +30,7 @@ const DoctorDashboard = ({ onViewDetails, onAddDoctor }) => {
         onViewDetails(doctorId);
     };
 
-    if (loading) return <div>Đang tải...</div>;
+    if (loading) return <LoadingCat />;
     if (error) return <div>Lỗi: {error}</div>;
 
     const sortDoctors = (doctors, sortBy, sortOrder) => {

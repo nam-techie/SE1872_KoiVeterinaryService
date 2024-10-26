@@ -3,6 +3,7 @@ package com.namtechie.org.controller;
 import com.namtechie.org.entity.Account;
 import com.namtechie.org.entity.Customers;
 import com.namtechie.org.entity.Doctor;
+import com.namtechie.org.entity.FeedBack;
 import com.namtechie.org.exception.DuplicateEntity;
 import com.namtechie.org.exception.NotFoundException;
 import com.namtechie.org.model.request.*;
@@ -10,9 +11,11 @@ import com.namtechie.org.model.response.AccountResponse;
 import com.namtechie.org.model.response.AdminAccountResponse;
 import com.namtechie.org.model.response.DoctorInfoResponse;
 import com.namtechie.org.repository.DoctorRepository;
+import com.namtechie.org.repository.FeedbackRepository;
 import com.namtechie.org.service.AuthenticationService;
 import com.namtechie.org.service.CustomerService;
 import com.namtechie.org.service.DoctorService;
+import com.namtechie.org.service.FeedbackService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
@@ -177,6 +180,28 @@ public class AdminController {
         }
     }
 
+    @Autowired
+    private FeedbackRepository feedbackRepository;
+
+    @Autowired
+    private FeedbackService feedbackService;
+
+    @GetMapping("/listAllFeedback")
+    public List<FeedBack> getAllFeedback() {
+        return feedbackRepository.findAll();
+    }
+
+    @DeleteMapping("/deleteFeedback/{id}")
+    public ResponseEntity<String> deleteFeedback(@PathVariable long id) {
+        feedbackService.deleteFeedback(id);
+        return new ResponseEntity<>("Đã xóa thành công.", HttpStatus.ACCEPTED);
+    }
+
+    @PutMapping("/restoreFeedback/{id}")
+    public ResponseEntity<String> restoreFeedback(@PathVariable long feedbackId) {
+        feedbackService.restoreFeedback(feedbackId);
+        return new ResponseEntity<>("Đã khôi phục thành công.", HttpStatus.ACCEPTED);
+    }
 
 
 }
