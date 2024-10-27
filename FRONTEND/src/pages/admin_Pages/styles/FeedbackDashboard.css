@@ -78,3 +78,41 @@ th {
     background-color: #f2f2f2;
     font-weight: bold;
 }
+
+.status-badge {
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.status-badge.active {
+    background-color: #e8f5e9;
+    color: #4caf50;
+}
+
+.status-badge.inactive {
+    background-color: #ffebee;
+    color: #f44336;
+}
+
+.delete-btn, .restore-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    padding: 5px;
+    border-radius: 4px;
+}
+
+.delete-btn {
+    color: #f44336;
+}
+
+.restore-btn {
+    color: #4CAF50;
+}
+
+.delete-btn:hover, .restore-btn:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+}

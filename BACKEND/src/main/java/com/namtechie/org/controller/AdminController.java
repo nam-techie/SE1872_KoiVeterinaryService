@@ -1,18 +1,18 @@
 package com.namtechie.org.controller;
 
-import com.namtechie.org.entity.Account;
-import com.namtechie.org.entity.Customers;
-import com.namtechie.org.entity.Doctor;
+import com.namtechie.org.entity.*;
 import com.namtechie.org.exception.DuplicateEntity;
 import com.namtechie.org.exception.NotFoundException;
 import com.namtechie.org.model.request.*;
 import com.namtechie.org.model.response.AccountResponse;
 import com.namtechie.org.model.response.AdminAccountResponse;
 import com.namtechie.org.model.response.DoctorInfoResponse;
+import com.namtechie.org.model.response.FishResponse;
 import com.namtechie.org.repository.DoctorRepository;
-import com.namtechie.org.service.AuthenticationService;
-import com.namtechie.org.service.CustomerService;
-import com.namtechie.org.service.DoctorService;
+import com.namtechie.org.repository.FeedbackRepository;
+import com.namtechie.org.repository.MedicalRecordedRepository;
+import com.namtechie.org.repository.ServiceTypeRepository;
+import com.namtechie.org.service.*;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
@@ -43,6 +43,10 @@ public class AdminController {
 
     @Autowired
     ModelMapper modelMapper;
+    @Autowired
+    private ServiceTypesService serviceTypesService;
+    @Autowired
+    private MedicalRecordedRepository medicalRecordedRepository;
 
     //APi down is provide for ADMIN
     @PutMapping("/setAccountVeterinary/{email}")
@@ -124,7 +128,7 @@ public class AdminController {
         } catch (Exception e) {
             e.printStackTrace(); // Log lỗi
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                                 .body("Lỗi khi lấy thông tin admin: " + e.getMessage());
+                    .body("Lỗi khi lấy thông tin admin: " + e.getMessage());
         }
     }
 
@@ -177,6 +181,93 @@ public class AdminController {
         }
     }
 
+    @Autowired
+    private FeedbackRepository feedbackRepository;
+
+    @Autowired
+    private FeedbackService feedbackService;
+
+    @GetMapping("/listAllFeedback")
+    public List<FeedBack> getAllFeedback() {
+        return feedbackRepository.findAll();
+    }
+
+    @DeleteMapping("/deleteFeedback/{id}")
+    public ResponseEntity<String> deleteFeedback(@PathVariable long id) {
+        feedbackService.deleteFeedback(id);
+        return new ResponseEntity<>("Đã xóa thành công.", HttpStatus.ACCEPTED);
+    }
+
+    @PutMapping("/restoreFeedback/{id}")
+    public ResponseEntity<String> restoreFeedback(@PathVariable long id) {
+        feedbackService.restoreFeedback(id);
+        return new ResponseEntity<>("Đã khôi phục thành công.", HttpStatus.ACCEPTED);
+    }
+
+    @Autowired
+    private ServiceTypeRepository serviceTypeRepository;
+
+    @GetMapping("/listAllServiceType")
+    public List<ServiceType> getAllServiceType() {
+        return serviceTypeRepository.findAll();
+    }
+
+    @DeleteMapping("/deleteServiceType/{id}")
+    public ResponseEntity<String> deleteServiceType(@PathVariable long id) {
+        serviceTypesService.deleteService(id);
+        return new ResponseEntity<>("Đã xóa thành công.", HttpStatus.ACCEPTED);
+    }
+
+    @PutMapping("/restoreServiceType/{id}")
+    public ResponseEntity<String> restoreServiceType(@PathVariable long id) {
+        serviceTypesService.restoreService(id);
+        return new ResponseEntity<>("Đã khôi phục thành công.", HttpStatus.ACCEPTED);
+    }
+
+    @PutMapping("/editServiceType/{id}")
+    public ResponseEntity<String> editServiceType(@PathVariable long id, @RequestBody ServiceRequest serviceRequest) {
+        try {
+            serviceTypesService.editService(id, serviceRequest);
+            return new ResponseEntity<>("Đã cập nhật thông tin dịch vụ thành công", HttpStatus.ACCEPTED);
+        } catch (DuplicateEntity e) {
+            return new ResponseEntity<>("Dịch vụ đã tồn tại!", HttpStatus.CONFLICT);
+        } catch (RuntimeException e) {
+            return new ResponseEntity<>("Dữ liệu không hợp lệ!", HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PostMapping("/addNewService")
+    public ResponseEntity<String> addNewService(@RequestBody ServiceRequest serviceRequest) {
+        try {
+            serviceTypesService.addService(serviceRequest);
+            return new ResponseEntity<>("Đã thêm thông tin dịch vụ thành công", HttpStatus.CREATED);
+        } catch (DuplicateEntity e) {
+            return new ResponseEntity<>("Dịch vụ đã tồn tại!", HttpStatus.CONFLICT);
+        } catch (RuntimeException e) {
+            return new ResponseEntity<>("Dữ liệu không hợp lệ!", HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @Autowired
+    private MedicalRecordedRepository recordedRepository;
+
+    @Autowired
+    private MedicalRecordedService medicalRecordedService;
+
+    @GetMapping("/listAllFish")
+    public List<FishResponse> getAllFish() {
+        return medicalRecordedService.findAllFish();
+    }
+
+    @PutMapping("/editInfoFish")
+    public ResponseEntity<String> editInfoFish(@RequestBody FishRequest fishRequest) {
+        try {
+            medicalRecordedService.updateInfoFish(fishRequest);
+            return new ResponseEntity<>("Đã thêm thay đổi thôn tin hồ sơ bệnh nhân thành công", HttpStatus.CREATED);
+        } catch (RuntimeException e) {
+            return new ResponseEntity<>("Dữ liệu không hợp lệ!", HttpStatus.BAD_REQUEST);
+        }
+    }
 
 
 }

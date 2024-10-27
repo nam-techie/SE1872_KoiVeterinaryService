@@ -2,7 +2,6 @@ package com.namtechie.org.service;
 
 import com.namtechie.org.entity.Account;
 import com.namtechie.org.entity.Customers;
-import com.namtechie.org.model.request.AdminInfoRequest;
 import com.namtechie.org.model.request.CustomerInfoRequest;
 import com.namtechie.org.model.response.InfoCustomerResponse;
 import com.namtechie.org.repository.AccountRepository;

@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import {axiosInstance} from "../../service/apiRequest.js";
 import { FaEdit, FaArrowLeft } from 'react-icons/fa';
+import LoadingCat from '../../components/LoadingCat.jsx';
 
 import './styles/DoctorDetailInfo.css';
 
@@ -27,7 +28,7 @@ const DoctorDetailInfo = ({ doctorId, onClose, onEdit }) => {
         fetchDoctorInfo();
     }, [doctorId]);
 
-    if (loading) return <div className="loading">Đang tải thông tin bác sĩ...</div>;
+    if (loading) return <LoadingCat />;
     if (error) return <div className="error">{error}</div>;
     if (!doctorInfo) return <div className="not-found">Không tìm thấy thông tin bác sĩ</div>;
 

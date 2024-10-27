@@ -68,6 +68,11 @@ public class DoctorService {
     }
 
 
+    public List<Doctor> getAllInfoDoctor() {
+        List<Doctor> doctors = doctorRepository.findAll();
+        return doctors;
+    }
+
     public DoctorInfoResponse getAllInfoDoctor(long doctorId) {
         DoctorInfoResponse doctorInfoResponse = new DoctorInfoResponse();
 

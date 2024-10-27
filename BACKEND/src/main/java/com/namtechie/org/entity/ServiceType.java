@@ -25,6 +25,8 @@ public class ServiceType {
 
     private String description;
 
+    boolean isDeleted;
+
     @OneToMany(mappedBy = "serviceType", cascade = CascadeType.ALL)
     @JsonIgnoreProperties({"serviceType"})
     private List<Appointment> appointment;

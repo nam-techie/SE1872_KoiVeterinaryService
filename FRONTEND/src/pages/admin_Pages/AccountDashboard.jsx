@@ -4,6 +4,7 @@ import {FaTrash, FaEdit, FaUserPlus, FaUserMd, FaUndo, FaSort} from 'react-icons
 import './styles/AccountDashboard.css';
 import {useAccountInfo} from "./hooks/useAccountInfo.js";
 import AccountUpdateProfile from "./AccountUpdateProfile.jsx";
+import LoadingCat from '../../components/LoadingCat.jsx';
 
 // eslint-disable-next-line react/prop-types
 const AccountDashboard = ({ setActiveTab, setSelectedAccount }) => {
@@ -88,7 +89,7 @@ const AccountDashboard = ({ setActiveTab, setSelectedAccount }) => {
         setEditingAccount(null);
     };
 
-    if (loading) return <div>Đang tải...</div>;
+    if (loading) return <LoadingCat />;
     if (error) return <div>Lỗi: {error}</div>;
 
     return (
@@ -151,7 +152,7 @@ const AccountDashboard = ({ setActiveTab, setSelectedAccount }) => {
                             <th onClick={() => handleSort('username')}>Username</th>
                             <th onClick={() => handleSort('email')}>Email</th>
                             <th onClick={() => handleSort('role')}>Vai trò</th>
-                            <th onClick={() => handleSort('created_at')}>Ngày tạo</th>
+                            <th onClick={() => handleSort('createdAt')}>Ngày tạo</th>
                             <th onClick={() => handleSort('deleted')}>Trạng thái</th>
                             <th>Hành động</th>
                         </tr>
@@ -177,18 +178,19 @@ const AccountDashboard = ({ setActiveTab, setSelectedAccount }) => {
                                     <button className="edit-btn" onClick={() => handleEditAccount(account)}>
                                         <FaEdit />
                                     </button>
-                                    <button 
-                                        className="delete-btn" 
-                                        onClick={() => handleDelete(account.email)}
-                                    >
-                                        <FaTrash />
-                                    </button>
-                                    {account.deleted && (
+                                    {account.deleted ? (
                                         <button 
                                             className="restore-btn" 
                                             onClick={() => handleRestore(account.email)}
                                         >
                                             <FaUndo />
+                                        </button>
+                                    ) : (
+                                        <button 
+                                            className="delete-btn" 
+                                            onClick={() => handleDelete(account.email)}
+                                        >
+                                            <FaTrash />
                                         </button>
                                     )}
                                 </td>
