@@ -1,9 +1,6 @@
 package com.namtechie.org.controller;
 
-import com.namtechie.org.entity.Account;
-import com.namtechie.org.entity.Customers;
-import com.namtechie.org.entity.Doctor;
-import com.namtechie.org.entity.FeedBack;
+import com.namtechie.org.entity.*;
 import com.namtechie.org.exception.DuplicateEntity;
 import com.namtechie.org.exception.NotFoundException;
 import com.namtechie.org.model.request.*;
@@ -12,10 +9,8 @@ import com.namtechie.org.model.response.AdminAccountResponse;
 import com.namtechie.org.model.response.DoctorInfoResponse;
 import com.namtechie.org.repository.DoctorRepository;
 import com.namtechie.org.repository.FeedbackRepository;
-import com.namtechie.org.service.AuthenticationService;
-import com.namtechie.org.service.CustomerService;
-import com.namtechie.org.service.DoctorService;
-import com.namtechie.org.service.FeedbackService;
+import com.namtechie.org.repository.ServiceTypeRepository;
+import com.namtechie.org.service.*;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
@@ -46,6 +41,8 @@ public class AdminController {
 
     @Autowired
     ModelMapper modelMapper;
+    @Autowired
+    private ServiceTypesService serviceTypesService;
 
     //APi down is provide for ADMIN
     @PutMapping("/setAccountVeterinary/{email}")
@@ -198,10 +195,50 @@ public class AdminController {
     }
 
     @PutMapping("/restoreFeedback/{id}")
-    public ResponseEntity<String> restoreFeedback(@PathVariable long feedbackId) {
-        feedbackService.restoreFeedback(feedbackId);
+    public ResponseEntity<String> restoreFeedback(@PathVariable long id) {
+        feedbackService.restoreFeedback(id);
         return new ResponseEntity<>("Đã khôi phục thành công.", HttpStatus.ACCEPTED);
     }
+
+    @Autowired
+    private ServiceTypeRepository serviceTypeRepository;
+
+    @GetMapping("/listAllServiceType")
+    public List<ServiceType> getAllServiceType() {
+        return serviceTypeRepository.findAll();
+    }
+
+    @DeleteMapping("/deleteServiceType/{id}")
+    public ResponseEntity<String> deleteServiceType(@PathVariable long id) {
+        serviceTypesService.deleteService(id);
+        return new ResponseEntity<>("Đã xóa thành công.", HttpStatus.ACCEPTED);
+    }
+
+    @PutMapping("/restoreServiceType/{id}")
+    public ResponseEntity<String> restoreServiceType(@PathVariable long id) {
+        serviceTypesService.restoreService(id);
+        return new ResponseEntity<>("Đã khôi phục thành công.", HttpStatus.ACCEPTED);
+    }
+
+    @PutMapping("/editServiceType/{id}")
+    public ResponseEntity<String> editServiceType(@PathVariable long id, @RequestBody ServiceRequest serviceRequest) {
+        serviceTypesService.editService(id, serviceRequest);
+        return new ResponseEntity<>("Đã cập nhật thông tin dịch vụ thành công", HttpStatus.ACCEPTED);
+    }
+
+    @PostMapping("/addNewService")
+    public ResponseEntity<String> addNewService(@RequestBody ServiceRequest serviceRequest) {
+        try {
+            serviceTypesService.addService(serviceRequest);
+            return new ResponseEntity<>("Đã thêm thông tin dịch vụ thành công", HttpStatus.CREATED);
+        } catch (DuplicateEntity e) {
+            return new ResponseEntity<>("Dịch vụ đã tồn tại!", HttpStatus.CONFLICT);
+        } catch (RuntimeException e) {
+            return new ResponseEntity<>("Dữ liệu không hợp lệ!", HttpStatus.BAD_REQUEST);
+        }
+    }
+
+
 
 
 }

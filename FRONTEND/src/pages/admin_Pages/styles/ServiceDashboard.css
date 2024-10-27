@@ -1,4 +1,4 @@
-.doctor-dashboard {
+.service-dashboard {
     background-color: #fcc151;
     padding: 20px;
     border-radius: 8px;
@@ -15,6 +15,7 @@
 .dashboard-header h2 {
     font-size: 24px;
     color: #333;
+    margin: 0;
 }
 
 .action-buttons {
@@ -22,7 +23,7 @@
     gap: 10px;
 }
 
-.add-doctor-btn, .add-account-btn {
+.add-service-btn {
     display: flex;
     align-items: center;
     padding: 10px 15px;
@@ -30,12 +31,12 @@
     border-radius: 4px;
     cursor: pointer;
     font-size: 14px;
-    transition: background-color 0.3s;
     background-color: #2196F3;
     color: white;
+    transition: background-color 0.3s;
 }
 
-.add-doctor-btn:hover, .add-account-btn:hover {
+.add-service-btn:hover {
     background-color: #1e88e5;
 }
 
@@ -49,12 +50,12 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.search-box, .date-box, .sort-box, .sort-order-btn {
+.search-box, .sort-box {
     flex: 1;
     position: relative;
 }
 
-.search-input, .date-input, .sort-select, .sort-order-btn {
+.search-input, .sort-select {
     width: 100%;
     padding: 10px;
     border: 1px solid #ddd;
@@ -71,49 +72,71 @@
 }
 
 .sort-order-btn {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background-color: #f0f0f0;
+    padding: 10px;
+    background-color: #fcc151;
+    color: white;
+    border: none;
+    border-radius: 4px;
     cursor: pointer;
+    font-size: 14px;
 }
 
-.doctor-table {
+.sort-order-btn:hover {
+    background-color: #1e88e5;
+}
+
+.service-table {
     background-color: white;
     border-radius: 8px;
     overflow: hidden;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-table {
+.service-table table {
     width: 100%;
     border-collapse: collapse;
 }
 
-th, td {
+.service-table th,
+.service-table td {
     padding: 12px;
     text-align: left;
     border-bottom: 1px solid #ddd;
 }
 
-th {
+.service-table th {
     background-color: #f2f2f2;
     font-weight: bold;
 }
 
-.doctor-thumbnail {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    object-fit: cover;
+.service-table td.description {
+    max-width: 300px; /* Điều chỉnh chiều rộng tối đa của cột mô tả */
+    white-space: pre-wrap; /* Cho phép xuống dòng và giữ khoảng trắng */
+    word-wrap: break-word; /* Ngắt từ khi cần thiết */
 }
 
-.action-buttons button {
-    padding: 6px 12px;
+.status-badge {
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 0.9em;
+}
+
+.status-badge.active {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.status-badge.inactive {
+    background-color: #f44336;
+    color: white;
+}
+
+.edit-btn, .delete-btn, .restore-btn {
+    padding: 5px 10px;
+    margin: 0 5px;
     border: none;
     border-radius: 4px;
     cursor: pointer;
-    transition: background-color 0.3s;
 }
 
 .edit-btn {
@@ -123,4 +146,12 @@ th {
 
 .edit-btn:hover {
     background-color: #1e88e5;
+}
+
+.delete-btn {
+    color: #f44336;
+}
+
+.edit-btn:hover, .delete-btn:hover {
+    background-color: rgba(0, 0, 0, 0.1);
 }
