@@ -113,9 +113,13 @@ public class AppointmentController {
     //Tạm thời bở nó ở đây đợi nó có nhà mới
     //Toi nghĩ Service Type thằng nào lấy xem chả được nhỉ?
     @GetMapping(value = "/getAllServiceType", produces = "application/json")
-    public ResponseEntity<List<ServiceType>> getAllServiceType() {
-        return ResponseEntity.ok(serviceTypesService.findAll());
+    public List<ServiceType> getAllServiceType() {
+        return serviceTypesService.findService();
     }
+
+
+
+
 
 
 

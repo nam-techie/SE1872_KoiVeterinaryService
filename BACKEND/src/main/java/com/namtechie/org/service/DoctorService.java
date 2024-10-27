@@ -80,6 +80,7 @@ public class DoctorService {
         doctorInfoResponse.setFullName(doctor.getFullName());
         doctorInfoResponse.setPhone(doctor.getPhone());
         doctorInfoResponse.setExperience(doctor.getExperience());
+        doctorInfoResponse.setImageUrl(doctor.getImageUrl());
 
         DoctorInfo doctorInfo = doctorInfoRepository.findDoctorInfoByDoctorId(doctorId);
         doctorInfoResponse.setDescription(doctorInfo.getDescription());
@@ -107,6 +108,8 @@ public class DoctorService {
             updateDoctorInfo.setDescription(doctorRequest.getDescription());
             updateDoctorInfo.setQualification(doctorRequest.getQualification());
             updateDoctorInfo.setSpecialty(doctorRequest.getSpecialty());
+
+
 
             // Lưu thông tin cập nhật
             doctorRepository.save(updateDoctor);
