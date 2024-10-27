@@ -8,6 +8,7 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -19,6 +20,15 @@ public class ServiceTypesService {
 
     public List<ServiceType> findAll() {
         return serviceTypeRepository.findAll();
+    }
+
+    public List<ServiceType> findService(){
+        List<ServiceType> serviceTypes = new ArrayList<ServiceType>();
+        for(int i = 1; i < 5; i++){
+            ServiceType service = serviceTypeRepository.findById(i);
+            serviceTypes.add(service);
+        }
+        return serviceTypes;
     }
 
     public void deleteService(long serviceId) {
