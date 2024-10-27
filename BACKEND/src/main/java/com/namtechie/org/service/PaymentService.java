@@ -3,7 +3,6 @@ package com.namtechie.org.service;
 import com.namtechie.org.entity.*;
 import com.namtechie.org.model.request.ServiceTypeRequestAll;
 import com.namtechie.org.model.response.PaymentDepositResponse;
-import com.namtechie.org.model.response.PaymentResponse;
 import com.namtechie.org.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,7 +30,7 @@ public class PaymentService {
     private PaymentRepository paymentRepository;
 
     @Autowired
-    private TransactionRecordsRepository transactionRecordsRepository;
+    private PaymentDetailRepository paymentDetailRepository;
 
     @Autowired
     AppointmentStatusRepository appointmentStatusRepository;
@@ -65,28 +64,26 @@ public class PaymentService {
     public void generateTransactionRecords(long appointmentId, Payment payment, long price, String notes) {
         Payment paymentTotal = paymentRepository.findByAppointmentId(appointmentId);
 
-        TransactionRecords transactionLogs = transactionRecordsRepository.findByPaymentIdAndPrice(paymentTotal.getId(), price);
+        PaymentDetail transactionLogs = paymentDetailRepository.findByPaymentIdAndPrice(paymentTotal.getId(), price);
 
         if (transactionLogs != null) {
             transactionLogs.setStatus(true);
             transactionLogs.setNotes(notes);
-            transactionRecordsRepository.save(transactionLogs);
+            transactionLogs.setTransactionDate(new Timestamp(System.currentTimeMillis()));
+            paymentDetailRepository.save(transactionLogs);
         } else {
-            TransactionRecords transactionLog = new TransactionRecords();
+            PaymentDetail transactionLog = new PaymentDetail();
             transactionLog.setPayment(payment);
             transactionLog.setTransactionType("Chuyen khoan");
             transactionLog.setTransactionMethod("VNPay");
             transactionLog.setStatus(false);
             transactionLog.setPrice(price);
             transactionLog.setNotes(notes);
-            transactionRecordsRepository.save(transactionLog);
+            paymentDetailRepository.save(transactionLog);
         }
 
     }
 
-    public void updateTransactionRecords() {
-
-    }
 
     // của customer thuc hien
     public String sendPaymentDeposit(long appointmentId) throws Exception {
@@ -144,7 +141,12 @@ public class PaymentService {
 
         Payment paymentTotal = paymentRepository.findByAppointmentId(appointmentId);
 
-//        TransactionRecords transactionLog = transactionRecordsRepository.findByPaymentId(paymentTotal.getId());
+        if(paymentTotal != null){
+            paymentTotal.setUpdateTime(new Timestamp(System.currentTimeMillis()));
+            paymentRepository.save(paymentTotal);
+        }
+
+//        PaymentDetail transactionLog = transactionRecordsRepository.findByPaymentId(paymentTotal.getId());
 //        transactionLog.setStatus(true);
 //        transactionRecordsRepository.save(transactionLog);
 
@@ -170,7 +172,7 @@ public class PaymentService {
         Payment paymentTotal = paymentRepository.findByAppointmentId(appointmentId);
 
 
-        generateTransactionRecords(appointmentId, paymentTotal, zonePrice, "Đã chuyển tiền phí di chuyển!");
+        generateTransactionRecords(appointmentId, paymentTotal, zonePrice, "Chờ chuyển tiền phí di chuyển!");
 
     }
 
@@ -183,7 +185,7 @@ public class PaymentService {
         Payment paymentTotal = paymentRepository.findByAppointmentId(appointmentId);
 
 
-        generateTransactionRecords(appointmentId, paymentTotal, serviceTypeFee, "Tiền phí dịch vụ kèm thêm!");
+        generateTransactionRecords(appointmentId, paymentTotal, serviceTypeFee, "Chờ chuyển tiền phí dịch vụ kèm thêm!");
 
     }
 
@@ -194,7 +196,6 @@ public class PaymentService {
         Appointment appointment = appointmentRepository.findAppointmentById(appointmentId);
         long totalPrice = 0;
         totalPrice += appointment.getZone().getFee();
-        generatePaymentZone(appointmentId);
         if (serviceTypeRequestAll.isServiceTypeId5() == true) {
             totalPrice += serviceTypeRepository.findById(5).getBase_price();
             generatePaymentServiceType(appointmentId, 5);
@@ -264,6 +265,9 @@ public class PaymentService {
     public String sendPaymentTotalUrlForCustomer(long appointmentId) throws Exception {
         // Lấy thông tin cuộc hẹn từ AppointmentService
         Appointment appointment = appointmentRepository.findAppointmentById(appointmentId);
+
+        generatePaymentZone(appointmentId);
+
         if (appointment == null) {
             throw new IllegalArgumentException("Không tìm thấy thông tin cuộc hẹn với ID: " + appointmentId);
         }
@@ -271,9 +275,9 @@ public class PaymentService {
         long totalPrice = 0;
 
         Payment paymentTotal = paymentRepository.findByAppointmentId(appointmentId);
-        List<TransactionRecords> transactionRecords = transactionRecordsRepository.findByPaymentIdAndStatus(paymentTotal.getId(), false);
-        for (TransactionRecords transactionRecord : transactionRecords) {
-            totalPrice += transactionRecord.getPrice();
+        List<PaymentDetail> paymentDetails = paymentDetailRepository.findByPaymentIdAndStatus(paymentTotal.getId(), false);
+        for (PaymentDetail paymentDetail : paymentDetails) {
+            totalPrice += paymentDetail.getPrice();
         }
 
 
@@ -297,23 +301,26 @@ public class PaymentService {
     }
 
     //admin thuc hien
-    public void updateTotalFee(long appointmentId, ServiceTypeRequestAll serviceTypeRequestAll) {
-        generatePaymentZone(appointmentId);
-        if (serviceTypeRequestAll.isServiceTypeId5() == true) {
-            generatePaymentServiceType(appointmentId, 5);
+    public void updateTotalFee(long appointmentId) {
+        Payment payment = paymentRepository.findByAppointmentId(appointmentId);
+        List<PaymentDetail> paymentDetails = paymentDetailRepository.findByPaymentId(payment.getId());
+        for(PaymentDetail paymentDetail : paymentDetails) {
+            if(!paymentDetail.isStatus()) {
+                if(paymentDetail.getNotes().equals("Chờ chuyển tiền phí di chuyển!")){
+                    paymentDetail.setNotes("Đã chuyển tiền phí di chuyển!");
+                }
+                if(paymentDetail.getNotes().equals("Chờ chuyển tiền phí dịch vụ kèm thêm!")){
+                    paymentDetail.setNotes("Đã chuyển tiền phí dịch vụ kèm thêm!");
+                }
+                paymentDetail.setStatus(true);
+                paymentDetail.setTransactionDate(new Timestamp(System.currentTimeMillis()));
+                paymentDetailRepository.save(paymentDetail);
+            }
         }
-        if (serviceTypeRequestAll.isServiceTypeId6() == true) {
-            generatePaymentServiceType(appointmentId, 6);
-        }
-        if (serviceTypeRequestAll.isServiceTypeId7() == true) {
-            generatePaymentServiceType(appointmentId, 7);
-        }
-        if (serviceTypeRequestAll.isServiceTypeId8() == true) {
-            generatePaymentServiceType(appointmentId, 8);
-        }
-        if (serviceTypeRequestAll.isServiceTypeId9() == true) {
-            generatePaymentServiceType(appointmentId, 9);
-        }
+
+        payment.setUpdateTime(new Timestamp(System.currentTimeMillis()));
+        paymentRepository.save(payment);
+
         Appointment appointment = appointmentRepository.findAppointmentById(appointmentId);
         AppointmentStatus appointmentStatus = new AppointmentStatus();
         appointmentStatus.setAppointment(appointment);

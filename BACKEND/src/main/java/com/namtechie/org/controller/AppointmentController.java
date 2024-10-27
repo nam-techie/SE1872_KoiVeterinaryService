@@ -155,5 +155,11 @@ public class AppointmentController {
 //    }
 
 
+
+    @PutMapping("/cancelAppointmentByCustomer/{appointmentId}")
+    public ResponseEntity cancelAppointmentByCustomer(@PathVariable long appointmentId) {
+        appointmentService.cancelAppointmentByCustomer(appointmentId);
+        return ResponseEntity.ok("Đã hủy thành công");
+    }
 }
 

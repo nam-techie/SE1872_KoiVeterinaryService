@@ -1,6 +1,7 @@
 package com.namtechie.org.service;
 
 import com.namtechie.org.entity.Appointment;
+import com.namtechie.org.exception.DoctorNotAvailableException;
 import com.namtechie.org.exception.NotFoundException;
 import com.namtechie.org.repository.AppointmentRepository;
 
@@ -14,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import javax.print.Doc;
 import java.sql.Date;
 import java.sql.Time;
 import java.time.LocalDate;
@@ -64,7 +66,7 @@ public class AppointmentService {
     }
 
     public List<Appointment> findAppointmentsByDoctorIdAndBookingDate(Long doctorId, Date bookingDate) {
-        return appointmentRepository.findAppointmentsByDoctorIdAndBookingDate(doctorId, bookingDate);
+        return appointmentRepository.findAppointmentsByDoctorIdAndBookingDateAndCancel(doctorId, bookingDate, false);
     }
 
 
@@ -144,7 +146,7 @@ public class AppointmentService {
 
                 // **Nếu đã có cuộc hẹn trong khung giờ đó, tìm bác sĩ khác hoặc thông báo lỗi**
                 if (existingAppointment != null) {
-                    throw new RuntimeException("Khung giờ bác sĩ đã có lịch khám. Mời bạn chọn bác sĩ khác");
+                    throw new DoctorNotAvailableException("Khung giờ bác sĩ đã có lịch khám. Mời bạn chọn bác sĩ khác");
                 }
             }
 
@@ -194,6 +196,10 @@ public class AppointmentService {
                 }
             }
 
+            if(doctor == null){
+                throw new DoctorNotAvailableException("Không có bác sĩ nào rảnh trong khung giờ bạn chọn");
+            }
+
             appointmentInfo.setDescriptions(appointmentRequest.getDescription());
             appointment.setAppointmentInfo(appointmentInfo);
 
@@ -201,7 +207,7 @@ public class AppointmentService {
             List<AppointmentStatus> list = new ArrayList<>();
             AppointmentStatus appointmentStatus = new AppointmentStatus();
             appointmentStatus.setAppointment(appointment);
-            appointmentStatus.setStatus("Waiting veterian confirm");
+            appointmentStatus.setStatus("Chờ bác sĩ xác nhận");
             appointmentStatus.setNotes("");
             list.add(appointmentStatus);
 
@@ -210,8 +216,11 @@ public class AppointmentService {
 
             // Step 6: Lưu Appointment vào cơ sở dữ liệu
             return appointmentRepository.save(appointment);
-        } catch (Exception e) {
-            throw new NotFoundException("Không có bác sĩ nào rảnh trong khung giờ bạn chọn");
+        }catch (DoctorNotAvailableException e){
+            throw new DoctorNotAvailableException(e.getMessage());
+        }
+        catch (Exception e) {
+            throw new RuntimeException("Không thể đặt dịch vụ");
         }
     }
 
@@ -338,7 +347,7 @@ public class AppointmentService {
     public AppointmentStatus confirmDoctorAppointment(long appointmentId, DoctorConfirmRequest doctorConfirmRequest) {
         try {
             AppointmentStatus updateAppointmentStatus = appointmentStatusRepository.findByAppointmentId(appointmentId);
-
+            Appointment appointment = appointmentRepository.findAppointmentById(appointmentId);
             AppointmentStatus status = new AppointmentStatus();
             status.setAppointment(updateAppointmentStatus.getAppointment());
             if (doctorConfirmRequest.isConfirmed() == true) {
@@ -353,6 +362,13 @@ public class AppointmentService {
             e.printStackTrace();
             throw new RuntimeException(e);
         }
+    }
+
+    public void cancelAppointmentByCustomer(long appointmentId) {
+        Appointment appointment = appointmentRepository.findAppointmentById(appointmentId);
+        appointment.setCancel(true);
+
+        appointmentRepository.save(appointment);
 
     }
 }

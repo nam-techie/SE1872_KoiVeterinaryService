@@ -2,7 +2,6 @@ package com.namtechie.org.controller;
 
 import com.namtechie.org.model.request.ServiceTypeRequestAll;
 import com.namtechie.org.model.response.PaymentDepositResponse;
-import com.namtechie.org.model.response.PaymentResponse;
 import com.namtechie.org.service.PaymentService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,8 +31,8 @@ public class PaymentController {
 
     @PostMapping("/confirmPaymentTotal/{appointmentId}")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity paymentTotal(@PathVariable long appointmentId,@RequestBody ServiceTypeRequestAll serviceTypeRequestAll) {
-        paymentService.updateTotalFee(appointmentId,serviceTypeRequestAll);
+    public ResponseEntity paymentTotal(@PathVariable long appointmentId) {
+        paymentService.updateTotalFee(appointmentId);
         return ResponseEntity.ok("Da luu thanh cong");
     }
 

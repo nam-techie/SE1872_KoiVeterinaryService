@@ -10,7 +10,7 @@ import java.sql.Timestamp;
 
 @Entity
 @Data
-public class TransactionRecords {
+public class PaymentDetail {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -30,7 +30,9 @@ public class TransactionRecords {
 
     @CreationTimestamp
     private Timestamp transactionDate;
+
     private boolean status;
+    @Column(columnDefinition = "NVARCHAR(MAX)")
     private String notes;
 
 }

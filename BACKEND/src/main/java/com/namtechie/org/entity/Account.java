@@ -25,7 +25,7 @@ public class Account implements UserDetails {
     private Long id;  // Khóa chính với auto-increment (IDENTITY)
 
     @NotBlank(message = "Tên đăng nhập không được để trống")
-    @Size(min = 3, message = "Tên đăng nhập phải có từ 3 ký tự trở lên!!!")
+    @Size(min = 6, message = "Tên đăng nhập phải có từ 6 ký tự trở lên!!!")
     @Column(nullable = false, length = 50, unique = true)
     private String username;
 

@@ -17,15 +17,19 @@ public class MedicalRecorded {
     @JsonBackReference
     private Appointment appointment;
 
+    @Column(columnDefinition = "NVARCHAR(MAX)")
     private String name;
 
+    @Column(columnDefinition = "NVARCHAR(MAX)")
     private String breed;
 
     private int age;
 
+    @Column(columnDefinition = "NVARCHAR(MAX)")
     private String color;
 
     private float weight;
 
+    @Column(columnDefinition = "NVARCHAR(MAX)")
     private String healthStatus;
 }
