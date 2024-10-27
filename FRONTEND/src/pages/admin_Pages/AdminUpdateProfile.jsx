@@ -31,6 +31,10 @@ function AdminUpdateProfile() {
         }
     }, [user]);
 
+    useEffect(() => {
+        console.log("isEditing:", isEditing);
+    }, [isEditing]);
+
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData(prevState => ({
@@ -62,6 +66,15 @@ function AdminUpdateProfile() {
         } catch (err) {
             setUpdateError('Cập nhật thông tin thất bại. Vui lòng thử lại.');
         }
+    };
+
+    const handleCancel = () => {
+        setIsEditing(false);
+    };
+
+    // Khi nhấn nút "Chỉnh sửa thông tin"
+    const handleEdit = () => {
+        setIsEditing(true);
     };
 
     if (loading) {
@@ -108,11 +121,16 @@ function AdminUpdateProfile() {
                     ))}
 
                     {isEditing ? (
-                        <button type="submit" className="save-button">
-                            <FaSave /> Lưu thay đổi
-                        </button>
+                        <div className="button-group">
+                            <button type="button" className="cancel-button" onClick={handleCancel}>
+                                Hủy yêu cầu
+                            </button>
+                            <button type="submit" className="save-button">
+                                <FaSave /> Lưu thay đổi
+                            </button>
+                        </div>
                     ) : (
-                        <button type="button" className="edit-button" onClick={() => setIsEditing(true)}>
+                        <button type="button" className="edit-button" onClick={handleEdit}>
                             <FaEdit /> Chỉnh sửa thông tin
                         </button>
                     )}

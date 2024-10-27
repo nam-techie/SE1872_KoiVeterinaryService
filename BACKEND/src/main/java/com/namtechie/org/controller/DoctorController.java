@@ -21,6 +21,7 @@ import java.util.List;
 public class DoctorController {
     @Autowired
     DoctorService doctorService;
+
     @Autowired
     private DoctorRepository doctorRepository;
 

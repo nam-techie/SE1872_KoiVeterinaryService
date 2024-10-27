@@ -7,8 +7,10 @@ import com.namtechie.org.model.request.*;
 import com.namtechie.org.model.response.AccountResponse;
 import com.namtechie.org.model.response.AdminAccountResponse;
 import com.namtechie.org.model.response.DoctorInfoResponse;
+import com.namtechie.org.model.response.FishResponse;
 import com.namtechie.org.repository.DoctorRepository;
 import com.namtechie.org.repository.FeedbackRepository;
+import com.namtechie.org.repository.MedicalRecordedRepository;
 import com.namtechie.org.repository.ServiceTypeRepository;
 import com.namtechie.org.service.*;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -43,6 +45,8 @@ public class AdminController {
     ModelMapper modelMapper;
     @Autowired
     private ServiceTypesService serviceTypesService;
+    @Autowired
+    private MedicalRecordedRepository medicalRecordedRepository;
 
     //APi down is provide for ADMIN
     @PutMapping("/setAccountVeterinary/{email}")
@@ -239,6 +243,27 @@ public class AdminController {
             return new ResponseEntity<>("Đã thêm thông tin dịch vụ thành công", HttpStatus.CREATED);
         } catch (DuplicateEntity e) {
             return new ResponseEntity<>("Dịch vụ đã tồn tại!", HttpStatus.CONFLICT);
+        } catch (RuntimeException e) {
+            return new ResponseEntity<>("Dữ liệu không hợp lệ!", HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @Autowired
+    private MedicalRecordedRepository recordedRepository;
+
+    @Autowired
+    private MedicalRecordedService medicalRecordedService;
+
+    @GetMapping("/listAllFish")
+    public List<FishResponse> getAllFish() {
+        return medicalRecordedService.findAllFish();
+    }
+
+    @PutMapping("/editInfoFish")
+    public ResponseEntity<String> editInfoFish(@RequestBody FishRequest fishRequest) {
+        try {
+            medicalRecordedService.updateInfoFish(fishRequest);
+            return new ResponseEntity<>("Đã thêm thay đổi thôn tin hồ sơ bệnh nhân thành công", HttpStatus.CREATED);
         } catch (RuntimeException e) {
             return new ResponseEntity<>("Dữ liệu không hợp lệ!", HttpStatus.BAD_REQUEST);
         }
