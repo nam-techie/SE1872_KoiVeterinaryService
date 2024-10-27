@@ -1,79 +1,114 @@
 html, body {
-    height: 100%; /* Đảm bảo chiều cao 100% cho body */
-    margin: 0; /* Xóa margin mặc định */
-    font-family: Arial, Helvetica, sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    overflow-x: hidden; /* Ẩn cuộn ngang */
 }
 
+/* Footer Container */
 .footerContainer {
     background-color: #1c1c1c;
     color: white;
-    padding: 40px 20px;
+    padding: 20px 0;
     font-family: Arial, sans-serif;
-    position: relative; /* Đảm bảo footer nằm dưới cùng */
-    left: 0; /* Đặt vị trí bắt đầu ở bên trái */
-    right: 0; /* Đặt vị trí kết thúc ở bên phải */
-    margin: 0; /* Xóa khoảng cách xung quanh */
-    width: 100vw; /* Đặt chiều rộng của footer bằng chiều rộng viewport */
+    width: 100vw;
+    margin: 0;
+    box-sizing: border-box;
 }
 
+/* Footer Content Layout */
 .footerContent {
     display: flex;
-    justify-content: space-between;
-    align-items: start;
+    justify-content: space-around; /* Tạo khoảng cách cân đối giữa các phần */
+    flex-wrap: wrap;
+    gap: 20px; /* Điều chỉnh khoảng cách giữa các phần */
+    max-width: 1200px; /* Giới hạn chiều rộng nội dung */
+    margin: 0 auto;
+    padding: 0 15px;
 }
 
+/* Footer Section */
 .footerSection {
     flex: 1;
-    margin-right: 20px;
+    margin: 10px;
+    min-width: 200px; /* Tăng min-width để các phần có kích thước đều hơn */
 }
 
-.logoSection img {
-    width: 150px;
-    margin-bottom: 10px;
+/* Title for each section */
+.footerSectionTitle {
+    font-size: 20px;
+    margin-bottom: 15px;
+    font-weight: bold;
+    color: #f5a623;
 }
 
-.socialIcons {
-    margin-top: 10px;
-}
-
-.socialIcons a {
-    color: white;
-    margin-right: 10px;
-    font-size: 24px;
-}
-
-.linksSection ul {
+/* Unordered List Styling */
+.footerList {
     list-style-type: none;
     padding: 0;
+    margin: 0;
 }
 
-.linksSection ul li {
-    margin-bottom: 10px;
+.footerListItem {
+    margin-bottom: 8px;
 }
 
-.linksSection ul li a {
-    color: white;
+.footerLink {
+    color: #ffffff;
     text-decoration: none;
+    font-size: 16px;
+    transition: color 0.3s ease;
 }
 
-.linksSection ul li a:hover {
-    text-decoration: underline;
+.footerLink:hover {
+    color: #f5a623;
 }
 
-.mapSection iframe {
-    border: 0;
-    border-radius: 8px;
-    margin-right: 100px;
+/* Contact Section */
+.contactSectionIcon {
+    margin-right: 8px;
 }
 
+/* Map Section */
+.mapSection {
+    margin-top: 20px;
+    padding-left: 20px; /* Tạo khoảng cách giữa mục liên hệ và bản đồ */
+}
+
+/* Social Media Icons */
+.socialMedia {
+    display: flex;
+    justify-content: center;
+    margin: 10px 0;
+}
+
+.socialIcon {
+    background-color: white;
+    color: #333;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 8px;
+    text-decoration: none;
+    font-size: 16px;
+    transition: all 0.3s ease;
+}
+
+.socialIcon:hover {
+    background-color: #f5a623;
+    color: white;
+}
+
+/* Footer Bottom Section */
 .footerBottom {
     text-align: center;
-    margin-top: 20px;
-    padding-top: 20px;
     border-top: 1px solid #333;
-}
-
-.footerBottom p {
+    font-size: 13px;
     color: #aaa;
-    font-size: 14px;
+    width: 100%;
+    margin: 0 auto;
+    box-sizing: border-box;
 }

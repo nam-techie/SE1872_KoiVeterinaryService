@@ -9,6 +9,7 @@ import com.namtechie.org.exception.NotFoundException;
 import com.namtechie.org.model.*;
 import com.namtechie.org.model.request.*;
 import com.namtechie.org.model.response.AccountResponse;
+import com.namtechie.org.model.response.AdminAccountResponse;
 import com.namtechie.org.repository.AccountRepository;
 import com.namtechie.org.repository.CustomersRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -28,6 +29,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -53,7 +55,10 @@ public class AuthenticationService implements UserDetailsService {
     EmailService emailService;
 
     @Autowired
-    CustomersRepository CustomerRepository;
+    private CustomerService customerService;
+
+    @Autowired
+    private CustomersRepository customersRepository;
 
     // xử lí logic, nghiệp vụ
     public AccountResponse register(RegisterRequest registerRequest) {
@@ -76,6 +81,7 @@ public class AuthenticationService implements UserDetailsService {
         try {
             // Auto set role to CUSTOMER
             account.setRole(Role.CUSTOMER.name());
+            account.setDeleted(false);
 
             // Mã hóa mật khẩu
             String originPassword = account.getPassword();
@@ -83,19 +89,19 @@ public class AuthenticationService implements UserDetailsService {
 
             // Lưu tài khoản vào database
             Account newAccount = accountRepository.save(account);
-
-            //Sau khi lưu xong thì tạo luôn bảng Customers tương ứng!
-            Customers customer = new Customers();
-            customer.setAccount(newAccount);
-
-            CustomerRepository.save(customer);
-
-            // Gửi email thông báo đăng kí thành công
+            Customers newCustomers = new Customers();
+//            // Gửi email thông báo đăng kí thành công
 //            EmailDetail emailDetail = new EmailDetail();
 //            emailDetail.setReceiver(newAccount);
 //            emailDetail.setSubject("Welcome to KoiKung Center!");
 //            emailDetail.setLink("https://www.google.com/");
 //            emailService.sendEmail(emailDetail);
+
+            //Sau khi lưu xong thì tạo luôn bảng Customers tương ứng!
+            Customers customer = new Customers();
+            customer.setAccount(newAccount);
+
+            customersRepository.save(customer);
 
             return modelMapper.map(newAccount, AccountResponse.class);
         } catch (DataIntegrityViolationException e) {
@@ -136,11 +142,6 @@ public class AuthenticationService implements UserDetailsService {
         }
     }
 
-//    public List<Account> getAllAccount() {
-//        List<Account> accounts = accountRepository.findAll();
-//        return accounts;
-//    }
-
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -148,8 +149,17 @@ public class AuthenticationService implements UserDetailsService {
     }
 
     public Account getCurrentAccount() {
-        Account account = (Account) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return accountRepository.findAccountByEmail(account.getEmail());
+        try {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            if (authentication != null && authentication.getPrincipal() instanceof Account) {
+                Account account = (Account) authentication.getPrincipal();
+                return accountRepository.findAccountByEmail(account.getEmail());
+            }
+            throw new RuntimeException("Không thể lấy thông tin tài khoản hiện tại");
+        } catch (Exception e) {
+            e.printStackTrace(); // Log lỗi
+            throw new RuntimeException("Lỗi khi lấy thông tin tài khoản hiện tại", e);
+        }
     }
 
     private String generateUsername() {
@@ -168,23 +178,24 @@ public class AuthenticationService implements UserDetailsService {
 
 
     public AccountResponse registerVeterinary(VeterinaryRequest veterinaryRequest) {
-
         Account account = new Account();
         modelMapper.map(veterinaryRequest, Account.class);
         try {
-            // Mật khẩu mặc định cho bác sĩ
-            String generatedUsername = generateUsername();
-            // Tạo account mới
+            // Kiểm tra nếu email null trước khi thực hiện logic liên quan đến email
+            if (veterinaryRequest.getEmail() == null || veterinaryRequest.getEmail().isEmpty()) {
+                throw new IllegalArgumentException("Email không được để trống");
+            }
 
+            // Các bước logic khác như trước
+            String generatedUsername = generateUsername();
             account.setEmail(veterinaryRequest.getEmail());
             account.setUsername(generatedUsername);
             account.setPassword(passwordEncoder.encode("123456"));
             account.setRole(Role.VETERINARY.name());
 
-            // Lưu tài khoản bác sĩ vào database
+            // Lưu account mới
             Account newAccount = accountRepository.save(account);
 
-            // Chuyển đổi thành AccountResponse và trả về
             return modelMapper.map(newAccount, AccountResponse.class);
         } catch (Exception e) {
             if (e.getMessage().contains(account.getEmail())) {
@@ -193,7 +204,44 @@ public class AuthenticationService implements UserDetailsService {
                 throw new RuntimeException("Đã xảy ra lỗi trong quá trình đăng ký, vui lòng thử lại sau.");
             }
         }
+    }
 
+
+    public AccountResponse createAccountForAdmin(AdminAccountRequest adminAccountRequest) {
+        Account account = new Account();
+        modelMapper.map(adminAccountRequest, Account.class);
+
+        if (accountRepository.existsByEmail(adminAccountRequest.getEmail())) {
+            throw new DuplicateEntity("Email này đã được sử dụng!");
+        }
+
+        if (accountRepository.existsByUsername(adminAccountRequest.getUsername())) {
+            throw new DuplicateEntity("Username này đã tồn tại!");
+        }
+
+        try {
+            String role = adminAccountRequest.getRole();
+            account.setEmail(adminAccountRequest.getEmail());
+            account.setUsername(adminAccountRequest.getUsername());
+            account.setPassword(passwordEncoder.encode("123456"));
+            account.setRole(Role.valueOf(role).name());
+
+            // Lưu tài khoản bác sĩ vào database
+            accountRepository.save(account);
+
+            // Gửi email thông báo đăng kí thành công
+//            EmailDetail emailDetail = new EmailDetail();
+//            emailDetail.setReceiver(account);
+//            emailDetail.setSubject("Welcome to KoiKung Center!");
+//            emailDetail.setLink("https://www.google.com/");
+//            emailService.sendEmail(emailDetail);
+
+            // Chuyển đổi thành AccountResponse và trả về
+            return modelMapper.map(account, AccountResponse.class);
+        } catch (DataIntegrityViolationException e) {
+            throw new RuntimeException("Đã xảy ra lỗi trong quá trình đăng ký, vui lòng thử lại sau.");
+
+        }
 
     }
 
@@ -218,7 +266,7 @@ public class AuthenticationService implements UserDetailsService {
     }
 
     public List<Account> getAllAccount() {
-        List<Account> accounts = accountRepository.findAccountByIsDeletedFalse();
+        List<Account> accounts = accountRepository.findAll();
         return accounts;
     }
 
@@ -227,6 +275,32 @@ public class AuthenticationService implements UserDetailsService {
         // Kiểm tra xem tài khoản có tồn tại hay không trước khi xóa
         if (accountRepository.existsByEmail(email)) {
             accountRepository.updateIsDeletedByEmail(true, email);
+        } else {
+            throw new EntityNotFoundException("Tài khoản với email: " + email + " không tồn tại.");
+        }
+    }
+
+    public void restoreAccount(String email) {
+        // Kiểm tra xem tài khoản có tồn tại hay không trước khi xóa
+        if (accountRepository.existsByEmail(email)) {
+            accountRepository.updateIsDeletedByEmail(false, email);
+        } else {
+            throw new EntityNotFoundException("Tài khoản với email: " + email + " không tồn tại.");
+        }
+    }
+
+    public void updateRole(String email, String role) {
+        if (accountRepository.existsByEmail(email)) {
+            Account newUpdate = accountRepository.findAccountByEmail(email);
+
+            try {
+                // Kiểm tra xem role có hợp lệ không
+                newUpdate.setRole(Role.valueOf(role).name());
+            } catch (IllegalArgumentException e) {
+                throw new RuntimeException("Role không hợp lệ: " + role);
+            }
+
+            accountRepository.save(newUpdate);
         } else {
             throw new EntityNotFoundException("Tài khoản với email: " + email + " không tồn tại.");
         }
@@ -337,7 +411,7 @@ public class AuthenticationService implements UserDetailsService {
 //        String email = oauth2User.getAttribute("email");
 //        String name = oauth2User.getAttribute("name");
 //
-//        // Kiểm tra xem email đã tồn tại trong cơ sở dữ liệu hay chưa
+//        // Kiểm tra xem email đã tồn tại trong cơ sở dữ liu hay chưa
 //        Account account = accountRepository.findAccountByEmail(email);
 //
 //        if (account == null) {
@@ -407,5 +481,90 @@ public class AuthenticationService implements UserDetailsService {
 
         return response;
     }
+
+    public AdminInfoRequest updateAdminInfo(AdminInfoRequest adminInfoRequest) {
+        try {
+            // Lấy tài khoản hiện tại của người dùng đã xác thực
+            Account currentAccount = getCurrentAccount();
+
+            // Kiểm tra trùng lặp username, nếu username mới đã tồn tại và không phải của tài khoản hiện tại
+            if (!Objects.equals(currentAccount.getUsername(), adminInfoRequest.getUsername()) &&
+                    accountRepository.existsByUsername(adminInfoRequest.getUsername())) {
+                throw new DuplicateEntity("Username đã tồn tại, vui lòng chọn username khác!");
+            }
+
+            // Kiểm tra trùng lặp email, n���u email mới đã tồn tại và không phải của tài khoản hiện tại
+            if (!Objects.equals(currentAccount.getEmail(), adminInfoRequest.getEmail()) &&
+                    accountRepository.existsByEmail(adminInfoRequest.getEmail())) {
+                throw new DuplicateEntity("Email đã tồn tại, vui lòng chọn email khác!");
+            }
+
+            // So sánh và cập nhật username
+            if (!Objects.equals(currentAccount.getUsername(), adminInfoRequest.getUsername())) {
+                currentAccount.setUsername(adminInfoRequest.getUsername());
+            }
+
+            // So sánh và cập nhật email
+            if (!Objects.equals(currentAccount.getEmail(), adminInfoRequest.getEmail())) {
+                currentAccount.setEmail(adminInfoRequest.getEmail());
+            }
+
+            // So sánh và mã hóa mật khẩu nếu có sự thay đổi
+            if (adminInfoRequest.getPassword() != null && !adminInfoRequest.getPassword().isEmpty()) {
+                // Kiểm tra xem mật khẩu mới có khác với mật khẩu cũ không (so sánh mật khẩu chưa mã hóa)
+                if (!passwordEncoder.matches(adminInfoRequest.getPassword(), currentAccount.getPassword())) {
+                    // Nếu khác, mã hóa lại mật khẩu mới
+                    currentAccount.setPassword(passwordEncoder.encode(adminInfoRequest.getPassword()));
+                }
+            }
+
+            // Lưu thông tin cập nhật vào database
+            accountRepository.save(currentAccount);
+
+            // Trả về đối tượng adminInfoRequest đã cập nhật
+            return modelMapper.map(currentAccount, AdminInfoRequest.class);
+
+        } catch (DuplicateEntity e) {
+            // Bắt lỗi trùng lặp username hoặc email
+            throw e;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("Đã xảy ra lỗi trong quá trình cập nhật thông tin admin.");
+        }
+    }
+
+    public void updateAccountInfo(AdminAccountResponse adminAccountResponse) {
+        try {
+            Account currentAccount = accountRepository.findAccountByUsername(adminAccountResponse.getOriginalUsername());
+            if (currentAccount == null) {
+                throw new NotFoundException("Tài khoản không tồn tại.");
+            }
+
+            Account accountByUsername = accountRepository.findAccountByUsername(adminAccountResponse.getUsername());
+            if (accountByUsername != null && !accountByUsername.getId().equals(currentAccount.getId())) {
+                throw new DuplicateEntity("Username đã được sử dụng bởi tài khoản khác.");
+            }
+
+            Account accountByEmail = accountRepository.findAccountByEmail(adminAccountResponse.getEmail());
+            if (accountByEmail != null && !accountByEmail.getId().equals(currentAccount.getId())) {
+                throw new DuplicateEntity("Email đã được sử dụng bởi tài khoản khác.");
+            }
+
+            // Cập nhật thông tin
+            currentAccount.setUsername(adminAccountResponse.getUsername());
+            currentAccount.setEmail(adminAccountResponse.getEmail());
+            currentAccount.setRole(adminAccountResponse.getRole());
+
+            accountRepository.save(currentAccount);
+
+        } catch (NotFoundException | DuplicateEntity e) {
+            throw e;
+        } catch (Exception e) {
+            throw new RuntimeException("Đã xảy ra lỗi trong quá trình cập nhật thông tin admin.");
+        }
+    }
+
+
+
 
 }

@@ -1,7 +1,8 @@
 import axios from "axios";
 
-
+// Tạo một Axios instance với URL gốc cho tất cả các API
 export const axiosInstance = axios.create({
+    baseURL: "http://localhost:8080/api",
 });
 
 // Thêm một interceptor để tự động thêm token vào tất cả các yêu cầu
@@ -14,8 +15,8 @@ axiosInstance.interceptors.request.use(
 
             // Nếu token tồn tại, thêm vào header
             if (token) {
-                config.headers.AuthenticationToken = `Bearer ${token}`;
-                console.log("Authorization Header Set:", config.headers.AuthenticationToken);  // Kiểm tra header Authorization
+                config.headers.Authorization = `Bearer ${token}`;
+                console.log("Authorization Header Set:", config.headers.Authorization);  // Kiểm tra header Authorization
             }
         }
         return config;  // Trả về config đã cập nhật để tiếp tục request
@@ -27,6 +28,7 @@ axiosInstance.interceptors.request.use(
     }
 );
 
+
 // Hàm chuyển đổi tất cả các id trong mảng thành chuỗi
 export const convertIdsToString = (data) => {
     if (Array.isArray(data)) {
@@ -37,5 +39,4 @@ export const convertIdsToString = (data) => {
     }
     return data;
 };
-
 

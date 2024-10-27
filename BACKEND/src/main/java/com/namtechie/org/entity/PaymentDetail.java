@@ -32,6 +32,7 @@ public class PaymentDetail {
     private Timestamp transactionDate;
 
     private boolean status;
+
     @Column(columnDefinition = "NVARCHAR(MAX)")
     private String notes;
 

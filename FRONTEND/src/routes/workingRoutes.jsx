@@ -5,12 +5,15 @@ import PropTypes from 'prop-types'; // Import PropTypes
 export const PublicRoute = ({ children }) => {
     const role = localStorage.getItem('role')?.trim();  // Lưu vai trò của người dùng và loại bỏ khoảng trắng
 
-    // Nếu vai trò là doctor, điều hướng đến trang khác (ví dụ: trang dashboard của bác sĩ)
-    if (role === 'DOCTOR') {
+    // Nếu vai trò là doctor hoặc admin, điều hướng đến trang dashboard của họ
+    if (role === 'VETERINARY') {
         return <Navigate to="/doctor/doctor-dashboard" />;
     }
+    if (role === 'ADMIN') {
+        return <Navigate to="/admin" />;
+    }
 
-    // Nếu không phải doctor, cho phép truy cập trang công khai
+    // Nếu không phải doctor hoặc admin, cho phép truy cập trang công khai
     return children;
 };
 
@@ -25,11 +28,14 @@ export const RestrictedRoute = ({ children }) => {
     const role = localStorage.getItem('role'); // Lấy role từ localStorage
 
     // Nếu đã có token và role là DOCTOR, điều hướng về dashboard của doctor
-    if (token && role === 'DOCTOR') {
+    if (token && role === 'VETERINARY') {
         return <Navigate to="/doctor/doctor-dashboard" />;
     }
 
-    // Nếu đã có token nhưng role không phải DOCTOR, điều hướng về /homepage
+    // Nếu đã có token và role là ADMIN, điều hướng về dashboard của admin
+    if (token && role === 'ADMIN') {
+        return <Navigate to="/admin" />;
+    }
 
     // Nếu không có token, cho phép truy cập trang Restricted
     return children;
@@ -61,10 +67,12 @@ export const RoleBasedRoute = ({ children, allowedRoles }) => {
     // Nếu không có token hoặc vai trò không hợp lệ
     if (!token || !allowedRoles.includes(userRole)) {
         // Điều hướng khác nhau dựa trên vai trò người dùng
-        if (userRole === 'DOCTOR') {
+        if (userRole === 'VETERINARY') {
             return <Navigate to="/doctor/doctor-dashboard" />;
+        } else if (userRole === 'ADMIN') {
+            return <Navigate to="/admin" />;
         } else {
-            return <Navigate to="/homepage" />;
+            return <Navigate to="/login" />;
         }
     }
 

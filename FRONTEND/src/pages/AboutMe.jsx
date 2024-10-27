@@ -1,13 +1,12 @@
 import styles from "../styles/AboutMe.module.css"
 import {CustomerNavBar} from "../components/Navbar.jsx";
-    // import Footer from "../components/Footer.jsx";
-import { IoIosArrowForward } from "react-icons/io";
-import Logov2  from "../assets/aboutMe_images/logo_v2.png"
+import {IoIosArrowForward} from "react-icons/io";
 import Location from "../assets/aboutMe_images/Location.jpg"
 import Footer from "../components/Footer.jsx";
+import ContactButton from "../components/ContactButton.jsx";
 
-function AboutMe(){
-    return(
+function AboutMe() {
+    return (
         <>
             <CustomerNavBar/>
             <div className={styles.aboutMeContainer}>
@@ -48,10 +47,7 @@ function AboutMe(){
                                 đẹp nhất.
                             </p>
                         </div>
-                        <div className={styles.aboutMeFirstContentRight}>
-                            <img src={Logov2} alt="KoiKung Logo"/>
 
-                        </div>
                     </div>
                 </div>
 
@@ -119,6 +115,7 @@ function AboutMe(){
                     </div>
                 </div>
             </div>
+            <ContactButton/>
             <Footer/>
 
         </>

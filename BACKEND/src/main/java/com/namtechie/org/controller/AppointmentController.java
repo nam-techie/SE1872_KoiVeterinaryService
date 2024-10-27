@@ -49,6 +49,9 @@ public class AppointmentController {
     @Autowired
     AppointmentService appointmentService;
 
+    @Autowired
+    PaymentService paymentService;
+
     @GetMapping(value = "/getFreeScheduleByDoctorId", produces = "application/json")
     public ResponseEntity<Map<String, List<Schedule>>> getFreeScheduleByDoctorId(@Valid @RequestHeader("AuthenticationToken") String authorizationHeader, @RequestParam long doctorId) {
         String token = tokenService.getToken(authorizationHeader);

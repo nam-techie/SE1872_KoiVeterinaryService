@@ -7,7 +7,6 @@ import lombok.Data;
 @Entity
 @Data
 public class DoctorInfo {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -25,6 +24,6 @@ public class DoctorInfo {
 
     @Column(columnDefinition = "NVARCHAR(MAX)")
     private String qualification;
-
-
 }
+
+

@@ -4,11 +4,13 @@ import com.namtechie.org.entity.Account;
 import com.namtechie.org.model.UpdateDoctorLogin;
 import com.namtechie.org.model.request.*;
 import com.namtechie.org.model.response.AccountResponse;
+import com.namtechie.org.model.response.InfoCustomerResponse;
 import com.namtechie.org.service.AuthenticationService;
-//import com.namtechie.org.service.CustomerService;
+import com.namtechie.org.service.CustomerService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,14 +19,13 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api")
 @RestController
 @SecurityRequirement(name = "api")
-@CrossOrigin(origins = "http://localhost:5741")
 public class AuthenticationController {
     // DI: Dependency Injection
     @Autowired
     AuthenticationService authenticationService;
 
-//    @Autowired
-//    CustomerService customerService;
+    @Autowired
+    CustomerService customerService;
 
     //API provide for CUSTOMER
 
@@ -113,17 +114,20 @@ public class AuthenticationController {
 //    }
 
 
-//    @GetMapping("/getInfoCustomer")
-//    public ResponseEntity getInfoCustomer() {
-//        InfoCustomerResponse customerInfo = customerService.getInfoCustomer();
-//        return ResponseEntity.ok(customerInfo);
-//    }
+    @GetMapping("/getInfoCustomer")
+    public ResponseEntity getInfoCustomer() {
+        InfoCustomerResponse customerInfo = customerService.getInfoCustomer();
+        return ResponseEntity.ok(customerInfo);
+    }
 
-//    @PutMapping("/updateInfoCustomer")
-//    public ResponseEntity updateInfoCustomer(@ModelAttribute CustomerInfoRequest customerInfo) {
-//        CustomerInfoRequest newUpdate = customerService.updateCustomerInfo(customerInfo);
-//        return ResponseEntity.ok(newUpdate);
-//    }
+    @PutMapping("/updateInfoCustomer")
+    public ResponseEntity updateInfoCustomer(@ModelAttribute CustomerInfoRequest customerInfo) {
+        CustomerInfoRequest newUpdate = customerService.updateCustomerInfo(customerInfo);
+        return ResponseEntity.ok(newUpdate);
+    }
+
+
+
 
     //khi nao xong thì xử lí đoạn image sau
 //    @PutMapping("/updateInfoCustomer")

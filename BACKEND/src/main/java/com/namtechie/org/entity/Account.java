@@ -46,7 +46,6 @@ public class Account implements UserDetails {
     @Column(nullable = false, updatable = false)
     private Date created_at;
 
-
     boolean isDeleted;
 
 

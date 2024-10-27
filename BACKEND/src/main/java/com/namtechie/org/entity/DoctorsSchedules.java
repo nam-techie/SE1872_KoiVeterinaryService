@@ -1,4 +1,5 @@
 package com.namtechie.org.entity;
+
 import jakarta.persistence.*;
 import lombok.Data;
 

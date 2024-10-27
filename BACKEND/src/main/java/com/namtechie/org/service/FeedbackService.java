@@ -6,6 +6,7 @@ import com.namtechie.org.model.request.FeedbackRequest;
 import com.namtechie.org.model.response.FeedbackResponse;
 import com.namtechie.org.repository.AppointmentRepository;
 import com.namtechie.org.repository.FeedbackRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -39,5 +40,23 @@ public class FeedbackService {
 
     public FeedBack getFeedbackCustomer(long appointmentId ) {
         return feedbackRepository.findByAppointmentId(appointmentId);
+    }
+
+    public void deleteFeedback(long feedbackId) {
+        // Kiểm tra xem tài khoản có tồn tại hay không trước khi xóa
+        if (feedbackRepository.existsById(feedbackId)) {
+            feedbackRepository.updateIsDeletedByFeedbackId(true, feedbackId);
+        } else {
+            throw new EntityNotFoundException("Không thể thực hiện thao tác này!!!");
+        }
+    }
+
+    public void restoreFeedback(long feedbackId) {
+        // Kiểm tra xem tài khoản có tồn tại hay không trước khi xóa
+        if (feedbackRepository.existsById(feedbackId)) {
+            feedbackRepository.updateIsDeletedByFeedbackId(false, feedbackId);
+        } else {
+            throw new EntityNotFoundException("Không thể thực hiện thao tác này!!!");
+        }
     }
 }

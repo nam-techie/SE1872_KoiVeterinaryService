@@ -1,7 +1,7 @@
 package com.namtechie.org.controller;
 
 import com.namtechie.org.entity.Doctor;
-import com.namtechie.org.model.UpdateDoctorLogin;
+import com.namtechie.org.repository.DoctorRepository;
 import com.namtechie.org.model.request.DoctorRequest;
 import com.namtechie.org.model.request.MedicalFishResquest;
 import com.namtechie.org.service.DoctorService;
@@ -21,12 +21,14 @@ import java.util.List;
 public class DoctorController {
     @Autowired
     DoctorService doctorService;
+    @Autowired
+    private DoctorRepository doctorRepository;
 
-    @PutMapping("/updateInfo")
-    public ResponseEntity updateInforVeterinary(DoctorRequest doctorRequest) {
-        Doctor updateDoctor = doctorService.addInfoVeterinary(doctorRequest);
-        return ResponseEntity.ok(updateDoctor);
-    }
+//    @PutMapping("/updateInfo")
+//    public ResponseEntity updateInforVeterinary(DoctorRequest doctorRequest) {
+//        Doctor updateDoctor = doctorService.addInfoVeterinary(doctorRequest);
+//        return ResponseEntity.ok(updateDoctor);
+//    }
 
     @GetMapping("/listVeterinaryInfo")
     public ResponseEntity getDoctor() {
