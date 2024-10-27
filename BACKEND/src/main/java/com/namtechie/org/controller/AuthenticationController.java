@@ -1,12 +1,15 @@
 package com.namtechie.org.controller;
 
 import com.namtechie.org.entity.Account;
+import com.namtechie.org.entity.Doctor;
 import com.namtechie.org.model.UpdateDoctorLogin;
 import com.namtechie.org.model.request.*;
 import com.namtechie.org.model.response.AccountResponse;
+import com.namtechie.org.model.response.DoctorInfoResponse;
 import com.namtechie.org.model.response.InfoCustomerResponse;
 import com.namtechie.org.service.AuthenticationService;
 import com.namtechie.org.service.CustomerService;
+import com.namtechie.org.service.DoctorService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +17,8 @@ import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 @RequestMapping("/api")
@@ -27,7 +32,21 @@ public class AuthenticationController {
     @Autowired
     CustomerService customerService;
 
+    @Autowired
+    private DoctorService doctorService;
+
     //API provide for CUSTOMER
+
+    @GetMapping("/getInfoDoctor")
+    public List<Doctor> getInfoDoctor() {
+        return doctorService.getAllInfoDoctor();
+    }
+
+    @GetMapping("/getDoctorDetail/{doctorId}")
+    public DoctorInfoResponse getDoctorDetail(@PathVariable long doctorId) {
+        DoctorInfoResponse doctorInfoResponse = doctorService.getAllInfoDoctor(doctorId);
+        return doctorInfoResponse;
+    }
 
     @PostMapping("/register")
     public ResponseEntity register(@Valid @RequestBody RegisterRequest registerRequest) {
