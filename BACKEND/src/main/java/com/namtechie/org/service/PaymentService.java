@@ -3,7 +3,6 @@ package com.namtechie.org.service;
 import com.namtechie.org.entity.*;
 import com.namtechie.org.model.request.ServiceTypeRequestAll;
 import com.namtechie.org.model.response.PaymentDepositResponse;
-import com.namtechie.org.model.response.PaymentResponse;
 import com.namtechie.org.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,7 +16,6 @@ import java.security.NoSuchAlgorithmException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.TreeMap;
@@ -64,14 +62,14 @@ public class PaymentService {
     public void generateTransactionRecords(long appointmentId,Payment payment, long price,String notes) {
         Payment paymentTotal = paymentRepository.findByAppointmentId(appointmentId);
 
-        TransactionRecords transactionLogs = transactionRecordsRepository.findByPaymentIdAndPrice(paymentTotal.getId(), price);
+        TransactionDetail transactionLogs = transactionRecordsRepository.findByPaymentIdAndPrice(paymentTotal.getId(), price);
 
         if(transactionLogs != null){
             transactionLogs.setStatus(true);
             transactionLogs.setNotes(notes);
             transactionRecordsRepository.save(transactionLogs);
         }else{
-            TransactionRecords transactionLog = new TransactionRecords();
+            TransactionDetail transactionLog = new TransactionDetail();
             transactionLog.setPayment(payment);
             transactionLog.setTransactionType("Chuyen khoan");
             transactionLog.setTransactionMethod("VNPay");

@@ -10,7 +10,7 @@ import java.sql.Timestamp;
 
 @Entity
 @Data
-public class TransactionRecords {
+public class TransactionDetail {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;

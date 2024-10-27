@@ -4,8 +4,8 @@ import Logo from "../assets/homePage_images/logo.png";
 import {AiFillSchedule} from "react-icons/ai";
 import {PiNewspaperClippingFill} from "react-icons/pi";
 import {IoLogOutSharp} from "react-icons/io5";
-import {RiFeedbackFill} from "react-icons/ri";
 import {FaRegCalendarPlus} from "react-icons/fa";
+import {FaUserLarge} from "react-icons/fa6";
 import { MdDashboard } from 'react-icons/md';
 
 import {Link, NavLink} from "react-router-dom";
@@ -35,7 +35,7 @@ export function CustomerNavBar() {
                     </div>
                     <div className={styles.contactInfo}>
       <span>
-        <FaMapMarkerAlt/> Lô E2a-7, Đường D1, Đ. D1, Long Thạnh Mỹ, TP.Thủ Đức, HCM
+        <FaMapMarkerAlt/> Lô E2a-7, Đ. D1, Long Thạnh Mỹ, TP.Thủ Đức, HCM
       </span>
                         <span>
         <FaPhoneAlt/> 1800.999 (Miễn phí)
@@ -89,11 +89,8 @@ export function CustomerNavBar() {
                                 <FaUserLarge size={35} color={"white"}/>
                                 {isDropdownOpen && (
                                     <div className={styles.dropdownMenu}>
-                                        <Link to="#">Thông Báo</Link>
+                                        <Link to="#">Quản lí Lịch hẹn</Link>
                                         <Link to="/booking-service-history">Lịch sử đặt dịch vụ</Link>
-                                        <Link to="#">Quản Lí Lịch Đặt</Link>
-                                        <Link to="#">Phản Hồi Và Đánh Giá Dịch Vụ</Link>
-                                        <Link to="/forgot-password">Đổi Mật Khẩu</Link>
                                         <hr/>
                                         <Link to="/profile">Thông tin cá nhân</Link>
                                         <hr/>

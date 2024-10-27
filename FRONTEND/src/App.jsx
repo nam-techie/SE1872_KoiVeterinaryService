@@ -42,6 +42,7 @@ function App() {
                             <PublicRoute><HomePage/></PublicRoute>
                         </PageTitle>
                     }/>
+
                     <Route path="/homepage" element={
                         <PageTitle title="Home">
                             <PublicRoute><HomePage/></PublicRoute>
