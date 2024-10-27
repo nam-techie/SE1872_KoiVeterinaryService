@@ -61,10 +61,13 @@ export const useServiceType = () => {
                 );
                 return response.data;
             }
-        } catch (err) {
-            setError('Đã xảy ra lỗi khi cập nhật thông tin dịch vụ.');
-            console.error('Lỗi khi cập nhật thông tin dịch vụ:', err);
-            throw err;
+        } catch (error) {
+            console.error('Lỗi khi cập nhật thông tin dịch vụ:', error);
+            if (error.response) {
+                throw error.response;  // Trả về toàn bộ response error
+            } else {
+                throw new Error('Có lỗi xảy ra khi cập nhật thông tin dịch vụ. Vui lòng thử lại.');
+            }
         }
     };
 
@@ -93,5 +96,6 @@ export const useServiceType = () => {
         restoreServiceType,
         setServiceTypes,
         addServiceType,
+        editServiceType,
     };
 };

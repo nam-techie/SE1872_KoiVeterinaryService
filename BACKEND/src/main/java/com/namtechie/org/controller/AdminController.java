@@ -124,7 +124,7 @@ public class AdminController {
         } catch (Exception e) {
             e.printStackTrace(); // Log lỗi
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                                 .body("Lỗi khi lấy thông tin admin: " + e.getMessage());
+                    .body("Lỗi khi lấy thông tin admin: " + e.getMessage());
         }
     }
 
@@ -222,8 +222,14 @@ public class AdminController {
 
     @PutMapping("/editServiceType/{id}")
     public ResponseEntity<String> editServiceType(@PathVariable long id, @RequestBody ServiceRequest serviceRequest) {
-        serviceTypesService.editService(id, serviceRequest);
-        return new ResponseEntity<>("Đã cập nhật thông tin dịch vụ thành công", HttpStatus.ACCEPTED);
+        try {
+            serviceTypesService.editService(id, serviceRequest);
+            return new ResponseEntity<>("Đã cập nhật thông tin dịch vụ thành công", HttpStatus.ACCEPTED);
+        } catch (DuplicateEntity e) {
+            return new ResponseEntity<>("Dịch vụ đã tồn tại!", HttpStatus.CONFLICT);
+        } catch (RuntimeException e) {
+            return new ResponseEntity<>("Dữ liệu không hợp lệ!", HttpStatus.BAD_REQUEST);
+        }
     }
 
     @PostMapping("/addNewService")
@@ -237,8 +243,6 @@ public class AdminController {
             return new ResponseEntity<>("Dữ liệu không hợp lệ!", HttpStatus.BAD_REQUEST);
         }
     }
-
-
 
 
 }

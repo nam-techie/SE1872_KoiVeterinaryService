@@ -25,4 +25,8 @@ public interface ServiceTypeRepository extends JpaRepository<ServiceType, Long> 
 
     boolean existsByName(String name);
 
+    ServiceType findByName(String name);
+
+
+
 }

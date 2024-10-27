@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../admin_pages/styles/AdminDashboard.css';
-import { FaHome, FaCalendarAlt, FaUsers, FaUserMd, FaComments, FaSignOutAlt, FaUser } from 'react-icons/fa';
+import { FaHome, FaCalendarAlt, FaUsers, FaUserMd, FaComments, FaSignOutAlt, FaUser, FaFish } from 'react-icons/fa';
 import AdminProfile from "./AdminProfile.jsx";
 import AccountDashboard from "./AccountDashboard.jsx";
 import CreateAccount from "./CreateAccount.jsx";
@@ -14,6 +14,7 @@ import UpdateDoctor from "./UpdateDoctor.jsx";
 import AddDoctor from "./AddDoctor.jsx";
 import FeedbackDashboard from "./FeedbackDashboard.jsx";
 import ServiceDashboard from "./ServiceDashboard.jsx";
+import FishManage from './FishManage.jsx';
 
 const AdminDashboard = () => {
     const navigate = useNavigate();
@@ -171,6 +172,8 @@ const AdminDashboard = () => {
                 return <FeedbackDashboard />;
             case 'services':
                 return <ServiceDashboard />;
+            case 'fish':
+                return <FishManage />;
             default:
                 return <div>Nội dung chưa được tạo</div>;
         }
@@ -194,7 +197,9 @@ const AdminDashboard = () => {
                         <FaHome /> Trang chủ
                     </li>
                     <li className="menu-item"><FaCalendarAlt /> Quản lý lịch hẹn</li>
-                    <li className="menu-item"><FaUsers /> Quản lý hồ sơ cá Koi</li>
+                    <li className={`menu-item ${activeTab === 'fish' ? 'active' : ''}`} onClick={() => setActiveTab('fish')}>
+                        <FaFish /> Quản lý hồ sơ cá Koi
+                    </li>
                     <li className={`menu-item ${activeTab === 'services' ? 'active' : ''}`} onClick={() => setActiveTab('services')}>
                         <FaUserMd /> Quản lý dịch vụ
                     </li>
