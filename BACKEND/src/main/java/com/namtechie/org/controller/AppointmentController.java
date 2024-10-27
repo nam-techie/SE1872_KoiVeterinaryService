@@ -117,6 +117,8 @@ public class AppointmentController {
         return ResponseEntity.ok(serviceTypesService.findAll());
     }
 
+
+
     @PutMapping("/isDoctorConfirm/{appointmentId}")
     @PreAuthorize("hasAuthority('VETERINARY')")
     public ResponseEntity isConfirm(@PathVariable long appointmentId,@Valid @RequestBody DoctorConfirmRequest doctorConfirmRequest) {

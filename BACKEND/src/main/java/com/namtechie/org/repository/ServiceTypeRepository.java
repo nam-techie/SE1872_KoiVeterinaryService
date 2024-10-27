@@ -28,5 +28,4 @@ public interface ServiceTypeRepository extends JpaRepository<ServiceType, Long> 
     ServiceType findByName(String name);
 
 
-
 }
