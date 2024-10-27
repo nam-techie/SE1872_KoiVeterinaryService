@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -55,6 +56,12 @@ public class DoctorController {
     public ResponseEntity  addInfoFish(@PathVariable long appointmentId, @RequestBody MedicalFishResquest medicalFishResquests) {
         MedicalFishResquest createFish = doctorService.createFishInfor(appointmentId, medicalFishResquests);
         return ResponseEntity.ok(createFish);
+    }
+
+    @PostMapping("/image/{id}")
+    public ResponseEntity uploadImage(@PathVariable long id, @RequestPart MultipartFile file) {
+        doctorService.uploadImage(id, file);
+        return ResponseEntity.ok("Uploaded image successfully");
     }
 
 

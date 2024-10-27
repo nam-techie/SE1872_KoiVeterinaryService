@@ -69,6 +69,11 @@ public class ValidationHandler {
     public ResponseEntity<String> handleDoctorNotAvailableException(DoctorNotAvailableException exception) {
         return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);
     }
+
+    @ExceptionHandler(FuncErrorException.class)
+    public ResponseEntity<String> handleFuncErrorException(FuncErrorException exception) {
+        return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
+    }
 }
 
 

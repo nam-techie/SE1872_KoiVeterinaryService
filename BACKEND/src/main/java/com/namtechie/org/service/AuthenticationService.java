@@ -11,7 +11,7 @@ import com.namtechie.org.model.request.*;
 import com.namtechie.org.model.response.AccountResponse;
 import com.namtechie.org.model.response.AdminAccountResponse;
 import com.namtechie.org.repository.AccountRepository;
-import com.namtechie.org.repository.CustomersRepository;
+import com.namtechie.org.repository.CustomerRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,7 +58,7 @@ public class AuthenticationService implements UserDetailsService {
     private CustomerService customerService;
 
     @Autowired
-    private CustomersRepository customersRepository;
+    private CustomerRepository customerRepository;
 
     // xử lí logic, nghiệp vụ
     public AccountResponse register(RegisterRequest registerRequest) {
@@ -101,7 +101,7 @@ public class AuthenticationService implements UserDetailsService {
             Customers customer = new Customers();
             customer.setAccount(newAccount);
 
-            customersRepository.save(customer);
+            customerRepository.save(customer);
 
             return modelMapper.map(newAccount, AccountResponse.class);
         } catch (DataIntegrityViolationException e) {

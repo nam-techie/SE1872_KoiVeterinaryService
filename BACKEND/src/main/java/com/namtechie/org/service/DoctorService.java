@@ -3,18 +3,23 @@ package com.namtechie.org.service;
 
 import com.namtechie.org.entity.*;
 import com.namtechie.org.exception.DuplicateEntity;
+import com.namtechie.org.exception.NotFoundException;
 import com.namtechie.org.model.request.DoctorRequest;
 import com.namtechie.org.model.request.MedicalFishResquest;
 import com.namtechie.org.model.request.UpdateDoctor;
 import com.namtechie.org.model.request.VeterinaryRequest;
+import com.namtechie.org.model.response.CloudinaryResponse;
 import com.namtechie.org.model.response.DoctorInfoResponse;
 import com.namtechie.org.repository.*;
 import com.namtechie.org.repository.DoctorInfoRepository;
+import com.namtechie.org.util.FileUpLoadUtil;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,6 +53,8 @@ public class DoctorService {
 
     @Autowired
     ModelMapper modelMapper;
+    @Autowired
+    private CloudinaryService cloudinaryService;
 
 
     public Account getCurrentAccount() {
@@ -238,6 +245,20 @@ public class DoctorService {
         return medicalFishRequests; // Trả về danh sách các MedicalFishResquest đã lưu
     }
 
+
+    @Transactional
+    public void uploadImage(final long id, final MultipartFile file) {
+        final Doctor doctor = doctorRepository.findDoctorById(id);
+        if (doctor == null) {
+            throw new NotFoundException("Không tìm thấy bác sĩ");
+        }
+
+        FileUpLoadUtil.assertAllowed(file, FileUpLoadUtil.IMAGE_PATTERN);
+        final String fileName = FileUpLoadUtil.getFileName(file.getOriginalFilename());
+        final CloudinaryResponse cloudinaryResponse = cloudinaryService.uploadFile(file, fileName);
+        doctor.setImageUrl(cloudinaryResponse.getUrl());
+        doctorRepository.save(doctor);
+    }
 
 
 }
