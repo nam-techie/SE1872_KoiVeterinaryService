@@ -111,9 +111,9 @@ const AppointmentDashboard = () => {
                             <th>Trạng thái</th>
                             <th>Tên dịch vụ</th>
                             <th>Thời gian</th>
-                            <th>Ngày thhực hiện</th>
+                            <th>Ngày thực hiện</th>
                             <th>Khu vực</th>
-                            <th>Thao tác</th>
+                            <th className='action-column'>Thao tác</th>
                         </tr>
                     </thead>
                     <tbody>
