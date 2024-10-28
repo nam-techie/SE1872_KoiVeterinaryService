@@ -124,6 +124,12 @@ public class DoctorService {
             updateDoctorInfo.setQualification(doctorRequest.getQualification());
             updateDoctorInfo.setSpecialty(doctorRequest.getSpecialty());
 
+            // Xử lý upload ảnh nếu có
+            if (doctorRequest.getImageUrl() != null && !doctorRequest.getImageUrl().isEmpty()) {
+                uploadImage(updateDoctor.getId(), doctorRequest.getImageUrl());
+            }
+
+
 
 
             // Lưu thông tin cập nhật
@@ -258,6 +264,7 @@ public class DoctorService {
 
     @Transactional
     public void uploadImage(final long id, final MultipartFile file) {
+        System.out.println("Url Image: "+file);
         final Doctor doctor = doctorRepository.findDoctorById(id);
         if (doctor == null) {
             throw new NotFoundException("Không tìm thấy bác sĩ");

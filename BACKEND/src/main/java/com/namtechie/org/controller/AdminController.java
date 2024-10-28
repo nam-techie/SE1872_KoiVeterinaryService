@@ -157,7 +157,9 @@ public class AdminController {
     }
 
     @PutMapping("/updateDoctorInfo/{phone}")
-    public ResponseEntity<String> updateDoctorInfo(@PathVariable String phone, @RequestBody DoctorRequest doctorRequest) {
+    public ResponseEntity<String> updateDoctorInfo(
+            @PathVariable String phone,
+            @ModelAttribute DoctorRequest doctorRequest) {  // Thay @RequestBody bằng @ModelAttribute
         try {
             doctorService.updateInfoDoctor(phone, doctorRequest);
             return ResponseEntity.ok("Cập nhật thông tin bác sĩ thành công");
