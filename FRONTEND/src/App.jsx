@@ -18,9 +18,8 @@ import TermAndRefund from "./pages/TermAndRefund.jsx";
 import FindDoctor from './pages/FindDoctor';
 import Dashboard from "./pages/admin_Pages/Dashboard.jsx";
 import DoctorWorkSchedule from "./pages/doctor_Pages/DoctorWorkSchedule.jsx";
-import DoctorBooking from "./pages/doctor_Pages/DoctorBooking.jsx";
-import {Helmet} from 'react-helmet';
 import PageTitle from "./components/PageTitle.jsx";
+import AppointmentPage from "./pages/customer_Pages/AppointmentPage.jsx";
 
 
 function App() {
@@ -60,6 +59,26 @@ function App() {
                     <Route path="/terms" element={<PublicRoute><TermAndRefund/></PublicRoute>}/>
                     <Route path="/doctor-list" element={<PublicRoute><FindDoctor/></PublicRoute>}/>
 
+                    {/*-----------------------------------------------------------------*/}
+                    {/*Test FE*/}
+                    {/*FE DASHBOARD DOCTOR*/}
+                    <Route path="/doctor/doctor-dashboard" element={<PublicRoute><DoctorDashBoard/></PublicRoute>}/>
+                    <Route path="/doctor/doctor-appointment" element={<PublicRoute><DoctorAppointment/></PublicRoute>}/>
+                    <Route path="/doctor/doctor-work-schedule" element={<PublicRoute><DoctorWorkSchedule/></PublicRoute>}/>
+
+                    {/*FE USER*/}
+                    <Route path="/customer/booking" element={<PublicRoute><BookingPage/></PublicRoute>}/>
+                    <Route path="/customer/manage-appointment" element={<PublicRoute><AppointmentPage/></PublicRoute>}/>
+
+
+
+
+
+
+
+
+                    {/*-----------------------------------------------------------------*/}
+
                     {/* Trang không cho phép truy cập nếu đã đăng nhập (có token) */}
                     <Route path="/login" element={
                         <PageTitle title="Login">
@@ -72,11 +91,19 @@ function App() {
                         </PageTitle>
                     }/>
 
-                    Trang chỉ customer và admin truy cập được (doctor không truy cập được)
-                    <Route path="/customer/booking-page" element={
+                    {/*Trang dành cho customer */}
+                    <Route path="/customer/booking" element={
                         <PageTitle title="Book an Appointment">
                             <RoleBasedRoute allowedRoles={['CUSTOMER', 'ADMIN']}>
                                 <BookingPage/>
+                            </RoleBasedRoute>
+                        </PageTitle>
+                    }/>
+
+                    <Route path="/customer/manage-appointment" element={
+                        <PageTitle title="Quản lí lịch hẹn">
+                            <RoleBasedRoute allowedRoles={['CUSTOMER', 'ADMIN']}>
+                                <AppointmentPage/>
                             </RoleBasedRoute>
                         </PageTitle>
                     }/>
@@ -91,7 +118,7 @@ function App() {
                         </PageTitle>
                     }/>
 
-                    <Route path="/doctor/doctor-appointment" element={
+                    <Route path="/doctor/doctor-manage-appointment" element={
                         <PageTitle title="Lịch đặt">
                             <RoleBasedRoute allowedRoles={['VETERINARY', 'ADMIN']}>
                                 <DoctorAppointment/>
@@ -103,14 +130,6 @@ function App() {
                         <PageTitle title="Lịch làm việc">
                             <RoleBasedRoute allowedRoles={['VETERINARY', 'ADMIN']}>
                                 <DoctorWorkSchedule/>
-                            </RoleBasedRoute>
-                        </PageTitle>
-                    }/>
-
-                    <Route path="/doctor/doctor-booking" element={
-                        <PageTitle title="Thêm dịch vụ">
-                            <RoleBasedRoute allowedRoles={['VETERINARY', 'ADMIN']}>
-                                <DoctorBooking/>
                             </RoleBasedRoute>
                         </PageTitle>
                     }/>

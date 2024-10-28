@@ -4,7 +4,6 @@ import Logo from "../assets/homePage_images/logo.png";
 import {AiFillSchedule} from "react-icons/ai";
 import {PiNewspaperClippingFill} from "react-icons/pi";
 import {IoLogOutSharp} from "react-icons/io5";
-import {FaRegCalendarPlus} from "react-icons/fa";
 import {FaUserLarge} from "react-icons/fa6";
 import { MdDashboard } from 'react-icons/md';
 
@@ -89,8 +88,7 @@ export function CustomerNavBar() {
                                 <FaUserLarge size={35} color={"white"}/>
                                 {isDropdownOpen && (
                                     <div className={styles.dropdownMenu}>
-                                        <Link to="#">Quản lí Lịch hẹn</Link>
-                                        <Link to="/booking-service-history">Lịch sử đặt dịch vụ</Link>
+                                        <Link to="/customer/appointment">Quản lí Lịch hẹn</Link>
                                         <hr/>
                                         <Link to="/profile">Thông tin cá nhân</Link>
                                         <hr/>
@@ -134,10 +132,7 @@ export const DoctorNavBar = () => {
                     <AiFillSchedule className={styles.icon} size={40}/> Lịch làm việc
                 </a>
                 <a className={styles.DoctorSidebarLink} href="/doctor/doctor-appointment">
-                    <PiNewspaperClippingFill className={styles.icon} size={40}/> Lịch đặt
-                </a>
-                <a className={styles.DoctorSidebarLink} href="/doctor/doctor-booking">
-                    <FaRegCalendarPlus className={styles.icon} size={40}/> Thêm Dịch vụ
+                    <PiNewspaperClippingFill className={styles.icon} size={40}/> Quản lí Lịch đặt
                 </a>
                 <hr className={styles.separator}/>
                 <a className={styles.DoctorSidebarLink} href="#logout" onClick={handleLogout}>

@@ -14,7 +14,7 @@
     "@emotion/styled": "^11.13.0",
     "@fortawesome/fontawesome-free": "^6.6.0",
     "@mui/icons-material": "^6.1.4",
-    "@mui/material": "^6.1.4",
+    "@mui/material": "^6.1.5",
     "antd": "^5.21.5",
     "axios": "^1.7.7",
     "prop-types": "^15.8.1",
