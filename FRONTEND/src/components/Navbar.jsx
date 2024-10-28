@@ -1,7 +1,7 @@
 import styles from "../styles/NavBar.module.css";
 import {FaMapMarkerAlt, FaPhoneAlt, FaClock} from "react-icons/fa";
 import {FaUserLarge, FaUserDoctor} from "react-icons/fa6";
-import Logo from "../assets/homePage_images/logo.png";
+import Logo from "../assets/homePage_images/Logo.png";
 import {AiFillSchedule} from "react-icons/ai";
 import {PiNewspaperClippingFill} from "react-icons/pi";
 import {IoLogOutSharp} from "react-icons/io5";
