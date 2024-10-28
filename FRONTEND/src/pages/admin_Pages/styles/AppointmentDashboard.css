@@ -216,7 +216,8 @@ tr:last-child td {
 
 .search-box {
     position: relative;
-    flex: 1;
+    flex: 0 1 300px; /* Thay đổi flex: 1 thành flex: 0 1 300px */
+    max-width: 300px; /* Thêm max-width để giới hạn độ rộng tối đa */
 }
 
 .search-icon {
@@ -242,13 +243,28 @@ tr:last-child td {
     display: flex;
     align-items: center;
     gap: 5px;
-    padding: 8px 16px;
+    padding: 6px 12px; /* Giảm padding */
     border: 1px solid #ddd;
     border-radius: 4px;
     background: white;
     cursor: pointer;
+    height: 35px; /* Chiều cao cố định */
+    font-size: 14px; /* Kích thước chữ phù hợp */
+    min-width: 150px; /* Thêm chiều rộng tối thiểu */
+    justify-content: center; /* Canh giữa nội dung */
 }
 
 .sort-order-btn:hover {
     background: #f5f5f5;
+}
+
+.date-search-box {
+    margin: 0 10px;
+}
+
+.date-input {
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
 }

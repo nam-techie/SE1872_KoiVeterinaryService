@@ -8,6 +8,8 @@ const AppointmentDashboard = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [sortBy, setSortBy] = useState('id');
     const [sortOrder, setSortOrder] = useState('desc');
+    // Thêm state mới cho date search
+    const [dateSearch, setDateSearch] = useState('');
 
     if (loading) return <div>Đang tải dữ liệu...</div>;
     if (error) return <div>{error}</div>;
@@ -31,12 +33,39 @@ const AppointmentDashboard = () => {
     const filteredAndSortedAppointments = [...appointments]
         .filter(appointment => {
             const searchLower = searchTerm.toLowerCase();
-            return (
+            const matchesSearch = 
                 appointment.id?.toString().toLowerCase().includes(searchLower) ||
                 appointment.fullName?.toLowerCase().includes(searchLower) ||
+                appointment.status?.toLowerCase().includes(searchLower) ||
+                appointment.nameService?.toLowerCase().includes(searchLower) ||
+                appointment.appointmentBookingTime?.toLowerCase().includes(searchLower) ||
                 appointment.appointmentBookingDate?.toLowerCase().includes(searchLower) ||
-                appointment.appointmentBookingTime?.toLowerCase().includes(searchLower)
-            );
+                appointment.nameZone?.toLowerCase().includes(searchLower);
+
+            // Thêm logic lọc theo ngày
+            if (dateSearch) {
+                const searchDate = new Date(dateSearch);
+                const appointmentDate = new Date(appointment.appointmentBookingDate);
+                
+                const matchesYear = searchDate.getFullYear() === appointmentDate.getFullYear();
+                const matchesMonth = searchDate.getMonth() === appointmentDate.getMonth();
+                const matchesDay = searchDate.getDate() === appointmentDate.getDate();
+
+                // Nếu người dùng chỉ chọn năm (YYYY)
+                if (dateSearch.length === 4) {
+                    return matchesYear && matchesSearch;
+                }
+                // Nếu người dùng chọn năm và tháng (YYYY-MM)
+                else if (dateSearch.length === 7) {
+                    return matchesYear && matchesMonth && matchesSearch;
+                }
+                // Nếu người dùng chọn đầy đủ ngày (YYYY-MM-DD)
+                else {
+                    return matchesYear && matchesMonth && matchesDay && matchesSearch;
+                }
+            }
+
+            return matchesSearch;
         })
         .sort((a, b) => {
             if (sortBy === 'id') {
@@ -67,7 +96,7 @@ const AppointmentDashboard = () => {
     return (
         <div className="appointment-dashboard">
             <div className="content-header">
-                <h2>Quản lý Lịch hẹn</h2>
+                <h2>Quản lý lịch hẹn</h2>
                 <div className="search-sort-container">
                     <div className="search-box">
                         <input 
@@ -78,6 +107,15 @@ const AppointmentDashboard = () => {
                             onChange={(e) => handleSearch(e.target.value)}
                         />
                         <FaSearch className="search-icon" />
+                    </div>
+                    { }
+                    <div className="date-search-box">
+                        <input
+                            type="date"
+                            className="date-input"
+                            value={dateSearch}
+                            onChange={(e) => setDateSearch(e.target.value)}
+                        />
                     </div>
                     <div className="sort-box">
                         <select
@@ -97,7 +135,7 @@ const AppointmentDashboard = () => {
                         className="sort-order-btn"
                     >
                         {sortOrder === 'asc' ? 'Tăng dần' : 'Giảm dần'}
-                        <FaSort />
+                        <FaSort className='sort-icon'/>
                     </button>
                 </div>
             </div>

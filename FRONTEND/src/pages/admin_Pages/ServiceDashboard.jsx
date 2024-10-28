@@ -151,6 +151,7 @@ const ServiceDashboard = () => {
                         <option value="name">Sắp xếp theo Tên</option>
                         <option value="base_price">Sắp xếp theo Giá</option>
                         <option value="status">Sắp xếp theo Trạng thái</option>
+                        <option value="description">Sắp xếp theo Mô tả</option>
                     </select>
                 </div>
                 <button
@@ -165,12 +166,12 @@ const ServiceDashboard = () => {
                 <table>
                     <thead>
                         <tr>
-                            <th>ID</th>
-                            <th>Tên Loại Dịch Vụ</th>
-                            <th>Giá Cơ Bản</th>
-                            <th>Mô Tả</th>
-                            <th>Trạng Thái</th>
-                            <th>Hành Động</th>
+                            <th onClick={() => handleSort('id')}>ID</th>
+                            <th onClick={() => handleSort('name')}>Tên Loại Dịch Vụ</th>
+                            <th onClick={() => handleSort('base_price')}>Giá Cơ Bản</th>
+                            <th onClick={() => handleSort('description')}>Mô Tả</th>
+                            <th onClick={() => handleSort('status')}>Trạng Thái</th>
+                            <th className='action-column'>Hành Động</th>
                         </tr>
                     </thead>
                     <tbody>

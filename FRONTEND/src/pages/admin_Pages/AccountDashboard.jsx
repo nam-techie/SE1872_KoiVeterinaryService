@@ -135,6 +135,7 @@ const AccountDashboard = ({ setActiveTab, setSelectedAccount }) => {
                         <option value="email">Sắp xếp theo Email</option>
                         <option value="role">Sắp xếp theo Vai trò</option>
                         <option value="createdAt">Sắp xếp theo Ngày tạo</option>
+                        <option value="deleted">Sắp xếp theo Trạng thái</option>
                     </select>
                 </div>
                 <button
