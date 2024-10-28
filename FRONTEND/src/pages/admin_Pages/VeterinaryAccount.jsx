@@ -1,7 +1,7 @@
 // eslint-disable-next-line no-unused-vars
 import React, { useState } from 'react';
 import { useAccountInfo } from './hooks/useAccountInfo';
-import './admin_pages/styles/VeterinaryAccount.css';
+import './styles/VeterinaryAccount.css';
 
 
 const VeterinaryAccount = ({ setActiveTab }) => {
