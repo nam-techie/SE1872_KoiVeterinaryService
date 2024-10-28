@@ -1,4 +1,4 @@
-import styles from "./styles/NavBar.module.css";
+import styles from "../styles/NavBar.module.css";
 import {FaMapMarkerAlt, FaPhoneAlt, FaClock} from "react-icons/fa";
 import {FaUserLarge, FaUserDoctor} from "react-icons/fa6";
 import Logo from "../assets/homePage_images/logo.png";
