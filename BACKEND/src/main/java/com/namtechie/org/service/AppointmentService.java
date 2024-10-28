@@ -1,6 +1,7 @@
 package com.namtechie.org.service;
 
 import com.namtechie.org.entity.Appointment;
+import com.namtechie.org.model.response.AppointmentResponse;
 import com.namtechie.org.repository.AppointmentRepository;
 
 import com.namtechie.org.entity.*;
@@ -47,9 +48,11 @@ public class AppointmentService {
     @Autowired
     private AccountRepository accountRepository;
     @Autowired
-    private CustomerRepository customersRepository;
+    private CustomerRepository customerRepository;
     @Autowired
     ScheduleService scheduleService;
+    @Autowired
+    private ServiceTypesService serviceTypesService;
 
 
     public List<Doctor> findAllDoctor() {
@@ -102,7 +105,6 @@ public class AppointmentService {
     }
 
 
-
     public Appointment createAppointment(AppointmentRequest appointmentRequest) {
         Appointment appointment = new Appointment();
         try {
@@ -118,23 +120,21 @@ public class AppointmentService {
             appointment.setServiceType(serviceType);
 
 
-
-
             // Step 5: Tạo mới AppointmentDetail từ dữ liệu chi tiết
             AppointmentInfo appointmentInfo = new AppointmentInfo();
             appointmentInfo.setAppointment(appointment);
             appointmentInfo.setAddress(appointmentRequest.getAddress());
             customer.setAddress(appointmentRequest.getAddress());
-            customersRepository.save(customer);
+            customerRepository.save(customer);
 
             Zone zone = null;
-            if(appointmentRequest.getZoneId() != 0){
+            if (appointmentRequest.getZoneId() != 0) {
                 zone = zoneRepository.findById(appointmentRequest.getZoneId());
             }
 
 
             Doctor doctor = null;
-            if(appointmentRequest.getDoctorId() != 0) {
+            if (appointmentRequest.getDoctorId() != 0) {
                 doctor = doctorRepository.findDoctorById(appointmentRequest.getDoctorId());
                 // **Kiểm tra xem bác sĩ có lịch vào thời gian đó hay không**
                 Appointment existingAppointment = appointmentRepository.findAppointmentByDoctorIdAndBookingDateAndBookingTime(
@@ -148,10 +148,10 @@ public class AppointmentService {
             }
 
             //khám tại trung tam
-            if(appointmentRequest.getServiceTypeId() == 3) {
+            if (appointmentRequest.getServiceTypeId() == 3) {
                 Zone centerZone = zoneRepository.findById(1);
                 //khách hàng chọn bác sĩ
-                if(doctor != null) {
+                if (doctor != null) {
                     appointment.setDoctorAssigned(true); // đánh dấu khách hàng có chọn bác sĩ
                     appointment.setDoctor(doctor);
                     appointmentInfo.setAppointmentBookingDate(appointmentRequest.getBookingDate());
@@ -159,7 +159,7 @@ public class AppointmentService {
                     appointment.setZone(centerZone);
 
 
-                }else { //khách hàng ko chọn bác sĩ
+                } else { //khách hàng ko chọn bác sĩ
                     appointmentInfo.setAppointmentBookingDate(appointmentRequest.getBookingDate());
                     appointmentInfo.setAppointmentBookingTime(appointmentRequest.getBookingTime());
                     doctor = findAvailableDoctor(String.valueOf(appointmentRequest.getBookingDate()), String.valueOf(appointmentRequest.getBookingTime()));
@@ -169,8 +169,8 @@ public class AppointmentService {
 
                 }
 
-            }else if(appointmentRequest.getServiceTypeId() == 2 || appointmentRequest.getServiceTypeId() == 4) { // khám tại nhà
-                if(doctor == null) {
+            } else if (appointmentRequest.getServiceTypeId() == 2 || appointmentRequest.getServiceTypeId() == 4) { // khám tại nhà
+                if (doctor == null) {
                     doctor = findAvailableDoctorForSession(String.valueOf(appointmentRequest.getBookingDate()), String.valueOf(appointmentRequest.getBookingTime()));
                     appointment.setDoctorAssigned(false);
                     appointment.setDoctor(doctor);
@@ -178,8 +178,8 @@ public class AppointmentService {
                     appointmentInfo.setAppointmentBookingTime(appointmentRequest.getBookingTime());
                     appointment.setZone(zone);
                 }
-            }else if(appointmentRequest.getServiceTypeId() == 1) { // dịch vụ tư vấn
-                if(doctor == null) {
+            } else if (appointmentRequest.getServiceTypeId() == 1) { // dịch vụ tư vấn
+                if (doctor == null) {
                     Time appointmentTime = appointmentRequest.getBookingTime();
                     Time updateAppointmentTime = new Time(appointmentTime.getTime() + 15 * 60 * 1000); // 15 phút sau
                     System.out.println("15Minutes: " + updateAppointmentTime);
@@ -229,8 +229,8 @@ public class AppointmentService {
 
             List<Schedule> schedulesForDay = freeSchedules.get(bookingDate);
             System.out.println("12345" + schedulesForDay);
-            for(Schedule schedule : schedulesForDay) {
-                if((schedule.getDate().equals(bookingDateSQL) && schedule.getStartTime().equals(Time.valueOf(bookingTime)) && schedule.isAvailable()) ||
+            for (Schedule schedule : schedulesForDay) {
+                if ((schedule.getDate().equals(bookingDateSQL) && schedule.getStartTime().equals(Time.valueOf(bookingTime)) && schedule.isAvailable()) ||
                         (schedule.getDate().equals(bookingDateSQL) && Time.valueOf(bookingTime).after(schedule.getStartTime()) && Time.valueOf(bookingTime).before(schedule.getEndTime()) && schedule.isAvailable())) {
                     return doctor;
                 }
@@ -276,11 +276,6 @@ public class AppointmentService {
     }
 
 
-
-
-
-
-
     public List<Appointment> getAllAppointments() {
         return appointmentRepository.findAll();
     }
@@ -305,4 +300,69 @@ public class AppointmentService {
         }
 
     }
+
+    @Autowired
+    private AppointmentInfoRepository appointmentInfoRepository;
+
+
+    public List<AppointmentResponse> getListAppoint() {
+        List<AppointmentResponse> appointmentResponses = new ArrayList<>();
+
+        List<Appointment> appointments = appointmentRepository.findAll();
+
+        for (Appointment appointment : appointments) {
+            AppointmentResponse appointmentResponse = new AppointmentResponse();
+            appointmentResponse.setId(appointment.getId());
+
+            // Lấy thông tin khách hàng
+            Customers infoCus = appointment.getCustomers();
+
+            if (infoCus != null) {
+                appointmentResponse.setFullName(infoCus.getFullName());
+            }
+
+            // Lấy tất cả các trạng thái của appointment
+            List<AppointmentStatus> statuses = appointmentStatusRepository.findByAppointment(appointment);
+
+            // Tìm trạng thái có createDate lớn nhất (mới nhất)
+            AppointmentStatus latestStatus = null;
+            for (AppointmentStatus status : statuses) {
+                if (latestStatus == null || status.getCreate_date().toLocalDateTime().isAfter(latestStatus.getCreate_date().toLocalDateTime())) {
+                    latestStatus = status;
+                }
+            }
+
+            // Set trạng thái mới nhất vào AppointmentResponse
+            if (latestStatus != null) {
+                appointmentResponse.setStatus(latestStatus.getStatus());
+            }
+
+            // Lấy thông tin loại dịch vụ
+            ServiceType infoService = serviceTypeRepository.findByAppointmentId(appointment.getId());
+            if (infoService != null) {
+                appointmentResponse.setNameService(infoService.getName());
+            }
+
+            // Lấy thông tin thời gian đặt hẹn
+            AppointmentInfo appointmentInfo = appointmentInfoRepository.findByAppointmentId(appointment.getId());
+            if (appointmentInfo != null) {
+                appointmentResponse.setAppointmentBookingTime(appointmentInfo.getAppointmentBookingTime());
+                appointmentResponse.setAppointmentBookingDate(appointmentInfo.getAppointmentBookingDate());
+            }
+
+            // Lấy thông tin khu vực
+            Zone infoZone = zoneRepository.findByAppointmentId(appointment.getId());
+            if (infoZone != null) {
+                appointmentResponse.setNameZone(infoZone.getName());
+            }
+
+            // Thêm vào danh sách kết quả
+            appointmentResponses.add(appointmentResponse);
+        }
+
+        return appointmentResponses;
+    }
+
+
+
 }

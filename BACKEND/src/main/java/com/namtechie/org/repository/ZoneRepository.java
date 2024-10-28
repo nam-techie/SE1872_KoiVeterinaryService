@@ -14,4 +14,6 @@ public interface ZoneRepository extends JpaRepository<Zone, Long> {
 
     List<Zone> findAll();
     Zone findById(long id);
+
+    Zone findByAppointmentId(long id);
 }

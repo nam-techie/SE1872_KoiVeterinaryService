@@ -110,9 +110,18 @@
 }
 
 .service-table td.description {
-    max-width: 300px; /* Điều chỉnh chiều rộng tối đa của cột mô tả */
-    white-space: pre-wrap; /* Cho phép xuống dòng và giữ khoảng trắng */
-    word-wrap: break-word; /* Ngắt từ khi cần thiết */
+    max-width: 350px;
+    width: 350px;
+    white-space: pre-wrap; /* Cho phép xuống hàng */
+    word-wrap: break-word; /* Cho phép từ dài tự động xuống hàng */
+    overflow-wrap: break-word; /* Đảm bảo từ dài sẽ được wrap */
+    line-height: 1.4; /* Khoảng cách giữa các dòng */
+    /* Thêm tooltip khi hover để xem đầy đủ nội dung */
+    &:hover {
+        white-space: normal; /* Cho phép xuống dòng khi hover */
+        position: relative;
+        cursor: pointer;
+    }
 }
 
 .status-badge {

@@ -9,6 +9,7 @@ const UpdateDoctor = ({ doctor, onClose, onUpdate }) => {
     const { updateDoctorInfo, loading } = useDoctorInfo();
     const [doctorInfo, setDoctorInfo] = useState(doctor);
     const [error, setError] = useState(null);
+    const [previewImage, setPreviewImage] = useState(null);
     const originalPhone = doctor.phone; // Lưu số điện thoại ban đầu
 
     const handleInputChange = (e) => {
@@ -17,6 +18,21 @@ const UpdateDoctor = ({ doctor, onClose, onUpdate }) => {
             ...prevInfo,
             [name]: value
         }));
+    };
+
+    const handleImageChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setPreviewImage(reader.result);
+                setDoctorInfo(prevInfo => ({
+                    ...prevInfo,
+                    imageUrl: reader.result
+                }));
+            };
+            reader.readAsDataURL(file);
+        }
     };
 
     const handleSubmit = async (e) => {
@@ -46,7 +62,21 @@ const UpdateDoctor = ({ doctor, onClose, onUpdate }) => {
             {loading ? <LoadingCat /> : (
                 <div className="update-doctor">
                     <div className="doctor-avatar">
-                        <span>{getInitials(doctorInfo.fullName)}</span>
+                        {previewImage || doctorInfo.imageUrl ? (
+                            <img src={previewImage || doctorInfo.imageUrl} alt={`Ảnh đại diện của ${doctorInfo.fullName}`} />
+                        ) : (
+                            <span>{getInitials(doctorInfo.fullName)}</span>
+                        )}
+                        <input
+                            type="file"
+                            id="avatar-upload"
+                            accept="image/*"
+                            onChange={handleImageChange}
+                            style={{ display: 'none' }}
+                        />
+                        <label htmlFor="avatar-upload" className="avatar-upload-label">
+                            Thay đổi ảnh
+                        </label>
                     </div>
                     <h2>Cập nhật thông tin bác sĩ</h2>
                     {error && <div className="error-message">{error}</div>}

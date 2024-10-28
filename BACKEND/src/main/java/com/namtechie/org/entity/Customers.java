@@ -26,7 +26,7 @@ public class Customers {
     private List<Appointment> appointment;
 
 
-    @Column(name = "fullName", length = 255)
+    @Column(name = "full_name", length = 255)
     private String fullName;
 
 
@@ -36,11 +36,4 @@ public class Customers {
     @Column(name = "address", length = 255)
     private String address;
 
-    public Customers() {
-
-    }
-
-    public Customers(Account account) {
-        this.account = account;
-    }
 }
