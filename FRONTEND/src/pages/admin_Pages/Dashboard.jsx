@@ -56,7 +56,7 @@ const AdminDashboard = () => {
         setIsAddingDoctor(false);
     };
 
-    const handleDoctorAdded = (newDoctor) => {
+    const handleDoctorAdded = () => {
         // Xử lý sau khi thêm bác sĩ thành công
         setIsAddingDoctor(false);
         // Có thể cập nhật danh sách bác sĩ ở đây nếu cần
