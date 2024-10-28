@@ -1,7 +1,7 @@
 // eslint-disable-next-line no-unused-vars
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import '../admin_pages/styles/AdminDashboard.css';
+import './admin_pages/styles/AdminDashboard.css';
 import { FaHome, FaCalendarAlt, FaUsers, FaUserMd, FaComments, FaSignOutAlt, FaUser, FaFish } from 'react-icons/fa';
 import AdminProfile from "./AdminProfile.jsx";
 import AccountDashboard from "./AccountDashboard.jsx";
