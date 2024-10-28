@@ -1,5 +1,5 @@
 import { useForgotPassword } from '../hooks/useResetPassword.js';
-import styles from '../styles/ForgotPassword.module.css';  // Import đúng với module.css
+import styles from '../styles/ForgotPassWord.module.css';  // Import đúng với module.css
 import { useNavigate } from 'react-router-dom';
 import {CustomerNavBar} from "../components/Navbar.jsx";
 
