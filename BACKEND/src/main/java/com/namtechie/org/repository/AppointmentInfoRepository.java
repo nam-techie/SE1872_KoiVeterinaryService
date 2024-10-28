@@ -10,4 +10,5 @@ public interface AppointmentInfoRepository extends JpaRepository<AppointmentInfo
 
     AppointmentInfo findByAppointmentId(Long appointmentId);
 
+
 }

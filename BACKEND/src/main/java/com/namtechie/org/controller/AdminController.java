@@ -4,10 +4,7 @@ import com.namtechie.org.entity.*;
 import com.namtechie.org.exception.DuplicateEntity;
 import com.namtechie.org.exception.NotFoundException;
 import com.namtechie.org.model.request.*;
-import com.namtechie.org.model.response.AccountResponse;
-import com.namtechie.org.model.response.AdminAccountResponse;
-import com.namtechie.org.model.response.DoctorInfoResponse;
-import com.namtechie.org.model.response.FishResponse;
+import com.namtechie.org.model.response.*;
 import com.namtechie.org.repository.DoctorRepository;
 import com.namtechie.org.repository.FeedbackRepository;
 import com.namtechie.org.repository.MedicalRecordedRepository;
@@ -47,6 +44,8 @@ public class AdminController {
     private ServiceTypesService serviceTypesService;
     @Autowired
     private MedicalRecordedRepository medicalRecordedRepository;
+    @Autowired
+    private AppointmentService appointmentService;
 
     //APi down is provide for ADMIN
     @PutMapping("/setAccountVeterinary/{email}")
@@ -268,6 +267,18 @@ public class AdminController {
             return new ResponseEntity<>("Dữ liệu không hợp lệ!", HttpStatus.BAD_REQUEST);
         }
     }
+
+    @GetMapping("/listAppointment")
+    public ResponseEntity<List<AppointmentResponse>> getAllAppointment() {
+        try {
+            List<AppointmentResponse> appointments = appointmentService.getListAppoint();
+            return new ResponseEntity<>(appointments, HttpStatus.OK);  // Trả về HTTP 200 OK
+        } catch (Exception e) {
+            // Log lỗi ra nếu cần
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);  // Trả về HTTP 500 nếu có lỗi
+        }
+    }
+
 
 
 }

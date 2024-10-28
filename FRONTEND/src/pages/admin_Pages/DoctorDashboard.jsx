@@ -79,6 +79,7 @@ const DoctorDashboard = ({ onViewDetails, onAddDoctor }) => {
                         <option value="fullName">Sắp xếp theo Tên</option>
                         <option value="experience_asc">Kinh nghiệm (Thấp đến Cao)</option>
                         <option value="experience_desc">Kinh nghiệm (Cao đến Thấp)</option>
+                        <option value="phone">Sắp xếp theo Số điện thoại</option>
                     </select>
                 </div>
                 <button
@@ -93,11 +94,11 @@ const DoctorDashboard = ({ onViewDetails, onAddDoctor }) => {
                 <table>
                     <thead>
                         <tr>
-                            <th>Tên đầy đủ</th>
-                            <th>Số điện thoại</th>
-                            <th>Kinh nghiệm (năm)</th>
+                            <th onClick={() => handleSort('fullName')}>Tên đầy đủ</th>
+                            <th onClick={() => handleSort('phone')}>Số điện thoại</th>
+                            <th onClick={() => handleSort('experience')}>Kinh nghiệm (năm)</th>
                             <th>Hình ảnh</th>
-                            <th>Hành động</th>
+                            <th className='action-column'>Hành động</th>
                         </tr>
                     </thead>
                     <tbody>

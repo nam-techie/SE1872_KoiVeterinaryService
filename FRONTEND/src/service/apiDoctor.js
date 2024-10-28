@@ -2,12 +2,12 @@ import axios from "axios";
 import {axiosInstance} from "./apiRequest.js";
 
 export const getDoctorList = async () => {
-    try{
-        const response = await axios.get("http://localhost:8080/api/getAllDoctor");
-        console.log(response.data)
+    try {
+        const response = await axiosInstance.get("/getAllDoctor");
+        console.log(response.data);
         return response.data;
-    }catch(error){
-        console.error("Error Fetching Data", error);
+    } catch (error) {
+        console.error("Error Fetching Doctor List", error);
         return [];
     }
 }
@@ -51,3 +51,14 @@ export const getdoctorScheduleCenterByID = async (doctorId) => {
         return [];
     }
 };
+
+export const getDoctorDetail = async (doctorId) => {
+    try {
+        const response = await axiosInstance.get(`/getDoctorDetail/${doctorId}`);
+        console.log('Chi tiết bác sĩ:', response.data);
+        return response.data;
+    } catch (error) {
+        console.error("Lỗi khi lấy thông tin chi tiết bác sĩ", error);
+        return null;
+    }
+}

@@ -10,4 +10,5 @@ public class DoctorInfoResponse {
     String specialty;
     String description;
     String qualification;
+    String ImageUrl;
 }

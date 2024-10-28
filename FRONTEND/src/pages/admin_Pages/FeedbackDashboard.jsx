@@ -124,6 +124,7 @@ const FeedbackDashboard = () => {
                         <option value="rating">Sắp xếp theo Đánh giá</option>
                         <option value="appointmentId">Sắp xếp theo Mã cuộc hẹn</option>
                         <option value="status">Sắp xếp theo Trạng thái</option>
+                        <option value="comment">Sắp xếp theo Nhận xét</option>
                     </select>
                 </div>
                 <button
@@ -138,12 +139,12 @@ const FeedbackDashboard = () => {
                 <table>
                     <thead>
                         <tr>
-                            <th>Mã cuộc hẹn</th>
-                            <th>Đánh giá</th>
-                            <th>Nhận xét</th>
-                            <th>Ngày tạo</th>
-                            <th>Trạng thái</th>
-                            <th>Hành động</th>
+                            <th onClick={() => handleSort('appointmentId')}>Mã cuộc hẹn</th>
+                            <th onClick={() => handleSort('rating')}>Đánh giá</th>
+                            <th onClick={() => handleSort('comment')}>Nhận xét</th>
+                            <th onClick={() => handleSort('created_date')}>Ngày tạo</th>
+                            <th onClick={() => handleSort('status')}>Trạng thái</th>
+                            <th className='action-column'>Hành động</th>
                         </tr>
                     </thead>
                     <tbody>

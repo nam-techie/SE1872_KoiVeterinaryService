@@ -48,6 +48,8 @@ public class Filter extends OncePerRequestFilter {
             "/api/reset-password",
             "/api/validate-otp",
             "/api/getAllDoctor",
+            "/api/listInfoDoctor",
+            "/getDoctorDetail/{doctorId}",
             "/api/getAllZone",
             "/api/getAllServiceType",
             "/api/getFreeScheduleByDoctorId",
@@ -58,7 +60,6 @@ public class Filter extends OncePerRequestFilter {
             "/api/zones",
             "/api/free-schedule",
             "/api/testFreeSchedule",
-            "/api/getAllDoctor",
             "/api/getDoctorAuto",
             "/api/getFeedback"
 

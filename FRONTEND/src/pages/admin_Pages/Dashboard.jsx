@@ -15,6 +15,7 @@ import AddDoctor from "./AddDoctor.jsx";
 import FeedbackDashboard from "./FeedbackDashboard.jsx";
 import ServiceDashboard from "./ServiceDashboard.jsx";
 import FishManage from './FishManage.jsx';
+import AppointmentDashboard from "./AppointmentDashboard.jsx";
 
 const AdminDashboard = () => {
     const navigate = useNavigate();
@@ -174,6 +175,8 @@ const AdminDashboard = () => {
                 return <ServiceDashboard />;
             case 'fish':
                 return <FishManage />;
+            case 'appointments':
+                return <AppointmentDashboard />;
             default:
                 return <div>Nội dung chưa được tạo</div>;
         }
@@ -196,7 +199,9 @@ const AdminDashboard = () => {
                     <li className={`menu-item ${activeTab === 'home' ? 'active' : ''}`} onClick={() => setActiveTab('home')}>
                         <FaHome /> Trang chủ
                     </li>
-                    <li className="menu-item"><FaCalendarAlt /> Quản lý lịch hẹn</li>
+                    <li className={`menu-item ${activeTab === 'appointments' ? 'active' : ''}`} onClick={() => setActiveTab('appointments')}>
+                        <FaCalendarAlt /> Quản lý lịch hẹn
+                    </li>
                     <li className={`menu-item ${activeTab === 'fish' ? 'active' : ''}`} onClick={() => setActiveTab('fish')}>
                         <FaFish /> Quản lý hồ sơ cá Koi
                     </li>

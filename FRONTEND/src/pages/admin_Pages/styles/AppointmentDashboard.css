@@ -1,0 +1,270 @@
+.appointment-dashboard {
+    background-color: #fcc151;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-left: 40px;
+}
+
+.content-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.content-header h2 {
+    font-size: 24px;
+    color: #333;
+}
+
+.search-filter {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    background-color: #fff;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.search-input,
+.filter-select {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    width: 200px;
+}
+
+.appointment-table {
+    background-color: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+th, td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+th {
+    background-color: #f8f9fa;
+    font-weight: 600;
+    color: #333;
+    cursor: pointer;
+}
+
+th:hover {
+    background-color: #e9ecef;
+}
+
+tr:last-child td {
+    border-bottom: none;
+}
+
+.status {
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.status.đã.xác.nhận {
+    background-color: #e8f5e9;
+    color: #4caf50;
+}
+
+.status.chờ.xác.nhận {
+    background-color: #fff3cd;
+    color: #856404;
+}
+
+.status.đã.hủy {
+    background-color: #ffebee;
+    color: #f44336;
+}
+
+.action-th{
+    text-align: center;
+}
+.action-btn {
+    padding: 8px 12px;
+    margin: 0 4px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+    transition: background-color 0.3s ease, transform 0.1s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.action-btn:hover {
+    transform: translateY(-2px);
+}
+
+.action-btn:active {
+    transform: translateY(0);
+}
+
+.action-btn.view {
+    background-color: #2196F3;
+    color: white;
+}
+
+.action-btn.edit {
+    background-color: #ffc107;
+    color: black;
+}
+
+.action-btn.delete {
+    background-color: #f44336;
+    color: white;
+}
+.action-btn:hover {
+    opacity: 0.9;
+}
+
+.search-container {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.search-input {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    min-width: 200px;
+}
+
+.sort-select, .direction-select {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: white;
+    cursor: pointer;
+}
+
+.sort-select:hover, .direction-select:hover {
+    border-color: #0d6efd;
+}
+
+.search-input:focus, .sort-select:focus, .direction-select:focus {
+    outline: none;
+    border-color: #0d6efd;
+    box-shadow: 0 0 0 2px rgba(13, 110, 253, 0.25);
+}
+.action-column{
+    text-align: center;
+}
+.search-button {
+    padding: 8px 16px;
+    background-color: #0d6efd;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.sort-controls {
+    display: flex;
+    gap: 10px;
+}
+
+.sort-button {
+    padding: 8px 16px;
+    background-color: #f8f9fa;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.sort-button.active {
+    background-color: #e9ecef;
+    border-color: #0d6efd;
+    color: #0d6efd;
+}
+
+.sort-button:hover {
+    background-color: #e9ecef;
+}
+
+/* Styles cho bảng và các nút thao tác giữ nguyên */
+
+.search-sort-container {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.search-box {
+    position: relative;
+    flex: 0 1 300px; /* Thay đổi flex: 1 thành flex: 0 1 300px */
+    max-width: 300px; /* Thêm max-width để giới hạn độ rộng tối đa */
+}
+
+.search-icon {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #666;
+}
+
+.sort-box {
+    min-width: 200px;
+}
+
+.sort-select {
+    width: 100%;
+    padding: 8px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+}
+
+.sort-order-btn {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 6px 12px; /* Giảm padding */
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background: white;
+    cursor: pointer;
+    height: 35px; /* Chiều cao cố định */
+    font-size: 14px; /* Kích thước chữ phù hợp */
+    min-width: 150px; /* Thêm chiều rộng tối thiểu */
+    justify-content: center; /* Canh giữa nội dung */
+}
+
+.sort-order-btn:hover {
+    background: #f5f5f5;
+}
+
+.date-search-box {
+    margin: 0 10px;
+}
+
+.date-input {
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+}

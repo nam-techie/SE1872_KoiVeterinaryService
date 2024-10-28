@@ -82,6 +82,13 @@ public class DoctorService {
         Account curruntAccount = getCurrentAccount();
         return doctorRepository.findDoctorById(curruntAccount.getId());
     }
+
+
+    public List<Doctor> getAllInfoDoctor() {
+        List<Doctor> doctors = doctorRepository.findAll();
+        return doctors;
+    }
+
     public DoctorInfoResponse getAllInfoDoctor(long doctorId) {
         DoctorInfoResponse doctorInfoResponse = new DoctorInfoResponse();
 
@@ -89,6 +96,7 @@ public class DoctorService {
         doctorInfoResponse.setFullName(doctor.getFullName());
         doctorInfoResponse.setPhone(doctor.getPhone());
         doctorInfoResponse.setExperience(doctor.getExperience());
+        doctorInfoResponse.setImageUrl(doctor.getImageUrl());
 
         DoctorInfo doctorInfo = doctorInfoRepository.findDoctorInfoByDoctorId(doctorId);
         doctorInfoResponse.setDescription(doctorInfo.getDescription());
@@ -115,6 +123,8 @@ public class DoctorService {
             updateDoctorInfo.setDescription(doctorRequest.getDescription());
             updateDoctorInfo.setQualification(doctorRequest.getQualification());
             updateDoctorInfo.setSpecialty(doctorRequest.getSpecialty());
+
+
 
             // Lưu thông tin cập nhật
             doctorRepository.save(updateDoctor);

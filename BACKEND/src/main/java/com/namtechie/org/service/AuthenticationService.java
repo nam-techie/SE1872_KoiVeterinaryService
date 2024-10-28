@@ -89,7 +89,6 @@ public class AuthenticationService implements UserDetailsService {
 
             // Lưu tài khoản vào database
             Account newAccount = accountRepository.save(account);
-            Customers newCustomers = new Customers();
 //            // Gửi email thông báo đăng kí thành công
 //            EmailDetail emailDetail = new EmailDetail();
 //            emailDetail.setReceiver(newAccount);
@@ -99,6 +98,7 @@ public class AuthenticationService implements UserDetailsService {
 
             //Sau khi lưu xong thì tạo luôn bảng Customers tương ứng!
             Customers customer = new Customers();
+            customer.setFullName(registerRequest.getUsername());
             customer.setAccount(newAccount);
 
             customerRepository.save(customer);

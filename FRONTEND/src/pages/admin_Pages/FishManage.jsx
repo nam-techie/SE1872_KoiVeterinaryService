@@ -93,8 +93,12 @@ const FishManage = () => {
                     >
                         <option value="id">Sắp xếp theo ID</option>
                         <option value="name">Sắp xếp theo Tên</option>
+                        <option value="breed">Sắp xếp theo Giống loài</option>
                         <option value="age">Sắp xếp theo Tuổi</option>
+                        <option value="color">Sắp xếp theo Màu sắc</option>
                         <option value="weight">Sắp xếp theo Cân nặng</option>
+                        <option value="healthStatus">Sắp xếp theo Tình trạng sức khỏe</option>
+
                     </select>
                 </div>
                 <button
@@ -109,13 +113,13 @@ const FishManage = () => {
                 <table>
                     <thead>
                         <tr>
-                            <th>MS hồ sơ</th>
-                            <th>Tên cá</th>
-                            <th>Giống loài</th>
-                            <th>Tuổi</th>
-                            <th>Màu sắc</th>
-                            <th>Cân nặng (kg)</th>
-                            <th>Tình trạng sức khỏe</th>
+                            <th onClick={() => handleSort('id')}>MS hồ sơ</th>
+                            <th onClick={() => handleSort('name')}>Tên cá</th>
+                            <th onClick={() => handleSort('breed')}>Giống loài</th>
+                            <th onClick={() => handleSort('age')}>Tuổi</th>
+                            <th onClick={() => handleSort('color')}>Màu sắc</th>
+                            <th onClick={() => handleSort('weight')}>Cân nặng (kg)</th>
+                            <th onClick={() => handleSort('healthStatus')}>Tình trạng sức khỏe</th>
                             <th>Hành động</th>
                         </tr>
                     </thead>

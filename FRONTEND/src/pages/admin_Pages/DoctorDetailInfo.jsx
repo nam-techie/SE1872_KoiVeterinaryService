@@ -39,7 +39,11 @@ const DoctorDetailInfo = ({ doctorId, onClose, onEdit }) => {
     return (
         <div className="doctor-detail-info">
             <div className="doctor-avatar">
-                <span>{getInitials(doctorInfo.fullName)}</span>
+                {doctorInfo.imageUrl ? (
+                    <img src={doctorInfo.imageUrl} alt={`Ảnh đại diện của ${doctorInfo.fullName}`} />
+                ) : (
+                    <span>{getInitials(doctorInfo.fullName)}</span>
+                )}
             </div>
             <h2>Thông tin cá nhân</h2>
             <div className="info-container">

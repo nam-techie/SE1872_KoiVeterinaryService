@@ -10,6 +10,8 @@ import org.springframework.stereotype.Repository;
 public interface CustomerRepository extends JpaRepository<Customers, Long> {
     Customers findByAccountId(long accountId);
 
+    Customers findById(long id);
+
 
 
     // In CustomersRepository

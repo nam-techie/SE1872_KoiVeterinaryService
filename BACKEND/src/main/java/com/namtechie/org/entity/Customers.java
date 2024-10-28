@@ -27,7 +27,7 @@ public class Customers {
     private List<Appointment> appointment;
 
 
-    @Column(name = "fullName", length = 255, columnDefinition = "NVARCHAR(MAX)")
+    @Column(name = "full_name", length = 255)
     private String fullName;
 
 
