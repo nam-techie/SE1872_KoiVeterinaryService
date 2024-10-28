@@ -157,7 +157,9 @@ public class AdminController {
     }
 
     @PutMapping("/updateDoctorInfo/{phone}")
-    public ResponseEntity<String> updateDoctorInfo(@PathVariable String phone, @RequestBody DoctorRequest doctorRequest) {
+    public ResponseEntity<String> updateDoctorInfo(
+            @PathVariable String phone,
+            @ModelAttribute DoctorRequest doctorRequest) {  // Thay @RequestBody bằng @ModelAttribute
         try {
             doctorService.updateInfoDoctor(phone, doctorRequest);
             return ResponseEntity.ok("Cập nhật thông tin bác sĩ thành công");
@@ -277,6 +279,12 @@ public class AdminController {
             // Log lỗi ra nếu cần
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);  // Trả về HTTP 500 nếu có lỗi
         }
+    }
+
+    @DeleteMapping("/cancelAppointment/{appointmentId}")
+    public ResponseEntity<String> cancelAppointment(@PathVariable  long appointmentId) {
+        appointmentService.cancelAppointment(appointmentId);
+        return ResponseEntity.ok("Đã hủy lịch hẹn khách hàng (ADMIN)");
     }
 
 

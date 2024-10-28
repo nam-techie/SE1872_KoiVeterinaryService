@@ -4,12 +4,16 @@ import useAppointment from './hooks/useAppointment';
 import { FaSearch, FaSort } from 'react-icons/fa';
 
 const AppointmentDashboard = () => {
-    const { appointments, loading, error } = useAppointment();
+    const { appointments, loading, error, cancelAppointment } = useAppointment();
     const [searchTerm, setSearchTerm] = useState('');
     const [sortBy, setSortBy] = useState('id');
     const [sortOrder, setSortOrder] = useState('desc');
     // Thêm state mới cho date search
     const [dateSearch, setDateSearch] = useState('');
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const [selectedAppointment, setSelectedAppointment] = useState(null);
+    const [cancelError, setCancelError] = useState(null);
+    const [successMessage, setSuccessMessage] = useState(null);
 
     if (loading) return <div>Đang tải dữ liệu...</div>;
     if (error) return <div>{error}</div>;
@@ -93,8 +97,38 @@ const AppointmentDashboard = () => {
         { value: 'appointmentBookingDate', label: 'Sắp xếp theo Ngày thực hiện' },
     ];
 
+    // Thêm hàm xử lý hiển thị modal
+    const handleShowDeleteModal = (appointment) => {
+        setSelectedAppointment(appointment);
+        setShowDeleteModal(true);
+    };
+
+    // Cập nhật hàm handleConfirmDelete
+    const handleConfirmDelete = async () => {
+        try {
+            await cancelAppointment(selectedAppointment.id);
+            setShowDeleteModal(false);
+            setSelectedAppointment(null);
+            setSuccessMessage('Đã hủy lịch hẹn thành công!');
+            // Tự động ẩn thông báo sau 3 giây
+            setTimeout(() => {
+                setSuccessMessage(null);
+            }, 3000);
+        } catch (error) {
+            setCancelError(error.message);
+        }
+    };
+
+    // Thêm hiển thị lỗi vào modal
     return (
         <div className="appointment-dashboard">
+            {/* Thêm thông báo thành công */}
+            {successMessage && (
+                <div className="success-message">
+                    {successMessage}
+                </div>
+            )}
+            
             <div className="content-header">
                 <h2>Quản lý lịch hẹn</h2>
                 <div className="search-sort-container">
@@ -167,8 +201,17 @@ const AppointmentDashboard = () => {
                                 <td>
                                     <div className="action-buttons">
                                         <button className="action-btn view">Xem</button>
-                                        <button className="action-btn edit">Sửa</button>
-                                        <button className="action-btn delete">Hủy</button>
+                                        {appointment.status !== 'Canceled' && (
+                                            <>
+                                                <button className="action-btn edit">Sửa</button>
+                                                <button 
+                                                    className="action-btn delete"
+                                                    onClick={() => handleShowDeleteModal(appointment)}
+                                                >
+                                                    Hủy
+                                                </button>
+                                            </>
+                                        )}
                                     </div>
                                 </td>
                             </tr>
@@ -176,6 +219,32 @@ const AppointmentDashboard = () => {
                     </tbody>
                 </table>
             </div>
+            
+            {/* Thêm modal vào cuối component, trước thẻ đóng div cuối cùng */}
+            {showDeleteModal && (
+                <div className="modal-overlay">
+                    <div className="modal-content">
+                        <h3>Xác nhận hủy lịch hẹn</h3>
+                        {cancelError && <p className="error-message">{cancelError}</p>}
+                        <p>Bạn có chắc chắn muốn hủy lịch hẹn của khách hàng <strong>{selectedAppointment?.fullName}</strong> không?</p>
+                        <p className="warning-text">Lưu ý: Khi đã hủy thì không thể khôi phục lại trạng thái của lịch hẹn!</p>
+                        <div className="modal-buttons">
+                            <button 
+                                className="modal-btn cancel" 
+                                onClick={() => setShowDeleteModal(false)}
+                            >
+                                Quay lại
+                            </button>
+                            <button 
+                                className="modal-btn confirm" 
+                                onClick={handleConfirmDelete}
+                            >
+                                Xác nhận hủy
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };

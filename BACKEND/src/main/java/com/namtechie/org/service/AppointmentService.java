@@ -1,6 +1,8 @@
 package com.namtechie.org.service;
 
 import com.namtechie.org.entity.Appointment;
+import com.namtechie.org.exception.DoctorNotAvailableException;
+import com.namtechie.org.exception.NotFoundException;
 import com.namtechie.org.model.response.AppointmentResponse;
 import com.namtechie.org.repository.AppointmentRepository;
 
@@ -14,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import javax.print.Doc;
 import java.sql.Date;
 import java.sql.Time;
 import java.time.LocalDate;
@@ -48,7 +51,7 @@ public class AppointmentService {
     @Autowired
     private AccountRepository accountRepository;
     @Autowired
-    private CustomerRepository customerRepository;
+    private CustomerRepository customersRepository;
     @Autowired
     ScheduleService scheduleService;
     @Autowired
@@ -66,7 +69,7 @@ public class AppointmentService {
     }
 
     public List<Appointment> findAppointmentsByDoctorIdAndBookingDate(Long doctorId, Date bookingDate) {
-        return appointmentRepository.findAppointmentsByDoctorIdAndBookingDate(doctorId, bookingDate);
+        return appointmentRepository.findAppointmentsByDoctorIdAndBookingDateAndCancel(doctorId, bookingDate, false);
     }
 
 
@@ -125,16 +128,16 @@ public class AppointmentService {
             appointmentInfo.setAppointment(appointment);
             appointmentInfo.setAddress(appointmentRequest.getAddress());
             customer.setAddress(appointmentRequest.getAddress());
-            customerRepository.save(customer);
+            customersRepository.save(customer);
 
             Zone zone = null;
-            if (appointmentRequest.getZoneId() != 0) {
+            if(appointmentRequest.getZoneId() != 0){
                 zone = zoneRepository.findById(appointmentRequest.getZoneId());
             }
 
 
             Doctor doctor = null;
-            if (appointmentRequest.getDoctorId() != 0) {
+            if(appointmentRequest.getDoctorId() != 0) {
                 doctor = doctorRepository.findDoctorById(appointmentRequest.getDoctorId());
                 // **Kiểm tra xem bác sĩ có lịch vào thời gian đó hay không**
                 Appointment existingAppointment = appointmentRepository.findAppointmentByDoctorIdAndBookingDateAndBookingTime(
@@ -143,15 +146,15 @@ public class AppointmentService {
 
                 // **Nếu đã có cuộc hẹn trong khung giờ đó, tìm bác sĩ khác hoặc thông báo lỗi**
                 if (existingAppointment != null) {
-                    throw new RuntimeException("Khung giờ bác sĩ đã có lịch khám. Mời bạn chọn bác sĩ khác");
+                    throw new DoctorNotAvailableException("Khung giờ bác sĩ đã có lịch khám. Mời bạn chọn bác sĩ khác");
                 }
             }
 
             //khám tại trung tam
-            if (appointmentRequest.getServiceTypeId() == 3) {
+            if(appointmentRequest.getServiceTypeId() == 3) {
                 Zone centerZone = zoneRepository.findById(1);
                 //khách hàng chọn bác sĩ
-                if (doctor != null) {
+                if(doctor != null) {
                     appointment.setDoctorAssigned(true); // đánh dấu khách hàng có chọn bác sĩ
                     appointment.setDoctor(doctor);
                     appointmentInfo.setAppointmentBookingDate(appointmentRequest.getBookingDate());
@@ -159,7 +162,7 @@ public class AppointmentService {
                     appointment.setZone(centerZone);
 
 
-                } else { //khách hàng ko chọn bác sĩ
+                }else { //khách hàng ko chọn bác sĩ
                     appointmentInfo.setAppointmentBookingDate(appointmentRequest.getBookingDate());
                     appointmentInfo.setAppointmentBookingTime(appointmentRequest.getBookingTime());
                     doctor = findAvailableDoctor(String.valueOf(appointmentRequest.getBookingDate()), String.valueOf(appointmentRequest.getBookingTime()));
@@ -169,8 +172,8 @@ public class AppointmentService {
 
                 }
 
-            } else if (appointmentRequest.getServiceTypeId() == 2 || appointmentRequest.getServiceTypeId() == 4) { // khám tại nhà
-                if (doctor == null) {
+            }else if(appointmentRequest.getServiceTypeId() == 2 || appointmentRequest.getServiceTypeId() == 4) { // khám tại nhà
+                if(doctor == null) {
                     doctor = findAvailableDoctorForSession(String.valueOf(appointmentRequest.getBookingDate()), String.valueOf(appointmentRequest.getBookingTime()));
                     appointment.setDoctorAssigned(false);
                     appointment.setDoctor(doctor);
@@ -178,8 +181,8 @@ public class AppointmentService {
                     appointmentInfo.setAppointmentBookingTime(appointmentRequest.getBookingTime());
                     appointment.setZone(zone);
                 }
-            } else if (appointmentRequest.getServiceTypeId() == 1) { // dịch vụ tư vấn
-                if (doctor == null) {
+            }else if(appointmentRequest.getServiceTypeId() == 1) { // dịch vụ tư vấn
+                if(doctor == null) {
                     Time appointmentTime = appointmentRequest.getBookingTime();
                     Time updateAppointmentTime = new Time(appointmentTime.getTime() + 15 * 60 * 1000); // 15 phút sau
                     System.out.println("15Minutes: " + updateAppointmentTime);
@@ -193,6 +196,10 @@ public class AppointmentService {
                 }
             }
 
+            if(doctor == null){
+                throw new DoctorNotAvailableException("Không có bác sĩ nào rảnh trong khung giờ bạn chọn");
+            }
+
             appointmentInfo.setDescriptions(appointmentRequest.getDescription());
             appointment.setAppointmentInfo(appointmentInfo);
 
@@ -200,7 +207,7 @@ public class AppointmentService {
             List<AppointmentStatus> list = new ArrayList<>();
             AppointmentStatus appointmentStatus = new AppointmentStatus();
             appointmentStatus.setAppointment(appointment);
-            appointmentStatus.setStatus("Waiting veterian confirm");
+            appointmentStatus.setStatus("Chờ bác sĩ xác nhận");
             appointmentStatus.setNotes("");
             list.add(appointmentStatus);
 
@@ -209,8 +216,11 @@ public class AppointmentService {
 
             // Step 6: Lưu Appointment vào cơ sở dữ liệu
             return appointmentRepository.save(appointment);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+        }catch (DoctorNotAvailableException e){
+            throw new DoctorNotAvailableException(e.getMessage());
+        }
+        catch (Exception e) {
+            throw new RuntimeException("Không thể đặt dịch vụ");
         }
     }
 
@@ -229,8 +239,8 @@ public class AppointmentService {
 
             List<Schedule> schedulesForDay = freeSchedules.get(bookingDate);
             System.out.println("12345" + schedulesForDay);
-            for (Schedule schedule : schedulesForDay) {
-                if ((schedule.getDate().equals(bookingDateSQL) && schedule.getStartTime().equals(Time.valueOf(bookingTime)) && schedule.isAvailable()) ||
+            for(Schedule schedule : schedulesForDay) {
+                if((schedule.getDate().equals(bookingDateSQL) && schedule.getStartTime().equals(Time.valueOf(bookingTime)) && schedule.isAvailable()) ||
                         (schedule.getDate().equals(bookingDateSQL) && Time.valueOf(bookingTime).after(schedule.getStartTime()) && Time.valueOf(bookingTime).before(schedule.getEndTime()) && schedule.isAvailable())) {
                     return doctor;
                 }
@@ -280,6 +290,55 @@ public class AppointmentService {
         return appointmentRepository.findAll();
     }
 
+
+
+    public List<Appointment> findAppointmentByAccountId(long accountId) {
+
+        Doctor doctor = doctorRepository.findByAccountId(accountId);
+
+        List<Appointment> list = appointmentRepository.findAppointmentByDoctorId(doctor.getId());
+
+        return list;
+    }
+
+//    public long getAppointmentIdForUser(long accountId) {
+//        long  customerId = customersRepository.findCustomersIdByAccountId(accountId);
+//
+//        List<Appointment> list = appointmentRepository.findAppointmentByCustomersId(customerId);
+//
+//        for(Appointment appointment : list) {
+//            List<AppointmentStatus> appointmentStatus = appointment.getAppointmentStatus();
+//            for(AppointmentStatus status : appointmentStatus) {
+//
+//                if(status.getStatus().equals("Waiting veterian confirm")){
+//                    return appointment.getId();
+//                }
+//            }
+//        }
+//        return 0;
+//    }
+//
+//
+//
+//
+//    public long findAppointmentIdStep(long accountId) {
+//        Doctor doctor = doctorRepository.findByAccountId(accountId);
+//
+//        List<Appointment> list = appointmentRepository.findAppointmentByDoctorId(doctor.getId());
+//
+//        for(Appointment appointment : list) {
+//            List<AppointmentStatus> appointmentStatus = appointment.getAppointmentStatus();
+//            for(AppointmentStatus status : appointmentStatus) {
+//                if(status.getStatus().equals("Waiting veterian confirm")){
+//                    return appointment.getId();
+//                }
+//            }
+//        }
+//        return 0;
+//    }
+
+
+
     public AppointmentStatus confirmDoctorAppointment(long appointmentId, DoctorConfirmRequest doctorConfirmRequest) {
         try {
             AppointmentStatus updateAppointmentStatus = appointmentStatusRepository.findByAppointmentId(appointmentId);
@@ -298,6 +357,13 @@ public class AppointmentService {
             e.printStackTrace();
             throw new RuntimeException(e);
         }
+    }
+
+    public void cancelAppointmentByCustomer(long appointmentId) {
+        Appointment appointment = appointmentRepository.findAppointmentById(appointmentId);
+        appointment.setCancel(true);
+
+        appointmentRepository.save(appointment);
 
     }
 
@@ -361,6 +427,17 @@ public class AppointmentService {
         }
 
         return appointmentResponses;
+    }
+
+    public void cancelAppointment(long appointmentId){
+        Appointment appointment = appointmentRepository.findById(appointmentId);
+        appointment.setCancel(true);
+
+        AppointmentStatus appointmentStatus = new AppointmentStatus();
+        appointmentStatus.setAppointment(appointment);
+        appointmentStatus.setStatus("Canceled");
+        appointmentStatus.setNotes("Cancelled by ADMIN");
+        appointmentStatusRepository.save(appointmentStatus);
     }
 
 
