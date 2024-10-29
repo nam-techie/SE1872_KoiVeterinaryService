@@ -56,6 +56,11 @@ public class AppointmentService {
     ScheduleService scheduleService;
     @Autowired
     private ServiceTypesService serviceTypesService;
+    @Autowired
+    private PaymentRepository paymentRepository;
+
+    @Autowired
+    private PaymentDetailRepository paymentDetailRepository;
 
 
     public List<Doctor> findAllDoctor() {
@@ -131,13 +136,13 @@ public class AppointmentService {
             customersRepository.save(customer);
 
             Zone zone = null;
-            if(appointmentRequest.getZoneId() != 0){
+            if (appointmentRequest.getZoneId() != 0) {
                 zone = zoneRepository.findById(appointmentRequest.getZoneId());
             }
 
 
             Doctor doctor = null;
-            if(appointmentRequest.getDoctorId() != 0) {
+            if (appointmentRequest.getDoctorId() != 0) {
                 doctor = doctorRepository.findDoctorById(appointmentRequest.getDoctorId());
                 // **Kiểm tra xem bác sĩ có lịch vào thời gian đó hay không**
                 Appointment existingAppointment = appointmentRepository.findAppointmentByDoctorIdAndBookingDateAndBookingTime(
@@ -151,10 +156,10 @@ public class AppointmentService {
             }
 
             //khám tại trung tam
-            if(appointmentRequest.getServiceTypeId() == 3) {
+            if (appointmentRequest.getServiceTypeId() == 3) {
                 Zone centerZone = zoneRepository.findById(1);
                 //khách hàng chọn bác sĩ
-                if(doctor != null) {
+                if (doctor != null) {
                     appointment.setDoctorAssigned(true); // đánh dấu khách hàng có chọn bác sĩ
                     appointment.setDoctor(doctor);
                     appointmentInfo.setAppointmentBookingDate(appointmentRequest.getBookingDate());
@@ -162,7 +167,7 @@ public class AppointmentService {
                     appointment.setZone(centerZone);
 
 
-                }else { //khách hàng ko chọn bác sĩ
+                } else { //khách hàng ko chọn bác sĩ
                     appointmentInfo.setAppointmentBookingDate(appointmentRequest.getBookingDate());
                     appointmentInfo.setAppointmentBookingTime(appointmentRequest.getBookingTime());
                     doctor = findAvailableDoctor(String.valueOf(appointmentRequest.getBookingDate()), String.valueOf(appointmentRequest.getBookingTime()));
@@ -172,8 +177,8 @@ public class AppointmentService {
 
                 }
 
-            }else if(appointmentRequest.getServiceTypeId() == 2 || appointmentRequest.getServiceTypeId() == 4) { // khám tại nhà
-                if(doctor == null) {
+            } else if (appointmentRequest.getServiceTypeId() == 2 || appointmentRequest.getServiceTypeId() == 4) { // khám tại nhà
+                if (doctor == null) {
                     doctor = findAvailableDoctorForSession(String.valueOf(appointmentRequest.getBookingDate()), String.valueOf(appointmentRequest.getBookingTime()));
                     appointment.setDoctorAssigned(false);
                     appointment.setDoctor(doctor);
@@ -181,22 +186,31 @@ public class AppointmentService {
                     appointmentInfo.setAppointmentBookingTime(appointmentRequest.getBookingTime());
                     appointment.setZone(zone);
                 }
-            }else if(appointmentRequest.getServiceTypeId() == 1) { // dịch vụ tư vấn
-                if(doctor == null) {
+            } else if (appointmentRequest.getServiceTypeId() == 1) { // dịch vụ tư vấn
+                if (doctor == null) {
                     Time appointmentTime = appointmentRequest.getBookingTime();
-                    Time updateAppointmentTime = new Time(appointmentTime.getTime() + 15 * 60 * 1000); // 15 phút sau
-                    System.out.println("15Minutes: " + updateAppointmentTime);
-                    doctor = findAvailableDoctor(String.valueOf(appointmentRequest.getBookingDate()), String.valueOf(updateAppointmentTime));
+
+// Lấy giờ từ thời gian hiện tại
+                    int hour = appointmentTime.toLocalTime().getHour();
+
+// Tạo thời gian mới với phút và giây bằng 0
+                    Time roundedTime = Time.valueOf(hour + ":00:00");
+
+                    System.out.println("Giờ làm tròn: " + roundedTime);
+
+// Sau đó gán lại cho cuộc hẹn
+                    doctor = findAvailableDoctor(String.valueOf(appointmentRequest.getBookingDate()), String.valueOf(roundedTime));
+                    appointmentInfo.setAppointmentBookingTime(roundedTime);
                     appointment.setDoctorAssigned(false);
                     appointment.setDoctor(doctor);
                     Zone onlineZone = zoneRepository.findById(15);
                     appointment.setZone(onlineZone);
                     appointmentInfo.setAppointmentBookingDate(appointmentRequest.getBookingDate());
-                    appointmentInfo.setAppointmentBookingTime(updateAppointmentTime);
+
                 }
             }
 
-            if(doctor == null){
+            if (doctor == null) {
                 throw new DoctorNotAvailableException("Không có bác sĩ nào rảnh trong khung giờ bạn chọn");
             }
 
@@ -216,10 +230,9 @@ public class AppointmentService {
 
             // Step 6: Lưu Appointment vào cơ sở dữ liệu
             return appointmentRepository.save(appointment);
-        }catch (DoctorNotAvailableException e){
+        } catch (DoctorNotAvailableException e) {
             throw new DoctorNotAvailableException(e.getMessage());
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             throw new RuntimeException("Không thể đặt dịch vụ");
         }
     }
@@ -239,8 +252,8 @@ public class AppointmentService {
 
             List<Schedule> schedulesForDay = freeSchedules.get(bookingDate);
             System.out.println("12345" + schedulesForDay);
-            for(Schedule schedule : schedulesForDay) {
-                if((schedule.getDate().equals(bookingDateSQL) && schedule.getStartTime().equals(Time.valueOf(bookingTime)) && schedule.isAvailable()) ||
+            for (Schedule schedule : schedulesForDay) {
+                if ((schedule.getDate().equals(bookingDateSQL) && schedule.getStartTime().equals(Time.valueOf(bookingTime)) && schedule.isAvailable()) ||
                         (schedule.getDate().equals(bookingDateSQL) && Time.valueOf(bookingTime).after(schedule.getStartTime()) && Time.valueOf(bookingTime).before(schedule.getEndTime()) && schedule.isAvailable())) {
                     return doctor;
                 }
@@ -291,7 +304,6 @@ public class AppointmentService {
     }
 
 
-
     public List<Appointment> findAppointmentByAccountId(long accountId) {
 
         Doctor doctor = doctorRepository.findByAccountId(accountId);
@@ -338,7 +350,6 @@ public class AppointmentService {
 //    }
 
 
-
     public AppointmentStatus confirmDoctorAppointment(long appointmentId, DoctorConfirmRequest doctorConfirmRequest) {
         try {
             AppointmentStatus updateAppointmentStatus = appointmentStatusRepository.findByAppointmentId(appointmentId);
@@ -347,10 +358,10 @@ public class AppointmentService {
             status.setAppointment(updateAppointmentStatus.getAppointment());
             if (doctorConfirmRequest.isConfirmed() == true) {
                 status.setNotes(doctorConfirmRequest.getNote());
-                status.setStatus("Confirmed");
+                status.setStatus("Đã xác nhận");
             } else {
                 status.setNotes(doctorConfirmRequest.getNote());
-                status.setStatus("Canceled");
+                status.setStatus("Từ chối");
             }
             return appointmentStatusRepository.save(status);
         } catch (Exception e) {
@@ -384,7 +395,7 @@ public class AppointmentService {
             Customers infoCus = appointment.getCustomers();
 
             if (infoCus != null) {
-                appointmentResponse.setFullName(infoCus.getFullName());
+                appointmentResponse.setFullNameCustomer(infoCus.getFullName());
             }
 
             // Lấy tất cả các trạng thái của appointment
@@ -400,7 +411,7 @@ public class AppointmentService {
 
             // Set trạng thái mới nhất vào AppointmentResponse
             if (latestStatus != null) {
-                appointmentResponse.setStatus(latestStatus.getStatus());
+                appointmentResponse.setAppointmentStatus(latestStatus.getStatus());
             }
 
             // Lấy thông tin loại dịch vụ
@@ -429,6 +440,103 @@ public class AppointmentService {
         return appointmentResponses;
     }
 
+
+    public AppointmentResponse getListAppoint(long appointmentId) {
+//        List<AppointmentResponse> appointmentResponses = new ArrayList<>();
+
+//        List<Appointment> appointments = appointmentRepository.findAll();
+        Appointment appointment = appointmentRepository.findAppointmentById(appointmentId);
+
+        Payment payment = paymentRepository.findByAppointmentId(appointmentId);
+//        for (Appointment appointment : appointments) {
+        AppointmentResponse appointmentResponse = new AppointmentResponse();
+        appointmentResponse.setId(appointment.getId());
+
+        Doctor doctor = appointment.getDoctor();
+        if (doctor != null) {
+            appointmentResponse.setFullNameDoctor(doctor.getFullName());
+        }
+
+
+        // Lấy thông tin khách hàng
+        Customers infoCus = appointment.getCustomers();
+
+        if (infoCus != null) {
+            appointmentResponse.setFullNameCustomer(infoCus.getFullName());
+        }
+
+        // Lấy tất cả các trạng thái của appointment
+        List<AppointmentStatus> statuses = appointmentStatusRepository.findByAppointment(appointment);
+
+        // Tìm trạng thái có createDate lớn nhất (mới nhất)
+        AppointmentStatus latestStatus = null;
+        for (AppointmentStatus status : statuses) {
+            if (latestStatus == null || status.getCreate_date().toLocalDateTime().isAfter(latestStatus.getCreate_date().toLocalDateTime())) {
+                latestStatus = status;
+            }
+        }
+
+
+        long totalPrice = 0;
+        if (latestStatus.getStatus().equals("Chờ thanh toán tiền dịch vụ")) {
+            if (payment != null) {
+                appointmentResponse.setTotalPrice(payment.getTotalFee());
+            }
+        } else if (latestStatus.getStatus().equals("Chờ thanh toán tổng tiền")) {
+            List<PaymentDetail> paymentDetails = paymentDetailRepository.findByPaymentIdAndStatus(payment.getId(), false);
+            for (PaymentDetail paymentDetail : paymentDetails) {
+                totalPrice += paymentDetail.getPrice();
+            }
+            appointmentResponse.setTotalPrice(totalPrice);
+        }else if(latestStatus.getStatus().equals("Thanh toán tổng tiền thành công")){
+            if (payment != null) {
+                appointmentResponse.setTotalPrice(payment.getTotalFee());
+            }
+        }
+
+
+        // Set trạng thái mới nhất vào AppointmentResponse
+        if (latestStatus != null) {
+            appointmentResponse.setAppointmentStatus(latestStatus.getStatus());
+        }
+
+
+        // Lấy thông tin loại dịch vụ
+        ServiceType infoService = serviceTypeRepository.findByAppointmentId(appointment.getId());
+        if (infoService != null) {
+            appointmentResponse.setNameService(infoService.getName());
+        }
+
+        // Lấy thông tin thời gian đặt hẹn
+        AppointmentInfo appointmentInfo = appointmentInfoRepository.findByAppointmentId(appointment.getId());
+        if (appointmentInfo != null) {
+            appointmentResponse.setAppointmentBookingTime(appointmentInfo.getAppointmentBookingTime());
+            appointmentResponse.setAppointmentBookingDate(appointmentInfo.getAppointmentBookingDate());
+        }
+
+        // Lấy thông tin khu vực
+        Zone infoZone = zoneRepository.findByAppointmentId(appointment.getId());
+        if (infoZone != null) {
+            appointmentResponse.setNameZone(infoZone.getName());
+        }
+
+        // miêu tả vấn đề
+        appointmentResponse.setDescription(appointmentInfo.getDescriptions());
+
+
+        //ngày, thời gian đặt
+        appointmentResponse.setCreatedDate(appointmentInfo.getCreatedDate());
+
+
+        // lấy thông tin địa chỉ chi tiết
+        appointmentResponse.setAddressDetails(appointmentInfo.getAddress());
+
+        // Thêm vào danh sách kết quả
+        appointmentResponse.setPhoneNumber(infoCus.getPhone());
+
+
+        return appointmentResponse;
+    }
 
 
 }

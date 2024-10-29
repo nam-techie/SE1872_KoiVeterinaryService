@@ -170,5 +170,21 @@ public class AppointmentController {
         appointmentService.cancelAppointmentByCustomer(appointmentId);
         return ResponseEntity.ok("Đã hủy thành công");
     }
+
+
+
+//    @GetMapping("/countAppointment/{id}")
+//    @PreAuthorize("hasAuthority('CUSTOMER')")
+//    public ResponseEntity countAppointment(@PathVariable long id,@Param("BookingDate") String bookingDate) {
+//        int count = appointmentService.countAppointmentsForDoctorOnDate(id, bookingDate);
+//        return ResponseEntity.ok(count);
+//    }
+
+    @GetMapping("/getDoctorhaveAppointmentMin")
+    @PreAuthorize("hasAuthority('CUSTOMER')")
+    public ResponseEntity getDoctorhaveAppointmentMin(@Param("BookingDate") String bookingDate, @Param("BookingTime") String bookingTime) {
+        Doctor doctor = appointmentService.findAvailableDoctor(bookingDate, bookingTime);
+        return ResponseEntity.ok(doctor);
+    }
 }
 

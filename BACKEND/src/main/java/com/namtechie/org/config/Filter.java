@@ -60,8 +60,8 @@ public class Filter extends OncePerRequestFilter {
             "/api/zones",
             "/api/free-schedule",
             "/api/testFreeSchedule",
-            "/api/getDoctorAuto",
-            "/api/getFeedback"
+            "/api/getDoctorAuto"
+
 
 
     );

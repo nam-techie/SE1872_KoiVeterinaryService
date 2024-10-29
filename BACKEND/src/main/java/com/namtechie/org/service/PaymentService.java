@@ -74,7 +74,7 @@ public class PaymentService {
         } else {
             PaymentDetail transactionLog = new PaymentDetail();
             transactionLog.setPayment(payment);
-            transactionLog.setTransactionType("Chuyen khoan");
+            transactionLog.setTransactionType("Chuyển khoản");
             transactionLog.setTransactionMethod("VNPay");
             transactionLog.setStatus(false);
             transactionLog.setPrice(price);
@@ -113,14 +113,14 @@ public class PaymentService {
         paymentTotal.setTotalFee(serviceType.getBase_price());
         paymentRepository.save(paymentTotal);  // Lưu Payment mới
 
-        generateTransactionRecords(appointmentId, paymentTotal, depositPrice, "Đang chờ giao dịch chuyển tiền cọc dịch vụ!");
+        generateTransactionRecords(appointmentId, paymentTotal, depositPrice, "Đang chờ giao dịch chuyển tiền dịch vụ!");
 
 
         // Gọi hàm createUrl để tạo URL thanh toán và trả về chuỗi đó
         String urlToPayment = createUrl(appointmentId, depositPrice);
         AppointmentStatus appointmentStatus = new AppointmentStatus();
         appointmentStatus.setAppointment(appointment);
-        appointmentStatus.setStatus("Pending Deposit Payment");
+        appointmentStatus.setStatus("Chờ thanh toán tiền dịch vụ");
 
         appointmentStatusRepository.save(appointmentStatus);
 
@@ -150,12 +150,12 @@ public class PaymentService {
 //        transactionLog.setStatus(true);
 //        transactionRecordsRepository.save(transactionLog);
 
-        generateTransactionRecords(appointmentId, paymentTotal, depositPrice, "Đã nhận tiền cọc dịch vụ!");
+        generateTransactionRecords(appointmentId, paymentTotal, depositPrice, "Đã nhận tiền dịch vụ!");
 
 
         AppointmentStatus appointmentStatus = new AppointmentStatus();
         appointmentStatus.setAppointment(appointment);
-        appointmentStatus.setStatus("Payment Deposit Successful");
+        appointmentStatus.setStatus("Thanh toán tiền dịch vụ thành công");
 
         appointmentStatusRepository.save(appointmentStatus);
 
@@ -250,7 +250,7 @@ public class PaymentService {
         AppointmentStatus doneWorking = new AppointmentStatus();
 
         doneWorking.setAppointment(appointment);
-        doneWorking.setStatus("Done");
+        doneWorking.setStatus("Đã hoàn thành");
         doneWorking.setNotes(serviceTypeRequestAll.getNotes());
 
 //        appointmentStatusRepository.save(appointmentStatus);
@@ -291,7 +291,7 @@ public class PaymentService {
         String urlToPayment = createUrl(appointmentId, totalPrice);
         AppointmentStatus appointmentStatus = new AppointmentStatus();
         appointmentStatus.setAppointment(appointment);
-        appointmentStatus.setStatus("Pending Total Payment");
+        appointmentStatus.setStatus("Chờ thanh toán tổng tiền");
 
 
         appointmentStatusRepository.save(appointmentStatus);
@@ -324,7 +324,7 @@ public class PaymentService {
         Appointment appointment = appointmentRepository.findAppointmentById(appointmentId);
         AppointmentStatus appointmentStatus = new AppointmentStatus();
         appointmentStatus.setAppointment(appointment);
-        appointmentStatus.setStatus("Payment total Successful");
+        appointmentStatus.setStatus("Thanh toán tổng tiền thành công");
 
         appointmentStatusRepository.save(appointmentStatus);
 

@@ -29,5 +29,6 @@ public class ServiceType {
 
     @OneToMany(mappedBy = "serviceType", cascade = CascadeType.ALL)
     @JsonIgnoreProperties({"serviceType"})
+    @JsonIgnore
     private List<Appointment> appointment;
 }

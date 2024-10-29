@@ -23,6 +23,7 @@ public class PaymentDetail {
     @JsonBackReference
     private Payment payment;
 
+    @Column(columnDefinition = "NVARCHAR(MAX)")
     private String transactionType;
 
 

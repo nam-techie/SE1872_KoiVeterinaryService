@@ -282,5 +282,17 @@ public class AdminController {
     }
 
 
+    @GetMapping("/listAppointment/{id}")
+    public ResponseEntity<AppointmentResponse> getAllAppointment(@PathVariable long id) {
+        try {
+            AppointmentResponse appointment = appointmentService.getListAppoint(id);
+            return new ResponseEntity<>(appointment, HttpStatus.OK);  // Trả về HTTP 200 OK
+        } catch (Exception e) {
+            // Log lỗi ra nếu cần
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);  // Trả về HTTP 500 nếu có lỗi
+        }
+    }
+
+
 
 }

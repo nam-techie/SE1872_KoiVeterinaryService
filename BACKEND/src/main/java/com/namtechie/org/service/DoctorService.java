@@ -216,7 +216,7 @@ public class DoctorService {
         AppointmentStatus appointmentStatus  = new AppointmentStatus();
 
         appointmentStatus.setAppointment(appointment);
-        appointmentStatus.setStatus("Dang cung cap dich vu");
+        appointmentStatus.setStatus("Đang cung cấp dịch vụ");
         appointmentStatus.setNotes(notes);
 
         appointmentStatusRepository.save(appointmentStatus);
@@ -264,7 +264,6 @@ public class DoctorService {
 
     @Transactional
     public void uploadImage(final long id, final MultipartFile file) {
-        System.out.println("Url Image: "+file);
         final Doctor doctor = doctorRepository.findDoctorById(id);
         if (doctor == null) {
             throw new NotFoundException("Không tìm thấy bác sĩ");

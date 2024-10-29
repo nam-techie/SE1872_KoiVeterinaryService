@@ -71,6 +71,6 @@ public class PaymentController {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        return ResponseEntity.ok("Da luu ho so benh an thanh cong");
+        return ResponseEntity.ok("Đã lưu hồ sơ bệnh nhân thành công");
     }
 }
