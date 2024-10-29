@@ -281,6 +281,21 @@ public class AdminController {
         }
     }
 
+    @DeleteMapping("/cancelAppointment/{appointmentId}")
+    public ResponseEntity<String> cancelAppointment(@PathVariable  long appointmentId) {
+        appointmentService.cancelAppointmentByCustomer(appointmentId);
+        return ResponseEntity.ok("Đã hủy lịch hẹn khách hàng (ADMIN)");
+    }
+
+
+    //AN lam
+    @GetMapping("/getAppointment")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public ResponseEntity getAppointments() {
+        List<Appointment> appointmentResponses = appointmentService.getAllAppointments();
+        return ResponseEntity.ok(appointmentResponses);
+    }
+
 
     @GetMapping("/listAppointment/{id}")
     public ResponseEntity<AppointmentResponse> getAllAppointment(@PathVariable long id) {

@@ -20,6 +20,18 @@ const useAppointment = () => {
         }
     };
 
+    const cancelAppointment = async (appointmentId) => {
+        try {
+            await axiosInstance.delete(`/admin/cancelAppointment/${appointmentId}`);
+            // Cập nhật lại danh sách sau khi hủy thành công
+            await fetchAppointments();
+            return true;
+        } catch (err) {
+            console.error('Lỗi khi hủy lịch hẹn:', err);
+            throw new Error('Có lỗi xảy ra khi hủy lịch hẹn');
+        }
+    };
+
     useEffect(() => {
         fetchAppointments();
     }, []);
@@ -28,7 +40,8 @@ const useAppointment = () => {
         appointments,
         loading,
         error,
-        refetch: fetchAppointments
+        refetch: fetchAppointments,
+        cancelAppointment
     };
 };
 

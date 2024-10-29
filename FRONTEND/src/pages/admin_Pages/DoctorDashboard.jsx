@@ -36,13 +36,19 @@ const DoctorDashboard = ({ onViewDetails, onAddDoctor }) => {
     const sortDoctors = (doctors, sortBy, sortOrder) => {
         return [...doctors].sort((a, b) => {
             if (sortBy === 'fullName') {
+                // Xử lý trường hợp fullName là null
+                const nameA = a.fullName || '';
+                const nameB = b.fullName || '';
                 return sortOrder === 'asc' 
-                    ? a.fullName.localeCompare(b.fullName) 
-                    : b.fullName.localeCompare(a.fullName);
-            } else if (sortBy === 'experience_asc') {
-                return a.experience - b.experience;
-            } else if (sortBy === 'experience_desc') {
-                return b.experience - a.experience;
+                    ? nameA.localeCompare(nameB) 
+                    : nameB.localeCompare(nameA);
+            } else if (sortBy === 'experience') {
+                // Xử lý trường hợp experience là null
+                const expA = a.experience || 0;
+                const expB = b.experience || 0;
+                return sortOrder === 'asc' 
+                    ? expA - expB 
+                    : expB - expA;
             }
             // Thêm các trường hợp sắp xếp khác nếu cần
             return 0;
@@ -77,8 +83,7 @@ const DoctorDashboard = ({ onViewDetails, onAddDoctor }) => {
                         className="sort-select"
                     >
                         <option value="fullName">Sắp xếp theo Tên</option>
-                        <option value="experience_asc">Kinh nghiệm (Thấp đến Cao)</option>
-                        <option value="experience_desc">Kinh nghiệm (Cao đến Thấp)</option>
+                        <option value="experience">Kinh nghiệm</option>
                         <option value="phone">Sắp xếp theo Số điện thoại</option>
                     </select>
                 </div>
@@ -104,9 +109,9 @@ const DoctorDashboard = ({ onViewDetails, onAddDoctor }) => {
                     <tbody>
                         {sortDoctors(doctors, sortBy, sortOrder).map((doctor) => (
                             <tr key={doctor.id}>
-                                <td>{doctor.fullName}</td>
+                                <td>{doctor.fullName || 'Dữ liệu rỗng'}</td>
                                 <td>{doctor.phone}</td>
-                                <td>{doctor.experience}</td>
+                                <td>{doctor.experience || 0}</td>
                                 <td>
                                     <img src={doctor.imageUrl} alt={doctor.fullName} className="doctor-thumbnail" />
                                 </td>

@@ -52,8 +52,8 @@ export const useDistrictList = () => {
     return { districts, districtsLoading, districtsError };
 };
 
-export const useDoctorList = () => {
-    const [doctors, setDoctors] = useState([]);
+export function useDoctorList() {
+    const [doctors, setDoctors] = useState([]);  // Khởi tạo là mảng rỗng
     const [doctorLoading, setDoctorLoading] = useState(true);
     const [doctorError, setDoctorError] = useState(null);
 
@@ -75,4 +75,4 @@ export const useDoctorList = () => {
     }, []);
 
     return { doctors, doctorLoading, doctorError };
-};
+}
