@@ -36,12 +36,16 @@
     border-radius: 8px;
     overflow: hidden;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    min-height: 600px;
+    display: flex;
+    flex-direction: column;
 }
 
 .accounts-table {
     width: 100%;
     border-collapse: separate;
     border-spacing: 0;
+    flex: 1;
 }
 
 .accounts-table th, .accounts-table td {
@@ -228,3 +232,6 @@
 .restore-btn {
     background-color: #4CAF50;
 }
+
+/* Import pagination styles */
+@import '../../../styles/Pagination.css';

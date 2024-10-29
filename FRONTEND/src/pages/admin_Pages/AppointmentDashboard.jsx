@@ -14,6 +14,9 @@ const AppointmentDashboard = () => {
     const [selectedAppointment, setSelectedAppointment] = useState(null);
     const [cancelError, setCancelError] = useState(null);
     const [successMessage, setSuccessMessage] = useState(null);
+    // Thêm state cho pagination
+    const [currentPage, setCurrentPage] = useState(1);
+    const ITEMS_PER_PAGE = 8; // Tăng số lượng item hiển thị lên 8
 
     if (loading) return <div>Đang tải dữ liệu...</div>;
     if (error) return <div>{error}</div>;
@@ -89,6 +92,13 @@ const AppointmentDashboard = () => {
             }
             return 0;
         });
+
+    // Tính toán số trang
+    const totalPages = Math.ceil(filteredAndSortedAppointments.length / ITEMS_PER_PAGE);
+    const currentTableData = filteredAndSortedAppointments.slice(
+        (currentPage - 1) * ITEMS_PER_PAGE,
+        currentPage * ITEMS_PER_PAGE
+    );
 
     const sortOptions = [
         { value: 'id', label: 'Sắp xếp theo ID' },
@@ -189,7 +199,7 @@ const AppointmentDashboard = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {filteredAndSortedAppointments.map((appointment) => (
+                        {currentTableData.map((appointment) => (
                             <tr key={appointment.id}>
                                 <td>#{appointment.id}</td>
                                 <td>{appointment.fullName}</td>
@@ -218,6 +228,29 @@ const AppointmentDashboard = () => {
                         ))}
                     </tbody>
                 </table>
+
+                {/* Thay đổi phần pagination */}
+                <div className="pagination">
+                    <button 
+                        className="page-btn"
+                        onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                        disabled={currentPage === 1}
+                    >
+                        Trước
+                    </button>
+
+                    <span className="page-info">
+                        Trang {currentPage} / {totalPages}
+                    </span>
+
+                    <button
+                        className="page-btn"
+                        onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+                        disabled={currentPage === totalPages}
+                    >
+                        Sau
+                    </button>
+                </div>
             </div>
             
             {/* Thêm modal vào cuối component, trước thẻ đóng div cuối cùng */}

@@ -5,6 +5,7 @@ import './styles/DoctorDashboard.css';
 import {useDoctorInfo} from "./hooks/useDoctorInfo.js";
 import DoctorDetailInfo from "./DoctorDetailInfo.jsx"; // Đảm bảo import này tồn tại
 import LoadingCat from '../../components/LoadingCat.jsx';
+import Pagination from '../../components/Pagination.jsx';
 
 const DoctorDashboard = ({ onViewDetails, onAddDoctor }) => {
     const { doctors, loading, error, fetchAllDoctors } = useDoctorInfo();
@@ -12,6 +13,8 @@ const DoctorDashboard = ({ onViewDetails, onAddDoctor }) => {
     const [sortBy, setSortBy] = useState('fullName');
     const [sortOrder, setSortOrder] = useState('asc');
     const [selectedDoctorId, setSelectedDoctorId] = useState(null);
+    const [currentPage, setCurrentPage] = useState(1);
+    const ITEMS_PER_PAGE = 8;
 
     useEffect(() => {
         fetchAllDoctors();
@@ -54,6 +57,19 @@ const DoctorDashboard = ({ onViewDetails, onAddDoctor }) => {
             return 0;
         });
     };
+
+    // Tính toán dữ liệu cho trang hiện tại
+    const filteredDoctors = sortDoctors(doctors, sortBy, sortOrder)
+        .filter(doctor => 
+            doctor.fullName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            doctor.phone?.includes(searchTerm)
+        );
+
+    const totalPages = Math.ceil(filteredDoctors.length / ITEMS_PER_PAGE);
+    const currentDoctors = filteredDoctors.slice(
+        (currentPage - 1) * ITEMS_PER_PAGE,
+        currentPage * ITEMS_PER_PAGE
+    );
 
     return (
         <div className="doctor-dashboard">
@@ -107,7 +123,7 @@ const DoctorDashboard = ({ onViewDetails, onAddDoctor }) => {
                         </tr>
                     </thead>
                     <tbody>
-                        {sortDoctors(doctors, sortBy, sortOrder).map((doctor) => (
+                        {currentDoctors.map((doctor) => (
                             <tr key={doctor.id}>
                                 <td>{doctor.fullName || 'Dữ liệu rỗng'}</td>
                                 <td>{doctor.phone}</td>
@@ -126,6 +142,12 @@ const DoctorDashboard = ({ onViewDetails, onAddDoctor }) => {
                         ))}
                     </tbody>
                 </table>
+                
+                <Pagination 
+                    currentPage={currentPage}
+                    totalPages={totalPages}
+                    onPageChange={setCurrentPage}
+                />
             </div>
             {selectedDoctorId && (
                 <DoctorDetailInfo

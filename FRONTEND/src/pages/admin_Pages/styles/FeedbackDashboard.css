@@ -61,11 +61,15 @@
     border-radius: 8px;
     overflow: hidden;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    min-height: 600px;
+    display: flex;
+    flex-direction: column;
 }
 
 table {
     width: 100%;
     border-collapse: collapse;
+    flex: 1;
 }
 
 th, td {
@@ -116,3 +120,10 @@ th {
 .delete-btn:hover, .restore-btn:hover {
     background-color: rgba(0, 0, 0, 0.1);
 }
+
+tbody tr {
+    height: 60px;
+}
+
+/* Import pagination styles */
+@import '../../../styles/Pagination.css';

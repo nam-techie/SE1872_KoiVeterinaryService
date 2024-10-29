@@ -4,6 +4,7 @@ import './styles/FishManage.css';
 import LoadingCat from '../../components/LoadingCat.jsx';
 import useFish from './hooks/useFish';
 import EditFishModal from './EditFishModal';
+import Pagination from '../../components/Pagination';
 
 const FishManage = () => {
     const { fishes, loading, error, fetchFishes } = useFish();
@@ -11,6 +12,8 @@ const FishManage = () => {
     const [sortBy, setSortBy] = useState('id');
     const [sortOrder, setSortOrder] = useState('asc');
     const [editingFish, setEditingFish] = useState(null);
+    const [currentPage, setCurrentPage] = useState(1);
+    const ITEMS_PER_PAGE = 8;
 
     useEffect(() => {
         fetchFishes();
@@ -68,6 +71,13 @@ const FishManage = () => {
         setEditingFish(null); // Đóng modal
     };
 
+    // Tính toán dữ liệu cho trang hiện tại
+    const totalPages = Math.ceil(filteredFishes.length / ITEMS_PER_PAGE);
+    const currentFishes = filteredFishes.slice(
+        (currentPage - 1) * ITEMS_PER_PAGE,
+        currentPage * ITEMS_PER_PAGE
+    );
+
     return (
         <div className="fish-manage">
             <div className="dashboard-header">
@@ -124,7 +134,7 @@ const FishManage = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {filteredFishes.map((fish) => (
+                        {currentFishes.map((fish) => (
                             <tr key={fish.id}>
                                 <td>{fish.appointmentId}</td>
                                 <td>{fish.name}</td>
@@ -142,6 +152,12 @@ const FishManage = () => {
                         ))}
                     </tbody>
                 </table>
+                
+                <Pagination 
+                    currentPage={currentPage}
+                    totalPages={totalPages}
+                    onPageChange={setCurrentPage}
+                />
             </div>
             {editingFish && (
                 <EditFishModal

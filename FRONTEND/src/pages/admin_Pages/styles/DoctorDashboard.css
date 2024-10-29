@@ -83,6 +83,7 @@
     border-radius: 8px;
     overflow: hidden;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    min-height: 600px;
 }
 
 table {
@@ -124,3 +125,10 @@ th {
 .edit-btn:hover {
     background-color: #1e88e5;
 }
+
+table tbody tr {
+    height: 60px;
+}
+
+/* Import pagination styles */
+@import '../../../styles/Pagination.css';
