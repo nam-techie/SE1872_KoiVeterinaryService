@@ -1,12 +1,12 @@
 import styles from "../styles/NavBar.module.css";
 import {FaMapMarkerAlt, FaPhoneAlt, FaClock} from "react-icons/fa";
-import {FaUserLarge, FaUserDoctor} from "react-icons/fa6";
 import Logo from "../assets/homePage_images/logo.png";
 import {AiFillSchedule} from "react-icons/ai";
 import {PiNewspaperClippingFill} from "react-icons/pi";
 import {IoLogOutSharp} from "react-icons/io5";
-import {RiFeedbackFill} from "react-icons/ri";
 import {FaRegCalendarPlus} from "react-icons/fa";
+import {FaUserLarge} from "react-icons/fa6";
+import { MdDashboard } from 'react-icons/md';
 
 import {Link, NavLink} from "react-router-dom";
 import {IoLogInOutline, IoLogInSharp} from "react-icons/io5";
@@ -35,7 +35,7 @@ export function CustomerNavBar() {
                     </div>
                     <div className={styles.contactInfo}>
       <span>
-        <FaMapMarkerAlt/> Lô E2a-7, Đường D1, Đ. D1, Long Thạnh Mỹ, TP.Thủ Đức, HCM
+        <FaMapMarkerAlt/> Lô E2a-7, Đ. D1, Long Thạnh Mỹ, TP.Thủ Đức, HCM
       </span>
                         <span>
         <FaPhoneAlt/> 1800.999 (Miễn phí)
@@ -89,11 +89,7 @@ export function CustomerNavBar() {
                                 <FaUserLarge size={35} color={"white"}/>
                                 {isDropdownOpen && (
                                     <div className={styles.dropdownMenu}>
-                                        <Link to="#">Thông Báo</Link>
-                                        <Link to="/booking-service-history">Lịch sử đặt dịch vụ</Link>
-                                        <Link to="#">Quản Lí Lịch Đặt</Link>
-                                        <Link to="#">Phản Hồi Và Đánh Giá Dịch Vụ</Link>
-                                        <Link to="/forgot-password">Đổi Mật Khẩu</Link>
+                                        <Link to="/customer/manage-appointment">Quản lí Lịch hẹn</Link>
                                         <hr/>
                                         <Link to="/profile">Thông tin cá nhân</Link>
                                         <hr/>
@@ -131,23 +127,17 @@ export const DoctorNavBar = () => {
             </div>
             <div className={styles.DoctorSidebarLinks}>
                 <a className={styles.DoctorSidebarLink} href="/doctor/doctor-dashboard">
-                    <FaUserDoctor className={styles.icon} size={40}/> Dashboard
+                    <MdDashboard className={styles.icon} size={40}/> Tổng quan
                 </a>
-                <a className={styles.DoctorSidebarLink} href="#patients">
-                    <AiFillSchedule className={styles.icon} size={40}/> Lịch Làm Việc
+                <a className={styles.DoctorSidebarLink} href="/doctor/doctor-work-schedule">
+                    <AiFillSchedule className={styles.icon} size={40}/> Lịch làm việc
                 </a>
                 <a className={styles.DoctorSidebarLink} href="/doctor/doctor-appointment">
-                    <PiNewspaperClippingFill className={styles.icon} size={40}/> Lịch Đặt
-                </a>
-                <a className={styles.DoctorSidebarLink} href="#appointments">
-                    <RiFeedbackFill className={styles.icon} size={40}/> FeedBack
-                </a>
-                <a className={styles.DoctorSidebarLink} href="#appointments">
-                    <FaRegCalendarPlus className={styles.icon} size={40}/> Dịch Vụ Đặt Thêm
+                    <PiNewspaperClippingFill className={styles.icon} size={40}/> Quản lí Lịch đặt
                 </a>
                 <hr className={styles.separator}/>
                 <a className={styles.DoctorSidebarLink} href="#logout" onClick={handleLogout}>
-                    <IoLogOutSharp className={styles.icon} size={40}/> Đăng Xuất
+                    <IoLogOutSharp className={styles.icon} size={40}/> Đăng xuất
                 </a>
             </div>
         </div>

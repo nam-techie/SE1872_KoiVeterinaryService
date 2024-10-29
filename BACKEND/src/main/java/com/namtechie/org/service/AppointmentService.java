@@ -2,8 +2,8 @@ package com.namtechie.org.service;
 
 import com.namtechie.org.entity.Appointment;
 import com.namtechie.org.exception.DoctorNotAvailableException;
-import com.namtechie.org.exception.NotFoundException;
 import com.namtechie.org.model.response.AppointmentResponse;
+import com.namtechie.org.model.response.AppointmentStatusResponse;
 import com.namtechie.org.repository.AppointmentRepository;
 
 import com.namtechie.org.entity.*;
@@ -16,9 +16,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import javax.print.Doc;
 import java.sql.Date;
 import java.sql.Time;
+import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -200,7 +200,7 @@ public class AppointmentService {
                     doctor = findAvailableDoctor(String.valueOf(appointmentRequest.getBookingDate()), String.valueOf(roundedTime));
                     appointmentInfo.setAppointmentBookingTime(roundedTime);
                     appointmentInfo.setAppointmentBookingDate(date);
-                    doctor = findAvailableDoctor(appointmentRequest.getBookingDate(), appointmentRequest.getBookingTime());
+                    doctor = findAvailableDoctor1(appointmentRequest.getBookingDate(), appointmentRequest.getBookingTime());
                     appointment.setDoctorAssigned(false);
                     appointment.setDoctor(doctor);
                     appointment.setZone(zoneRepository.findById(15));
@@ -248,6 +248,56 @@ public class AppointmentService {
         for (Doctor doctor : doctors) {
             // Lấy danh sách lịch trống của bác sĩ
             Map<String, List<Schedule>> freeSchedules = scheduleService.findFreeScheduleByDoctorId(doctor.getId());
+
+            // Kiểm tra xem lịch trống cho ngày đó có tồn tại không
+            if (freeSchedules == null || freeSchedules.get(bookingDate) == null) {
+                continue; // Nếu không có lịch trống, tiếp tục với bác sĩ tiếp theo
+            }
+
+            List<Schedule> schedulesForDay = freeSchedules.get(bookingDate);
+            System.out.println("123" + schedulesForDay);
+            // Kiểm tra lịch trống trong ngày xem có trùng với thời gian đặt không
+            for (Schedule schedule : schedulesForDay) {
+                if ((schedule.getDate().equals(bookingDateSQL) && schedule.getStartTime().equals(Time.valueOf(bookingTime)) && schedule.isAvailable()) ||
+                        (schedule.getDate().equals(bookingDateSQL) && Time.valueOf(bookingTime).after(schedule.getStartTime()) && Time.valueOf(bookingTime).before(schedule.getEndTime()) && schedule.isAvailable())) {
+
+                    // Nếu tìm thấy lịch trống cho bác sĩ đó, thêm doctorId vào danh sách
+                    availableDoctorIds.add(doctor.getId());
+                    break; // Bác sĩ này có lịch trống, không cần kiểm tra thêm trong ngày đó
+                }
+            }
+        }
+
+        // Bước 2: Gọi appointmentRepository.findDoctorAppointmentCounts() để lấy số lượng lịch hẹn của từng bác sĩ
+        List<Object[]> doctorAppointmentCounts = appointmentRepository.findDoctorAppointmentCounts();
+
+        // Bước 3: Tìm bác sĩ trong danh sách availableDoctorIds có ít lịch hẹn nhất
+        Long selectedDoctorId = findDoctorWithFewestAppointments(availableDoctorIds, doctorAppointmentCounts);
+
+        // Nếu tìm thấy bác sĩ phù hợp, trả về bác sĩ đó
+        if (selectedDoctorId != null) {
+            System.out.println("Tìm thấy bác sĩ ID: " + selectedDoctorId + " có lịch rảnh và ít lịch hẹn nhất.");
+            return doctorRepository.findDoctorById(selectedDoctorId);
+        }
+
+        // Nếu không tìm thấy bác sĩ nào rảnh cho buổi này
+        System.out.println("Không tìm thấy bác sĩ rảnh cho khung giờ này.");
+        return null;
+    }
+
+    public Doctor findAvailableDoctor1(String bookingDate, String bookingTime) {
+
+        // Chuyển đổi bookingDate từ chuỗi sang kiểu Date
+        Date bookingDateSQL = Date.valueOf(bookingDate);
+
+        // Tạo danh sách lưu các bác sĩ có lịch rảnh trùng với thời gian đặt
+        List<Long> availableDoctorIds = new ArrayList<>();
+
+        // Bước 1: Tìm tất cả các bác sĩ có lịch trống trùng với thời gian đặt
+        List<Doctor> doctors = doctorRepository.findAll(); // Lấy tất cả bác sĩ
+        for (Doctor doctor : doctors) {
+            // Lấy danh sách lịch trống của bác sĩ
+            Map<String, List<Schedule>> freeSchedules = scheduleService.findFreeScheduleByDoctorId1(doctor.getId());
 
             // Kiểm tra xem lịch trống cho ngày đó có tồn tại không
             if (freeSchedules == null || freeSchedules.get(bookingDate) == null) {
@@ -549,6 +599,49 @@ public class AppointmentService {
             appointmentResponses.add(appointmentResponse);
         }
 
+        return appointmentResponses;
+    }
+
+    public List<AppointmentStatusResponse> getListAppointmentCustomer(String username) {
+        List<AppointmentStatusResponse> appointmentResponses = new ArrayList<>();
+
+        Account account = accountRepository.findAccountByUsername(username);
+        Customers customerId = customersRepository.findByAccountId(account.getId());
+
+        List<Appointment> appointments = appointmentRepository.findByCustomersId(customerId.getId());
+
+        for (Appointment appointment : appointments) {
+            AppointmentStatusResponse appointmentStatusResponse = new AppointmentStatusResponse();
+            appointmentStatusResponse.setAppointmentId(appointment.getId());
+
+            AppointmentInfo appointmentInfo = appointmentInfoRepository.findByAppointmentId(appointment.getId());
+
+            // Tách Date và Time từ CreatedDate (Timestamp)
+            Timestamp createdDate = appointmentInfo.getCreatedDate();
+            appointmentStatusResponse.setAppointmentDate(new Date(createdDate.getTime())); // Chuyển Timestamp thành Date
+            appointmentStatusResponse.setAppointmentTime(new Time(createdDate.getTime())); // Chuyển Timestamp thành Time
+
+
+
+            ServiceType serviceType = serviceTypeRepository.findByAppointmentId(appointment.getId());
+            appointmentStatusResponse.setServiceType(serviceType.getName());
+
+            // Lấy tất cả các trạng thái của appointment
+            List<AppointmentStatus> statuses = appointmentStatusRepository.findByAppointment(appointment);
+
+            // Tìm trạng thái có createDate lớn nhất (mới nhất)
+            AppointmentStatus latestStatus = null;
+            for (AppointmentStatus status : statuses) {
+                if (latestStatus == null || status.getCreate_date().toLocalDateTime().isAfter(latestStatus.getCreate_date().toLocalDateTime())) {
+                    latestStatus = status;
+                }
+            }
+            // Set trạng thái mới nhất vào AppointmentResponse
+            if (latestStatus != null) {
+                appointmentStatusResponse.setAppointmentStatus(latestStatus.getStatus());
+            }
+            appointmentResponses.add(appointmentStatusResponse);
+        }
         return appointmentResponses;
     }
 
