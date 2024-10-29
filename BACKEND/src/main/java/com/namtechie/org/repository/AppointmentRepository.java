@@ -1,6 +1,7 @@
 package com.namtechie.org.repository;
 
 import com.namtechie.org.entity.Appointment;
+import com.namtechie.org.entity.Doctor;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -34,4 +35,8 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
     List<Appointment> findAppointmentByDoctorId(long doctorId);
 
     List<Appointment> findAppointmentByCustomersId(long customerId);
+
+    @Query("SELECT a.doctor.id, COUNT(a) as appointment_count FROM Appointment a GROUP BY a.doctor.id ORDER BY appointment_count ASC")
+    List<Object[]> findDoctorAppointmentCounts();
+
 }

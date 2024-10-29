@@ -5,6 +5,7 @@ import com.namtechie.org.entity.Doctor;
 import com.namtechie.org.entity.ServiceType;
 import com.namtechie.org.entity.Zone;
 import com.namtechie.org.model.Schedule;
+import com.namtechie.org.repository.AppointmentRepository;
 import com.namtechie.org.service.*;
 import com.namtechie.org.model.request.AppointmentRequest;
 import com.namtechie.org.service.AppointmentService;
@@ -46,7 +47,17 @@ public class AppointmentController {
     AppointmentService appointmentService;
 
     @Autowired
+    private AppointmentRepository appointmentRepository;
+
+    @Autowired
     PaymentService paymentService;
+
+
+    @GetMapping("/getListFreeDoctor")
+    public ResponseEntity<List<Object[]>> getListFreeDoctor() {
+        List<Object[]> doctorAppointmentCounts = appointmentRepository.findDoctorAppointmentCounts();
+        return ResponseEntity.ok(doctorAppointmentCounts);
+    }
 
     @GetMapping(value = "/getFreeScheduleByDoctorId")
     public ResponseEntity<Map<String, List<Schedule>>> getFreeScheduleByDoctorId(@RequestParam long doctorId) {

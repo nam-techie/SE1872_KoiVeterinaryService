@@ -225,65 +225,187 @@ public class AppointmentService {
     }
 
 
+
     public Doctor findAvailableDoctor(String bookingDate, String bookingTime) {
 
-        // Lấy danh sách tất cả các bác sĩ
-        List<Doctor> allDoctors = doctorRepository.findAll();
+        // Chuyển đổi bookingDate từ chuỗi sang kiểu Date
+        Date bookingDateSQL = Date.valueOf(bookingDate);
 
-        for (Doctor doctor : allDoctors) {
+        // Tạo danh sách lưu các bác sĩ có lịch rảnh trùng với thời gian đặt
+        List<Long> availableDoctorIds = new ArrayList<>();
+
+        // Bước 1: Tìm tất cả các bác sĩ có lịch trống trùng với thời gian đặt
+        List<Doctor> doctors = doctorRepository.findAll(); // Lấy tất cả bác sĩ
+        for (Doctor doctor : doctors) {
+            // Lấy danh sách lịch trống của bác sĩ
             Map<String, List<Schedule>> freeSchedules = scheduleService.findFreeScheduleByDoctorId(doctor.getId());
 
-            Date bookingDateSQL = Date.valueOf(bookingDate);
-            System.out.println("freeSchedules: " + freeSchedules);
-            System.out.println("bookingDate: " + bookingDateSQL);
+            // Kiểm tra xem lịch trống cho ngày đó có tồn tại không
+            if (freeSchedules == null || freeSchedules.get(bookingDate) == null) {
+                continue; // Nếu không có lịch trống, tiếp tục với bác sĩ tiếp theo
+            }
 
             List<Schedule> schedulesForDay = freeSchedules.get(bookingDate);
-            System.out.println("12345" + schedulesForDay);
-            for(Schedule schedule : schedulesForDay) {
-                if((schedule.getDate().equals(bookingDateSQL) && schedule.getStartTime().equals(Time.valueOf(bookingTime)) && schedule.isAvailable()) ||
+
+            // Kiểm tra lịch trống trong ngày xem có trùng với thời gian đặt không
+            for (Schedule schedule : schedulesForDay) {
+                if ((schedule.getDate().equals(bookingDateSQL) && schedule.getStartTime().equals(Time.valueOf(bookingTime)) && schedule.isAvailable()) ||
                         (schedule.getDate().equals(bookingDateSQL) && Time.valueOf(bookingTime).after(schedule.getStartTime()) && Time.valueOf(bookingTime).before(schedule.getEndTime()) && schedule.isAvailable())) {
-                    return doctor;
+
+                    // Nếu tìm thấy lịch trống cho bác sĩ đó, thêm doctorId vào danh sách
+                    availableDoctorIds.add(doctor.getId());
+                    break; // Bác sĩ này có lịch trống, không cần kiểm tra thêm trong ngày đó
                 }
             }
         }
+
+        // Bước 2: Gọi appointmentRepository.findDoctorAppointmentCounts() để lấy số lượng lịch hẹn của từng bác sĩ
+        List<Object[]> doctorAppointmentCounts = appointmentRepository.findDoctorAppointmentCounts();
+
+        // Bước 3: Tìm bác sĩ trong danh sách availableDoctorIds có ít lịch hẹn nhất
+        Long selectedDoctorId = findDoctorWithFewestAppointments(availableDoctorIds, doctorAppointmentCounts);
+
+        // Nếu tìm thấy bác sĩ phù hợp, trả về bác sĩ đó
+        if (selectedDoctorId != null) {
+            System.out.println("Tìm thấy bác sĩ ID: " + selectedDoctorId + " có lịch rảnh và ít lịch hẹn nhất.");
+            return doctorRepository.findDoctorById(selectedDoctorId);
+        }
+
+        // Nếu không tìm thấy bác sĩ nào rảnh cho buổi này
+        System.out.println("Không tìm thấy bác sĩ rảnh cho khung giờ này.");
         return null;
     }
 
+    /**
+     * Hàm bổ trợ để chọn bác sĩ có ít lịch hẹn nhất từ danh sách bác sĩ rảnh.
+     */
+    private Long findDoctorWithFewestAppointments(List<Long> availableDoctorIds, List<Object[]> doctorAppointmentCounts) {
+        Long selectedDoctorId = null;
+        Long fewestAppointments = Long.MAX_VALUE;  // Đặt một giá trị lớn để so sánh
+
+        for (Object[] doctorCount : doctorAppointmentCounts) {
+            Long doctorId = (Long) doctorCount[0];
+            Long appointmentCount = (Long) doctorCount[1];
+
+            if (availableDoctorIds.contains(doctorId) && appointmentCount < fewestAppointments) {
+                selectedDoctorId = doctorId;
+                fewestAppointments = appointmentCount;
+            }
+        }
+
+        // Nếu có nhiều bác sĩ có số lượng lịch hẹn bằng nhau, chọn ngẫu nhiên một bác sĩ
+        List<Long> doctorsWithFewestAppointments = new ArrayList<>();
+        for (Object[] doctorCount : doctorAppointmentCounts) {
+            Long doctorId = (Long) doctorCount[0];
+            Long appointmentCount = (Long) doctorCount[1];
+
+            if (availableDoctorIds.contains(doctorId) && appointmentCount.equals(fewestAppointments)) {
+                doctorsWithFewestAppointments.add(doctorId);
+            }
+        }
+
+        if (!doctorsWithFewestAppointments.isEmpty()) {
+            Collections.shuffle(doctorsWithFewestAppointments); // Xáo trộn danh sách
+            selectedDoctorId = doctorsWithFewestAppointments.get(0); // Lấy ngẫu nhiên 1 bác sĩ
+        }
+
+        return selectedDoctorId;  // Trả về bác sĩ có ít lịch đặt nhất
+    }
+
+
+
+    private Long getRandomDoctorId(List<Long> doctorIds) {
+        if (doctorIds == null || doctorIds.isEmpty()) {
+            return null; // Trả về null nếu danh sách rỗng
+        }
+        Collections.shuffle(doctorIds); // Xáo trộn danh sách
+        return doctorIds.get(0); // Lấy doctorId ngẫu nhiên từ danh sách đã xáo trộn
+    }
+
+
+
+
 
     public Doctor findAvailableDoctorForSession(String bookingDate, String bookingTime) {
-        // Gọi hàm findFreeScheduleOfSession để lấy lịch trống của tất cả các bác sĩ
-        Map<String, List<Schedule>> freeSchedules = scheduleService.findFreeScheduleOfSession();
-
-        // Chuyển đổi bookingDate từ String sang LocalDate
+        // Chuyển đổi bookingDate từ chuỗi sang LocalDate
         LocalDate bookingLocalDate = LocalDate.parse(bookingDate);
 
         boolean isMorningSession = bookingTime.equals("07:00:00");
         boolean isAfternoonSession = bookingTime.equals("13:00:00");
 
-
+        // Kiểm tra thời gian buổi hợp lệ
         if (!isMorningSession && !isAfternoonSession) {
             throw new IllegalArgumentException("Invalid booking time, must be 07:00:00 or 13:00:00.");
         }
 
+        // Bước 1: Tìm tất cả các bác sĩ có khung giờ rảnh vào buổi sáng hoặc buổi chiều.
+        List<Long> availableDoctorIds = new ArrayList<>();
         List<Doctor> doctors = doctorRepository.findAll();
+
         for (Doctor doctor : doctors) {
-            // Lấy lịch trống của từng bác sĩ cho ngày đã chọn
+            // Lấy lịch trống của bác sĩ đó
+            Map<String, List<Schedule>> freeSchedules = scheduleService.findFreeScheduleByDoctorId(doctor.getId());
+
+            // Kiểm tra xem lịch trống cho ngày đó có tồn tại không
             List<Schedule> schedulesForDay = freeSchedules.get(String.valueOf(bookingLocalDate));
 
-            if (schedulesForDay != null && !schedulesForDay.isEmpty()) {
-                for (Schedule schedule : schedulesForDay) {
-                    // Kiểm tra xem lịch trống có khớp với buổi sáng hoặc buổi chiều theo yêu cầu không
-                    if (isMorningSession && schedule.getStartTime().equals(Time.valueOf("07:00:00")) && schedule.isAvailable()) {
-                        return doctor;  // Trả về bác sĩ rảnh cho buổi sáng
+            if (schedulesForDay == null || schedulesForDay.isEmpty()) {
+                // Nếu không có lịch trống, tiếp tục với bác sĩ tiếp theo
+                continue;
+            }
+
+            // Kiểm tra lịch trống của cả buổi sáng hoặc buổi chiều
+            boolean isSessionFree = true;
+            if (isMorningSession) {
+                // Kiểm tra buổi sáng (từ 07:00 đến 11:00)
+                for (int hour = 7; hour < 11; hour++) {
+                    Time startTime = Time.valueOf(hour + ":00:00");
+                    boolean isSlotFree = schedulesForDay.stream()
+                            .anyMatch(schedule -> schedule.getStartTime().equals(startTime) && schedule.isAvailable());
+
+                    if (!isSlotFree) {
+                        isSessionFree = false;  // Nếu bất kỳ slot nào trong buổi sáng không trống, đánh dấu buổi sáng là bận
+                        break;
                     }
-                    if (isAfternoonSession && schedule.getStartTime().equals(Time.valueOf("13:00:00")) && schedule.isAvailable()) {
-                        return doctor;  // Trả về bác sĩ rảnh cho buổi chiều
+                }
+            } else if (isAfternoonSession) {
+                // Kiểm tra buổi chiều (từ 13:00 đến 17:00)
+                for (int hour = 13; hour < 17; hour++) {
+                    Time startTime = Time.valueOf(hour + ":00:00");
+                    boolean isSlotFree = schedulesForDay.stream()
+                            .anyMatch(schedule -> schedule.getStartTime().equals(startTime) && schedule.isAvailable());
+
+                    if (!isSlotFree) {
+                        isSessionFree = false;  // Nếu bất kỳ slot nào trong buổi chiều không trống, đánh dấu buổi chiều là bận
+                        break;
                     }
                 }
             }
+
+            // Nếu cả buổi sáng hoặc buổi chiều trống, thêm bác sĩ vào danh sách availableDoctorIds
+            if (isSessionFree) {
+                availableDoctorIds.add(doctor.getId());
+            }
         }
-        return null;  // Nếu không tìm thấy bác sĩ nào rảnh
+
+        // Bước 2: Gọi appointmentRepository.findDoctorAppointmentCounts() để lấy số lượng lịch hẹn của từng bác sĩ
+        List<Object[]> doctorAppointmentCounts = appointmentRepository.findDoctorAppointmentCounts();
+
+        // Bước 3: Tìm bác sĩ trong danh sách availableDoctorIds có ít lịch hẹn nhất
+        Long selectedDoctorId = findDoctorWithFewestAppointments(availableDoctorIds, doctorAppointmentCounts);
+
+        // Nếu tìm thấy bác sĩ phù hợp, trả về bác sĩ đó
+        if (selectedDoctorId != null) {
+            System.out.println("Tìm thấy bác sĩ ID: " + selectedDoctorId + " có lịch rảnh và ít lịch hẹn nhất.");
+            return doctorRepository.findDoctorById(selectedDoctorId);
+        }
+
+        // Nếu không tìm thấy bác sĩ nào phù hợp
+        System.out.println("Không tìm thấy bác sĩ rảnh cho buổi này.");
+        return null;
     }
+
+
 
 
     public List<Appointment> getAllAppointments() {
