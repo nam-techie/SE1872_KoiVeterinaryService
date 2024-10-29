@@ -14,7 +14,7 @@ public class AppointmentRequest {
     long zoneId;
     String address;
     long doctorId;
-    Date bookingDate;
-    Time bookingTime;
+    String bookingDate;
+    String bookingTime;
 
 }

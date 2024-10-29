@@ -1,4 +1,4 @@
-import axios from "axios";
+
 import {axiosInstance} from "./apiRequest.js";
 
 export const postBookingData = async (bookingData) => {
@@ -6,7 +6,7 @@ export const postBookingData = async (bookingData) => {
         // Thêm log để kiểm tra dữ liệu trước khi gửi
         console.log('Dữ liệu gửi đi:', bookingData);
         
-        const response = await axios.post('http://localhost:8080/customer/createAppointment', bookingData);
+        const response = await axiosInstance.post('/customer/createAppointment', bookingData);
         
         // Thêm log để kiểm tra response
         console.log('Response từ server:', response);

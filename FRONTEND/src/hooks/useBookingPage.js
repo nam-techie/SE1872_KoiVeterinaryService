@@ -132,7 +132,7 @@ export function useBookingPage() {
         try {
             const response = await postBookingData(bookingData);
             if (response.status === 200 || response.status === 201) {
-                navigate("/booking-service-history");
+                navigate("/homepage");
             }
         } catch (error) {
             console.error('Error submitting booking:', error);

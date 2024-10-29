@@ -125,7 +125,7 @@ public class ScheduleService {
                 List<Integer> timeSlots = isMorning ? Arrays.asList(7, 8, 9, 10) : Arrays.asList(13, 14, 15, 16);
                 List<Appointment> appointments = appointmentService.findAllAppointmentOfSession(doctorId, date, isMorning);
 
-                if (appointments.size() == 1 && appointments.get(0).getServiceType().getId() != 3) {
+                if (appointments.size() == 2 && appointments.get(0).getServiceType().getId() != 3 && appointments.get(0).getServiceType().getId() != 1) {
                     for (int hour : timeSlots) {
                         Time currentStart = Time.valueOf(hour + ":00:00");
                         Time currentEnd = Time.valueOf((hour + 1) + ":00:00");
