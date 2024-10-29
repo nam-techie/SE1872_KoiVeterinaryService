@@ -3,6 +3,7 @@ package com.namtechie.org.service;
 import com.namtechie.org.entity.Appointment;
 import com.namtechie.org.exception.DoctorNotAvailableException;
 import com.namtechie.org.exception.NotFoundException;
+import com.namtechie.org.model.request.ServiceTypeRequestAll;
 import com.namtechie.org.model.response.AppointmentResponse;
 import com.namtechie.org.repository.AppointmentRepository;
 
@@ -499,6 +500,7 @@ public class AppointmentService {
     private AppointmentInfoRepository appointmentInfoRepository;
 
 
+
     public List<AppointmentResponse> getListAppoint() {
         List<AppointmentResponse> appointmentResponses = new ArrayList<>();
 
@@ -558,6 +560,7 @@ public class AppointmentService {
     }
 
 
+    //chưa xong
     public AppointmentResponse getListAppoint(long appointmentId) {
 //        List<AppointmentResponse> appointmentResponses = new ArrayList<>();
 
@@ -595,21 +598,29 @@ public class AppointmentService {
 
 
         long totalPrice = 0;
+        List<Long> price = new ArrayList<>();
         if (latestStatus.getStatus().equals("Chờ thanh toán tiền dịch vụ")) {
             if (payment != null) {
+                price.add(payment.getTotalFee());
+                appointmentResponse.setMoreServiceTypeName(appointment.getServiceType().getName());
+                appointmentResponse.setPrice(appointment.getServiceType().getBase_price());
                 appointmentResponse.setTotalPrice(payment.getTotalFee());
             }
         } else if (latestStatus.getStatus().equals("Chờ thanh toán tổng tiền")) {
             List<PaymentDetail> paymentDetails = paymentDetailRepository.findByPaymentIdAndStatus(payment.getId(), false);
             for (PaymentDetail paymentDetail : paymentDetails) {
+
                 totalPrice += paymentDetail.getPrice();
             }
             appointmentResponse.setTotalPrice(totalPrice);
         }else if(latestStatus.getStatus().equals("Thanh toán tổng tiền thành công")){
-            if (payment != null) {
-                appointmentResponse.setTotalPrice(payment.getTotalFee());
+            List<PaymentDetail> paymentDetails = paymentDetailRepository.findByPaymentIdAndStatus(payment.getId(), true);
+            for (PaymentDetail paymentDetail : paymentDetails) {
+//                serviceDetail.add(paymentDetail.getPrice()+"");
             }
+            appointmentResponse.setTotalPrice(payment.getTotalFee());
         }
+
 
 
         // Set trạng thái mới nhất vào AppointmentResponse
@@ -650,6 +661,8 @@ public class AppointmentService {
 
         // Thêm vào danh sách kết quả
         appointmentResponse.setPhoneNumber(infoCus.getPhone());
+
+
 
 
         return appointmentResponse;

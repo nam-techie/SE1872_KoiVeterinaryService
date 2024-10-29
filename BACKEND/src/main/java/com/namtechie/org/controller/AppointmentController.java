@@ -5,6 +5,7 @@ import com.namtechie.org.entity.Doctor;
 import com.namtechie.org.entity.ServiceType;
 import com.namtechie.org.entity.Zone;
 import com.namtechie.org.model.Schedule;
+import com.namtechie.org.model.response.AppointmentResponse;
 import com.namtechie.org.repository.AppointmentRepository;
 import com.namtechie.org.service.*;
 import com.namtechie.org.model.request.AppointmentRequest;
@@ -13,6 +14,7 @@ import com.namtechie.org.service.TokenService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -158,6 +160,17 @@ public class AppointmentController {
     public ResponseEntity getDoctorhaveAppointmentMin(@Param("BookingDate") String bookingDate, @Param("BookingTime") String bookingTime) {
         Doctor doctor = appointmentService.findAvailableDoctor(bookingDate, bookingTime);
         return ResponseEntity.ok(doctor);
+    }
+
+    @GetMapping("/listAppointment/{id}")
+    public ResponseEntity<AppointmentResponse> getAllAppointment(@PathVariable long id) {
+        try {
+            AppointmentResponse appointment = appointmentService.getListAppoint(id);
+            return new ResponseEntity<>(appointment, HttpStatus.OK);  // Trả về HTTP 200 OK
+        } catch (Exception e) {
+            // Log lỗi ra nếu cần
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);  // Trả về HTTP 500 nếu có lỗi
+        }
     }
 }
 

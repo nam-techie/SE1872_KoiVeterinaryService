@@ -250,7 +250,7 @@ public class PaymentService {
         AppointmentStatus doneWorking = new AppointmentStatus();
 
         doneWorking.setAppointment(appointment);
-        doneWorking.setStatus("Đã hoàn thành");
+        doneWorking.setStatus("Thực hiện xong dịch vụ");
         doneWorking.setNotes(serviceTypeRequestAll.getNotes());
 
 //        appointmentStatusRepository.save(appointmentStatus);
@@ -325,8 +325,13 @@ public class PaymentService {
         AppointmentStatus appointmentStatus = new AppointmentStatus();
         appointmentStatus.setAppointment(appointment);
         appointmentStatus.setStatus("Thanh toán tổng tiền thành công");
-
         appointmentStatusRepository.save(appointmentStatus);
+
+
+        AppointmentStatus appointmentStatuss = new AppointmentStatus();
+        appointmentStatuss.setAppointment(appointment);
+        appointmentStatuss.setStatus("Hoàn thành");
+        appointmentStatusRepository.save(appointmentStatuss);
 
     }
 

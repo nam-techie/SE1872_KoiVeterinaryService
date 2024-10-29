@@ -1,10 +1,12 @@
 package com.namtechie.org.model.response;
 
+import com.namtechie.org.entity.PaymentDetail;
 import lombok.Data;
 
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.List;
 
 @Data
 public class AppointmentResponse {
@@ -21,5 +23,8 @@ public class AppointmentResponse {
      String phoneNumber;
      String description;
      long totalPrice;
+     long price;
+     String moreServiceTypeName;
+
 
 }
