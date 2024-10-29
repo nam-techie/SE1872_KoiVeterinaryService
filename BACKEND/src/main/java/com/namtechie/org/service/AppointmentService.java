@@ -429,17 +429,6 @@ public class AppointmentService {
         return appointmentResponses;
     }
 
-    public void cancelAppointment(long appointmentId){
-        Appointment appointment = appointmentRepository.findById(appointmentId);
-        appointment.setCancel(true);
-
-        AppointmentStatus appointmentStatus = new AppointmentStatus();
-        appointmentStatus.setAppointment(appointment);
-        appointmentStatus.setStatus("Canceled");
-        appointmentStatus.setNotes("Cancelled by ADMIN");
-        appointmentStatusRepository.save(appointmentStatus);
-    }
-
 
 
 }

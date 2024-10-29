@@ -1,9 +1,9 @@
-import axios from "axios";
+
 import {axiosInstance} from "./apiRequest.js";
 
 export const getDoctorList = async () => {
     try {
-        const response = await axiosInstance.get("/getAllDoctor");
+        const response = await axiosInstance.get("/customer/getAllDoctor");
         console.log(response.data);
         return response.data;
     } catch (error) {
@@ -14,7 +14,7 @@ export const getDoctorList = async () => {
 
 export const getdoctorScheduleCenter = async () =>{
     try{
-        const response = await axiosInstance.get("http://localhost:8080/api/getFreeScheduleWithTime");
+        const response = await axiosInstance.get("/customer/getFreeScheduleWithTime");
         // const response = await axios.get("doctorScheduleCenter.json");
         return response.data;
     }catch(error){
@@ -25,7 +25,7 @@ export const getdoctorScheduleCenter = async () =>{
 
 export const getdoctorScheduleHome = async () => {
     try {
-        const response = await axiosInstance.get("http://localhost:8080/api/getFreeSchedule");
+        const response = await axiosInstance.get("/customer/getFreeSchedule");
         // const response = await axios.get("doctorScheduleHome.json")
         console.log('Data from JSON:', response.data);  // Kiểm tra dữ liệu
         return response.data
@@ -38,7 +38,7 @@ export const getdoctorScheduleHome = async () => {
 
 export const getdoctorScheduleCenterByID = async (doctorId) => {
     try {
-        const response = await axiosInstance.get('http://localhost:8080/api/getFreeScheduleByDoctorId', {
+        const response = await axiosInstance.get('/customer/getFreeScheduleByDoctorId', {
             params: {
                 doctorId: doctorId
             }

@@ -140,7 +140,7 @@
     background-color: white;
     padding: 20px;
     border-radius: 10px;
-    width: 400px; /* Chiều rộng cố định của modal */
+    width: 450px; /* Chiều rộng cố định của modal */
     margin: 0 auto; /* Căn giữa theo chiều ngang */
     position: fixed; /* Modal luôn ở giữa màn hình */
     top: 50%; /* Đặt modal cách 50% từ đỉnh màn hình */
@@ -148,6 +148,10 @@
     transform: translate(-50%, -50%); /* Di chuyển modal chính xác giữa màn hình */
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     z-index: 1000; /* Modal nằm trên overlay */
+}
+
+.confirmationModal h2 {
+    white-space: nowrap;
 }
 
 /* Các nút trong modal */

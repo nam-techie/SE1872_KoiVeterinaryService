@@ -106,25 +106,28 @@ export function useBookingPage() {
         setShowConfirm(false);
         const createdDate = new Date();
         const currentTime = `${createdDate.getHours()}:${createdDate.getMinutes()}:${createdDate.getSeconds()}`;
-        const finalSelectedDate = serviceType === '1' ? createdDate.toISOString().split('T')[0] : selectedDate;
-        const finalSelectedTime = serviceType === '1' ? currentTime : selectedTime;
-        const finalDetailedAddress = (serviceType === '1' || serviceType === '3') ? null : detailedAddress;
-        const finalSelectedDistrict = (serviceType === '3' || serviceType === '1') ? null : selectedDistrict;
-        const finalSelectedDoctor = (serviceType === '1' || serviceType === '2' || serviceType === '4') ? null : selectedDoctor;
+        
+        const serviceTypeId = parseInt(serviceType);
+        const phone = phoneNumber;
+        const desc = description;
+        const date = serviceType === '1' ? createdDate.toISOString().split('T')[0] : selectedDate;
+        const time = serviceType === '1' ? currentTime : selectedTime;
+        const address = (serviceType === '1' || serviceType === '3') ? null : detailedAddress;
+        const zoneId = parseInt(!selectedDistrict || selectedDistrict === "" ? "0" : selectedDistrict);
+        const doctorId = parseInt(!selectedDoctor || selectedDoctor === "dr0" ? "0" : selectedDoctor);
 
         const bookingData = {
-            serviceType,
-            phoneNumber,
-            description,
-            selectedDate: finalSelectedDate,
-            selectedTime: finalSelectedTime,
-            detailedAddress: finalDetailedAddress,
-            selectedDistrict: finalSelectedDistrict,
-            selectedDoctor: finalSelectedDoctor,
-            createdDate: createdDate.toISOString(),
+            serviceTypeId,
+            phone,
+            description: desc,
+            zoneId,
+            address,
+            doctorId,
+            bookingDate: date,
+            bookingTime: time
         };
 
-        console.log(bookingData)
+        console.log(bookingData);
 
         try {
             const response = await postBookingData(bookingData);
