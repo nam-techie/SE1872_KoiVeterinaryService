@@ -354,7 +354,7 @@ public class AppointmentService {
 
         for (Doctor doctor : doctors) {
             // Lấy lịch trống của bác sĩ đó
-            Map<String, List<Schedule>> freeSchedules = scheduleService.findFreeScheduleByDoctorId(doctor.getId());
+            Map<String, List<Schedule>> freeSchedules = scheduleService.findFreeScheduleByDoctorIdAtHome(doctor.getId());
 
             // Kiểm tra xem lịch trống cho ngày đó có tồn tại không
             List<Schedule> schedulesForDay = freeSchedules.get(String.valueOf(bookingLocalDate));
