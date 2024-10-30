@@ -115,7 +115,7 @@ public class AppointmentController {
         return ResponseEntity.ok(doctor);
     }
 
-    @GetMapping("/listAppointment/{username}")
+    @GetMapping("/listAppointmentByUsername/{username}")
     public List<AppointmentStatusResponse> listAppointmentCustomer(@PathVariable String username ) {
         List<AppointmentStatusResponse> listAppointment = appointmentService.getListAppointmentCustomer(username);
         return listAppointment;
@@ -128,12 +128,12 @@ public class AppointmentController {
         return ResponseEntity.ok(appointmentResponses);
     }
 
-//    @GetMapping("/findAppoinmentId/{accountId}")
-//    @PreAuthorize("hasAuthority('VETERINARY')")
-//    public ResponseEntity findAppoinmentId(@PathVariable long accountId) {
-//        long appointmentId = appointmentService.findAppointmentIdStep(accountId);
-//        return ResponseEntity.ok(appointmentId);
-//    }
+    @GetMapping("/findAppoinmentId/{accountId}")
+    @PreAuthorize("hasAuthority('VETERINARY')")
+    public ResponseEntity findAppoinmentId(@PathVariable long accountId) {
+        long appointmentId = appointmentService.findAppointmentIdStep(accountId);
+        return ResponseEntity.ok(appointmentId);
+    }
 //
 //    @GetMapping("/getAppointmentIdForUser/{accountId}")
 //    @PreAuthorize("hasAuthority('CUSTOMER')")
@@ -146,7 +146,7 @@ public class AppointmentController {
 
     @PutMapping("/cancelAppointmentByCustomer/{appointmentId}")
     public ResponseEntity cancelAppointmentByCustomer(@PathVariable long appointmentId) {
-        appointmentService.cancelAppointmentByCustomer(appointmentId);
+        appointmentService.cancelAppointmentByCustomer(appointmentId, "CUSTOMER");
         return ResponseEntity.ok("Đã hủy thành công");
     }
 

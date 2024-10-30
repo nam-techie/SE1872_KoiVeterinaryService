@@ -205,9 +205,10 @@ public class AppointmentService {
                     Time roundedTime = Time.valueOf(hour + ":00:00");
 
                     System.out.println("Giờ làm tròn: " + roundedTime);
-                    doctor = findAvailableDoctor1(String.valueOf(appointmentRequest.getBookingDate()), String.valueOf(roundedTime));
+                    //doctor = findAvailableDoctor1(String.valueOf(appointmentRequest.getBookingDate()), String.valueOf(roundedTime));
                     appointmentInfo.setAppointmentBookingTime(roundedTime);
                     appointmentInfo.setAppointmentBookingDate(date);
+                    doctor = findAvailableDoctor1(appointmentRequest.getBookingDate(), String.valueOf(roundedTime));
                     appointment.setDoctorAssigned(false);
                     appointment.setDoctor(doctor);
                     appointment.setZone(zoneRepository.findById(15));
@@ -502,26 +503,28 @@ public class AppointmentService {
 //
 //
 //
-//    public long findAppointmentIdStep(long accountId) {
-//        Doctor doctor = doctorRepository.findByAccountId(accountId);
-//
-//        List<Appointment> list = appointmentRepository.findAppointmentByDoctorId(doctor.getId());
-//
-//        for(Appointment appointment : list) {
-//            List<AppointmentStatus> appointmentStatus = appointment.getAppointmentStatus();
-//            for(AppointmentStatus status : appointmentStatus) {
-//                if(status.getStatus().equals("Waiting veterian confirm")){
-//                    return appointment.getId();
-//                }
-//            }
-//        }
-//        return 0;
-//    }
+    public long findAppointmentIdStep(long accountId) {
+        Doctor doctor = doctorRepository.findByAccountId(accountId);
+
+        List<Appointment> list = appointmentRepository.findAppointmentByDoctorId(doctor.getId());
+
+        for(Appointment appointment : list) {
+            List<AppointmentStatus> appointmentStatus = appointment.getAppointmentStatus();
+            for(AppointmentStatus status : appointmentStatus) {
+                if(status.getStatus().equals("Chờ bác sĩ xác nhận")){
+                    return appointment.getId();
+                }
+            }
+        }
+        return 0;
+    }
 
 
     public AppointmentStatus confirmDoctorAppointment(long appointmentId, DoctorConfirmRequest doctorConfirmRequest) {
         try {
             AppointmentStatus updateAppointmentStatus = appointmentStatusRepository.findByAppointmentId(appointmentId);
+            Appointment appointment = appointmentRepository.findAppointmentById(appointmentId);
+
 
             AppointmentStatus status = new AppointmentStatus();
             status.setAppointment(updateAppointmentStatus.getAppointment());
@@ -529,6 +532,8 @@ public class AppointmentService {
                 status.setNotes(doctorConfirmRequest.getNote());
                 status.setStatus("Đã xác nhận");
             } else {
+                appointment.setCancel(true);
+                appointmentRepository.save(appointment);
                 status.setNotes(doctorConfirmRequest.getNote());
                 status.setStatus("Từ chối");
             }
@@ -539,12 +544,16 @@ public class AppointmentService {
         }
     }
 
-    public void cancelAppointmentByCustomer(long appointmentId) {
+    public void cancelAppointmentByCustomer(long appointmentId, String role) {
         Appointment appointment = appointmentRepository.findAppointmentById(appointmentId);
         appointment.setCancel(true);
-
         appointmentRepository.save(appointment);
 
+        AppointmentStatus status = new AppointmentStatus();
+         status.setAppointment(appointment);
+         status.setStatus("Đã hủy lịch");
+         status.setNotes(role + " hủy");
+         appointmentStatusRepository.save(status);
     }
 
     @Autowired
