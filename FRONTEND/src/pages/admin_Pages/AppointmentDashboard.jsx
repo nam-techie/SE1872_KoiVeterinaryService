@@ -42,7 +42,7 @@ const AppointmentDashboard = () => {
             const searchLower = searchTerm.toLowerCase();
             const matchesSearch = 
                 appointment.id?.toString().toLowerCase().includes(searchLower) ||
-                appointment.fullName?.toLowerCase().includes(searchLower) ||
+                appointment.fullNameCustomer?.toLowerCase().includes(searchLower) ||
                 appointment.status?.toLowerCase().includes(searchLower) ||
                 appointment.nameService?.toLowerCase().includes(searchLower) ||
                 appointment.appointmentBookingTime?.toLowerCase().includes(searchLower) ||
@@ -77,10 +77,10 @@ const AppointmentDashboard = () => {
         .sort((a, b) => {
             if (sortBy === 'id') {
                 return sortOrder === 'asc' ? a.id - b.id : b.id - a.id;
-            } else if (sortBy === 'fullName') {
+            } else if (sortBy === 'fullNameCustomer') {
                 return sortOrder === 'asc' 
-                    ? a.fullName.localeCompare(b.fullName)
-                    : b.fullName.localeCompare(a.fullName);
+                    ? a.fullNameCustomer.localeCompare(b.fullNameCustomer)
+                    : b.fullNameCustomer.localeCompare(a.fullNameCustomer);
             } else if (sortBy === 'appointmentBookingDate') {
                 const dateA = a.appointmentBookingDate || '';
                 const dateB = b.appointmentBookingDate || '';
@@ -102,7 +102,7 @@ const AppointmentDashboard = () => {
 
     const sortOptions = [
         { value: 'id', label: 'Sắp xếp theo ID' },
-        { value: 'fullName', label: 'Sắp xếp theo tên' },
+        { value: 'fullNameCustomer', label: 'Sắp xếp theo tên' },
         { value: 'appointmentBookingTime', label: 'Sắp xếp theo thời gian' },
         { value: 'appointmentBookingDate', label: 'Sắp xếp theo Ngày thực hiện' },
     ];
@@ -168,7 +168,7 @@ const AppointmentDashboard = () => {
                             className="sort-select"
                         >
                             <option value="id">Sắp xếp theo ID</option>
-                            <option value="fullName">Sắp xếp theo Tên</option>
+                            <option value="fullNameCustomer">Sắp xếp theo Tên</option>
                             <option value="appointmentBookingDate">Sắp xếp theo Ngày thực hiện</option>
                             <option value="appointmentBookingTime">Sắp xếp theo Thời gian</option>
 
@@ -202,7 +202,7 @@ const AppointmentDashboard = () => {
                         {currentTableData.map((appointment) => (
                             <tr key={appointment.id}>
                                 <td>#{appointment.id}</td>
-                                <td>{appointment.fullName}</td>
+                                <td>{appointment.fullNameCustomer}</td>
                                 <td>{appointment.status || "Chưa có trạng thái"}</td>
                                 <td>{appointment.nameService}</td>
                                 <td>{appointment.appointmentBookingTime}</td>
@@ -259,7 +259,7 @@ const AppointmentDashboard = () => {
                     <div className="modal-content">
                         <h3>Xác nhận hủy lịch hẹn</h3>
                         {cancelError && <p className="error-message">{cancelError}</p>}
-                        <p>Bạn có chắc chắn muốn hủy lịch hẹn của khách hàng <strong>{selectedAppointment?.fullName}</strong> không?</p>
+                        <p>Bạn có chắc chắn muốn hủy lịch hẹn của khách hàng <strong>{selectedAppointment?.fullNameCustomer}</strong> không?</p>
                         <p className="warning-text">Lưu ý: Khi đã hủy thì không thể khôi phục lại trạng thái của lịch hẹn!</p>
                         <div className="modal-buttons">
                             <button 

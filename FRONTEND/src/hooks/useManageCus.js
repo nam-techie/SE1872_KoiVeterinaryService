@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
-import { axiosInstance } from '../service/apiRequest';
+import {axiosInstance} from "../service/apiRequest.js";
 
 const useManageCus = () => {
     const [appointments, setAppointments] = useState([]);
@@ -11,12 +10,13 @@ const useManageCus = () => {
         const fetchAppointments = async () => {
             try {
                 const username = localStorage.getItem('username');
+                console.log(username);
                 if (!username) {
                     throw new Error('Không tìm thấy thông tin người dùng');
                 }
 
                 const response = await axiosInstance.get(
-                    `/customer/listAppointment/${username}`
+                    `/customer/listAppointmentByUsername`
                 );
 
                 console.log('Response from API:', response.data);

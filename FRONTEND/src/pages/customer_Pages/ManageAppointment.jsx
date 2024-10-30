@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-unused-vars
 import React, { useState } from 'react';
 import { CustomerNavBar } from "../../components/Navbar";
 import styles from "./styles/ManageAppointment.module.css";

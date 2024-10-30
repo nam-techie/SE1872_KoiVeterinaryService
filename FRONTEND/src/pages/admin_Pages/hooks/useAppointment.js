@@ -22,7 +22,7 @@ const useAppointment = () => {
 
     const cancelAppointment = async (appointmentId) => {
         try {
-            await axiosInstance.delete(`/admin/cancelAppointment/${appointmentId}`);
+            await axiosInstance.put(`/admin/cancelAppointmentByAdmin/${appointmentId}`);
             // Cập nhật lại danh sách sau khi hủy thành công
             await fetchAppointments();
             return true;
