@@ -619,10 +619,9 @@ public class AppointmentService {
         return appointmentResponses;
     }
 
-    public List<AppointmentStatusResponse> getListAppointmentCustomer(String username) {
+    public List<AppointmentStatusResponse> getListAppointmentCustomer(){
         List<AppointmentStatusResponse> appointmentResponses = new ArrayList<>();
-
-        Account account = accountRepository.findAccountByUsername(username);
+        Account account = (Account) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Customers customerId = customersRepository.findByAccountId(account.getId());
 
         List<Appointment> appointments = appointmentRepository.findByCustomersId(customerId.getId());
@@ -663,7 +662,7 @@ public class AppointmentService {
     }
 
 
-    //chưa xong
+
     public AppointmentResponse getListAppoint(long appointmentId) {
 //        List<AppointmentResponse> appointmentResponses = new ArrayList<>();
 

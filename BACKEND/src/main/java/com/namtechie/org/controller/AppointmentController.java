@@ -137,9 +137,9 @@ public class AppointmentController {
         return ResponseEntity.ok(doctor);
     }
 
-    @GetMapping("/listAppointmentByUsername/{username}")
-    public List<AppointmentStatusResponse> listAppointmentCustomer(@PathVariable String username ) {
-        List<AppointmentStatusResponse> listAppointment = appointmentService.getListAppointmentCustomer(username);
+    @GetMapping("/listAppointmentByUsername")
+    public List<AppointmentStatusResponse> listAppointmentCustomer() {
+        List<AppointmentStatusResponse> listAppointment = appointmentService.getListAppointmentCustomer();
         return listAppointment;
     }
 

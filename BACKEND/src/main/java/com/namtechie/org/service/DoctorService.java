@@ -8,7 +8,9 @@ import com.namtechie.org.model.request.DoctorRequest;
 import com.namtechie.org.model.request.MedicalFishResquest;
 import com.namtechie.org.model.request.UpdateDoctor;
 import com.namtechie.org.model.request.VeterinaryRequest;
+import com.namtechie.org.model.response.AppointmentStatusResponse;
 import com.namtechie.org.model.response.CloudinaryResponse;
+import com.namtechie.org.model.response.DoctorAppointmentResponse;
 import com.namtechie.org.model.response.DoctorInfoResponse;
 import com.namtechie.org.repository.*;
 import com.namtechie.org.repository.DoctorInfoRepository;
@@ -21,6 +23,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.sql.Date;
+import java.sql.Time;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -105,6 +110,7 @@ public class DoctorService {
 
         return doctorInfoResponse;
     }
+
     public void updateInfoDoctor(String phone, DoctorRequest doctorRequest) {
         try {
             // Lấy bác sĩ hiện tại theo số điện thoại (phone)
@@ -128,8 +134,6 @@ public class DoctorService {
             if (doctorRequest.getImageUrl() != null && !doctorRequest.getImageUrl().isEmpty()) {
                 uploadImage(updateDoctor.getId(), doctorRequest.getImageUrl());
             }
-
-
 
 
             // Lưu thông tin cập nhật
@@ -227,7 +231,7 @@ public class DoctorService {
     public void updateWorkingStatus(long id, String notes) {
 
         Appointment appointment = appointmentRepository.findAppointmentById(id);
-        AppointmentStatus appointmentStatus  = new AppointmentStatus();
+        AppointmentStatus appointmentStatus = new AppointmentStatus();
 
         appointmentStatus.setAppointment(appointment);
         appointmentStatus.setStatus("Đang cung cấp dịch vụ");
@@ -257,15 +261,15 @@ public class DoctorService {
 
         // Lưu thông tin cho mỗi loại cá koi
         MedicalRecorded medicalRecorded = new MedicalRecorded();
-            medicalRecorded.setAppointment(appointment); // Liên kết với đơn hàng (appointment)
-            medicalRecorded.setName(medicalFishRequests.getName());
-            medicalRecorded.setBreed(medicalFishRequests.getBreed());
-            medicalRecorded.setAge(medicalFishRequests.getAge());
-            medicalRecorded.setColor(medicalFishRequests.getColor());
-            medicalRecorded.setWeight(medicalFishRequests.getWeight());
-            medicalRecorded.setHealthStatus(medicalFishRequests.getHealthStatus());
+        medicalRecorded.setAppointment(appointment); // Liên kết với đơn hàng (appointment)
+        medicalRecorded.setName(medicalFishRequests.getName());
+        medicalRecorded.setBreed(medicalFishRequests.getBreed());
+        medicalRecorded.setAge(medicalFishRequests.getAge());
+        medicalRecorded.setColor(medicalFishRequests.getColor());
+        medicalRecorded.setWeight(medicalFishRequests.getWeight());
+        medicalRecorded.setHealthStatus(medicalFishRequests.getHealthStatus());
 
-            medicalRecordedRepository.save(medicalRecorded); // Lưu từng loại cá koi
+        medicalRecordedRepository.save(medicalRecorded); // Lưu từng loại cá koi
 
 
         // Cập nhật lại danh sách MedicalRecorded cho Appointment
@@ -289,6 +293,127 @@ public class DoctorService {
         doctor.setImageUrl(cloudinaryResponse.getUrl());
         doctorRepository.save(doctor);
     }
+
+
+    @Autowired
+    AppointmentInfoRepository appointmentInfoRepository;
+
+    @Autowired
+    ServiceTypeRepository serviceTypeRepository;
+
+    public List<AppointmentStatusResponse> getListAppointmentDoctor() {
+        List<AppointmentStatusResponse> appointmentResponses = new ArrayList<>();
+        Account account = (Account) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Doctor doctor = doctorRepository.findByAccountId(account.getId());
+
+
+        List<Appointment> appointments = appointmentRepository.findByDoctorId(doctor.getId());
+
+        for (Appointment appointment : appointments) {
+            AppointmentStatusResponse appointmentStatusResponse = new AppointmentStatusResponse();
+            appointmentStatusResponse.setAppointmentId(appointment.getId());
+
+            AppointmentInfo appointmentInfo = appointmentInfoRepository.findByAppointmentId(appointment.getId());
+
+            // Tách Date và Time từ CreatedDate (Timestamp)
+            Timestamp createdDate = appointmentInfo.getCreatedDate();
+            appointmentStatusResponse.setAppointmentDate(new Date(createdDate.getTime())); // Chuyển Timestamp thành Date
+            appointmentStatusResponse.setAppointmentTime(new Time(createdDate.getTime())); // Chuyển Timestamp thành Time
+
+
+            ServiceType serviceType = serviceTypeRepository.findByAppointmentId(appointment.getId());
+            appointmentStatusResponse.setServiceType(serviceType.getName());
+
+            // Lấy tất cả các trạng thái của appointment
+            List<AppointmentStatus> statuses = appointmentStatusRepository.findByAppointment(appointment);
+
+            // Tìm trạng thái có createDate lớn nhất (mới nhất)
+            AppointmentStatus latestStatus = null;
+            for (AppointmentStatus status : statuses) {
+                if (latestStatus == null || status.getCreate_date().toLocalDateTime().isAfter(latestStatus.getCreate_date().toLocalDateTime())) {
+                    latestStatus = status;
+                }
+            }
+            // Set trạng thái mới nhất vào AppointmentResponse
+            if (latestStatus != null) {
+                if (latestStatus.getStatus().equals("Chờ bác sĩ xác nhận")) {
+                    appointmentStatusResponse.setAppointmentStatus(latestStatus.getStatus());
+                } else if (latestStatus.getStatus().equals("Đã xác nhận") ||
+                        latestStatus.getStatus().equals("Chờ thanh toán tiền dịch vụ") ||
+                        latestStatus.getStatus().equals("Thanh toán tiền dịch vụ thành công")) {
+                    appointmentStatusResponse.setAppointmentStatus("Đã xác nhận");
+                } else if (latestStatus.getStatus().equals("Đang cung cấp dịch vụ")) {
+                    appointmentStatusResponse.setAppointmentStatus(latestStatus.getStatus());
+                } else if (latestStatus.getStatus().equals("Thực hiện xong dịch vụ") ||
+                        latestStatus.getStatus().equals("Chờ thanh toán tổng tiền")) {
+                    appointmentStatusResponse.setAppointmentStatus("Thực hiện xong dịch vụ");
+                } else if (latestStatus.getStatus().equals("Đã hoàn thành")) {
+                    appointmentStatusResponse.setAppointmentStatus(latestStatus.getStatus());
+                } else if(latestStatus.getStatus().equals("Đã hủy lịch")){
+                    appointmentStatusResponse.setAppointmentStatus(latestStatus.getStatus());
+                }
+
+            }
+            appointmentResponses.add(appointmentStatusResponse);
+        }
+        return appointmentResponses;
+    }
+
+    @Autowired
+    ZoneRepository  zoneRepository;
+    public DoctorAppointmentResponse getAppoinmentDoctor(long appointmentId) {
+        Appointment appointment = appointmentRepository.findAppointmentById(appointmentId);
+        DoctorAppointmentResponse doctorAppointmentResponse = new DoctorAppointmentResponse();
+        doctorAppointmentResponse.setId(appointmentId);
+
+        Customers customers = appointment.getCustomers();
+        if (customers != null) {
+            doctorAppointmentResponse.setFullNameCustomer(customers.getFullName());
+        }
+
+        List<AppointmentStatus> statuses = appointmentStatusRepository.findByAppointment(appointment);
+        // Tìm trạng thái có createDate lớn nhất (mới nhất)
+        AppointmentStatus latestStatus = null;
+        for (AppointmentStatus status : statuses) {
+            if (latestStatus == null || status.getCreate_date().toLocalDateTime().isAfter(latestStatus.getCreate_date().toLocalDateTime())) {
+                latestStatus = status;
+            }
+        }
+        if (latestStatus != null) {
+            doctorAppointmentResponse.setAppointmentStatus(latestStatus.getStatus());
+        }
+
+        ServiceType infoService = serviceTypeRepository.findByAppointmentId(appointment.getId());
+        if (infoService != null) {
+            doctorAppointmentResponse.setNameService(infoService.getName());
+        }
+
+        AppointmentInfo appointmentInfo = appointmentInfoRepository.findByAppointmentId(appointment.getId());
+        if (appointmentInfo != null) {
+            doctorAppointmentResponse.setAppointmentBookingTime(appointmentInfo.getAppointmentBookingTime());
+            doctorAppointmentResponse.setAppointmentBookingDate(appointmentInfo.getAppointmentBookingDate());
+        }
+
+        Zone infoZone = zoneRepository.findByAppointmentId(appointment.getId());
+        if (infoZone != null) {
+            doctorAppointmentResponse.setNameZone(infoZone.getName());
+        }
+
+        doctorAppointmentResponse.setDescription(appointmentInfo.getDescriptions());
+        doctorAppointmentResponse.setCreatedDate(appointmentInfo.getCreatedDate());
+        doctorAppointmentResponse.setAddressDetails(appointmentInfo.getAddress());
+        doctorAppointmentResponse.setPhoneNumber(customers.getPhone());
+
+        if(appointment.isDoctorAssigned()){
+            doctorAppointmentResponse.setIsSelectDoctor("Khách hàng chọn bác sĩ");
+        }else{
+            doctorAppointmentResponse.setIsSelectDoctor("Phân bổ bởi trung tâm");
+
+        }
+
+        return doctorAppointmentResponse;
+    }
+
 
 
 }
