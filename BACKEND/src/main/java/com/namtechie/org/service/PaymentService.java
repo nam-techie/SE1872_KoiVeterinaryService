@@ -113,7 +113,7 @@ public class PaymentService {
         paymentTotal.setTotalFee(serviceType.getBase_price());
         paymentRepository.save(paymentTotal);  // Lưu Payment mới
 
-        generateTransactionRecords(appointmentId, paymentTotal, depositPrice, "Đang chờ giao dịch chuyển tiền dịch vụ!");
+        generateTransactionRecords(appointmentId, paymentTotal, depositPrice, serviceType.getName());
 
 
         // Gọi hàm createUrl để tạo URL thanh toán và trả về chuỗi đó
@@ -150,7 +150,7 @@ public class PaymentService {
 //        transactionLog.setStatus(true);
 //        transactionRecordsRepository.save(transactionLog);
 
-        generateTransactionRecords(appointmentId, paymentTotal, depositPrice, "Đã nhận tiền dịch vụ!");
+        generateTransactionRecords(appointmentId, paymentTotal, depositPrice, serviceType.getName());
 
 
         AppointmentStatus appointmentStatus = new AppointmentStatus();
@@ -172,7 +172,7 @@ public class PaymentService {
         Payment paymentTotal = paymentRepository.findByAppointmentId(appointmentId);
 
 
-        generateTransactionRecords(appointmentId, paymentTotal, zonePrice, "Chờ chuyển tiền phí di chuyển!");
+        generateTransactionRecords(appointmentId, paymentTotal, zonePrice, "Tiền phí di chuyển");
 
     }
 
@@ -185,7 +185,7 @@ public class PaymentService {
         Payment paymentTotal = paymentRepository.findByAppointmentId(appointmentId);
 
 
-        generateTransactionRecords(appointmentId, paymentTotal, serviceTypeFee, "Chờ chuyển tiền phí dịch vụ kèm thêm!");
+        generateTransactionRecords(appointmentId, paymentTotal, serviceTypeFee, serviceType.getName());
 
     }
 
@@ -275,7 +275,7 @@ public class PaymentService {
         long totalPrice = 0;
 
         Payment paymentTotal = paymentRepository.findByAppointmentId(appointmentId);
-        List<PaymentDetail> paymentDetails = paymentDetailRepository.findByPaymentIdAndStatus(paymentTotal.getId(), false);
+        List<PaymentDetail> paymentDetails = paymentDetailRepository.findListByPaymentIdAndStatus(paymentTotal.getId(), false);
         for (PaymentDetail paymentDetail : paymentDetails) {
             totalPrice += paymentDetail.getPrice();
         }
@@ -306,12 +306,6 @@ public class PaymentService {
         List<PaymentDetail> paymentDetails = paymentDetailRepository.findByPaymentId(payment.getId());
         for(PaymentDetail paymentDetail : paymentDetails) {
             if(!paymentDetail.isStatus()) {
-                if(paymentDetail.getNotes().equals("Chờ chuyển tiền phí di chuyển!")){
-                    paymentDetail.setNotes("Đã chuyển tiền phí di chuyển!");
-                }
-                if(paymentDetail.getNotes().equals("Chờ chuyển tiền phí dịch vụ kèm thêm!")){
-                    paymentDetail.setNotes("Đã chuyển tiền phí dịch vụ kèm thêm!");
-                }
                 paymentDetail.setStatus(true);
                 paymentDetail.setTransactionDate(new Timestamp(System.currentTimeMillis()));
                 paymentDetailRepository.save(paymentDetail);

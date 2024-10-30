@@ -6,6 +6,7 @@ import com.namtechie.org.exception.NotFoundException;
 import com.namtechie.org.model.request.ServiceTypeRequestAll;
 import com.namtechie.org.model.response.AppointmentResponse;
 import com.namtechie.org.model.response.AppointmentStatusResponse;
+import com.namtechie.org.model.response.ServiceDetailResponse;
 import com.namtechie.org.repository.AppointmentRepository;
 
 import com.namtechie.org.entity.*;
@@ -700,29 +701,46 @@ public class AppointmentService {
 
 
         long totalPrice = 0;
-        List<Long> price = new ArrayList<>();
+
         if (latestStatus.getStatus().equals("Chờ thanh toán tiền dịch vụ")) {
-            if (payment != null) {
-                price.add(payment.getTotalFee());
-                appointmentResponse.setMoreServiceTypeName(appointment.getServiceType().getName());
-                appointmentResponse.setPrice(appointment.getServiceType().getBase_price());
+            PaymentDetail paymentDetails = paymentDetailRepository.findByPaymentIdAndStatus(payment.getId(), false);
+            List<ServiceDetailResponse> serviceDetailResponses = new ArrayList<>();
+
+                serviceDetailResponses.add(new ServiceDetailResponse(paymentDetails.getNotes(), paymentDetails.getPrice()));
+                System.out.println(serviceDetailResponses);
                 appointmentResponse.setTotalPrice(payment.getTotalFee());
-            }
+                appointmentResponse.setServiceDetails(serviceDetailResponses);
+
+
         } else if (latestStatus.getStatus().equals("Chờ thanh toán tổng tiền")) {
-            List<PaymentDetail> paymentDetails = paymentDetailRepository.findByPaymentIdAndStatus(payment.getId(), false);
-            for (PaymentDetail paymentDetail : paymentDetails) {
 
-                totalPrice += paymentDetail.getPrice();
+            // Lấy danh sách PaymentDetail có paymentId và status = false
+            List<PaymentDetail> paymentDetails = paymentDetailRepository.findListByPaymentIdAndStatus(payment.getId(), false);
+            List<ServiceDetailResponse> paymentInfoList = new ArrayList<>(); // Tạo danh sách để lưu các PaymentInfo
+
+            for (PaymentDetail paymentDetail : paymentDetails) {
+                totalPrice += paymentDetail.getPrice(); // Tính tổng giá tiền
+                // Thêm đối tượng PaymentInfo vào danh sách
+                paymentInfoList.add(new ServiceDetailResponse(paymentDetail.getNotes(), paymentDetail.getPrice()));
             }
+
+            // Set giá trị tổng tiền và danh sách PaymentInfo vào response
             appointmentResponse.setTotalPrice(totalPrice);
-        }else if(latestStatus.getStatus().equals("Thanh toán tổng tiền thành công")){
-            List<PaymentDetail> paymentDetails = paymentDetailRepository.findByPaymentIdAndStatus(payment.getId(), true);
-            for (PaymentDetail paymentDetail : paymentDetails) {
-//                serviceDetail.add(paymentDetail.getPrice()+"");
-            }
-            appointmentResponse.setTotalPrice(payment.getTotalFee());
-        }
+            appointmentResponse.setServiceDetails(paymentInfoList); // Nếu bạn có phương thức setPaymentInfoList trong AppointmentResponse
+        } else if (latestStatus.getStatus().equals("Hoàn thành")) {
+            List<PaymentDetail> paymentDetails = paymentDetailRepository.findListByPaymentIdAndStatus(payment.getId(), true);
+            List<ServiceDetailResponse> paymentInfoList = new ArrayList<>(); // Tạo danh sách để lưu các PaymentInfo
 
+            for (PaymentDetail paymentDetail : paymentDetails) {
+                totalPrice += paymentDetail.getPrice(); // Tính tổng giá tiền
+                // Thêm đối tượng PaymentInfo vào danh sách
+                paymentInfoList.add(new ServiceDetailResponse(paymentDetail.getNotes(), paymentDetail.getPrice()));
+            }
+
+            // Set giá trị tổng tiền và danh sách PaymentInfo vào response
+            appointmentResponse.setTotalPrice(totalPrice);
+            appointmentResponse.setServiceDetails(paymentInfoList);
+        }
 
 
         // Set trạng thái mới nhất vào AppointmentResponse
@@ -763,8 +781,6 @@ public class AppointmentService {
 
         // Thêm vào danh sách kết quả
         appointmentResponse.setPhoneNumber(infoCus.getPhone());
-
-
 
 
         return appointmentResponse;

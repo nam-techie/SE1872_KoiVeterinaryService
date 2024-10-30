@@ -5,6 +5,7 @@ import com.namtechie.org.model.Schedule;
 import com.namtechie.org.model.response.AppointmentResponse;
 import com.namtechie.org.model.response.AppointmentStatusResponse;
 import com.namtechie.org.repository.AppointmentRepository;
+import com.namtechie.org.repository.PaymentDetailRepository;
 import com.namtechie.org.service.*;
 import com.namtechie.org.model.request.AppointmentRequest;
 import com.namtechie.org.service.AppointmentService;
@@ -51,6 +52,27 @@ public class AppointmentController {
 
     @Autowired
     PaymentService paymentService;
+
+    @Autowired
+    PaymentDetailRepository paymentDetailRepository;
+
+
+    @GetMapping("/listTrueStatus/{paymentId}")
+    public ResponseEntity<List<PaymentDetail>> listFalseStatus(@PathVariable long paymentId) {
+        List<PaymentDetail> paymentDetails = paymentDetailRepository.findListByPaymentIdAndStatus(paymentId, true);
+        return  ResponseEntity.ok(paymentDetails);
+    }
+
+    @GetMapping("/listAppointment/{id}")
+    public ResponseEntity<AppointmentResponse> getAllAppointment(@PathVariable long id) {
+        try {
+            AppointmentResponse appointment = appointmentService.getListAppoint(id);
+            return new ResponseEntity<>(appointment, HttpStatus.OK);  // Trả về HTTP 200 OK
+        } catch (Exception e) {
+            // Log lỗi ra nếu cần
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);  // Trả về HTTP 500 nếu có lỗi
+        }
+    }
 
 
     @GetMapping("/getListFreeDoctor")
@@ -166,15 +188,6 @@ public class AppointmentController {
         return ResponseEntity.ok(doctor);
     }
 
-    @GetMapping("/listAppointment/{id}")
-    public ResponseEntity<AppointmentResponse> getAllAppointment(@PathVariable long id) {
-        try {
-            AppointmentResponse appointment = appointmentService.getListAppoint(id);
-            return new ResponseEntity<>(appointment, HttpStatus.OK);  // Trả về HTTP 200 OK
-        } catch (Exception e) {
-            // Log lỗi ra nếu cần
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);  // Trả về HTTP 500 nếu có lỗi
-        }
-    }
+
 }
 

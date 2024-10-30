@@ -10,8 +10,8 @@ public interface PaymentDetailRepository extends JpaRepository<PaymentDetail, Lo
 
     PaymentDetail findByPaymentIdAndPrice(Long paymentId, long price);
 
-    List<PaymentDetail> findByPaymentIdAndStatus(Long paymentId, boolean status);
+    List<PaymentDetail> findListByPaymentIdAndStatus(Long paymentId, boolean status);
 
-
+    PaymentDetail findByPaymentIdAndStatus(Long paymentId, boolean status);
 
 }
