@@ -20,7 +20,7 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
 
     Appointment findAppointmentById(long id);
 
-    List<Appointment> findById(long id);
+    List<Appointment> findByDoctorId(long doctorId);
 
     @Query("SELECT a FROM Appointment a JOIN a.appointmentInfo ad WHERE a.doctor.id = :doctorId AND ad.appointmentBookingDate = :bookingDate  AND a.isCancel = :isCancel")
     List<Appointment> findAppointmentsByDoctorIdAndBookingDateAndCancel(@Param("doctorId") long doctorId, @Param("bookingDate") Date bookingDate, @Param("isCancel") boolean isCancel);
@@ -40,6 +40,7 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
 
     @Query("SELECT d.id, COUNT(a) as appointment_count FROM Doctor d LEFT JOIN Appointment a ON d.id = a.doctor.id GROUP BY d.id ORDER BY appointment_count ASC")
     List<Object[]> findDoctorAppointmentCounts();
+
 
     List<Appointment> findByCustomersId(long customerId);
 

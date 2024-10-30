@@ -6,6 +6,7 @@ import com.namtechie.org.exception.NotFoundException;
 import com.namtechie.org.model.request.ServiceTypeRequestAll;
 import com.namtechie.org.model.response.AppointmentResponse;
 import com.namtechie.org.model.response.AppointmentStatusResponse;
+import com.namtechie.org.model.response.ServiceDetailResponse;
 import com.namtechie.org.repository.AppointmentRepository;
 
 import com.namtechie.org.entity.*;
@@ -208,9 +209,10 @@ public class AppointmentService {
                     Time roundedTime = Time.valueOf(hour + ":00:00");
 
                     System.out.println("Giờ làm tròn: " + roundedTime);
-                    doctor = findAvailableDoctor1(String.valueOf(appointmentRequest.getBookingDate()), String.valueOf(roundedTime));
+                    //doctor = findAvailableDoctor1(String.valueOf(appointmentRequest.getBookingDate()), String.valueOf(roundedTime));
                     appointmentInfo.setAppointmentBookingTime(roundedTime);
                     appointmentInfo.setAppointmentBookingDate(date);
+                    doctor = findAvailableDoctor1(appointmentRequest.getBookingDate(), String.valueOf(roundedTime));
                     appointment.setDoctorAssigned(false);
                     appointment.setDoctor(doctor);
                     appointment.setZone(zoneRepository.findById(15));
@@ -523,11 +525,32 @@ public class AppointmentService {
 //        }
 //        return 0;
 //    }
+//
+//
+//
+//
+    public long findAppointmentIdStep(long accountId) {
+        Doctor doctor = doctorRepository.findByAccountId(accountId);
+
+        List<Appointment> list = appointmentRepository.findAppointmentByDoctorId(doctor.getId());
+
+        for(Appointment appointment : list) {
+            List<AppointmentStatus> appointmentStatus = appointment.getAppointmentStatus();
+            for(AppointmentStatus status : appointmentStatus) {
+                if(status.getStatus().equals("Chờ bác sĩ xác nhận")){
+                    return appointment.getId();
+                }
+            }
+        }
+        return 0;
+    }
 
 
     public AppointmentStatus confirmDoctorAppointment(long appointmentId, DoctorConfirmRequest doctorConfirmRequest) {
         try {
             AppointmentStatus updateAppointmentStatus = appointmentStatusRepository.findByAppointmentId(appointmentId);
+            Appointment appointment = appointmentRepository.findAppointmentById(appointmentId);
+
 
             AppointmentStatus status = new AppointmentStatus();
             status.setAppointment(updateAppointmentStatus.getAppointment());
@@ -535,6 +558,8 @@ public class AppointmentService {
                 status.setNotes(doctorConfirmRequest.getNote());
                 status.setStatus("Đã xác nhận");
             } else {
+                appointment.setCancel(true);
+                appointmentRepository.save(appointment);
                 status.setNotes(doctorConfirmRequest.getNote());
                 status.setStatus("Từ chối");
             }
@@ -545,12 +570,16 @@ public class AppointmentService {
         }
     }
 
-    public void cancelAppointmentByCustomer(long appointmentId) {
+    public void cancelAppointmentByCustomer(long appointmentId, String role) {
         Appointment appointment = appointmentRepository.findAppointmentById(appointmentId);
         appointment.setCancel(true);
-
         appointmentRepository.save(appointment);
 
+        AppointmentStatus status = new AppointmentStatus();
+         status.setAppointment(appointment);
+         status.setStatus("Đã hủy lịch");
+         status.setNotes(role + " hủy");
+         appointmentStatusRepository.save(status);
     }
 
     @Autowired
@@ -615,10 +644,9 @@ public class AppointmentService {
         return appointmentResponses;
     }
 
-    public List<AppointmentStatusResponse> getListAppointmentCustomer(String username) {
+    public List<AppointmentStatusResponse> getListAppointmentCustomer(){
         List<AppointmentStatusResponse> appointmentResponses = new ArrayList<>();
-
-        Account account = accountRepository.findAccountByUsername(username);
+        Account account = (Account) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Customers customerId = customersRepository.findByAccountId(account.getId());
 
         List<Appointment> appointments = appointmentRepository.findByCustomersId(customerId.getId());
@@ -659,7 +687,7 @@ public class AppointmentService {
     }
 
 
-    //chưa xong
+
     public AppointmentResponse getListAppoint(long appointmentId) {
 //        List<AppointmentResponse> appointmentResponses = new ArrayList<>();
 
@@ -697,29 +725,46 @@ public class AppointmentService {
 
 
         long totalPrice = 0;
-        List<Long> price = new ArrayList<>();
+
         if (latestStatus.getStatus().equals("Chờ thanh toán tiền dịch vụ")) {
-            if (payment != null) {
-                price.add(payment.getTotalFee());
-                appointmentResponse.setMoreServiceTypeName(appointment.getServiceType().getName());
-                appointmentResponse.setPrice(appointment.getServiceType().getBase_price());
+            PaymentDetail paymentDetails = paymentDetailRepository.findByPaymentIdAndStatus(payment.getId(), false);
+            List<ServiceDetailResponse> serviceDetailResponses = new ArrayList<>();
+
+                serviceDetailResponses.add(new ServiceDetailResponse(paymentDetails.getNotes(), paymentDetails.getPrice()));
+                System.out.println(serviceDetailResponses);
                 appointmentResponse.setTotalPrice(payment.getTotalFee());
-            }
+                appointmentResponse.setServiceDetails(serviceDetailResponses);
+
+
         } else if (latestStatus.getStatus().equals("Chờ thanh toán tổng tiền")) {
-            List<PaymentDetail> paymentDetails = paymentDetailRepository.findByPaymentIdAndStatus(payment.getId(), false);
-            for (PaymentDetail paymentDetail : paymentDetails) {
 
-                totalPrice += paymentDetail.getPrice();
+            // Lấy danh sách PaymentDetail có paymentId và status = false
+            List<PaymentDetail> paymentDetails = paymentDetailRepository.findListByPaymentIdAndStatus(payment.getId(), false);
+            List<ServiceDetailResponse> paymentInfoList = new ArrayList<>(); // Tạo danh sách để lưu các PaymentInfo
+
+            for (PaymentDetail paymentDetail : paymentDetails) {
+                totalPrice += paymentDetail.getPrice(); // Tính tổng giá tiền
+                // Thêm đối tượng PaymentInfo vào danh sách
+                paymentInfoList.add(new ServiceDetailResponse(paymentDetail.getNotes(), paymentDetail.getPrice()));
             }
+
+            // Set giá trị tổng tiền và danh sách PaymentInfo vào response
             appointmentResponse.setTotalPrice(totalPrice);
-        }else if(latestStatus.getStatus().equals("Thanh toán tổng tiền thành công")){
-            List<PaymentDetail> paymentDetails = paymentDetailRepository.findByPaymentIdAndStatus(payment.getId(), true);
-            for (PaymentDetail paymentDetail : paymentDetails) {
-//                serviceDetail.add(paymentDetail.getPrice()+"");
-            }
-            appointmentResponse.setTotalPrice(payment.getTotalFee());
-        }
+            appointmentResponse.setServiceDetails(paymentInfoList); // Nếu bạn có phương thức setPaymentInfoList trong AppointmentResponse
+        } else if (latestStatus.getStatus().equals("Hoàn thành")) {
+            List<PaymentDetail> paymentDetails = paymentDetailRepository.findListByPaymentIdAndStatus(payment.getId(), true);
+            List<ServiceDetailResponse> paymentInfoList = new ArrayList<>(); // Tạo danh sách để lưu các PaymentInfo
 
+            for (PaymentDetail paymentDetail : paymentDetails) {
+                totalPrice += paymentDetail.getPrice(); // Tính tổng giá tiền
+                // Thêm đối tượng PaymentInfo vào danh sách
+                paymentInfoList.add(new ServiceDetailResponse(paymentDetail.getNotes(), paymentDetail.getPrice()));
+            }
+
+            // Set giá trị tổng tiền và danh sách PaymentInfo vào response
+            appointmentResponse.setTotalPrice(totalPrice);
+            appointmentResponse.setServiceDetails(paymentInfoList);
+        }
 
 
         // Set trạng thái mới nhất vào AppointmentResponse

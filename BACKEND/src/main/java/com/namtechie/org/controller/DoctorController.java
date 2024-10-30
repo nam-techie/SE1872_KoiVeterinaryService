@@ -3,6 +3,8 @@ package com.namtechie.org.controller;
 import com.namtechie.org.entity.AppointmentStatus;
 import com.namtechie.org.entity.Doctor;
 import com.namtechie.org.model.request.DoctorConfirmRequest;
+import com.namtechie.org.model.response.AppointmentStatusResponse;
+import com.namtechie.org.model.response.DoctorAppointmentResponse;
 import com.namtechie.org.repository.DoctorRepository;
 import com.namtechie.org.model.request.DoctorRequest;
 import com.namtechie.org.model.request.MedicalFishResquest;
@@ -64,12 +66,12 @@ public class DoctorController {
 //        return ResponseEntity.ok("Da hoan thanh");
 //    }
 
-    @PostMapping("/createInfoFish/{appointmentId}")
-    @PreAuthorize("hasAuthority('VETERINARY')")
-    public ResponseEntity  addInfoFish(@PathVariable long appointmentId, @RequestBody MedicalFishResquest medicalFishResquests) {
-        MedicalFishResquest createFish = doctorService.createFishInfor(appointmentId, medicalFishResquests);
-        return ResponseEntity.ok(createFish);
-    }
+//    @PostMapping("/createInfoFish/{appointmentId}")
+//    @PreAuthorize("hasAuthority('VETERINARY')")
+//    public ResponseEntity  addInfoFish(@PathVariable long appointmentId, @RequestBody MedicalFishResquest medicalFishResquests) {
+//        MedicalFishResquest createFish = doctorService.createFishInfor(appointmentId, medicalFishResquests);
+//        return ResponseEntity.ok(createFish);
+//    }
 
     @PostMapping("/image/{id}")
     public ResponseEntity uploadImage(@PathVariable long id, @RequestPart MultipartFile file) {
@@ -77,5 +79,25 @@ public class DoctorController {
         return ResponseEntity.ok("Uploaded image successfully");
     }
 
+
+    @PutMapping("/cancelAppointmentByDoctor/{appointmentId}")
+    public ResponseEntity cancelAppointmentByDoctor(@PathVariable long appointmentId) {
+        appointmentService.cancelAppointmentByCustomer(appointmentId, "VETERINARY");
+        return ResponseEntity.ok("Đã hủy thành công");
+    }
+
+
+    @GetMapping("/getListAppointmentDoctor")
+    public ResponseEntity getListAppointmentDoctor() {
+        List<AppointmentStatusResponse> listAppointmentStatusDoctor = doctorService.getListAppointmentDoctor();
+
+        return ResponseEntity.ok(listAppointmentStatusDoctor);
+    }
+
+    @GetMapping("/getListAppointmentDoctor/{appointmentId}")
+    public ResponseEntity getAppointmentDoctor(@PathVariable long appointmentId) {
+        DoctorAppointmentResponse appointmentStatusDoctor = doctorService.getAppoinmentDoctor(appointmentId);
+        return ResponseEntity.ok(appointmentStatusDoctor);
+    }
 
 }

@@ -23,8 +23,7 @@ public class AppointmentResponse {
      String phoneNumber;
      String description;
      long totalPrice;
-     long price;
-     String moreServiceTypeName;
+     List<ServiceDetailResponse> serviceDetails;
 
 
 }

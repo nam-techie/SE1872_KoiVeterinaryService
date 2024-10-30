@@ -113,7 +113,7 @@ public class PaymentService {
         paymentTotal.setTotalFee(serviceType.getBase_price());
         paymentRepository.save(paymentTotal);  // Lưu Payment mới
 
-        generateTransactionRecords(appointmentId, paymentTotal, depositPrice, "Đang chờ giao dịch chuyển tiền dịch vụ!");
+        generateTransactionRecords(appointmentId, paymentTotal, depositPrice, serviceType.getName());
 
 
         // Gọi hàm createUrl để tạo URL thanh toán và trả về chuỗi đó
@@ -141,7 +141,7 @@ public class PaymentService {
 
         Payment paymentTotal = paymentRepository.findByAppointmentId(appointmentId);
 
-        if(paymentTotal != null){
+        if (paymentTotal != null) {
             paymentTotal.setUpdateTime(new Timestamp(System.currentTimeMillis()));
             paymentRepository.save(paymentTotal);
         }
@@ -150,7 +150,7 @@ public class PaymentService {
 //        transactionLog.setStatus(true);
 //        transactionRecordsRepository.save(transactionLog);
 
-        generateTransactionRecords(appointmentId, paymentTotal, depositPrice, "Đã nhận tiền dịch vụ!");
+        generateTransactionRecords(appointmentId, paymentTotal, depositPrice, serviceType.getName());
 
 
         AppointmentStatus appointmentStatus = new AppointmentStatus();
@@ -172,7 +172,7 @@ public class PaymentService {
         Payment paymentTotal = paymentRepository.findByAppointmentId(appointmentId);
 
 
-        generateTransactionRecords(appointmentId, paymentTotal, zonePrice, "Chờ chuyển tiền phí di chuyển!");
+        generateTransactionRecords(appointmentId, paymentTotal, zonePrice, "Tiền phí di chuyển");
 
     }
 
@@ -185,15 +185,37 @@ public class PaymentService {
         Payment paymentTotal = paymentRepository.findByAppointmentId(appointmentId);
 
 
-        generateTransactionRecords(appointmentId, paymentTotal, serviceTypeFee, "Chờ chuyển tiền phí dịch vụ kèm thêm!");
+        generateTransactionRecords(appointmentId, paymentTotal, serviceTypeFee, serviceType.getName());
 
     }
 
-
+    @Autowired
+    MedicalRecordedRepository medicalRecordedRepository;
     // bac si thuc hien
     public void saveTransactionRecordedAndDoneWorking(long appointmentId, ServiceTypeRequestAll serviceTypeRequestAll) throws Exception {
         // Lấy thông tin cuộc hẹn từ AppointmentService
         Appointment appointment = appointmentRepository.findAppointmentById(appointmentId);
+
+        if (appointment == null) {
+            throw new IllegalArgumentException("Không tìm thấy đơn hàng khám bệnh với ID: " + appointmentId);
+        }
+
+        MedicalRecorded medicalRecorded = new MedicalRecorded();
+        medicalRecorded.setAppointment(appointment); // Liên kết với đơn hàng (appointment)
+        medicalRecorded.setName(serviceTypeRequestAll.getName());
+        medicalRecorded.setBreed(serviceTypeRequestAll.getBreed());
+        medicalRecorded.setAge(serviceTypeRequestAll.getAge());
+        medicalRecorded.setColor(serviceTypeRequestAll.getColor());
+        medicalRecorded.setWeight(serviceTypeRequestAll.getWeight());
+        medicalRecorded.setHealthStatus(serviceTypeRequestAll.getHealthStatus());
+
+        medicalRecordedRepository.save(medicalRecorded); // Lưu từng loại cá koi
+
+
+        // Cập nhật lại danh sách MedicalRecorded cho Appointment
+        appointment.setMedicalRecorded(medicalRecorded);
+        appointmentRepository.save(appointment);
+
         long totalPrice = 0;
         totalPrice += appointment.getZone().getFee();
         if (serviceTypeRequestAll.isServiceTypeId5() == true) {
@@ -251,7 +273,7 @@ public class PaymentService {
 
         doneWorking.setAppointment(appointment);
         doneWorking.setStatus("Thực hiện xong dịch vụ");
-        doneWorking.setNotes(serviceTypeRequestAll.getNotes());
+        doneWorking.setNotes(serviceTypeRequestAll.getHealthStatus());
 
 //        appointmentStatusRepository.save(appointmentStatus);
         appointmentStatusRepository.save(doneWorking);
@@ -260,8 +282,7 @@ public class PaymentService {
     }
 
 
-
-//    customer thuc hien
+    //    customer thuc hien
     public String sendPaymentTotalUrlForCustomer(long appointmentId) throws Exception {
         // Lấy thông tin cuộc hẹn từ AppointmentService
         Appointment appointment = appointmentRepository.findAppointmentById(appointmentId);
@@ -275,7 +296,7 @@ public class PaymentService {
         long totalPrice = 0;
 
         Payment paymentTotal = paymentRepository.findByAppointmentId(appointmentId);
-        List<PaymentDetail> paymentDetails = paymentDetailRepository.findByPaymentIdAndStatus(paymentTotal.getId(), false);
+        List<PaymentDetail> paymentDetails = paymentDetailRepository.findListByPaymentIdAndStatus(paymentTotal.getId(), false);
         for (PaymentDetail paymentDetail : paymentDetails) {
             totalPrice += paymentDetail.getPrice();
         }
@@ -304,14 +325,8 @@ public class PaymentService {
     public void updateTotalFee(long appointmentId) {
         Payment payment = paymentRepository.findByAppointmentId(appointmentId);
         List<PaymentDetail> paymentDetails = paymentDetailRepository.findByPaymentId(payment.getId());
-        for(PaymentDetail paymentDetail : paymentDetails) {
-            if(!paymentDetail.isStatus()) {
-                if(paymentDetail.getNotes().equals("Chờ chuyển tiền phí di chuyển!")){
-                    paymentDetail.setNotes("Đã chuyển tiền phí di chuyển!");
-                }
-                if(paymentDetail.getNotes().equals("Chờ chuyển tiền phí dịch vụ kèm thêm!")){
-                    paymentDetail.setNotes("Đã chuyển tiền phí dịch vụ kèm thêm!");
-                }
+        for (PaymentDetail paymentDetail : paymentDetails) {
+            if (!paymentDetail.isStatus()) {
                 paymentDetail.setStatus(true);
                 paymentDetail.setTransactionDate(new Timestamp(System.currentTimeMillis()));
                 paymentDetailRepository.save(paymentDetail);

@@ -5,6 +5,7 @@ import com.namtechie.org.model.Schedule;
 import com.namtechie.org.model.response.AppointmentResponse;
 import com.namtechie.org.model.response.AppointmentStatusResponse;
 import com.namtechie.org.repository.AppointmentRepository;
+import com.namtechie.org.repository.PaymentDetailRepository;
 import com.namtechie.org.service.*;
 import com.namtechie.org.model.request.AppointmentRequest;
 import com.namtechie.org.service.AppointmentService;
@@ -51,6 +52,27 @@ public class AppointmentController {
 
     @Autowired
     PaymentService paymentService;
+
+    @Autowired
+    PaymentDetailRepository paymentDetailRepository;
+
+
+    @GetMapping("/listTrueStatus/{paymentId}")
+    public ResponseEntity<List<PaymentDetail>> listFalseStatus(@PathVariable long paymentId) {
+        List<PaymentDetail> paymentDetails = paymentDetailRepository.findListByPaymentIdAndStatus(paymentId, true);
+        return  ResponseEntity.ok(paymentDetails);
+    }
+
+    @GetMapping("/listAppointment/{id}")
+    public ResponseEntity<AppointmentResponse> getAllAppointment(@PathVariable long id) {
+        try {
+            AppointmentResponse appointment = appointmentService.getListAppoint(id);
+            return new ResponseEntity<>(appointment, HttpStatus.OK);  // Trả về HTTP 200 OK
+        } catch (Exception e) {
+            // Log lỗi ra nếu cần
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);  // Trả về HTTP 500 nếu có lỗi
+        }
+    }
 
 
     @GetMapping("/getListFreeDoctor")
@@ -115,9 +137,9 @@ public class AppointmentController {
         return ResponseEntity.ok(doctor);
     }
 
-    @GetMapping("/listAppointmentUser/{username}")
-    public List<AppointmentStatusResponse> listAppointmentCustomer(@PathVariable String username ) {
-        List<AppointmentStatusResponse> listAppointment = appointmentService.getListAppointmentCustomer(username);
+    @GetMapping("/listAppointmentUser")
+    public List<AppointmentStatusResponse> listAppointmentCustomer() {
+        List<AppointmentStatusResponse> listAppointment = appointmentService.getListAppointmentCustomer();
         return listAppointment;
     }
 
@@ -128,12 +150,12 @@ public class AppointmentController {
         return ResponseEntity.ok(appointmentResponses);
     }
 
-//    @GetMapping("/findAppoinmentId/{accountId}")
-//    @PreAuthorize("hasAuthority('VETERINARY')")
-//    public ResponseEntity findAppoinmentId(@PathVariable long accountId) {
-//        long appointmentId = appointmentService.findAppointmentIdStep(accountId);
-//        return ResponseEntity.ok(appointmentId);
-//    }
+    @GetMapping("/findAppoinmentId/{accountId}")
+    @PreAuthorize("hasAuthority('VETERINARY')")
+    public ResponseEntity findAppoinmentId(@PathVariable long accountId) {
+        long appointmentId = appointmentService.findAppointmentIdStep(accountId);
+        return ResponseEntity.ok(appointmentId);
+    }
 //
 //    @GetMapping("/getAppointmentIdForUser/{accountId}")
 //    @PreAuthorize("hasAuthority('CUSTOMER')")
@@ -146,7 +168,7 @@ public class AppointmentController {
 
     @PutMapping("/cancelAppointmentByCustomer/{appointmentId}")
     public ResponseEntity cancelAppointmentByCustomer(@PathVariable long appointmentId) {
-        appointmentService.cancelAppointmentByCustomer(appointmentId);
+        appointmentService.cancelAppointmentByCustomer(appointmentId, "CUSTOMER");
         return ResponseEntity.ok("Đã hủy thành công");
     }
 
@@ -166,15 +188,6 @@ public class AppointmentController {
         return ResponseEntity.ok(doctor);
     }
 
-    @GetMapping("/listAppointment/{id}")
-    public ResponseEntity<AppointmentResponse> getAllAppointment(@PathVariable long id) {
-        try {
-            AppointmentResponse appointment = appointmentService.getListAppoint(id);
-            return new ResponseEntity<>(appointment, HttpStatus.OK);  // Trả về HTTP 200 OK
-        } catch (Exception e) {
-            // Log lỗi ra nếu cần
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);  // Trả về HTTP 500 nếu có lỗi
-        }
-    }
+
 }
 
