@@ -157,6 +157,7 @@ public class DoctorService {
             Doctor newDoctor = new Doctor();
             DoctorInfo newDoctorInfo = new DoctorInfo();
 
+
             // Cập nhật thông tin
             newDoctor.setFullName(updateDoctor.getFullName());
             newDoctor.setPhone(updateDoctor.getPhone()); // Cho phép cập nhật số điện thoại mới

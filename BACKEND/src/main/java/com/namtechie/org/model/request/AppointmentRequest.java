@@ -11,7 +11,7 @@ import java.sql.Time;
 public class AppointmentRequest {
     long serviceTypeId;
 
-    @Pattern(regexp = "(84|0[35789])\\d{8}", message="Invalid Vietnamese Phone")
+
     String phone;
 
     String description;

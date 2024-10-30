@@ -129,6 +129,9 @@ public class AppointmentService {
 
 
             Customers customer = account.getCustomer();
+            if(appointmentRequest.getPhone() == null){
+                throw new NotFoundException("Loi he thong");
+            }
             customer.setPhone(appointmentRequest.getPhone()); // lưu số đth khách hàng
 
 
@@ -205,10 +208,9 @@ public class AppointmentService {
                     Time roundedTime = Time.valueOf(hour + ":00:00");
 
                     System.out.println("Giờ làm tròn: " + roundedTime);
-                    doctor = findAvailableDoctor(String.valueOf(appointmentRequest.getBookingDate()), String.valueOf(roundedTime));
+                    doctor = findAvailableDoctor1(String.valueOf(appointmentRequest.getBookingDate()), String.valueOf(roundedTime));
                     appointmentInfo.setAppointmentBookingTime(roundedTime);
                     appointmentInfo.setAppointmentBookingDate(date);
-                    doctor = findAvailableDoctor(appointmentRequest.getBookingDate(), appointmentRequest.getBookingTime());
                     appointment.setDoctorAssigned(false);
                     appointment.setDoctor(doctor);
                     appointment.setZone(zoneRepository.findById(15));
@@ -237,7 +239,10 @@ public class AppointmentService {
             return appointmentRepository.save(appointment);
         } catch (DoctorNotAvailableException e) {
             throw new DoctorNotAvailableException(e.getMessage());
-        } catch (Exception e) {
+        } catch(NullPointerException e){
+            e.printStackTrace();
+            throw new NullPointerException("Lỗi hệ thống");
+        }catch (Exception e) {
             throw new RuntimeException("Không thể đặt dịch vụ");
         }
     }

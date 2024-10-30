@@ -38,7 +38,7 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
 
     List<Appointment> findAppointmentByCustomersId(long customerId);
 
-    @Query("SELECT a.doctor.id, COUNT(a) as appointment_count FROM Appointment a GROUP BY a.doctor.id ORDER BY appointment_count ASC")
+    @Query("SELECT d.id, COUNT(a) as appointment_count FROM Doctor d LEFT JOIN Appointment a ON d.id = a.doctor.id GROUP BY d.id ORDER BY appointment_count ASC")
     List<Object[]> findDoctorAppointmentCounts();
 
     List<Appointment> findByCustomersId(long customerId);
