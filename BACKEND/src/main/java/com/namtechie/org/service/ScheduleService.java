@@ -152,7 +152,7 @@ public class ScheduleService {
         return freeSchedules;
     }
 
-    public Map<String, List<Schedule>> findFreeScheduleByDoctorIdAtHome(Long doctorId) {
+    public Map<String, List<Schedule>> findFreeScheduleByDoctorId1(Long doctorId) {
         Map<Date, List<DoctorsSchedules>> doctorSchedules = findNextSevenDayScheduleByVeterianId(doctorId);
         Map<String, List<Schedule>> freeSchedules = new HashMap<>();
 
