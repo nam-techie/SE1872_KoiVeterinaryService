@@ -5,6 +5,7 @@ import './styles/AccountDashboard.css';
 import {useAccountInfo} from "./hooks/useAccountInfo.js";
 import AccountUpdateProfile from "./AccountUpdateProfile.jsx";
 import LoadingCat from '../../components/LoadingCat.jsx';
+import Pagination from '../../components/Pagination.jsx';
 
 // eslint-disable-next-line react/prop-types
 const AccountDashboard = ({ setActiveTab, setSelectedAccount }) => {
@@ -14,6 +15,8 @@ const AccountDashboard = ({ setActiveTab, setSelectedAccount }) => {
     const [sortOrder, setSortOrder] = useState('asc');
     const [editingAccount, setEditingAccount] = useState(null);
     const [dateSearch, setDateSearch] = useState('');
+    const [currentPage, setCurrentPage] = useState(1);
+    const ITEMS_PER_PAGE = 8;
 
     useEffect(() => {
         fetchAllAccounts();
@@ -89,6 +92,13 @@ const AccountDashboard = ({ setActiveTab, setSelectedAccount }) => {
         setEditingAccount(null);
     };
 
+    // Tính toán dữ liệu cho trang hiện tại
+    const totalPages = Math.ceil(filteredAccounts.length / ITEMS_PER_PAGE);
+    const currentAccounts = filteredAccounts.slice(
+        (currentPage - 1) * ITEMS_PER_PAGE,
+        currentPage * ITEMS_PER_PAGE
+    );
+
     if (loading) return <LoadingCat />;
     if (error) return <div>Lỗi: {error}</div>;
 
@@ -159,7 +169,7 @@ const AccountDashboard = ({ setActiveTab, setSelectedAccount }) => {
                         </tr>
                     </thead>
                     <tbody>
-                        {filteredAccounts.map(account => (
+                        {currentAccounts.map(account => (
                             <tr key={account.id}>
                                 <td>
                                     <div className="user-info">
@@ -199,6 +209,12 @@ const AccountDashboard = ({ setActiveTab, setSelectedAccount }) => {
                         ))}
                     </tbody>
                 </table>
+                
+                <Pagination 
+                    currentPage={currentPage}
+                    totalPages={totalPages}
+                    onPageChange={setCurrentPage}
+                />
             </div>
             {editingAccount && (
                 <AccountUpdateProfile

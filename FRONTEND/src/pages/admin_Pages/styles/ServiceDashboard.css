@@ -93,12 +93,16 @@
     border-radius: 8px;
     overflow-x: auto;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    min-height: 600px;
+    display: flex;
+    flex-direction: column;
 }
 
 .service-table table {
     width: 100%;
     border-collapse: collapse;
     font-size: 13px;
+    flex: 1;
 }
 
 .service-table th,
@@ -209,3 +213,10 @@
         font-size: 12px;
     }
 }
+
+tbody tr {
+    height: 60px;
+}
+
+/* Import pagination styles */
+@import '../../../styles/Pagination.css';

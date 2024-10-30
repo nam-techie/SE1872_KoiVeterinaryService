@@ -1,11 +1,9 @@
 package com.namtechie.org.controller;
 
-import com.namtechie.org.entity.Appointment;
-import com.namtechie.org.entity.Doctor;
-import com.namtechie.org.entity.ServiceType;
-import com.namtechie.org.entity.Zone;
+import com.namtechie.org.entity.*;
 import com.namtechie.org.model.Schedule;
 import com.namtechie.org.model.response.AppointmentResponse;
+import com.namtechie.org.model.response.AppointmentStatusResponse;
 import com.namtechie.org.repository.AppointmentRepository;
 import com.namtechie.org.service.*;
 import com.namtechie.org.model.request.AppointmentRequest;
@@ -115,6 +113,12 @@ public class AppointmentController {
     public ResponseEntity getVeterianAuto(@Param("BookingDate") String bookingDate, @Param("BookingTime") String bookingTimeStr) {
         Doctor doctor = appointmentService.findAvailableDoctor(bookingDate, bookingTimeStr);
         return ResponseEntity.ok(doctor);
+    }
+
+    @GetMapping("/listAppointment/{username}")
+    public List<AppointmentStatusResponse> listAppointmentCustomer(@PathVariable String username ) {
+        List<AppointmentStatusResponse> listAppointment = appointmentService.getListAppointmentCustomer(username);
+        return listAppointment;
     }
 
     @GetMapping("/findAppointmentDoctorById/{accountId}")

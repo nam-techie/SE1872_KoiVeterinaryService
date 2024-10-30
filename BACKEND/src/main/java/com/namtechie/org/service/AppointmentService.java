@@ -5,6 +5,7 @@ import com.namtechie.org.exception.DoctorNotAvailableException;
 import com.namtechie.org.exception.NotFoundException;
 import com.namtechie.org.model.request.ServiceTypeRequestAll;
 import com.namtechie.org.model.response.AppointmentResponse;
+import com.namtechie.org.model.response.AppointmentStatusResponse;
 import com.namtechie.org.repository.AppointmentRepository;
 
 import com.namtechie.org.entity.*;
@@ -20,6 +21,7 @@ import org.springframework.stereotype.Service;
 import javax.print.Doc;
 import java.sql.Date;
 import java.sql.Time;
+import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -206,7 +208,7 @@ public class AppointmentService {
                     doctor = findAvailableDoctor(String.valueOf(appointmentRequest.getBookingDate()), String.valueOf(roundedTime));
                     appointmentInfo.setAppointmentBookingTime(roundedTime);
                     appointmentInfo.setAppointmentBookingDate(date);
-                    doctor = findAvailableDoctor1(appointmentRequest.getBookingDate(), appointmentRequest.getBookingTime());
+                    doctor = findAvailableDoctor(appointmentRequest.getBookingDate(), appointmentRequest.getBookingTime());
                     appointment.setDoctorAssigned(false);
                     appointment.setDoctor(doctor);
                     appointment.setZone(zoneRepository.findById(15));
@@ -236,7 +238,7 @@ public class AppointmentService {
         } catch (DoctorNotAvailableException e) {
             throw new DoctorNotAvailableException(e.getMessage());
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Không thể đặt dịch vụ");
         }
     }
 
@@ -290,7 +292,6 @@ public class AppointmentService {
         System.out.println("Không tìm thấy bác sĩ rảnh cho khung giờ này.");
         return null;
     }
-
 
     public Doctor findAvailableDoctor1(String bookingDate, String bookingTime) {
 
@@ -551,7 +552,6 @@ public class AppointmentService {
     private AppointmentInfoRepository appointmentInfoRepository;
 
 
-
     public List<AppointmentResponse> getListAppoint() {
         List<AppointmentResponse> appointmentResponses = new ArrayList<>();
 
@@ -607,6 +607,49 @@ public class AppointmentService {
             appointmentResponses.add(appointmentResponse);
         }
 
+        return appointmentResponses;
+    }
+
+    public List<AppointmentStatusResponse> getListAppointmentCustomer(String username) {
+        List<AppointmentStatusResponse> appointmentResponses = new ArrayList<>();
+
+        Account account = accountRepository.findAccountByUsername(username);
+        Customers customerId = customersRepository.findByAccountId(account.getId());
+
+        List<Appointment> appointments = appointmentRepository.findByCustomersId(customerId.getId());
+
+        for (Appointment appointment : appointments) {
+            AppointmentStatusResponse appointmentStatusResponse = new AppointmentStatusResponse();
+            appointmentStatusResponse.setAppointmentId(appointment.getId());
+
+            AppointmentInfo appointmentInfo = appointmentInfoRepository.findByAppointmentId(appointment.getId());
+
+            // Tách Date và Time từ CreatedDate (Timestamp)
+            Timestamp createdDate = appointmentInfo.getCreatedDate();
+            appointmentStatusResponse.setAppointmentDate(new Date(createdDate.getTime())); // Chuyển Timestamp thành Date
+            appointmentStatusResponse.setAppointmentTime(new Time(createdDate.getTime())); // Chuyển Timestamp thành Time
+
+
+
+            ServiceType serviceType = serviceTypeRepository.findByAppointmentId(appointment.getId());
+            appointmentStatusResponse.setServiceType(serviceType.getName());
+
+            // Lấy tất cả các trạng thái của appointment
+            List<AppointmentStatus> statuses = appointmentStatusRepository.findByAppointment(appointment);
+
+            // Tìm trạng thái có createDate lớn nhất (mới nhất)
+            AppointmentStatus latestStatus = null;
+            for (AppointmentStatus status : statuses) {
+                if (latestStatus == null || status.getCreate_date().toLocalDateTime().isAfter(latestStatus.getCreate_date().toLocalDateTime())) {
+                    latestStatus = status;
+                }
+            }
+            // Set trạng thái mới nhất vào AppointmentResponse
+            if (latestStatus != null) {
+                appointmentStatusResponse.setAppointmentStatus(latestStatus.getStatus());
+            }
+            appointmentResponses.add(appointmentStatusResponse);
+        }
         return appointmentResponses;
     }
 

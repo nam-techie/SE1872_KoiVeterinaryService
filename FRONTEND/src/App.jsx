@@ -17,7 +17,8 @@ import FAQPage from "./pages/FAQPage.jsx";
 import TermAndRefund from "./pages/TermAndRefund.jsx";
 import FindDoctor from './pages/FindDoctor';
 import Dashboard from "./pages/admin_Pages/Dashboard.jsx";
-
+import AppointmentPage from "./pages/customer_Pages/AppointmentPage.jsx";
+import ManageAppointment from "./pages/customer_Pages/ManageAppointment.jsx";
 
 function App() {
 
@@ -51,6 +52,16 @@ function App() {
                     <Route path="/customer/booking-page" element={
                         <RoleBasedRoute allowedRoles={['CUSTOMER', 'ADMIN']}>
                             <BookingPage/>
+                        </RoleBasedRoute>
+                    }/>
+                    <Route path="/customer/manage-appointment" element={
+                        <RoleBasedRoute allowedRoles={['CUSTOMER', 'ADMIN']}>
+                            <ManageAppointment/>
+                        </RoleBasedRoute>
+                    }/>
+                    <Route path="/customer/appointment" element={
+                        <RoleBasedRoute allowedRoles={['CUSTOMER', 'ADMIN']}>
+                            <AppointmentPage/>
                         </RoleBasedRoute>
                     }/>
 
