@@ -205,10 +205,9 @@ public class AppointmentService {
                     Time roundedTime = Time.valueOf(hour + ":00:00");
 
                     System.out.println("Giờ làm tròn: " + roundedTime);
-                    doctor = findAvailableDoctor(String.valueOf(appointmentRequest.getBookingDate()), String.valueOf(roundedTime));
+                    doctor = findAvailableDoctor1(String.valueOf(appointmentRequest.getBookingDate()), String.valueOf(roundedTime));
                     appointmentInfo.setAppointmentBookingTime(roundedTime);
                     appointmentInfo.setAppointmentBookingDate(date);
-                    doctor = findAvailableDoctor(appointmentRequest.getBookingDate(), appointmentRequest.getBookingTime());
                     appointment.setDoctorAssigned(false);
                     appointment.setDoctor(doctor);
                     appointment.setZone(zoneRepository.findById(15));

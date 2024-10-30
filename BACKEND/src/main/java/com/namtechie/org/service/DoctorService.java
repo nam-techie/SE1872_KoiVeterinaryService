@@ -145,28 +145,42 @@ public class DoctorService {
 
     public void addDoctor(UpdateDoctor updateDoctor) {
         try {
+            // Kiểm tra email đã tồn tại chưa
             if (accountRepository.existsByEmail(updateDoctor.getEmail())) {
                 throw new DuplicateEntity("Email đã được sử dụng bởi cá nhân khác.");
             }
-            VeterinaryRequest emailDoctor = modelMapper.map(updateDoctor.getEmail(), VeterinaryRequest.class);
+
+            // Tạo tài khoản mới
+            VeterinaryRequest emailDoctor = new VeterinaryRequest();
+            emailDoctor.setEmail(updateDoctor.getEmail());
             authenticationService.registerVeterinary(emailDoctor);
 
+            // Lấy tài khoản vừa tạo
+            Account account = accountRepository.findAccountByEmail(updateDoctor.getEmail());
+
+            // Kiểm tra số điện thoại đã tồn tại chưa
             if (doctorRepository.existsByPhone(updateDoctor.getPhone())) {
                 throw new DuplicateEntity("Số điện thoại đã được sử dụng bởi cá nhân khác.");
             }
-            Doctor newDoctor = new Doctor();
-            DoctorInfo newDoctorInfo = new DoctorInfo();
 
-            // Cập nhật thông tin
+            // Tạo đối tượng Doctor mới
+            Doctor newDoctor = new Doctor();
             newDoctor.setFullName(updateDoctor.getFullName());
-            newDoctor.setPhone(updateDoctor.getPhone()); // Cho phép cập nhật số điện thoại mới
+            newDoctor.setPhone(updateDoctor.getPhone());
             newDoctor.setExperience(updateDoctor.getExperience());
+            newDoctor.setAccount(account);
+
+            // Lưu đối tượng Doctor vào cơ sở dữ liệu để lấy doctor_id
+            Doctor savedDoctor = doctorRepository.save(newDoctor);
+
+            // Tạo đối tượng DoctorInfo mới và gán doctor_id
+            DoctorInfo newDoctorInfo = new DoctorInfo();
             newDoctorInfo.setDescription(updateDoctor.getDescription());
             newDoctorInfo.setQualification(updateDoctor.getQualification());
             newDoctorInfo.setSpecialty(updateDoctor.getSpecialty());
+            newDoctorInfo.setDoctor(savedDoctor); // Gán đối tượng Doctor vào DoctorInfo
 
-            // Lưu thông tin cập nhật
-            doctorRepository.save(newDoctor);
+            // Lưu đối tượng DoctorInfo vào cơ sở dữ liệu
             doctorInfoRepository.save(newDoctorInfo);
 
         } catch (DuplicateEntity e) {

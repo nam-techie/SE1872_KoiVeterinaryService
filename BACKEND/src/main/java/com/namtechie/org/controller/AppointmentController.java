@@ -84,7 +84,7 @@ public class AppointmentController {
     @PostMapping("/createAppointment")
     public ResponseEntity createAppointment(@RequestBody AppointmentRequest appointmentRequest) {
         Appointment appointment = appointmentService.createAppointment(appointmentRequest);
-        return ResponseEntity.ok("Thêm dịch vụ thành công! Chờ bác sĩ phản hồi!!!");
+        return ResponseEntity.ok(appointment);
     }
 
 
