@@ -38,7 +38,7 @@ public class TokenService {
         return Jwts.builder()
                 .subject(account.getId() + "")
                 .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 30)) // Token sống trong 30 phút
+                .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60)) // Token sống trong 30 phút
                 .signWith(getSignKey())
                 .compact();
     }
@@ -47,7 +47,7 @@ public class TokenService {
         return Jwts.builder()
                 .setSubject(email)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 30)) // Token sống trong 30 phút
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60)) // Token sống trong 30 phút
                 .signWith(getSignKey())
                 .compact();
     }

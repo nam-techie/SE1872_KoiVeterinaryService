@@ -88,7 +88,7 @@ export function CustomerNavBar() {
                                 <FaUserLarge size={35} color={"white"}/>
                                 {isDropdownOpen && (
                                     <div className={styles.dropdownMenu}>
-                                        <Link to="/customer/appointment">Quản lí Lịch hẹn</Link>
+                                        <Link to="/customer/manage-appointment">Quản lí Lịch hẹn</Link>
                                         <hr/>
                                         <Link to="/profile">Thông tin cá nhân</Link>
                                         <hr/>
@@ -125,13 +125,13 @@ export const DoctorNavBar = () => {
                 [{role}] {username} {/* Hiển thị role và username */}
             </div>
             <div className={styles.DoctorSidebarLinks}>
-                <a className={styles.DoctorSidebarLink} href="/doctor/doctor-dashboard">
+                <a className={styles.DoctorSidebarLink} href="/doctor/dashboard">
                     <MdDashboard className={styles.icon} size={40}/> Tổng quan
                 </a>
-                <a className={styles.DoctorSidebarLink} href="/doctor/doctor-work-schedule">
+                <a className={styles.DoctorSidebarLink} href="/doctor/work-schedule">
                     <AiFillSchedule className={styles.icon} size={40}/> Lịch làm việc
                 </a>
-                <a className={styles.DoctorSidebarLink} href="/doctor/doctor-appointment">
+                <a className={styles.DoctorSidebarLink} href="/doctor/manage-appointment">
                     <PiNewspaperClippingFill className={styles.icon} size={40}/> Quản lí Lịch đặt
                 </a>
                 <hr className={styles.separator}/>

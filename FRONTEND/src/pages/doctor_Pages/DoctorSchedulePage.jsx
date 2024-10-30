@@ -3,14 +3,14 @@ import { Calendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import 'moment/locale/vi'; // Thêm ngôn ngữ tiếng Việt cho moment
-import styles from '../doctor_Pages/styles/DoctorWorkSchedule.module.css';
+import styles from './styles/DoctorSchedulePage.module.css';
 import { DoctorNavBar } from "../../components/Navbar.jsx";
 
 moment.locale('vi'); // Thiết lập locale cho moment thành tiếng Việt
 
 const localizer = momentLocalizer(moment);
 
-function DoctorWorkSchedule() {
+function DoctorSchedulePage() {
     // Sử dụng useState để lưu trữ mock data tạm thời
     const [events, setEvents] = useState([]);
 
@@ -69,4 +69,4 @@ function DoctorWorkSchedule() {
     );
 }
 
-export default DoctorWorkSchedule;
+export default DoctorSchedulePage;

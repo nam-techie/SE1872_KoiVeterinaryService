@@ -7,9 +7,9 @@ import ServiceIntro from "./pages/ServiceIntro.jsx";
 import AboutMe from "./pages/AboutMe.jsx";
 import DoctorDashBoard from "./pages/doctor_Pages/DoctorDashBoard.jsx";
 import GoogleLoginSuccess from "./pages/GoogleLoginSuccess.jsx";
-import BookingPage from "./pages/customer_Pages/BookingPage.jsx";
+import CustomerBookingPage from "./pages/customer_Pages/CustomerBookingPage.jsx";
 import LoadingCat from "./components/LoadingCat.jsx";
-import DoctorAppointment from "./pages/doctor_Pages/DoctorAppointment.jsx";
+import DoctorAppointmentPage from "./pages/doctor_Pages/DoctorAppointmentPage.jsx";
 import ForgotPassword from "./pages/ForgotPassWord.jsx";
 import VerifyOTP from "./pages/Verify-OTP.jsx";
 import ResetPassword from "./pages/ResetPassword.jsx";
@@ -17,9 +17,10 @@ import FAQPage from "./pages/FAQPage.jsx";
 import TermAndRefund from "./pages/TermAndRefund.jsx";
 import FindDoctor from './pages/FindDoctor';
 import Dashboard from "./pages/admin_Pages/Dashboard.jsx";
-import DoctorWorkSchedule from "./pages/doctor_Pages/DoctorWorkSchedule.jsx";
+import DoctorSchedulePage from "./pages/doctor_Pages/DoctorSchedulePage.jsx";
 import PageTitle from "./components/PageTitle.jsx";
-import AppointmentPage from "./pages/customer_Pages/AppointmentPage.jsx";
+import CustomerAppointmentPage from "./pages/customer_Pages/CustomerAppointmentPage.jsx";
+import AdminDashboard from "./pages/admin_Pages/Dashboard.jsx";
 
 
 function App() {
@@ -59,26 +60,6 @@ function App() {
                     <Route path="/terms" element={<PublicRoute><TermAndRefund/></PublicRoute>}/>
                     <Route path="/doctor-list" element={<PublicRoute><FindDoctor/></PublicRoute>}/>
 
-                    {/*-----------------------------------------------------------------*/}
-                    {/*Test FE*/}
-                    {/*FE DASHBOARD DOCTOR*/}
-                    <Route path="/doctor/doctor-dashboard" element={<PublicRoute><DoctorDashBoard/></PublicRoute>}/>
-                    <Route path="/doctor/doctor-appointment" element={<PublicRoute><DoctorAppointment/></PublicRoute>}/>
-                    <Route path="/doctor/doctor-work-schedule" element={<PublicRoute><DoctorWorkSchedule/></PublicRoute>}/>
-
-                    {/*FE USER*/}
-                    <Route path="/customer/booking" element={<PublicRoute><BookingPage/></PublicRoute>}/>
-                    <Route path="/customer/manage-appointment" element={<PublicRoute><AppointmentPage/></PublicRoute>}/>
-
-
-
-
-
-
-
-
-                    {/*-----------------------------------------------------------------*/}
-
                     {/* Trang không cho phép truy cập nếu đã đăng nhập (có token) */}
                     <Route path="/login" element={
                         <PageTitle title="Login">
@@ -95,7 +76,7 @@ function App() {
                     <Route path="/customer/booking" element={
                         <PageTitle title="Book an Appointment">
                             <RoleBasedRoute allowedRoles={['CUSTOMER', 'ADMIN']}>
-                                <BookingPage/>
+                                <CustomerBookingPage/>
                             </RoleBasedRoute>
                         </PageTitle>
                     }/>
@@ -103,14 +84,14 @@ function App() {
                     <Route path="/customer/manage-appointment" element={
                         <PageTitle title="Quản lí lịch hẹn">
                             <RoleBasedRoute allowedRoles={['CUSTOMER', 'ADMIN']}>
-                                <AppointmentPage/>
+                                <CustomerAppointmentPage/>
                             </RoleBasedRoute>
                         </PageTitle>
                     }/>
 
 
                     {/*Trang chỉ doctor và admin truy cập được*/}
-                    <Route path="/doctor/doctor-dashboard" element={
+                    <Route path="/doctor/dashboard" element={
                         <PageTitle title="Tổng quan">
                             <RoleBasedRoute allowedRoles={['VETERINARY', 'ADMIN']}>
                                 <DoctorDashBoard/>
@@ -118,18 +99,18 @@ function App() {
                         </PageTitle>
                     }/>
 
-                    <Route path="/doctor/doctor-manage-appointment" element={
+                    <Route path="/doctor/manage-appointment" element={
                         <PageTitle title="Lịch đặt">
                             <RoleBasedRoute allowedRoles={['VETERINARY', 'ADMIN']}>
-                                <DoctorAppointment/>
+                                <DoctorAppointmentPage/>
                             </RoleBasedRoute>
                         </PageTitle>
                     }/>
 
-                    <Route path="/doctor/doctor-work-schedule" element={
+                    <Route path="/doctor/work-schedule" element={
                         <PageTitle title="Lịch làm việc">
                             <RoleBasedRoute allowedRoles={['VETERINARY', 'ADMIN']}>
-                                <DoctorWorkSchedule/>
+                                <DoctorSchedulePage/>
                             </RoleBasedRoute>
                         </PageTitle>
                     }/>

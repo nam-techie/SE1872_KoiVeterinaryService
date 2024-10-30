@@ -1,5 +1,5 @@
 
-import styles from '../pages/customer_Pages/styles/BookingPage.module.css';
+import styles from '../pages/customer_Pages/styles/CustomerBookingPage.module.css';
 
 /* eslint-disable react/prop-types */
 export function ServiceTypeSelector({ serviceType, setServiceType, service }) {
