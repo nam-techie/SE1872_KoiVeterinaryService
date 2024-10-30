@@ -130,6 +130,9 @@ public class AppointmentService {
 
 
             Customers customer = account.getCustomer();
+            if(appointmentRequest.getPhone() == null){
+                throw new NotFoundException("Loi he thong");
+            }
             customer.setPhone(appointmentRequest.getPhone()); // lưu số đth khách hàng
 
 
@@ -238,7 +241,10 @@ public class AppointmentService {
             return appointmentRepository.save(appointment);
         } catch (DoctorNotAvailableException e) {
             throw new DoctorNotAvailableException(e.getMessage());
-        } catch (Exception e) {
+        } catch(NullPointerException e){
+            e.printStackTrace();
+            throw new NullPointerException("Lỗi hệ thống");
+        }catch (Exception e) {
             throw new RuntimeException("Không thể đặt dịch vụ");
         }
     }
@@ -493,6 +499,25 @@ public class AppointmentService {
 //            List<AppointmentStatus> appointmentStatus = appointment.getAppointmentStatus();
 //            for(AppointmentStatus status : appointmentStatus) {
 //
+//                if(status.getStatus().equals("Waiting veterian confirm")){
+//                    return appointment.getId();
+//                }
+//            }
+//        }
+//        return 0;
+//    }
+//
+//
+//
+//
+//    public long findAppointmentIdStep(long accountId) {
+//        Doctor doctor = doctorRepository.findByAccountId(accountId);
+//
+//        List<Appointment> list = appointmentRepository.findAppointmentByDoctorId(doctor.getId());
+//
+//        for(Appointment appointment : list) {
+//            List<AppointmentStatus> appointmentStatus = appointment.getAppointmentStatus();
+//            for(AppointmentStatus status : appointmentStatus) {
 //                if(status.getStatus().equals("Waiting veterian confirm")){
 //                    return appointment.getId();
 //                }
@@ -780,6 +805,8 @@ public class AppointmentService {
 
         // Thêm vào danh sách kết quả
         appointmentResponse.setPhoneNumber(infoCus.getPhone());
+
+
 
 
         return appointmentResponse;

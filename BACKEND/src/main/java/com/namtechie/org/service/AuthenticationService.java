@@ -196,6 +196,12 @@ public class AuthenticationService implements UserDetailsService {
             // Lưu account mới
             Account newAccount = accountRepository.save(account);
 
+
+            Customers customer = new Customers();
+            customer.setAccount(account);
+            customer.setFullName(generatedUsername);
+            customerRepository.save(customer);
+
             return modelMapper.map(newAccount, AccountResponse.class);
         } catch (Exception e) {
             if (e.getMessage().contains(account.getEmail())) {
@@ -226,8 +232,15 @@ public class AuthenticationService implements UserDetailsService {
             account.setPassword(passwordEncoder.encode("123456"));
             account.setRole(Role.valueOf(role).name());
 
+
+
             // Lưu tài khoản bác sĩ vào database
             accountRepository.save(account);
+
+            Customers customer = new Customers();
+            customer.setAccount(account);
+            customer.setFullName(adminAccountRequest.getUsername());
+            customerRepository.save(customer);
 
             // Gửi email thông báo đăng kí thành công
 //            EmailDetail emailDetail = new EmailDetail();

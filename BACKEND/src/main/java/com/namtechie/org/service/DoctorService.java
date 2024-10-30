@@ -110,7 +110,6 @@ public class DoctorService {
 
         return doctorInfoResponse;
     }
-
     public void updateInfoDoctor(String phone, DoctorRequest doctorRequest) {
         try {
             // Lấy bác sĩ hiện tại theo số điện thoại (phone)
@@ -134,6 +133,8 @@ public class DoctorService {
             if (doctorRequest.getImageUrl() != null && !doctorRequest.getImageUrl().isEmpty()) {
                 uploadImage(updateDoctor.getId(), doctorRequest.getImageUrl());
             }
+
+
 
 
             // Lưu thông tin cập nhật

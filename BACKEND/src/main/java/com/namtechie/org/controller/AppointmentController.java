@@ -100,10 +100,10 @@ public class AppointmentController {
 
     @GetMapping(value = "/getFreeSchedule")
     public ResponseEntity<Map<String, List<Schedule>>> getFreeSchedule() {
-            return ResponseEntity.ok(scheduleService.findFreeScheduleOfSession());
+        return ResponseEntity.ok(scheduleService.findFreeScheduleOfSession());
     }
 
-    @PostMapping("/createAppointment")
+    @PostMapping(value = "/createAppointment", produces = "application/json" )
     public ResponseEntity createAppointment(@RequestBody AppointmentRequest appointmentRequest) {
         Appointment appointment = appointmentService.createAppointment(appointmentRequest);
         return ResponseEntity.ok(appointment);
@@ -114,7 +114,7 @@ public class AppointmentController {
     //Cái này còn hơi đắng đo mà chắc cần token mà
     @GetMapping(value = "/getAllZone", produces = "application/json")
     public List<Zone> getAllZone() {
-            return zoneService.findAll();
+        return zoneService.findAll();
     }
 
     //Tạm thời bở nó ở đây đợi nó có nhà mới
@@ -137,7 +137,7 @@ public class AppointmentController {
         return ResponseEntity.ok(doctor);
     }
 
-    @GetMapping("/listAppointmentByUsername")
+    @GetMapping("/listAppointmentUser")
     public List<AppointmentStatusResponse> listAppointmentCustomer() {
         List<AppointmentStatusResponse> listAppointment = appointmentService.getListAppointmentCustomer();
         return listAppointment;

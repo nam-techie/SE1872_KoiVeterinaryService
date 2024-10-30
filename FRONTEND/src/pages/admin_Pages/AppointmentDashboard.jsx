@@ -17,6 +17,35 @@ const AppointmentDashboard = () => {
     // Thêm state cho pagination
     const [currentPage, setCurrentPage] = useState(1);
     const ITEMS_PER_PAGE = 8; // Tăng số lượng item hiển thị lên 8
+    const [showViewModal, setShowViewModal] = useState(false);
+
+    // Thêm dữ liệu demo
+    const demoAppointmentDetails = {
+        id: "LH001",
+        fullNameCustomer: "Kiều Trọng Khánh",
+        phoneNumber: "0123456789",
+        addressDetails: "D1, FPT",
+        nameService: "Khám tại nhà",
+        appointmentBookingDate: "30/10/2024",
+        appointmentBookingTime: "16:00",
+        isRequestDoctor: true,
+        description: "Nổi bị đau",
+        petInfo: {
+            name: "Mèo con",
+            breed: "Mèo Anh lông ngắn",
+            age: 2,
+            color: "Trắng xám",
+            weight: 3.5,
+            healthStatus: "Tiền sử khỏe mạnh, đã tiêm vaccine đầy đủ"
+        },
+        createdDate: "27/10/2024 - 14:00",
+        doctorInfo: {
+            name: "BS. Nguyễn Văn A",
+            specialization: "Chuyên khoa thú y nội khoa"
+        },
+        // Hoặc có thể là null để test trường hợp chưa có bác sĩ
+        // doctorInfo: null,
+    };
 
     if (loading) return <div>Đang tải dữ liệu...</div>;
     if (error) return <div>{error}</div>;
@@ -194,7 +223,7 @@ const AppointmentDashboard = () => {
                             <th>Tên dịch vụ</th>
                             <th>Thời gian</th>
                             <th>Ngày thực hiện</th>
-                            <th>Khu vực</th>
+                            <th>Địa chỉ</th>
                             <th className='action-column'>Thao tác</th>
                         </tr>
                     </thead>
@@ -207,10 +236,18 @@ const AppointmentDashboard = () => {
                                 <td>{appointment.nameService}</td>
                                 <td>{appointment.appointmentBookingTime}</td>
                                 <td>{appointment.appointmentBookingDate}</td>
-                                <td>{appointment.nameZone}</td>
+                                <td>{appointment.addressDetails}</td>
                                 <td>
                                     <div className="action-buttons">
-                                        <button className="action-btn view">Xem</button>
+                                        <button 
+                                            className="action-btn view"
+                                            onClick={() => {
+                                                setSelectedAppointment(appointment);
+                                                setShowViewModal(true);
+                                            }}
+                                        >
+                                            Xem
+                                        </button>
                                         {appointment.status !== 'Canceled' && (
                                             <>
                                                 <button className="action-btn edit">Sửa</button>
@@ -259,7 +296,7 @@ const AppointmentDashboard = () => {
                     <div className="modal-content">
                         <h3>Xác nhận hủy lịch hẹn</h3>
                         {cancelError && <p className="error-message">{cancelError}</p>}
-                        <p>Bạn có chắc chắn muốn hủy lịch hẹn của khách hàng <strong>{selectedAppointment?.fullNameCustomer}</strong> không?</p>
+                        <p>Bạn có chắc chắn muốn hủy lịch hẹn ca khách hàng <strong>{selectedAppointment?.fullNameCustomer}</strong> không?</p>
                         <p className="warning-text">Lưu ý: Khi đã hủy thì không thể khôi phục lại trạng thái của lịch hẹn!</p>
                         <div className="modal-buttons">
                             <button 
@@ -274,6 +311,195 @@ const AppointmentDashboard = () => {
                             >
                                 Xác nhận hủy
                             </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {showViewModal && (
+                <div className="modal-overlay">
+                    <div className="view-modal-content">
+                        <div className="modal-header">
+                            <h2>Chi tiết lịch hẹn: #{demoAppointmentDetails.id}</h2>
+                            <button className="close-btn" onClick={() => setShowViewModal(false)}>&times;</button>
+                        </div>
+                        
+                        <div className="appointment-details">
+                            <div className="detail-section">
+                                <h3>Thông tin khách hàng</h3>
+                                <div className="customer-info-row">
+                                    <div className="info-item">
+                                        <label>Họ tên:</label>
+                                        <span>{demoAppointmentDetails.fullNameCustomer}</span>
+                                    </div>
+                                    <div className="info-item">
+                                        <label>Số điện thoại:</label>
+                                        <span>{demoAppointmentDetails.phoneNumber}</span>
+                                    </div>
+                                    <div className="info-item">
+                                        <label>Địa chỉ:</label>
+                                        <span>{demoAppointmentDetails.addressDetails}</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="detail-section">
+                                <h3>Thông tin thú cưng</h3>
+                                <div className="detail-grid">
+                                    <div className="detail-item">
+                                        <label>Tên thú cưng:</label>
+                                        <span>{demoAppointmentDetails.petInfo.name}</span>
+                                    </div>
+                                    <div className="detail-item">
+                                        <label>Giống:</label>
+                                        <span>{demoAppointmentDetails.petInfo.breed}</span>
+                                    </div>
+                                    <div className="detail-item">
+                                        <label>Tuổi:</label>
+                                        <span>{demoAppointmentDetails.petInfo.age} tuổi</span>
+                                    </div>
+                                    <div className="detail-item">
+                                        <label>Màu sắc:</label>
+                                        <span>{demoAppointmentDetails.petInfo.color}</span>
+                                    </div>
+                                    <div className="detail-item">
+                                        <label>Cân nặng:</label>
+                                        <span>{demoAppointmentDetails.petInfo.weight} kg</span>
+                                    </div>
+                                    <div className="detail-item">
+                                        <label>Tình trạng sức khỏe:</label>
+                                        <span>{demoAppointmentDetails.petInfo.healthStatus}</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="detail-section">
+                                <h3>Thông tin lịch hẹn</h3>
+                                <div className="detail-grid">
+                                    <div className="detail-item">
+                                        <label>Ngày tạo:</label>
+                                        <span>{demoAppointmentDetails.createdDate || 'Chưa cập nhật'}</span>
+                                    </div>
+                                    <div className="detail-item">
+                                        <label>Dịch vụ:</label>
+                                        <span>{demoAppointmentDetails.nameService || 'Chưa cập nhật'}</span>
+                                    </div>
+                                    <div className="detail-item">
+                                        <label>Ngày hẹn:</label>
+                                        <span>{demoAppointmentDetails.appointmentBookingDate || 'Chưa cập nhật'}</span>
+                                    </div>
+                                    <div className="detail-item">
+                                        <label>Giờ hẹn:</label>
+                                        <span>{demoAppointmentDetails.appointmentBookingTime || 'Chưa cập nhật'}</span>
+                                    </div>
+                                    <div className="detail-item">
+                                        <label>Địa chỉ:</label>
+                                        <span>{demoAppointmentDetails.addressDetails || 'Chưa cập nhật'}</span>
+                                    </div>
+                                    <div className="detail-item">
+                                        <label>Trạng thái:</label>
+                                        <span className={`status ${(demoAppointmentDetails.status || '').toLowerCase().replace(' ', '-')}`}>
+                                            {demoAppointmentDetails.status || 'Chưa có trạng thái'}
+                                        </span>
+                                    </div>
+                                    <div className="detail-item">
+                                        <label>Bác sĩ phụ trách:</label>
+                                        <span className="doctor-info">
+                                            {demoAppointmentDetails.doctorInfo ? (
+                                                <>
+                                                    <span className="doctor-name">{demoAppointmentDetails.doctorInfo.name}</span>
+                                                    <span className="doctor-specialization">
+                                                        ({demoAppointmentDetails.doctorInfo.specialization})
+                                                    </span>
+                                                </>
+                                            ) : 'Chưa phân công bác sĩ'}
+                                        </span>
+                                    </div>
+                                    <div className="detail-item">
+                                        <label>Yêu cầu bác sĩ:</label>
+                                        <span className={`request-status ${demoAppointmentDetails.isRequestDoctor ? 'requested' : 'assigned'}`}>
+                                            {demoAppointmentDetails.isRequestDoctor ? 'Có yêu cầu' : 'Trung tâm phân cử'}
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="detail-section">
+                                <h3>Trạng thái lịch hẹn</h3>
+                                <div className="appointment-progress-vertical">
+                                    {[
+                                        { id: 1, status: 'Chờ bác sĩ xác nhận' },
+                                        { id: 2, status: 'Bác sĩ đã xác nhận' },
+                                        { id: 3, status: 'Chờ thanh toán tiền dịch vụ' },
+                                        { id: 4, status: 'Thanh toán tiền dịch vụ thành công' },
+                                        { id: 5, status: 'Bác sĩ đang cung cấp dịch vụ' },
+                                        { id: 6, status: 'Thực hiện xong dịch vụ' },
+                                        { id: 7, status: 'Chờ thanh toán tổng tiền' },
+                                        { id: 8, status: 'Đã hoàn thành' }
+                                    ].map((step, index) => {
+                                        const currentStep = 4;
+                                        const isActive = step.id <= currentStep;
+                                        const isCurrentStep = step.id === currentStep;
+
+                                        return (
+                                            <div key={step.id} className={`progress-step-vertical step-${step.id}`}>
+                                                <div className="step-content">
+                                                    <div className={`step-indicator ${isActive ? 'active' : ''} ${isCurrentStep ? 'current' : ''}`}>
+                                                        {step.id}
+                                                    </div>
+                                                    <div className={`step-label ${isCurrentStep ? 'current' : ''}`}>
+                                                        {step.status}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        );
+                                    })}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="payment-details">
+                            <h3>Chi tiết thanh toán</h3>
+                            <table className="payment-table">
+                                <thead>
+                                    <tr>
+                                        <th>Mã dịch vụ</th>
+                                        <th>Tên dịch vụ</th>
+                                        <th>Đơn giá</th>
+                                        <th>Trạng thái</th>
+                                        <th>Thành tiền</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>SV001</td>
+                                        <td>Khám tổng quát</td>
+                                        <td>300,000đ</td>
+                                        <td><span className="status-badge paid">Đã thanh toán</span></td>
+                                        <td>300,000đ</td>
+                                    </tr>
+                                    <tr>
+                                        <td>SV002</td>
+                                        <td>Tiêm vaccine</td>
+                                        <td>250,000đ</td>
+                                        <td><span className="status-badge unpaid">Chưa thanh toán</span></td>
+                                        <td>250,000đ</td>
+                                    </tr>
+                                    <tr>
+                                        <td>SV003</td>
+                                        <td>Tẩy giun</td>
+                                        <td>150,000đ</td>
+                                        <td><span className="status-badge paid">Đã thanh toán</span></td>
+                                        <td>150,000đ</td>
+                                    </tr>
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td colSpan="4">Tổng cộng:</td>
+                                        <td>700,000đ</td>
+                                    </tr>
+                                </tfoot>
+                            </table>
                         </div>
                     </div>
                 </div>
