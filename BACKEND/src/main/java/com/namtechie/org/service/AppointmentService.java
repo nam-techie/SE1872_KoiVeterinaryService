@@ -3,6 +3,7 @@ package com.namtechie.org.service;
 import com.namtechie.org.entity.Appointment;
 import com.namtechie.org.exception.DoctorNotAvailableException;
 import com.namtechie.org.exception.NotFoundException;
+import com.namtechie.org.model.ScheduleForConsulting;
 import com.namtechie.org.model.request.ServiceTypeRequestAll;
 import com.namtechie.org.model.response.*;
 import com.namtechie.org.repository.AppointmentRepository;
@@ -22,6 +23,7 @@ import java.sql.Date;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.*;
 
 @Service
@@ -154,6 +156,8 @@ public class AppointmentService {
             Date date = Date.valueOf(appointmentRequest.getBookingDate());
             Time time = Time.valueOf(appointmentRequest.getBookingTime());
 
+
+
             Doctor doctor = null;
             if (appointmentRequest.getDoctorId() != 0) {
                 doctor = doctorRepository.findDoctorById(appointmentRequest.getDoctorId());
@@ -169,22 +173,7 @@ public class AppointmentService {
             }
 
             //khám tại trung tam
-            if (appointmentRequest.getServiceTypeId() == 1) { // dịch vụ tư vấn
-                if (doctor == null) {
-                    long hour = time.toLocalTime().getHour();
-
-                    Time roundedTime = Time.valueOf(hour + "00:00:00");
-
-                    appointmentInfo.setAppointmentBookingDate(date);
-                    appointmentInfo.setAppointmentBookingTime(time);
-                    System.out.println(date);
-                    System.out.println(time);
-                    doctor = findAvailableDoctor1(appointmentRequest.getBookingDate(), appointmentRequest.getBookingTime());
-                    appointment.setDoctorAssigned(false);
-                    appointment.setDoctor(doctor);
-                    appointment.setZone(zoneRepository.findById(15));
-                }
-            } else if (appointmentRequest.getServiceTypeId() == 3) {
+            if (appointmentRequest.getServiceTypeId() == 3) {
                 Zone centerZone = zoneRepository.findById(1);
                 //khách hàng chọn bác sĩ
                 if (doctor != null) {
@@ -197,12 +186,10 @@ public class AppointmentService {
 
                 } else { //khách hàng ko chọn bác sĩ
                     appointmentInfo.setAppointmentBookingDate(date);
+                    ScheduleForConsulting doctor1 = findAvailableDoctor(appointmentRequest.getBookingDate(), appointmentRequest.getBookingTime());
                     appointmentInfo.setAppointmentBookingTime(time);
-                    System.out.println(date);
-                    System.out.println(time);
-                    doctor = findAvailableDoctor(appointmentRequest.getBookingDate(), appointmentRequest.getBookingTime());
                     appointment.setDoctorAssigned(false);
-                    appointment.setDoctor(doctor);
+                    appointment.setDoctor(doctor1.getDoctor());
                     appointment.setZone(centerZone);
 
                 }
@@ -216,11 +203,22 @@ public class AppointmentService {
                     appointmentInfo.setAppointmentBookingTime(time);
                     appointment.setZone(zone);
                 }
+            } else if (appointmentRequest.getServiceTypeId() == 1) { // dịch vụ tư vấn
+                if (doctor == null) {
+                    Time timeLocate = Time.valueOf(appointmentRequest.getBookingTime());
+                    System.out.println("das" + timeLocate);
+                    appointmentInfo.setAppointmentBookingDate(date);
+                    ScheduleForConsulting doctor1 = findAvailableDoctor(appointmentRequest.getBookingDate(), String.valueOf(timeLocate));
+                    appointmentInfo.setAppointmentBookingTime(doctor1.getBookingTime());
+                    appointment.setDoctorAssigned(false);
+                    appointment.setDoctor(doctor1.getDoctor());
+                    appointment.setZone(zoneRepository.findById(15));
+                }
             }
 
-            if (doctor == null) {
-                throw new DoctorNotAvailableException("Không có bác sĩ nào rảnh trong khung giờ bạn chọn");
-            }
+//            if (doctor == null) {
+//                throw new DoctorNotAvailableException("Không có bác sĩ nào rảnh trong khung giờ bạn chọn");
+//            }
 
             appointmentInfo.setDescriptions(appointmentRequest.getDescription());
             appointment.setAppointmentInfo(appointmentInfo);
@@ -240,16 +238,18 @@ public class AppointmentService {
             return appointmentRepository.save(appointment);
         } catch (DoctorNotAvailableException e) {
             throw new DoctorNotAvailableException(e.getMessage());
-        } catch (NullPointerException e) {
+        } catch(NullPointerException e){
             e.printStackTrace();
             throw new NullPointerException("Lỗi hệ thống");
-        } catch (Exception e) {
+        }catch (Exception e) {
             throw new RuntimeException("Không thể đặt dịch vụ");
         }
     }
 
 
-    public Doctor findAvailableDoctor(String bookingDate, String bookingTime) {
+    public ScheduleForConsulting findAvailableDoctor(String bookingDate, String bookingTime) {
+        ScheduleForConsulting scheduleForConsulting = new ScheduleForConsulting();
+
 
         // Chuyển đổi bookingDate từ chuỗi sang kiểu Date
         Date bookingDateSQL = Date.valueOf(bookingDate);
@@ -261,7 +261,7 @@ public class AppointmentService {
         List<Doctor> doctors = doctorRepository.findAll(); // Lấy tất cả bác sĩ
         for (Doctor doctor : doctors) {
             // Lấy danh sách lịch trống của bác sĩ
-            Map<String, List<Schedule>> freeSchedules = scheduleService.findFreeScheduleByDoctorId(doctor.getId());
+            Map<String, List<Schedule>> freeSchedules = scheduleService.findFreeScheduleByDoctorId(doctor.getId(), true);
 
             // Kiểm tra xem lịch trống cho ngày đó có tồn tại không
             if (freeSchedules == null || freeSchedules.get(bookingDate) == null) {
@@ -270,14 +270,29 @@ public class AppointmentService {
 
             List<Schedule> schedulesForDay = freeSchedules.get(bookingDate);
             System.out.println("123" + schedulesForDay);
+
+            LocalTime bookingLocalTime = LocalTime.parse(bookingTime);
             // Kiểm tra lịch trống trong ngày xem có trùng với thời gian đặt không
             for (Schedule schedule : schedulesForDay) {
-                if ((schedule.getDate().equals(bookingDateSQL) && schedule.getStartTime().equals(Time.valueOf(bookingTime)) && schedule.isAvailable()) ||
-                        (schedule.getDate().equals(bookingDateSQL) && Time.valueOf(bookingTime).after(schedule.getStartTime()) && Time.valueOf(bookingTime).before(schedule.getEndTime()) && schedule.isAvailable())) {
+                System.out.println("Schedule start time: " + schedule.getStartTime());
 
-                    // Nếu tìm thấy lịch trống cho bác sĩ đó, thêm doctorId vào danh sách
-                    availableDoctorIds.add(doctor.getId());
-                    break; // Bác sĩ này có lịch trống, không cần kiểm tra thêm trong ngày đó
+                LocalTime startTime = schedule.getStartTime().toLocalTime();
+                LocalTime halfHourMark = startTime.plusMinutes(30);
+                int hourTime = startTime.getHour();
+
+
+                if (schedule.isAvailable()) {
+                    if (bookingLocalTime.isBefore(halfHourMark) && schedule.getStartTime().equals(Time.valueOf(hourTime+ ":00:00"))) {
+                        System.out.println("Adding doctor (before half-hour mark): " + doctor.getId());
+                        availableDoctorIds.add(doctor.getId());
+                        scheduleForConsulting.setBookingTime(Time.valueOf(hourTime+ ":00:00"));
+                        break;
+                    } else if (bookingLocalTime.isAfter(halfHourMark) && schedule.getStartTime().equals(Time.valueOf(hourTime +1+ ":00:00"))) {
+                        System.out.println("Adding doctor (after half-hour mark): " + doctor.getId());
+                        availableDoctorIds.add(doctor.getId());
+                        scheduleForConsulting.setBookingTime(Time.valueOf(hourTime +1+ ":00:00"));
+                        break;
+                    }
                 }
             }
         }
@@ -291,7 +306,8 @@ public class AppointmentService {
         // Nếu tìm thấy bác sĩ phù hợp, trả về bác sĩ đó
         if (selectedDoctorId != null) {
             System.out.println("Tìm thấy bác sĩ ID: " + selectedDoctorId + " có lịch rảnh và ít lịch hẹn nhất.");
-            return doctorRepository.findDoctorById(selectedDoctorId);
+            scheduleForConsulting.setDoctor(doctorRepository.findDoctorById(selectedDoctorId));
+            return scheduleForConsulting;
         }
 
         // Nếu không tìm thấy bác sĩ nào rảnh cho buổi này
@@ -299,55 +315,6 @@ public class AppointmentService {
         return null;
     }
 
-    public Doctor findAvailableDoctor1(String bookingDate, String bookingTime) {
-
-        // Chuyển đổi bookingDate từ chuỗi sang kiểu Date
-        Date bookingDateSQL = Date.valueOf(bookingDate);
-
-        // Tạo danh sách lưu các bác sĩ có lịch rảnh trùng với thời gian đặt
-        List<Long> availableDoctorIds = new ArrayList<>();
-
-        // Bước 1: Tìm tất cả các bác sĩ có lịch trống trùng với thời gian đặt
-        List<Doctor> doctors = doctorRepository.findAll(); // Lấy tất cả bác sĩ
-        for (Doctor doctor : doctors) {
-            // Lấy danh sách lịch trống của bác sĩ
-            Map<String, List<Schedule>> freeSchedules = scheduleService.findFreeScheduleByDoctorId1(doctor.getId());
-
-            // Kiểm tra xem lịch trống cho ngày đó có tồn tại không
-            if (freeSchedules == null || freeSchedules.get(bookingDate) == null) {
-                continue; // Nếu không có lịch trống, tiếp tục với bác sĩ tiếp theo
-            }
-
-            List<Schedule> schedulesForDay = freeSchedules.get(bookingDate);
-            System.out.println("123" + schedulesForDay);
-            // Kiểm tra lịch trống trong ngày xem có trùng với thời gian đặt không
-            for (Schedule schedule : schedulesForDay) {
-                if ((schedule.getDate().equals(bookingDateSQL) && schedule.getStartTime().equals(Time.valueOf(bookingTime)) && schedule.isAvailable()) ||
-                        (schedule.getDate().equals(bookingDateSQL) && Time.valueOf(bookingTime).after(schedule.getStartTime()) && Time.valueOf(bookingTime).before(schedule.getEndTime()) && schedule.isAvailable())) {
-
-                    // Nếu tìm thấy lịch trống cho bác sĩ đó, thêm doctorId vào danh sách
-                    availableDoctorIds.add(doctor.getId());
-                    break; // Bác sĩ này có lịch trống, không cần kiểm tra thêm trong ngày đó
-                }
-            }
-        }
-
-        // Bước 2: Gọi appointmentRepository.findDoctorAppointmentCounts() để lấy số lượng lịch hẹn của từng bác sĩ
-        List<Object[]> doctorAppointmentCounts = appointmentRepository.findDoctorAppointmentCounts();
-
-        // Bước 3: Tìm bác sĩ trong danh sách availableDoctorIds có ít lịch hẹn nhất
-        Long selectedDoctorId = findDoctorWithFewestAppointments(availableDoctorIds, doctorAppointmentCounts);
-
-        // Nếu tìm thấy bác sĩ phù hợp, trả về bác sĩ đó
-        if (selectedDoctorId != null) {
-            System.out.println("Tìm thấy bác sĩ ID: " + selectedDoctorId + " có lịch rảnh và ít lịch hẹn nhất.");
-            return doctorRepository.findDoctorById(selectedDoctorId);
-        }
-
-        // Nếu không tìm thấy bác sĩ nào rảnh cho buổi này
-        System.out.println("Không tìm thấy bác sĩ rảnh cho khung giờ này.");
-        return null;
-    }
 
     /**
      * Hàm bổ trợ để chọn bác sĩ có ít lịch hẹn nhất từ danh sách bác sĩ rảnh.
@@ -379,7 +346,7 @@ public class AppointmentService {
             selectedDoctorId = doctorsWithFewestAppointments.get(0); // Chọn ngẫu nhiên một bác sĩ
         }
 
-        return selectedDoctorId;
+        return selectedDoctorId;  // Trả về bác sĩ có ít lịch đặt nhất
     }
 
 
@@ -411,7 +378,7 @@ public class AppointmentService {
 
         for (Doctor doctor : doctors) {
             // Lấy lịch trống của bác sĩ đó
-            Map<String, List<Schedule>> freeSchedules = scheduleService.findFreeScheduleByDoctorId(doctor.getId());
+            Map<String, List<Schedule>> freeSchedules = scheduleService.findFreeScheduleByDoctorId(doctor.getId(), true);
 
             // Kiểm tra xem lịch trống cho ngày đó có tồn tại không
             List<Schedule> schedulesForDay = freeSchedules.get(String.valueOf(bookingLocalDate));
@@ -487,7 +454,7 @@ public class AppointmentService {
         return list;
     }
 
-    //    public long getAppointmentIdForUser(long accountId) {
+//    public long getAppointmentIdForUser(long accountId) {
 //        long  customerId = customersRepository.findCustomersIdByAccountId(accountId);
 //
 //        List<Appointment> list = appointmentRepository.findAppointmentByCustomersId(customerId);
@@ -531,10 +498,10 @@ public class AppointmentService {
 
         List<Appointment> list = appointmentRepository.findAppointmentByDoctorId(doctor.getId());
 
-        for (Appointment appointment : list) {
+        for(Appointment appointment : list) {
             List<AppointmentStatus> appointmentStatus = appointment.getAppointmentStatus();
-            for (AppointmentStatus status : appointmentStatus) {
-                if (status.getStatus().equals("Chờ bác sĩ xác nhận")) {
+            for(AppointmentStatus status : appointmentStatus) {
+                if(status.getStatus().equals("Chờ bác sĩ xác nhận")){
                     return appointment.getId();
                 }
             }
@@ -667,7 +634,7 @@ public class AppointmentService {
         return appointmentResponses;
     }
 
-    public List<AppointmentStatusResponse> getListAppointmentCustomer() {
+    public List<AppointmentStatusResponse> getListAppointmentCustomer(){
         List<AppointmentStatusResponse> appointmentResponses = new ArrayList<>();
         Account account = (Account) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Customers customerId = customersRepository.findByAccountId(account.getId());
