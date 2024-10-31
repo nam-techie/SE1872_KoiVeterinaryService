@@ -8,10 +8,7 @@ import com.namtechie.org.model.request.DoctorRequest;
 import com.namtechie.org.model.request.MedicalFishResquest;
 import com.namtechie.org.model.request.UpdateDoctor;
 import com.namtechie.org.model.request.VeterinaryRequest;
-import com.namtechie.org.model.response.AppointmentStatusResponse;
-import com.namtechie.org.model.response.CloudinaryResponse;
-import com.namtechie.org.model.response.DoctorAppointmentResponse;
-import com.namtechie.org.model.response.DoctorInfoResponse;
+import com.namtechie.org.model.response.*;
 import com.namtechie.org.repository.*;
 import com.namtechie.org.repository.DoctorInfoRepository;
 import com.namtechie.org.util.FileUpLoadUtil;
@@ -110,6 +107,7 @@ public class DoctorService {
 
         return doctorInfoResponse;
     }
+
     public void updateInfoDoctor(String phone, DoctorRequest doctorRequest) {
         try {
             // Lấy bác sĩ hiện tại theo số điện thoại (phone)
@@ -133,8 +131,6 @@ public class DoctorService {
             if (doctorRequest.getImageUrl() != null && !doctorRequest.getImageUrl().isEmpty()) {
                 uploadImage(updateDoctor.getId(), doctorRequest.getImageUrl());
             }
-
-
 
 
             // Lưu thông tin cập nhật
@@ -350,7 +346,7 @@ public class DoctorService {
                     appointmentStatusResponse.setAppointmentStatus("Thực hiện xong dịch vụ");
                 } else if (latestStatus.getStatus().equals("Đã hoàn thành")) {
                     appointmentStatusResponse.setAppointmentStatus(latestStatus.getStatus());
-                } else if(latestStatus.getStatus().equals("Đã hủy lịch")){
+                } else if (latestStatus.getStatus().equals("Đã hủy lịch")) {
                     appointmentStatusResponse.setAppointmentStatus(latestStatus.getStatus());
                 }
 
@@ -361,7 +357,8 @@ public class DoctorService {
     }
 
     @Autowired
-    ZoneRepository  zoneRepository;
+    ZoneRepository zoneRepository;
+
     public DoctorAppointmentResponse getAppoinmentDoctor(long appointmentId) {
         Appointment appointment = appointmentRepository.findAppointmentById(appointmentId);
         DoctorAppointmentResponse doctorAppointmentResponse = new DoctorAppointmentResponse();
@@ -405,9 +402,9 @@ public class DoctorService {
         doctorAppointmentResponse.setAddressDetails(appointmentInfo.getAddress());
         doctorAppointmentResponse.setPhoneNumber(customers.getPhone());
 
-        if(appointment.isDoctorAssigned()){
+        if (appointment.isDoctorAssigned()) {
             doctorAppointmentResponse.setIsSelectDoctor("Khách hàng chọn bác sĩ");
-        }else{
+        } else {
             doctorAppointmentResponse.setIsSelectDoctor("Phân bổ bởi trung tâm");
 
         }
@@ -415,6 +412,76 @@ public class DoctorService {
         return doctorAppointmentResponse;
     }
 
+    public List<DoctorWorkResponse> getDoctorWork() {
+        List<DoctorWorkResponse> doctorWorkResponses = new ArrayList<>();
+        Account account = (Account) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Doctor doctor = doctorRepository.findByAccountId(account.getId());
+
+        List<Appointment> appointments = appointmentRepository.findByDoctorId(doctor.getId());
+
+        for (Appointment appointment : appointments) {
+            DoctorWorkResponse doctorWorkResponse = new DoctorWorkResponse();
+            doctorWorkResponse.setAppointmentId(appointment.getId());
+
+            AppointmentInfo appointmentInfo = appointmentInfoRepository.findByAppointmentId(appointment.getId());
+
+            // Lấy thời gian và ngày đặt hẹn
+            Time bookingTime = appointmentInfo.getAppointmentBookingTime();
+            Date bookingDate = appointmentInfo.getAppointmentBookingDate();
+
+            // Lấy loại dịch vụ
+            ServiceType serviceType = serviceTypeRepository.findByAppointmentId(appointment.getId());
+            doctorWorkResponse.setServiceType(serviceType.getName());
+
+            // Xác định thời gian kết thúc dựa trên loại dịch vụ
+            if (serviceType.getId() == 1 || serviceType.getId() == 3) {
+                doctorWorkResponse.setAppointmentDate(bookingDate);
+                doctorWorkResponse.setAppointmentTimeStart(bookingTime);
+
+                // Thời gian kết thúc sau 1 tiếng
+                Time endTime = new Time(bookingTime.getTime() + 3600000); // 1 giờ = 3600000 ms
+                doctorWorkResponse.setAppointmentTimeEnd(endTime);
+
+            } else if (serviceType.getId() == 2 || serviceType.getId() == 4) {
+                doctorWorkResponse.setAppointmentDate(bookingDate);
+                doctorWorkResponse.setAppointmentTimeStart(bookingTime);
+
+                // Thời gian kết thúc sau 4 tiếng
+                Time endTime = new Time(bookingTime.getTime() + 4 * 3600000); // 4 giờ = 4 * 3600000 ms
+                doctorWorkResponse.setAppointmentTimeEnd(endTime);
+            }
+
+            // Lấy tất cả các trạng thái của cuộc hẹn
+            List<AppointmentStatus> statuses = appointmentStatusRepository.findByAppointment(appointment);
+
+            // Tìm trạng thái có createDate lớn nhất (mới nhất)
+            AppointmentStatus latestStatus = null;
+            for (AppointmentStatus status : statuses) {
+                if (latestStatus == null || status.getCreate_date().toLocalDateTime().isAfter(latestStatus.getCreate_date().toLocalDateTime())) {
+                    latestStatus = status;
+                }
+            }
+
+            // Set trạng thái mới nhất vào DoctorWorkResponse
+            if (latestStatus != null) {
+                String status = latestStatus.getStatus();
+                if (status.equals("Chờ bác sĩ xác nhận")) {
+                    doctorWorkResponse.setAppointmentStatus(status);
+                } else if (status.equals("Đã xác nhận") || status.equals("Chờ thanh toán tiền dịch vụ") || status.equals("Thanh toán tiền dịch vụ thành công")) {
+                    doctorWorkResponse.setAppointmentStatus("Đã xác nhận");
+                } else if (status.equals("Đang cung cấp dịch vụ")) {
+                    doctorWorkResponse.setAppointmentStatus(status);
+                } else if (status.equals("Thực hiện xong dịch vụ") || status.equals("Chờ thanh toán tổng tiền")) {
+                    doctorWorkResponse.setAppointmentStatus("Thực hiện xong dịch vụ");
+                } else if (status.equals("Đã hoàn thành") || status.equals("Đã hủy lịch")) {
+                    doctorWorkResponse.setAppointmentStatus(status);
+                }
+            }
+
+            doctorWorkResponses.add(doctorWorkResponse);
+        }
+        return doctorWorkResponses;
+    }
 
 
 }

@@ -16,7 +16,7 @@ const AccountDashboard = ({ setActiveTab, setSelectedAccount }) => {
     const [editingAccount, setEditingAccount] = useState(null);
     const [dateSearch, setDateSearch] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
-    const ITEMS_PER_PAGE = 8;
+    const ITEMS_PER_PAGE = 7;
 
     useEffect(() => {
         fetchAllAccounts();

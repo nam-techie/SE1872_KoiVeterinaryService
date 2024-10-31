@@ -19,15 +19,16 @@ const AppointmentDashboard = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [showViewModal, setShowViewModal] = useState(false);
     const [statusFilter, setStatusFilter] = useState('');
+    const [showPaymentModal, setShowPaymentModal] = useState(false);
 
     useEffect(() => {
         // Fetch lần đầu khi component mount
         refetch();
 
-        // Set interval để fetch mỗi 5 giây
+        // Set interval để fetch mỗi 30 giây
         const interval = setInterval(() => {
             refetch();
-        }, 5000);
+        }, 30000);
 
         // Cleanup function
         return () => clearInterval(interval);
@@ -166,8 +167,7 @@ const AppointmentDashboard = () => {
     const canCancel = (status) => {
         const allowedStatuses = [
             'Chờ bác sĩ xác nhận',
-            'Đã xác nhận',
-            'Chờ thanh toán tiền dịch vụ'
+            'Đã xác nhận'
         ];
         return allowedStatuses.includes(status);
     };
@@ -175,6 +175,12 @@ const AppointmentDashboard = () => {
     // Hàm kiểm tra trạng thái cho phép sửa
     const canEdit = (status) => {
         return status === 'Hoàn thành';
+    };
+
+    // Thêm hàm xử lý hiển thị modal thanh toán
+    const handleShowPaymentModal = (appointment) => {
+        setSelectedAppointment(appointment);
+        setShowPaymentModal(true);
     };
 
     return (
@@ -197,7 +203,6 @@ const AppointmentDashboard = () => {
                             value={searchTerm}
                             onChange={(e) => handleSearch(e.target.value)}
                         />
-                        <FaSearch className="search-icon" />
                     </div>
                     { }
                     <div className="date-search-box">
@@ -212,7 +217,7 @@ const AppointmentDashboard = () => {
                         <select
                             value={statusFilter}
                             onChange={(e) => setStatusFilter(e.target.value)}
-                            className="status-select"
+                            className="status-select-appointment"
                         >
                             {statusOptions.map(option => (
                                 <option key={option.value} value={option.value}>
@@ -225,7 +230,7 @@ const AppointmentDashboard = () => {
                         <select
                             onChange={(e) => handleSort(e.target.value)}
                             value={sortBy}
-                            className="sort-select"
+                            className="sort-select-appointment"
                         >
                             <option value="id">Sắp xếp theo ID</option>
                             <option value="fullNameCustomer">Sắp xếp theo Tên</option>
@@ -273,28 +278,43 @@ const AppointmentDashboard = () => {
                                 <td>{appointment.nameZone}</td>
                                 <td>
                                     <div className="action-buttons">
-                                        <button 
-                                            className="action-btn view"
-                                            onClick={() => {
-                                                setSelectedAppointment(appointment);
-                                                setShowViewModal(true);
-                                            }}
-                                        >
-                                            Xem
-                                        </button>
-                                        <button 
-                                            className={`action-btn edit ${!canEdit(appointment.appointmentStatus) ? 'disabled' : ''}`}
-                                            disabled={!canEdit(appointment.appointmentStatus)}
-                                        >
-                                            Sửa
-                                        </button>
-                                        <button 
-                                            className={`action-btn delete ${!canCancel(appointment.appointmentStatus) ? 'disabled' : ''}`}
-                                            onClick={() => handleShowDeleteModal(appointment)}
-                                            disabled={!canCancel(appointment.appointmentStatus)}
-                                        >
-                                            Hủy
-                                        </button>
+                                        {/* Kiểm tra nếu trạng thái là chờ thanh toán hoặc thực hiện xong dịch vụ */}
+                                        {(appointment.appointmentStatus === 'Chờ thanh toán tiền dịch vụ' || 
+                                          appointment.appointmentStatus === 'Thực hiện xong dịch vụ') ? (
+                                            // Chỉ hiển thị nút xác nhận thanh toán
+                                            <button 
+                                                className="action-btn payment"
+                                                onClick={() => handleShowPaymentModal(appointment)}
+                                            >
+                                                Xác nhận thanh toán
+                                            </button>
+                                        ) : (
+                                            // Hiển thị các nút mặc định cho các trạng thái khác
+                                            <>
+                                                <button 
+                                                    className="action-btn view"
+                                                    onClick={() => {
+                                                        setSelectedAppointment(appointment);
+                                                        setShowViewModal(true);
+                                                    }}
+                                                >
+                                                    Xem
+                                                </button>
+                                                <button 
+                                                    className={`action-btn edit ${!canEdit(appointment.appointmentStatus) ? 'disabled' : ''}`}
+                                                    disabled={!canEdit(appointment.appointmentStatus)}
+                                                >
+                                                    Sửa
+                                                </button>
+                                                <button 
+                                                    className={`action-btn delete ${!canCancel(appointment.appointmentStatus) ? 'disabled' : ''}`}
+                                                    onClick={() => handleShowDeleteModal(appointment)}
+                                                    disabled={!canCancel(appointment.appointmentStatus)}
+                                                >
+                                                    Hủy
+                                                </button>
+                                            </>
+                                        )}
                                     </div>
                                 </td>
                             </tr>
@@ -335,16 +355,10 @@ const AppointmentDashboard = () => {
                         <p>Bạn có chắc chắn muốn hủy lịch hẹn ca khách hàng <strong>{selectedAppointment?.fullNameCustomer}</strong> không?</p>
                         <p className="warning-text">Lưu ý: Khi đã hủy thì không thể khôi phục lại trạng thái của lịch hẹn!</p>
                         <div className="modal-buttons">
-                            <button 
-                                className="modal-btn cancel" 
-                                onClick={() => setShowDeleteModal(false)}
-                            >
+                            <button className="modal-btn cancel" onClick={() => setShowDeleteModal(false)}>
                                 Quay lại
                             </button>
-                            <button 
-                                className="modal-btn confirm" 
-                                onClick={handleConfirmDelete}
-                            >
+                            <button className="modal-btn delete" onClick={handleConfirmDelete}>
                                 Xác nhận hủy
                             </button>
                         </div>
@@ -536,6 +550,28 @@ const AppointmentDashboard = () => {
                                     </tr>
                                 </tfoot>
                             </table>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {showPaymentModal && (
+                <div className="modal-overlay">
+                    <div className="modal-content">
+                        <h3 className="payment-title">Xác nhận thanh toán</h3>
+                        {cancelError && <p className="error-message">{cancelError}</p>}
+                        <p>Bạn có chắc chắn đã nhận được tiền thanh toán từ khách hàng <strong>{selectedAppointment?.fullNameCustomer}</strong> không?</p>
+                        <p className="warning-text">Lưu ý: Khi đã xác nhận thanh toán thì sẽ không thể sửa đổi trạng thái của lịch hẹn!</p>
+                        <div className="modal-buttons">
+                            <button className="modal-btn cancel" onClick={() => setShowPaymentModal(false)}>
+                                Quay lại
+                            </button>
+                            <button className="modal-btn confirm" onClick={() => {
+                                handleConfirmPayment(selectedAppointment);
+                                setShowPaymentModal(false);
+                            }}>
+                                Xác nhận thanh toán
+                            </button>
                         </div>
                     </div>
                 </div>

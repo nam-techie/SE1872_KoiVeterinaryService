@@ -216,6 +216,13 @@ public class AppointmentService {
                     appointment.setDoctorAssigned(false);
                     appointment.setDoctor(doctor);
                     appointment.setZone(zoneRepository.findById(15));
+
+//                    appointmentInfo.setAppointmentBookingDate(date);
+//                    appointmentInfo.setAppointmentBookingTime(time);
+//                    doctor = findAvailableDoctor(appointmentRequest.getBookingDate(), appointmentRequest.getBookingTime());
+//                    appointment.setDoctorAssigned(false);
+//                    appointment.setDoctor(doctor);
+//                    appointment.setZone(centerZone);
                 }
             }
 

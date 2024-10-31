@@ -5,6 +5,7 @@ import com.namtechie.org.entity.Doctor;
 import com.namtechie.org.model.request.DoctorConfirmRequest;
 import com.namtechie.org.model.response.AppointmentStatusResponse;
 import com.namtechie.org.model.response.DoctorAppointmentResponse;
+import com.namtechie.org.model.response.DoctorWorkResponse;
 import com.namtechie.org.repository.DoctorRepository;
 import com.namtechie.org.model.request.DoctorRequest;
 import com.namtechie.org.model.request.MedicalFishResquest;
@@ -99,5 +100,14 @@ public class DoctorController {
         DoctorAppointmentResponse appointmentStatusDoctor = doctorService.getAppoinmentDoctor(appointmentId);
         return ResponseEntity.ok(appointmentStatusDoctor);
     }
+
+    @GetMapping("/getListDoctorWork")
+    public ResponseEntity getListDoctorWork() {
+        List<DoctorWorkResponse> listDoctorWork = doctorService.getDoctorWork();
+
+        return ResponseEntity.ok(listDoctorWork);
+    }
+
+
 
 }

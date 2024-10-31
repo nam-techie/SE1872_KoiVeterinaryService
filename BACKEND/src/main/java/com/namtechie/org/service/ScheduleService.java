@@ -125,14 +125,17 @@ public class ScheduleService {
                 List<Integer> timeSlots = isMorning ? Arrays.asList(7, 8, 9, 10) : Arrays.asList(13, 14, 15, 16);
                 List<Appointment> appointments = appointmentService.findAllAppointmentOfSession(doctorId, date, isMorning);
 
-                if (appointments.size() == 1 && appointments.get(0).getServiceType().getId() != 3 ) {
-                    for (int hour : timeSlots) {
-                        Time currentStart = Time.valueOf(hour + ":00:00");
-                        Time currentEnd = Time.valueOf((hour + 1) + ":00:00");
-                        scheduleRequests.add(new Schedule(date, currentStart, currentEnd, false));
-                    }
-                    continue; // Nhảy qua vòng lặp tiếp tục cái khác.
+                if (appointments.size() >= 1 && appointments.get(0).getServiceType().getId() == 1) {
+                    // Lấy thời gian bắt đầu của cuộc hẹn
+                    Time currentStart = appointments.get(0).getAppointmentInfo().getAppointmentBookingTime();
+                    // Tính thời gian kết thúc (thêm 1 giờ)
+                    Time currentEnd = new Time(currentStart.getTime() + 3600000); // 1 giờ = 3600000 milliseconds
+
+                    // Đánh dấu chỉ một ca cụ thể là bận
+                    scheduleRequests.add(new Schedule(date, currentStart, currentEnd, false));
+                    continue; // Tiếp tục vòng lặp tiếp theo, không đánh dấu cả buổi là bận
                 }
+
 
                 for (int hour : timeSlots) {
                     Time currentStart = Time.valueOf(hour + ":00:00");
@@ -166,7 +169,7 @@ public class ScheduleService {
                 List<Integer> timeSlots = isMorning ? Arrays.asList(7, 8, 9, 10) : Arrays.asList(13, 14, 15, 16);
                 List<Appointment> appointments = appointmentService.findAllAppointmentOfSession(doctorId, date, isMorning);
 
-                if (appointments.size() == 1 && appointments.get(0).getServiceType().getId() == 1 ) {
+                if (appointments.size() == 1 && appointments.get(0).getServiceType().getId() != 1) {
                     for (int hour : timeSlots) {
                         Time currentStart = Time.valueOf(hour + ":00:00");
                         Time currentEnd = Time.valueOf((hour + 1) + ":00:00");
