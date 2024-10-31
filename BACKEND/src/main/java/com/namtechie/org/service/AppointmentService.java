@@ -4,10 +4,7 @@ import com.namtechie.org.entity.Appointment;
 import com.namtechie.org.exception.DoctorNotAvailableException;
 import com.namtechie.org.exception.NotFoundException;
 import com.namtechie.org.model.request.ServiceTypeRequestAll;
-import com.namtechie.org.model.response.AppointmentResponse;
-import com.namtechie.org.model.response.AppointmentStatusResponse;
-import com.namtechie.org.model.response.PaymentDepositResponse;
-import com.namtechie.org.model.response.ServiceDetailResponse;
+import com.namtechie.org.model.response.*;
 import com.namtechie.org.repository.AppointmentRepository;
 
 import com.namtechie.org.entity.*;
@@ -833,6 +830,13 @@ public class AppointmentService {
 
         return appointmentResponse;
     }
+//
+//    public InfoResponse getFullInfoAppointment(long appointmentId) {
+//        InfoResponse infoResponse = new InfoResponse();
+//
+//
+//    }
+
 
 
 }
