@@ -1,23 +1,50 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './styles/AppointmentDashboard.css';
 import useAppointment from './hooks/useAppointment';
 import { FaSearch, FaSort } from 'react-icons/fa';
+import LoadingCat from '../../components/LoadingCat';
 
 const AppointmentDashboard = () => {
-    const { appointments, loading, error, cancelAppointment } = useAppointment();
+    const ITEMS_PER_PAGE = 10;
+
+    const { appointments, loading, error, refetch, cancelAppointment, confirmPaymentDeposit } = useAppointment();
     const [searchTerm, setSearchTerm] = useState('');
     const [sortBy, setSortBy] = useState('id');
     const [sortOrder, setSortOrder] = useState('desc');
-    // Thêm state mới cho date search
     const [dateSearch, setDateSearch] = useState('');
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [selectedAppointment, setSelectedAppointment] = useState(null);
     const [cancelError, setCancelError] = useState(null);
     const [successMessage, setSuccessMessage] = useState(null);
-    // Thêm state cho pagination
     const [currentPage, setCurrentPage] = useState(1);
-    const ITEMS_PER_PAGE = 8; // Tăng số lượng item hiển thị lên 8
     const [showViewModal, setShowViewModal] = useState(false);
+    const [statusFilter, setStatusFilter] = useState('');
+    const [showPaymentModal, setShowPaymentModal] = useState(false);
+    const [paymentError, setPaymentError] = useState(null);
+
+    useEffect(() => {
+        // Fetch lần đầu khi component mount
+        refetch();
+
+        // Set interval để fetch mỗi 30 giây
+        const interval = setInterval(() => {
+            refetch();
+        }, 20000);
+
+        // Cleanup function
+        return () => clearInterval(interval);
+    }, []); // Empty dependency array
+
+    const statusOptions = [
+        { value: '', label: 'Tất cả trạng thái' },
+        { value: 'Chờ bác sĩ xác nhận', label: 'Chờ bác sĩ xác nhận' },
+        { value: 'Đã xác nhận', label: 'Đã xác nhận' },
+        { value: 'Chờ thanh toán tiền dịch vụ', label: 'Chờ thanh toán tiền dịch vụ' },
+        { value: 'Thanh toán tiền dịch vụ thành công', label: 'Thanh toán tiền dịch vụ thành công' },
+        { value: 'Thực hiện xong dịch vụ', label: 'Thực hiện xong dịch vụ' },
+        { value: 'Hoàn thành', label: 'Hoàn thành' },
+        { value: 'Đã hủy lịch', label: 'Đã hủy lịch' }
+    ];
 
     // Thêm dữ liệu demo
     const demoAppointmentDetails = {
@@ -36,7 +63,7 @@ const AppointmentDashboard = () => {
             age: 2,
             color: "Trắng xám",
             weight: 3.5,
-            healthStatus: "Tiền sử khỏe mạnh, đã tiêm vaccine đầy đủ"
+            healthStatus: "Tiền sử khe me mạnh, đã tiêm vaccine đầy đủ"
         },
         createdDate: "27/10/2024 - 14:00",
         doctorInfo: {
@@ -47,7 +74,7 @@ const AppointmentDashboard = () => {
         // doctorInfo: null,
     };
 
-    if (loading) return <div>Đang tải dữ liệu...</div>;
+    if (loading) return <LoadingCat />;
     if (error) return <div>{error}</div>;
 
     // Hàm tìm kiếm
@@ -72,36 +99,13 @@ const AppointmentDashboard = () => {
             const matchesSearch = 
                 appointment.id?.toString().toLowerCase().includes(searchLower) ||
                 appointment.fullNameCustomer?.toLowerCase().includes(searchLower) ||
-                appointment.status?.toLowerCase().includes(searchLower) ||
                 appointment.nameService?.toLowerCase().includes(searchLower) ||
-                appointment.appointmentBookingTime?.toLowerCase().includes(searchLower) ||
-                appointment.appointmentBookingDate?.toLowerCase().includes(searchLower) ||
                 appointment.nameZone?.toLowerCase().includes(searchLower);
 
-            // Thêm logic lọc theo ngày
-            if (dateSearch) {
-                const searchDate = new Date(dateSearch);
-                const appointmentDate = new Date(appointment.appointmentBookingDate);
-                
-                const matchesYear = searchDate.getFullYear() === appointmentDate.getFullYear();
-                const matchesMonth = searchDate.getMonth() === appointmentDate.getMonth();
-                const matchesDay = searchDate.getDate() === appointmentDate.getDate();
+            // Thêm điều kiện lọc theo trạng thái
+            const matchesStatus = statusFilter ? appointment.appointmentStatus === statusFilter : true;
 
-                // Nếu người dùng chỉ chọn năm (YYYY)
-                if (dateSearch.length === 4) {
-                    return matchesYear && matchesSearch;
-                }
-                // Nếu người dùng chọn năm và tháng (YYYY-MM)
-                else if (dateSearch.length === 7) {
-                    return matchesYear && matchesMonth && matchesSearch;
-                }
-                // Nếu người dùng chọn đầy đủ ngày (YYYY-MM-DD)
-                else {
-                    return matchesYear && matchesMonth && matchesDay && matchesSearch;
-                }
-            }
-
-            return matchesSearch;
+            return matchesSearch && matchesStatus;
         })
         .sort((a, b) => {
             if (sortBy === 'id') {
@@ -159,6 +163,42 @@ const AppointmentDashboard = () => {
     };
 
     // Thêm hiển thị lỗi vào modal
+
+    // Hàm kiểm tra trạng thái cho phép hủy
+    const canCancel = (status) => {
+        const allowedStatuses = [
+            'Chờ bác sĩ xác nhận',
+            'Đã xác nhận'
+        ];
+        return allowedStatuses.includes(status);
+    };
+
+    // Hàm kiểm tra trạng thái cho phép sửa
+    const canEdit = (status) => {
+        return status === 'Hoàn thành';
+    };
+
+    // Thêm hàm xử lý hiển thị modal thanh toán
+    const handleShowPaymentModal = (appointment) => {
+        setSelectedAppointment(appointment);
+        setShowPaymentModal(true);
+    };
+
+    // Thêm hàm xử lý xác nhận thanh toán
+    const handleConfirmPayment = async (appointment) => {
+        try {
+            await confirmPaymentDeposit(appointment.id);
+            setSuccessMessage('Xác nhận thanh toán thành công!');
+            setShowPaymentModal(false);
+            // Tự động ẩn thông báo sau 3 giây
+            setTimeout(() => {
+                setSuccessMessage(null);
+            }, 3000);
+        } catch (error) {
+            setPaymentError(error.message);
+        }
+    };
+
     return (
         <div className="appointment-dashboard">
             {/* Thêm thông báo thành công */}
@@ -179,7 +219,6 @@ const AppointmentDashboard = () => {
                             value={searchTerm}
                             onChange={(e) => handleSearch(e.target.value)}
                         />
-                        <FaSearch className="search-icon" />
                     </div>
                     { }
                     <div className="date-search-box">
@@ -190,11 +229,24 @@ const AppointmentDashboard = () => {
                             onChange={(e) => setDateSearch(e.target.value)}
                         />
                     </div>
+                    <div className="status-filter">
+                        <select
+                            value={statusFilter}
+                            onChange={(e) => setStatusFilter(e.target.value)}
+                            className="status-select-appointment"
+                        >
+                            {statusOptions.map(option => (
+                                <option key={option.value} value={option.value}>
+                                    {option.label}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
                     <div className="sort-box">
                         <select
                             onChange={(e) => handleSort(e.target.value)}
                             value={sortBy}
-                            className="sort-select"
+                            className="sort-select-appointment"
                         >
                             <option value="id">Sắp xếp theo ID</option>
                             <option value="fullNameCustomer">Sắp xếp theo Tên</option>
@@ -221,8 +273,6 @@ const AppointmentDashboard = () => {
                             <th>Tên khách hàng</th>
                             <th>Trạng thái</th>
                             <th>Tên dịch vụ</th>
-                            <th>Thời gian</th>
-                            <th>Ngày thực hiện</th>
                             <th>Địa chỉ</th>
                             <th className='action-column'>Thao tác</th>
                         </tr>
@@ -232,28 +282,50 @@ const AppointmentDashboard = () => {
                             <tr key={appointment.id}>
                                 <td>#{appointment.id}</td>
                                 <td>{appointment.fullNameCustomer}</td>
-                                <td>{appointment.status || "Chưa có trạng thái"}</td>
+                                <td>
+                                    <span 
+                                        className="status" 
+                                        data-status={appointment.appointmentStatus}
+                                    >
+                                        {appointment.appointmentStatus}
+                                    </span>
+                                </td>
                                 <td>{appointment.nameService}</td>
-                                <td>{appointment.appointmentBookingTime}</td>
-                                <td>{appointment.appointmentBookingDate}</td>
-                                <td>{appointment.addressDetails}</td>
+                                <td>{appointment.nameZone}</td>
                                 <td>
                                     <div className="action-buttons">
-                                        <button 
-                                            className="action-btn view"
-                                            onClick={() => {
-                                                setSelectedAppointment(appointment);
-                                                setShowViewModal(true);
-                                            }}
-                                        >
-                                            Xem
-                                        </button>
-                                        {appointment.status !== 'Canceled' && (
+                                        {/* Kiểm tra nếu trạng thái là chờ thanh toán hoặc thực hiện xong dịch vụ */}
+                                        {(appointment.appointmentStatus === 'Chờ thanh toán tiền dịch vụ' || 
+                                          appointment.appointmentStatus === 'Chờ thanh toán tổng tiền') ? (
+                                            // Chỉ hiển thị nút xác nhận thanh toán
+                                            <button 
+                                                className="action-btn payment"
+                                                onClick={() => handleShowPaymentModal(appointment)}
+                                            >
+                                                Xác nhận thanh toán
+                                            </button>
+                                        ) : (
+                                            // Hiển thị các nút mặc định cho các trạng thái khác
                                             <>
-                                                <button className="action-btn edit">Sửa</button>
                                                 <button 
-                                                    className="action-btn delete"
+                                                    className="action-btn view"
+                                                    onClick={() => {
+                                                        setSelectedAppointment(appointment);
+                                                        setShowViewModal(true);
+                                                    }}
+                                                >
+                                                    Xem
+                                                </button>
+                                                <button 
+                                                    className={`action-btn edit ${!canEdit(appointment.appointmentStatus) ? 'disabled' : ''}`}
+                                                    disabled={!canEdit(appointment.appointmentStatus)}
+                                                >
+                                                    Sửa
+                                                </button>
+                                                <button 
+                                                    className={`action-btn delete ${!canCancel(appointment.appointmentStatus) ? 'disabled' : ''}`}
                                                     onClick={() => handleShowDeleteModal(appointment)}
+                                                    disabled={!canCancel(appointment.appointmentStatus)}
                                                 >
                                                     Hủy
                                                 </button>
@@ -299,16 +371,10 @@ const AppointmentDashboard = () => {
                         <p>Bạn có chắc chắn muốn hủy lịch hẹn ca khách hàng <strong>{selectedAppointment?.fullNameCustomer}</strong> không?</p>
                         <p className="warning-text">Lưu ý: Khi đã hủy thì không thể khôi phục lại trạng thái của lịch hẹn!</p>
                         <div className="modal-buttons">
-                            <button 
-                                className="modal-btn cancel" 
-                                onClick={() => setShowDeleteModal(false)}
-                            >
+                            <button className="modal-btn cancel" onClick={() => setShowDeleteModal(false)}>
                                 Quay lại
                             </button>
-                            <button 
-                                className="modal-btn confirm" 
-                                onClick={handleConfirmDelete}
-                            >
+                            <button className="modal-btn delete" onClick={handleConfirmDelete}>
                                 Xác nhận hủy
                             </button>
                         </div>
@@ -412,7 +478,7 @@ const AppointmentDashboard = () => {
                                                         ({demoAppointmentDetails.doctorInfo.specialization})
                                                     </span>
                                                 </>
-                                            ) : 'Chưa phân công bác sĩ'}
+                                            ) : 'Chưa ph��n công bác sĩ'}
                                         </span>
                                     </div>
                                     <div className="detail-item">
@@ -500,6 +566,28 @@ const AppointmentDashboard = () => {
                                     </tr>
                                 </tfoot>
                             </table>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {showPaymentModal && (
+                <div className="modal-overlay">
+                    <div className="modal-content">
+                        <h3 className="payment-title">Xác nhận thanh toán</h3>
+                        {cancelError && <p className="error-message">{cancelError}</p>}
+                        <p>Bạn có chắc chắn đã nhận được tiền thanh toán từ khách hàng <strong>{selectedAppointment?.fullNameCustomer}</strong> không?</p>
+                        <p className="warning-text">Lưu ý: Khi đã xác nhận thanh toán thì sẽ không thể sửa đổi trạng thái của lịch hẹn!</p>
+                        <div className="modal-buttons">
+                            <button className="modal-btn cancel" onClick={() => setShowPaymentModal(false)}>
+                                Quay lại
+                            </button>
+                            <button className="modal-btn confirm" onClick={() => {
+                                handleConfirmPayment(selectedAppointment);
+                                setShowPaymentModal(false);
+                            }}>
+                                Xác nhận thanh toán
+                            </button>
                         </div>
                     </div>
                 </div>

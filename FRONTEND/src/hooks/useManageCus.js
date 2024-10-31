@@ -1,46 +1,54 @@
 import { useState, useEffect } from 'react';
-import {axiosInstance} from "../service/apiRequest.js";
+import { axiosInstance } from '../service/apiRequest';
 
 const useManageCus = () => {
-    const [appointments, setAppointments] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
+    const getAppointments = async () => {
+        try {
+            const response = await axiosInstance.get(
+                `/customer/listAppointmentUser`
+            );
 
-    useEffect(() => {
-        const fetchAppointments = async () => {
-            try {
-                const username = localStorage.getItem('username');
-                console.log(username);
-                if (!username) {
-                    throw new Error('Không tìm thấy thông tin người dùng');
-                }
+            console.log('Response from API:', response.data);
 
-                const response = await axiosInstance.get(
-                    `/customer/listAppointmentByUsername`
-                );
-
-                console.log('Response from API:', response.data);
-
-                if (response.data) {
-                    setAppointments(response.data);
-                    setLoading(false);
-                } else {
-                    throw new Error('Không có dữ liệu trả về');
-                }
-            } catch (err) {
-                console.error('Error fetching appointments:', err);
-                setError(err.message || 'Có lỗi xảy ra khi tải dữ liệu');
-                setLoading(false);
+            if (response.data) {
+                return response.data;
+            } else {
+                throw new Error('Không có dữ liệu trả về');
             }
-        };
+        } catch (err) {
+            console.error('Error fetching appointments:', err);
+            throw new Error('Có lỗi xảy ra khi tải dữ liệu');
+        }
+    };
 
-        fetchAppointments();
-    }, []);
+    const cancelAppointment = async (appointmentId) => {
+        try {
+            const response = await axiosInstance.put(
+                `/customer/cancelAppointmentByCustomer/${appointmentId}`
+            );
+            return response.data;
+        } catch (err) {
+            console.error('Error canceling appointment:', err);
+            throw new Error('Có lỗi xảy ra khi hủy lịch hẹn');
+        }
+    };
+
+    const getPaymentUrl = async (appointmentId) => {
+        try {
+            const response = await axiosInstance.post(
+                `/customer/sendUrlPayment/${appointmentId}`
+            );
+            return response.data;
+        } catch (err) {
+            console.error('Error getting payment URL:', err);
+            throw new Error('Có lỗi xảy ra khi tạo đường dẫn thanh toán');
+        }
+    };
 
     return {
-        appointments,
-        loading,
-        error
+        getAppointments,
+        cancelAppointment,
+        getPaymentUrl,
     };
 };
 

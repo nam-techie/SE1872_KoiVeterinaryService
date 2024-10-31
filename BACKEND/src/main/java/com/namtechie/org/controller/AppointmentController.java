@@ -168,7 +168,7 @@ public class AppointmentController {
 
     @PutMapping("/cancelAppointmentByCustomer/{appointmentId}")
     public ResponseEntity cancelAppointmentByCustomer(@PathVariable long appointmentId) {
-        appointmentService.cancelAppointmentByCustomer(appointmentId, "CUSTOMER");
+        appointmentService.cancelAppointmentByCustomer(appointmentId);
         return ResponseEntity.ok("Đã hủy thành công");
     }
 
@@ -187,6 +187,18 @@ public class AppointmentController {
 //        Doctor doctor = appointmentService.findAvailableDoctor(bookingDate, bookingTime);
 //        return ResponseEntity.ok(doctor);
 //    }
+
+    @PostMapping("/sendUrlPayment/{appointmentId}")
+    public ResponseEntity<String> createPaymentTotalUrl(@PathVariable long appointmentId) {
+        try {
+            String paymentUrl = paymentService.returnUrlPayment(appointmentId);
+            return ResponseEntity.ok(paymentUrl);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Đã xảy ra lỗi khi tạo URL thanh toán.");
+        }
+    }
 
 
 }
