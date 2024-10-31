@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { axiosInstance } from '../../../service/apiRequest';
 
 const useAppointment = () => {
@@ -31,10 +31,6 @@ const useAppointment = () => {
             throw new Error('Có lỗi xảy ra khi hủy lịch hẹn');
         }
     };
-
-    useEffect(() => {
-        fetchAppointments();
-    }, []);
 
     return {
         appointments,

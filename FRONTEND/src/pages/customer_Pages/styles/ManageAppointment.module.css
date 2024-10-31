@@ -95,25 +95,63 @@
 }
 
 .status {
-    padding: 5px 10px;
+    padding: 8px 16px;
     border-radius: 20px;
-    font-size: 12px;
-    font-weight: 500;
+    font-size: 14px;
+    font-weight: 600;
+    display: inline-block;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
 }
 
+/* Chờ bác sĩ xác nhận */
 .Chờbácsĩxácnhận {
-    background-color: #fff3cd;
-    color: #856404;
+    background-color: #FFF3CD;
+    color: #997404;
+    border: 2px solid #FFE69C;
 }
 
-.Confirmed {
-    background-color: #e8f5e9;
-    color: #4caf50;
+/* Đã xác nhận */
+.Đãxácnhận {
+    background-color: #CCE5FF;
+    color: #0A58CA;
+    border: 2px solid #9EC5FE;
 }
 
-.Canceled {
-    background-color: #ffebee;
-    color: #f44336;
+/* Đang cung cấp dịch vụ */
+.Đangcungcấpdịchvụ {
+    background-color: #CFF4FC;
+    color: #055160;
+    border: 2px solid #9EEAF9;
+}
+
+/* Thực hiện xong dịch vụ */
+.Thựchiệnxongdịchvụ {
+    background-color: #DFF5E8;
+    color: #146C43;
+    border: 2px solid #75B798;
+}
+
+/* Chờ thanh toán tiền dịch vụ */
+.Chờthanhtoántiềndịchvụ {
+    background-color: #FFE5D0;
+    color: #B94700;
+    border: 2px solid #FFCD92;
+}
+
+/* Thanh toán tiền dịch vụ thành công */
+.Thanhtoántiềndịchvụthànhcông {
+    background-color: #E8F5E9;
+    color: #2E7D32;
+    border: 2px solid #A5D6A7;
+}
+
+/* Hoàn thành */
+.Hoànthành {
+    background-color: #198754;
+    color: white;
+    border: 2px solid #146C43;
+    font-weight: 700;
 }
 
 .detailButton {
@@ -130,4 +168,59 @@
 .detailButton:hover {
     opacity: 0.9;
     transform: translateY(-2px);
+}
+
+.cancelButton {
+    padding: 8px 16px;
+    background-color: #ff4d4d;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.cancelButton:hover {
+    background-color: #ff3333;
+}
+
+.paymentButton {
+    padding: 8px 16px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.paymentButton:hover {
+    background-color: #218838;
+}
+
+.statusSelect {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: white;
+    font-size: 14px;
+    min-width: 200px;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+.statusSelect:hover {
+    border-color: #999;
+}
+
+.statusSelect:focus {
+    outline: none;
+    border-color: #0066cc;
+    box-shadow: 0 0 0 2px rgba(0,102,204,0.2);
+}
+
+/* Đã hủy lịch */
+.Đãhủylịch {
+    background-color: #F8D7DA;
+    color: #842029;
+    border: 2px solid #F5C2C7;
+    font-weight: 600;
 } 
