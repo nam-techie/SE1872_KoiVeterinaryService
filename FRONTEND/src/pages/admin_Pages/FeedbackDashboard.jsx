@@ -3,12 +3,15 @@ import { FaStar, FaSort, FaSearch, FaTrash, FaUndo } from 'react-icons/fa';
 import './styles/FeedbackDashboard.css';
 import LoadingCat from '../../components/LoadingCat.jsx';
 import { useFeedback } from './hooks/useFeedback';
+import Pagination from '../../components/Pagination.jsx';
 
 const FeedbackDashboard = () => {
     const { feedbacks, loading, error, fetchFeedbacks, deleteFeedback, restoreFeedback, setFeedbacks } = useFeedback();
     const [searchTerm, setSearchTerm] = useState('');
     const [sortBy, setSortBy] = useState('created_date');
     const [sortOrder, setSortOrder] = useState('desc');
+    const [currentPage, setCurrentPage] = useState(1);
+    const ITEMS_PER_PAGE = 8;
 
     useEffect(() => {
         const fetchData = async () => {
@@ -98,6 +101,13 @@ const FeedbackDashboard = () => {
         feedback.comment.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
+    // Tính toán dữ liệu cho trang hiện tại
+    const totalPages = Math.ceil(filteredFeedbacks.length / ITEMS_PER_PAGE);
+    const currentFeedbacks = filteredFeedbacks.slice(
+        (currentPage - 1) * ITEMS_PER_PAGE,
+        currentPage * ITEMS_PER_PAGE
+    );
+
     return (
         <div className="feedback-dashboard">
             <div className="dashboard-header">
@@ -124,6 +134,7 @@ const FeedbackDashboard = () => {
                         <option value="rating">Sắp xếp theo Đánh giá</option>
                         <option value="appointmentId">Sắp xếp theo Mã cuộc hẹn</option>
                         <option value="status">Sắp xếp theo Trạng thái</option>
+                        <option value="comment">Sắp xếp theo Nhận xét</option>
                     </select>
                 </div>
                 <button
@@ -138,16 +149,16 @@ const FeedbackDashboard = () => {
                 <table>
                     <thead>
                         <tr>
-                            <th>Mã cuộc hẹn</th>
-                            <th>Đánh giá</th>
-                            <th>Nhận xét</th>
-                            <th>Ngày tạo</th>
-                            <th>Trạng thái</th>
-                            <th>Hành động</th>
+                            <th onClick={() => handleSort('appointmentId')}>Mã cuộc hẹn</th>
+                            <th onClick={() => handleSort('rating')}>Đánh giá</th>
+                            <th onClick={() => handleSort('comment')}>Nhận xét</th>
+                            <th onClick={() => handleSort('created_date')}>Ngày tạo</th>
+                            <th onClick={() => handleSort('status')}>Trạng thái</th>
+                            <th className='action-column'>Hành động</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {filteredFeedbacks.map((feedback) => (
+                        {currentFeedbacks.map((feedback) => (
                             <tr key={feedback.id}>
                                 <td>{feedback.appointment.id}</td>
                                 <td>{renderStars(feedback.rating)}</td>
@@ -179,6 +190,12 @@ const FeedbackDashboard = () => {
                         ))}
                     </tbody>
                 </table>
+                
+                <Pagination 
+                    currentPage={currentPage}
+                    totalPages={totalPages}
+                    onPageChange={setCurrentPage}
+                />
             </div>
         </div>
     );

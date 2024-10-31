@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 
 import java.util.List;
@@ -37,7 +38,7 @@ public class Doctor {
     @JsonIgnore
     private DoctorInfo doctorInfo;
 
-    @Column(length = 255)
+    @Column(length = 255, columnDefinition = "NVARCHAR(MAX)")
     private String fullName;
 
 

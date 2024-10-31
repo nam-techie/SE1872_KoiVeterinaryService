@@ -22,13 +22,13 @@ public class FeedBack {
     @Column
     private int rating;
 
-    @Column
+    @Column(columnDefinition = "NVARCHAR(MAX)")
     private String comment;
 
     @Column(nullable = false)
     @CreationTimestamp
     private Date created_date;
 
-    boolean isDeleted;
+    private boolean isDeleted;
 
 }

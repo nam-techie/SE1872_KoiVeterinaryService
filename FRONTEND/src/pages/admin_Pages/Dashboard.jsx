@@ -1,7 +1,7 @@
 // eslint-disable-next-line no-unused-vars
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import '../admin_pages/styles/AdminDashboard.css';
+import './styles/AdminDashboard.css';
 import { FaHome, FaCalendarAlt, FaUsers, FaUserMd, FaComments, FaSignOutAlt, FaUser, FaFish } from 'react-icons/fa';
 import AdminProfile from "./AdminProfile.jsx";
 import AccountDashboard from "./AccountDashboard.jsx";
@@ -15,6 +15,7 @@ import AddDoctor from "./AddDoctor.jsx";
 import FeedbackDashboard from "./FeedbackDashboard.jsx";
 import ServiceDashboard from "./ServiceDashboard.jsx";
 import FishManage from './FishManage.jsx';
+import AppointmentDashboard from "./AppointmentDashboard.jsx";
 
 const AdminDashboard = () => {
     const navigate = useNavigate();
@@ -55,7 +56,7 @@ const AdminDashboard = () => {
         setIsAddingDoctor(false);
     };
 
-    const handleDoctorAdded = (newDoctor) => {
+    const handleDoctorAdded = () => {
         // Xử lý sau khi thêm bác sĩ thành công
         setIsAddingDoctor(false);
         // Có thể cập nhật danh sách bác sĩ ở đây nếu cần
@@ -174,6 +175,8 @@ const AdminDashboard = () => {
                 return <ServiceDashboard />;
             case 'fish':
                 return <FishManage />;
+            case 'appointments':
+                return <AppointmentDashboard />;
             default:
                 return <div>Nội dung chưa được tạo</div>;
         }
@@ -196,7 +199,9 @@ const AdminDashboard = () => {
                     <li className={`menu-item ${activeTab === 'home' ? 'active' : ''}`} onClick={() => setActiveTab('home')}>
                         <FaHome /> Trang chủ
                     </li>
-                    <li className="menu-item"><FaCalendarAlt /> Quản lý lịch hẹn</li>
+                    <li className={`menu-item ${activeTab === 'appointments' ? 'active' : ''}`} onClick={() => setActiveTab('appointments')}>
+                        <FaCalendarAlt /> Quản lý lịch hẹn
+                    </li>
                     <li className={`menu-item ${activeTab === 'fish' ? 'active' : ''}`} onClick={() => setActiveTab('fish')}>
                         <FaFish /> Quản lý hồ sơ cá Koi
                     </li>

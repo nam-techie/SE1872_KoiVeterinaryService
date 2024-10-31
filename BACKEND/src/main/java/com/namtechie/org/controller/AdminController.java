@@ -4,10 +4,7 @@ import com.namtechie.org.entity.*;
 import com.namtechie.org.exception.DuplicateEntity;
 import com.namtechie.org.exception.NotFoundException;
 import com.namtechie.org.model.request.*;
-import com.namtechie.org.model.response.AccountResponse;
-import com.namtechie.org.model.response.AdminAccountResponse;
-import com.namtechie.org.model.response.DoctorInfoResponse;
-import com.namtechie.org.model.response.FishResponse;
+import com.namtechie.org.model.response.*;
 import com.namtechie.org.repository.DoctorRepository;
 import com.namtechie.org.repository.FeedbackRepository;
 import com.namtechie.org.repository.MedicalRecordedRepository;
@@ -47,6 +44,8 @@ public class AdminController {
     private ServiceTypesService serviceTypesService;
     @Autowired
     private MedicalRecordedRepository medicalRecordedRepository;
+    @Autowired
+    private AppointmentService appointmentService;
 
     //APi down is provide for ADMIN
     @PutMapping("/setAccountVeterinary/{email}")
@@ -158,7 +157,9 @@ public class AdminController {
     }
 
     @PutMapping("/updateDoctorInfo/{phone}")
-    public ResponseEntity<String> updateDoctorInfo(@PathVariable String phone, @RequestBody DoctorRequest doctorRequest) {
+    public ResponseEntity<String> updateDoctorInfo(
+            @PathVariable String phone,
+            @ModelAttribute DoctorRequest doctorRequest) {  // Thay @RequestBody bằng @ModelAttribute
         try {
             doctorService.updateInfoDoctor(phone, doctorRequest);
             return ResponseEntity.ok("Cập nhật thông tin bác sĩ thành công");
@@ -268,6 +269,68 @@ public class AdminController {
             return new ResponseEntity<>("Dữ liệu không hợp lệ!", HttpStatus.BAD_REQUEST);
         }
     }
+
+    @GetMapping("/listAppointment")
+    public ResponseEntity<List<AppointmentResponse>> getAllAppointment() {
+        try {
+            List<AppointmentResponse> appointments = appointmentService.getListAppoint();
+            return new ResponseEntity<>(appointments, HttpStatus.OK);  // Trả về HTTP 200 OK
+        } catch (Exception e) {
+            // Log lỗi ra nếu cần
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);  // Trả về HTTP 500 nếu có lỗi
+        }
+    }
+
+    @PutMapping("/cancelAppointmentByAdmin/{appointmentId}")
+    public ResponseEntity cancelAppointmentByAdmin(@PathVariable long appointmentId) {
+        appointmentService.cancelAppointmentByCustomer(appointmentId);
+        return ResponseEntity.ok("Đã hủy thành công");
+    }
+
+
+    //AN lam
+    @GetMapping("/getAppointment")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public ResponseEntity getAppointments() {
+        List<Appointment> appointmentResponses = appointmentService.getAllAppointments();
+        return ResponseEntity.ok(appointmentResponses);
+    }
+
+    @Autowired
+    private PaymentService paymentService;
+
+    @PostMapping("/confirmPaymentDeposit/{id}")
+    public ResponseEntity  generatePayment(@PathVariable long id) {
+        paymentService.generatePaymentDeposit(id);
+        return ResponseEntity.ok("Nhận được tiền cọc thành công!");
+    }
+
+    @PostMapping("/confirmPaymentTotal/{appointmentId}")
+    public ResponseEntity paymentTotal(@PathVariable long appointmentId) {
+        paymentService.updateTotalFee(appointmentId);
+        return ResponseEntity.ok("Da luu thanh cong");
+    }
+
+    @PostMapping("/confirmPayment/{appointmentId}")
+    public ResponseEntity<String> confirmPayment(@PathVariable long appointmentId) {
+        try {
+            paymentService.acceptStatus(appointmentId);
+            return ResponseEntity.ok("Đã lưu thành công");
+        } catch (IllegalArgumentException e) {
+            // Bắt lỗi khi không tìm thấy cuộc hẹn hoặc trạng thái mới nhất
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        } catch (RuntimeException e) {
+            // Bắt các lỗi runtime khác và trả về lỗi server
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Có lỗi xảy ra khi xử lý thanh toán: " + e.getMessage());
+        } catch (Exception e) {
+            // Bắt các lỗi chung khác
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Có lỗi xảy ra: " + e.getMessage());
+        }
+    }
+
+
+
+
 
 
 }

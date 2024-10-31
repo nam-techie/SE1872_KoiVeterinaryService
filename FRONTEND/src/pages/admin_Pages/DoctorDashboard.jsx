@@ -5,6 +5,7 @@ import './styles/DoctorDashboard.css';
 import {useDoctorInfo} from "./hooks/useDoctorInfo.js";
 import DoctorDetailInfo from "./DoctorDetailInfo.jsx"; // Đảm bảo import này tồn tại
 import LoadingCat from '../../components/LoadingCat.jsx';
+import Pagination from '../../components/Pagination.jsx';
 
 const DoctorDashboard = ({ onViewDetails, onAddDoctor }) => {
     const { doctors, loading, error, fetchAllDoctors } = useDoctorInfo();
@@ -12,6 +13,8 @@ const DoctorDashboard = ({ onViewDetails, onAddDoctor }) => {
     const [sortBy, setSortBy] = useState('fullName');
     const [sortOrder, setSortOrder] = useState('asc');
     const [selectedDoctorId, setSelectedDoctorId] = useState(null);
+    const [currentPage, setCurrentPage] = useState(1);
+    const ITEMS_PER_PAGE = 8;
 
     useEffect(() => {
         fetchAllDoctors();
@@ -36,18 +39,37 @@ const DoctorDashboard = ({ onViewDetails, onAddDoctor }) => {
     const sortDoctors = (doctors, sortBy, sortOrder) => {
         return [...doctors].sort((a, b) => {
             if (sortBy === 'fullName') {
+                // Xử lý trường hợp fullName là null
+                const nameA = a.fullName || '';
+                const nameB = b.fullName || '';
                 return sortOrder === 'asc' 
-                    ? a.fullName.localeCompare(b.fullName) 
-                    : b.fullName.localeCompare(a.fullName);
-            } else if (sortBy === 'experience_asc') {
-                return a.experience - b.experience;
-            } else if (sortBy === 'experience_desc') {
-                return b.experience - a.experience;
+                    ? nameA.localeCompare(nameB) 
+                    : nameB.localeCompare(nameA);
+            } else if (sortBy === 'experience') {
+                // Xử lý trường hợp experience là null
+                const expA = a.experience || 0;
+                const expB = b.experience || 0;
+                return sortOrder === 'asc' 
+                    ? expA - expB 
+                    : expB - expA;
             }
             // Thêm các trường hợp sắp xếp khác nếu cần
             return 0;
         });
     };
+
+    // Tính toán dữ liệu cho trang hiện tại
+    const filteredDoctors = sortDoctors(doctors, sortBy, sortOrder)
+        .filter(doctor => 
+            doctor.fullName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            doctor.phone?.includes(searchTerm)
+        );
+
+    const totalPages = Math.ceil(filteredDoctors.length / ITEMS_PER_PAGE);
+    const currentDoctors = filteredDoctors.slice(
+        (currentPage - 1) * ITEMS_PER_PAGE,
+        currentPage * ITEMS_PER_PAGE
+    );
 
     return (
         <div className="doctor-dashboard">
@@ -77,8 +99,8 @@ const DoctorDashboard = ({ onViewDetails, onAddDoctor }) => {
                         className="sort-select"
                     >
                         <option value="fullName">Sắp xếp theo Tên</option>
-                        <option value="experience_asc">Kinh nghiệm (Thấp đến Cao)</option>
-                        <option value="experience_desc">Kinh nghiệm (Cao đến Thấp)</option>
+                        <option value="experience">Kinh nghiệm</option>
+                        <option value="phone">Sắp xếp theo Số điện thoại</option>
                     </select>
                 </div>
                 <button
@@ -93,19 +115,19 @@ const DoctorDashboard = ({ onViewDetails, onAddDoctor }) => {
                 <table>
                     <thead>
                         <tr>
-                            <th>Tên đầy đủ</th>
-                            <th>Số điện thoại</th>
-                            <th>Kinh nghiệm (năm)</th>
+                            <th onClick={() => handleSort('fullName')}>Tên đầy đủ</th>
+                            <th onClick={() => handleSort('phone')}>Số điện thoại</th>
+                            <th onClick={() => handleSort('experience')}>Kinh nghiệm (năm)</th>
                             <th>Hình ảnh</th>
-                            <th>Hành động</th>
+                            <th className='action-column'>Hành động</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {sortDoctors(doctors, sortBy, sortOrder).map((doctor) => (
+                        {currentDoctors.map((doctor) => (
                             <tr key={doctor.id}>
-                                <td>{doctor.fullName}</td>
+                                <td>{doctor.fullName || 'Dữ liệu rỗng'}</td>
                                 <td>{doctor.phone}</td>
-                                <td>{doctor.experience}</td>
+                                <td>{doctor.experience || 0}</td>
                                 <td>
                                     <img src={doctor.imageUrl} alt={doctor.fullName} className="doctor-thumbnail" />
                                 </td>
@@ -120,6 +142,12 @@ const DoctorDashboard = ({ onViewDetails, onAddDoctor }) => {
                         ))}
                     </tbody>
                 </table>
+                
+                <Pagination 
+                    currentPage={currentPage}
+                    totalPages={totalPages}
+                    onPageChange={setCurrentPage}
+                />
             </div>
             {selectedDoctorId && (
                 <DoctorDetailInfo

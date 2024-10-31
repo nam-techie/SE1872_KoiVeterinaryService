@@ -47,26 +47,14 @@ public class Filter extends OncePerRequestFilter {
             "/api//forgot-password",
             "/api/reset-password",
             "/api/validate-otp",
-            "/api/getAllDoctor",
             "/api/listInfoDoctor",
             "/getDoctorDetail/{doctorId}",
-            "/api/getAllZone",
-            "/api/getAllServiceType",
-            "/api/getFreeScheduleByDoctorId",
-            "/api/getFreeSchedule",
-            "/api/getFreeScheduleWithTime",
-            "/api/testFreeScheduleWithTime",
             "/api/service-types",
             "/api/zones",
             "/api/free-schedule",
             "/api/testFreeSchedule",
-            "/api/getDoctorAuto",
-            "/api/getFeedback",
-            "/api/PaymentTotal/{appointmentId}",
-            "/api/generatePayment/{id}",
-            "/api/create-paymentDeposit-url/{appointmentId}",
-            "/api/create-paymentTotal-url/{appointmentId}",
-            "/api/createInfoFish/{appointmentId}"
+            "/api/getDoctorAuto"
+
 
 
     );

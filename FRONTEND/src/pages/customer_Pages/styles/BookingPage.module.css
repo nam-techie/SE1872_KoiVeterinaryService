@@ -1,0 +1,192 @@
+.appointmentForm {
+    max-width: 1000px;
+    margin: 120px auto; /* Thêm margin-top để tạo khoảng cách với phần tử trên */
+    padding: 50px 20px; /* Padding top/bottom bên trong form */
+    border-radius: 10px;
+    background-color: #f9f9f9;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.75); /* Thêm box shadow */
+}
+
+.formTitle {
+    text-align: center;
+    color: orange;
+    font-size: 28px;
+    margin-bottom: 30px;
+}
+
+.appointmentColumnContainer {
+    display: flex;
+    justify-content: space-between;
+}
+
+.appointmentColumn {
+    width: 48%;
+}
+
+.formGroup {
+    margin-bottom: 20px;
+}
+
+.label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.input, .select, .textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    box-sizing: border-box;
+}
+
+/* Đảm bảo các ô input, select, textarea có cùng kích thước */
+.input, .select, .textarea {
+    width: 100%; /* Chiếm 100% chiều rộng của container */
+    height: 40px; /* Chiều cao cố định cho các ô input và select */
+    padding: 10px; /* Khoảng đệm bên trong */
+    border: 1px solid #ccc; /* Đường viền màu xám */
+    border-radius: 4px; /* Bo góc */
+    font-size: 16px; /* Kích thước chữ */
+    box-sizing: border-box; /* Đảm bảo padding không ảnh hưởng đến kích thước */
+    background-color: white; /* Màu nền trắng */
+}
+
+/* Độ cao riêng cho textarea, cao hơn các ô input và select */
+.textarea {
+    height: 100px;
+}
+
+/* Đảm bảo các ô input, select, textarea có cùng kích thước */
+.input, .select, .textarea {
+    width: 100%; /* Chiếm 100% chiều rộng của container */
+    height: 40px; /* Chiều cao cố định cho các ô input và select */
+    padding: 10px; /* Khoảng đệm bên trong */
+    border: 1px solid #ccc; /* Đường viền màu xám */
+    border-radius: 4px; /* Bo góc */
+    font-size: 16px; /* Kích thước chữ */
+    box-sizing: border-box; /* Đảm bảo padding không ảnh hưởng đến kích thước */
+    background-color: white; /* Màu nền trắng */
+}
+
+/* Độ cao riêng cho textarea, cao hơn các ô input và select */
+.textarea {
+    height: 100px;
+}
+
+/* Khi các ô bị disable, chỉ thay đổi màu nền nhưng không thay đổi kích thước */
+.inputDisabled, .selectDisabled, .textareaDisabled {
+    background-color: #e0e0e0; /* Nền xám nhạt khi bị disable */
+    color: #000; /* Chữ giữ nguyên màu đen */
+    cursor: not-allowed; /* Con trỏ chuột báo hiệu không thể tương tác */
+    opacity: 1; /* Đảm bảo chữ không bị mờ */
+    width: 100%; /* Giữ nguyên kích thước */
+    height: 40px; /* Giữ nguyên chiều cao */
+}
+
+/* Đảm bảo chữ trong select vẫn giữ nguyên màu đen khi bị disable */
+.selectDisabled option {
+    color: #000;
+}
+
+/* Định dạng lỗi cho các ô */
+.errorMessage {
+    color: red;
+    font-size: 14px;
+    margin-top: 5px;
+}
+
+/* Nút submit */
+.submitButton {
+    background-color: #FFA500; /* Màu cam */
+    color: white;
+    padding: 15px 20px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    width: 100%;
+    font-size: 18px;
+    box-sizing: border-box;
+    transition: background-color 0.3s ease;
+}
+
+/* Nút submit khi hover */
+.submitButton:hover {
+    background-color: orangered; /* Màu cam đậm hơn khi hover */
+}
+
+/* Nút submit khi bị disable */
+.submitButton:disabled {
+    background-color: #e0e0e0; /* Nền xám khi disable */
+    color: white; /* Chữ trắng khi disable */
+    cursor: not-allowed; /* Con trỏ chuột không cho phép tương tác */
+    opacity: 0.6; /* Độ mờ để thể hiện trạng thái bị disable */
+}
+
+.confirmationOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5); /* Nền đen mờ để làm tối phần sau */
+    z-index: 999; /* Đảm bảo overlay ở trên tất cả các thành phần */
+}
+
+/* Định dạng modal để căn giữa */
+.confirmationModal {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    width: 400px; /* Chiều rộng cố định của modal */
+    margin: 0 auto; /* Căn giữa theo chiều ngang */
+    position: fixed; /* Modal luôn ở giữa màn hình */
+    top: 50%; /* Đặt modal cách 50% từ đỉnh màn hình */
+    left: 50%; /* Đặt modal cách 50% từ trái màn hình */
+    transform: translate(-50%, -50%); /* Di chuyển modal chính xác giữa màn hình */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    z-index: 1000; /* Modal nằm trên overlay */
+}
+
+/* Các nút trong modal */
+.confirmationButtons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.confirmBtn, .editBtn {
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    width: 48%;
+}
+
+.confirmBtn {
+    background-color: #28a745;
+    color: white;
+}
+
+.editBtn {
+    background-color: #dc3545;
+    color: white;
+}
+
+.confirmBtn:hover, .editBtn:hover {
+    opacity: 0.9;
+}
+
+/* Định dạng các nhãn và giá trị trong modal */
+.fieldLabel {
+    font-weight: bold;
+    display: block;
+    margin-top: 10px;
+}
+
+.fieldValue {
+    margin-left: 10px;
+}

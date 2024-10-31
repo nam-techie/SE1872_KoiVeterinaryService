@@ -27,7 +27,7 @@ public class AppointmentStatus {
     private Appointment appointment;
 
 
-    @Column
+    @Column(columnDefinition = "NVARCHAR(MAX)")
     private String status;
 
     @Column
@@ -35,6 +35,6 @@ public class AppointmentStatus {
     private Timestamp create_date;
 
     //ghi chú tình trạng đơn hàng
-    @Column
+    @Column(columnDefinition = "NVARCHAR(MAX)")
     private String notes;
 }

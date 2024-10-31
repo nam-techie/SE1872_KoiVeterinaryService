@@ -10,7 +10,7 @@ import java.sql.Timestamp;
 
 @Entity
 @Data
-public class TransactionDetail {
+public class PaymentDetail {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -23,6 +23,7 @@ public class TransactionDetail {
     @JsonBackReference
     private Payment payment;
 
+    @Column(columnDefinition = "NVARCHAR(MAX)")
     private String transactionType;
 
 
@@ -33,6 +34,7 @@ public class TransactionDetail {
 
     private boolean status;
 
+    @Column(columnDefinition = "NVARCHAR(MAX)")
     private String notes;
 
 }

@@ -5,6 +5,7 @@ import LoadingCat from '../../components/LoadingCat.jsx';
 import { useServiceType } from './hooks/useServiceType';
 import EditServiceModal from './EditServiceModal'; // Tạo component này sau
 import AddServiceModal from './AddServiceModal';
+import Pagination from '../../components/Pagination';
 
 const ServiceDashboard = () => {
     const { serviceTypes, loading, error, fetchServiceTypes, deleteServiceType, restoreServiceType, setServiceTypes, addServiceType } = useServiceType();
@@ -13,6 +14,8 @@ const ServiceDashboard = () => {
     const [sortOrder, setSortOrder] = useState('desc');
     const [editingService, setEditingService] = useState(null);
     const [isAddingService, setIsAddingService] = useState(false);
+    const [currentPage, setCurrentPage] = useState(1);
+    const ITEMS_PER_PAGE = 8;
 
     useEffect(() => {
         fetchServiceTypes();
@@ -120,6 +123,12 @@ const ServiceDashboard = () => {
         serviceType.description.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
+    const totalPages = Math.ceil(filteredServiceTypes.length / ITEMS_PER_PAGE);
+    const currentServices = filteredServiceTypes.slice(
+        (currentPage - 1) * ITEMS_PER_PAGE,
+        currentPage * ITEMS_PER_PAGE
+    );
+
     return (
         <div className="service-dashboard">
             <div className="dashboard-header">
@@ -151,6 +160,7 @@ const ServiceDashboard = () => {
                         <option value="name">Sắp xếp theo Tên</option>
                         <option value="base_price">Sắp xếp theo Giá</option>
                         <option value="status">Sắp xếp theo Trạng thái</option>
+                        <option value="description">Sắp xếp theo Mô tả</option>
                     </select>
                 </div>
                 <button
@@ -165,31 +175,31 @@ const ServiceDashboard = () => {
                 <table>
                     <thead>
                         <tr>
-                            <th>ID</th>
-                            <th>Tên Loại Dịch Vụ</th>
-                            <th>Giá Cơ Bản</th>
-                            <th>Mô Tả</th>
-                            <th>Trạng Thái</th>
-                            <th>Hành Động</th>
+                            <th onClick={() => handleSort('id')}>ID</th>
+                            <th onClick={() => handleSort('name')}>Tên Loại Dịch Vụ</th>
+                            <th onClick={() => handleSort('base_price')}>Giá Cơ Bản</th>
+                            <th onClick={() => handleSort('description')}>Mô Tả</th>
+                            <th onClick={() => handleSort('status')}>Trạng Thái</th>
+                            <th className='action-column'>Hành Động</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {filteredServiceTypes.map((serviceType) => (
-                            <tr key={serviceType.id}>
-                                <td>{serviceType.id}</td>
-                                <td>{serviceType.name}</td>
-                                <td>{serviceType.base_price.toLocaleString()} VNĐ</td>
-                                <td className="description">{serviceType.description}</td>
+                        {currentServices.map((service) => (
+                            <tr key={service.id}>
+                                <td>{service.id}</td>
+                                <td>{service.name}</td>
+                                <td>{service.base_price.toLocaleString()} VNĐ</td>
+                                <td className="description">{service.description}</td>
                                 <td>
-                                    <span className={`status-badge ${serviceType.deleted ? 'inactive' : 'active'}`}>
-                                        {serviceType.deleted ? 'Đã hủy' : 'Đang hoạt động'}
+                                    <span className={`status-badge ${service.deleted ? 'inactive' : 'active'}`}>
+                                        {service.deleted ? 'Đã hủy' : 'Đang hoạt động'}
                                     </span>
                                 </td>
                                 <td>
-                                    {serviceType.deleted ? (
+                                    {service.deleted ? (
                                         <button 
                                             className="restore-btn" 
-                                            onClick={() => handleRestore(serviceType.id)}
+                                            onClick={() => handleRestore(service.id)}
                                         >
                                             <FaUndo />
                                         </button>
@@ -197,13 +207,13 @@ const ServiceDashboard = () => {
                                         <>
                                             <button 
                                                 className="edit-btn" 
-                                                onClick={() => handleEdit(serviceType)}
+                                                onClick={() => handleEdit(service)}
                                             >
                                                 <FaEdit />
                                             </button>
                                             <button 
                                                 className="delete-btn" 
-                                                onClick={() => handleDelete(serviceType.id)}
+                                                onClick={() => handleDelete(service.id)}
                                             >
                                                 <FaTrash />
                                             </button>
@@ -214,6 +224,12 @@ const ServiceDashboard = () => {
                         ))}
                     </tbody>
                 </table>
+                
+                <Pagination 
+                    currentPage={currentPage}
+                    totalPages={totalPages}
+                    onPageChange={setCurrentPage}
+                />
             </div>
             {editingService && (
                 <EditServiceModal

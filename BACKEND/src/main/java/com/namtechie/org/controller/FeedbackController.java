@@ -18,6 +18,7 @@ import java.util.List;
 public class FeedbackController {
     @Autowired
     private FeedbackService feedbackService;
+
     @PostMapping("/createFeedback")
     @PreAuthorize("hasAuthority('CUSTOMER')")
     public ResponseEntity createFeedback(@RequestBody FeedbackRequest feedBack) {
@@ -26,12 +27,14 @@ public class FeedbackController {
     }
 
     @GetMapping("/getFeedbackAdmin")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity getFeedbackAdmin() {
         List<FeedBack> feedBack = feedbackService.getFeedback();
         return ResponseEntity.ok(feedBack);
     }
 
     @GetMapping("/getFeedbackCustomer/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity getFeedbackCustomer(@PathVariable long id) {
         FeedBack feedBack = feedbackService.getFeedbackCustomer(id);
         return ResponseEntity.ok(feedBack);

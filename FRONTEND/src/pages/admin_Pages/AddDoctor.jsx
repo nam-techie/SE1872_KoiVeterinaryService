@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { FaArrowLeft, FaUserMd } from 'react-icons/fa';
 import { useDoctorInfo } from './hooks/useDoctorInfo';
-import '././styles/AddDoctor.css';
+import './styles/AddDoctor.css';
 import LoadingCat from '../../components/LoadingCat.jsx';
 
 // eslint-disable-next-line react/prop-types

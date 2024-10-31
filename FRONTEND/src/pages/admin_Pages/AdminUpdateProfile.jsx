@@ -1,6 +1,6 @@
 // eslint-disable-next-line no-unused-vars
 import React, { useState, useEffect } from 'react';
-import '../admin_pages/styles/AdminUpdateProfile.css';
+import './styles/AdminUpdateProfile.css';
 import {useCustomerInfo} from "../../hooks/useCustomerInfo.js";
 import { FaEdit, FaSave } from 'react-icons/fa';
 

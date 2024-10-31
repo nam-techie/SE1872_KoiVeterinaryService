@@ -4,7 +4,27 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d2cec660-9bd4-4c6d-9559-8cd458d3cf90" name="Changes" comment="update all entity" />
+    <list default="true" id="d2cec660-9bd4-4c6d-9559-8cd458d3cf90" name="Changes" comment="fix update doctor img">
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/controller/AdminController.java" beforeDir="false" afterPath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/controller/AdminController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/entity/Customers.java" beforeDir="false" afterPath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/entity/Customers.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/model/response/AppointmentResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/model/response/AppointmentResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/repository/AppointmentInfoRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/repository/AppointmentInfoRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/repository/AppointmentStatusRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/repository/AppointmentStatusRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/repository/CustomerRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/repository/CustomerRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/repository/DoctorRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/repository/DoctorRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/repository/ServiceTypeRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/repository/ServiceTypeRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/repository/ZoneRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/repository/ZoneRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/service/AppointmentService.java" beforeDir="false" afterPath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/service/AppointmentService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/service/AuthenticationService.java" beforeDir="false" afterPath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/service/AuthenticationService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FRONTEND/src/pages/admin_Pages/Dashboard.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/FRONTEND/src/pages/admin_Pages/Dashboard.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FRONTEND/src/pages/admin_Pages/DoctorDetailInfo.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/FRONTEND/src/pages/admin_Pages/DoctorDetailInfo.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FRONTEND/src/pages/admin_Pages/UpdateDoctor.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/FRONTEND/src/pages/admin_Pages/UpdateDoctor.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FRONTEND/src/pages/admin_Pages/styles/DoctorDetailInfo.css" beforeDir="false" afterPath="$PROJECT_DIR$/FRONTEND/src/pages/admin_Pages/styles/DoctorDetailInfo.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FRONTEND/src/pages/admin_Pages/styles/ServiceDashboard.css" beforeDir="false" afterPath="$PROJECT_DIR$/FRONTEND/src/pages/admin_Pages/styles/ServiceDashboard.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FRONTEND/src/pages/admin_Pages/styles/UpdateDoctor.css" beforeDir="false" afterPath="$PROJECT_DIR$/FRONTEND/src/pages/admin_Pages/styles/UpdateDoctor.css" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -37,12 +57,12 @@
     &quot;assignee&quot;: &quot;nam-techie&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/nam-techie/Group03_SE1872_KoiVeterinaryServiceCenter.git",
-    "accountId": "8472be3a-f9cd-410e-940e-9a6479941986"
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/nam-techie/Group03_SE1872_KoiVeterinaryServiceCenter.git&quot;,
+    &quot;accountId&quot;: &quot;1ddcab4d-9cbe-47ed-9803-b6305e329a4b&quot;
   }
-}]]></component>
+}</component>
   <component name="KubernetesApiPersistence">{}</component>
   <component name="KubernetesApiProvider">{
   &quot;isMigrated&quot;: true
@@ -68,32 +88,32 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ASKED_MARK_IGNORED_FILES_AS_EXCLUDED": "true",
-    "RequestMappingsPanelOrder0": "0",
-    "RequestMappingsPanelOrder1": "1",
-    "RequestMappingsPanelWidth0": "75",
-    "RequestMappingsPanelWidth1": "75",
-    "Spring Boot.KoiVeterinaryServiceCenterApplication.executor": "Run",
-    "git-widget-placeholder": "thang-lh",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "D:/Project_SWP391/Group03_SE1872_KoiVeterinaryServiceCenter",
-    "list.type.of.created.stylesheet": "CSS",
-    "node.js.detected.package.eslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "advanced.settings",
-    "ts.external.directory.path": "C:\\Program Files\\JetBrains\\IntelliJ IDEA 2024.2.1\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_MARK_IGNORED_FILES_AS_EXCLUDED&quot;: &quot;true&quot;,
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;Spring Boot.KoiVeterinaryServiceCenterApplication.executor&quot;: &quot;Run&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;nam&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Phuong Nam/Desktop/SWP391/DEMO&quot;,
+    &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;advanced.settings&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2024.2.1\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
-  "keyToStringList": {
-    "DatabaseDriversLRU": [
-      "sqlserver"
+  &quot;keyToStringList&quot;: {
+    &quot;DatabaseDriversLRU&quot;: [
+      &quot;sqlserver&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\Phuong Nam\Desktop\SWP391\Group03_SE1872_KoiVeterinaryServiceCenter\.idea" />
@@ -123,8 +143,8 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-9823dce3aa75-28b599e66164-intellij.indexing.shared.core-IU-242.23726.103" />
-        <option value="bundled-js-predefined-d6986cc7102b-5c90d61e3bab-JavaScript-IU-242.23726.103" />
+        <option value="bundled-jdk-9823dce3aa75-b114ca120d71-intellij.indexing.shared.core-IU-242.21829.142" />
+        <option value="bundled-js-predefined-d6986cc7102b-7c0b70fcd90d-JavaScript-IU-242.21829.142" />
       </set>
     </attachedChunks>
   </component>
@@ -150,8 +170,14 @@
       <workItem from="1729902269534" duration="608000" />
       <workItem from="1729906299174" duration="1696000" />
       <workItem from="1729932099399" duration="56000" />
-      <workItem from="1729932173837" duration="2023000" />
-      <workItem from="1729952721899" duration="17000" />
+      <workItem from="1729932173837" duration="10491000" />
+      <workItem from="1729958495379" duration="226000" />
+      <workItem from="1729959021848" duration="1222000" />
+      <workItem from="1729960275279" duration="504000" />
+      <workItem from="1729960940964" duration="1217000" />
+      <workItem from="1729962211704" duration="28000" />
+      <workItem from="1729990021290" duration="36080000" />
+      <workItem from="1730087917243" duration="6839000" />
     </task>
     <task id="LOCAL-00001" summary="push all because forgot">
       <option name="closed" value="true" />
@@ -329,7 +355,63 @@
       <option name="project" value="LOCAL" />
       <updated>1729871056546</updated>
     </task>
-    <option name="localTasksCounter" value="23" />
+    <task id="LOCAL-00023" summary="merge code thanglh and fix apiRequest for profitable my code">
+      <option name="closed" value="true" />
+      <created>1729935206791</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1729935206791</updated>
+    </task>
+    <task id="LOCAL-00024" summary="done dashboard to manage serviceType">
+      <option name="closed" value="true" />
+      <created>1730003687095</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1730003687096</updated>
+    </task>
+    <task id="LOCAL-00025" summary="done dashboard to manage serviceType part2">
+      <option name="closed" value="true" />
+      <created>1730016853023</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1730016853023</updated>
+    </task>
+    <task id="LOCAL-00026" summary="done dashboard to manage info fish">
+      <option name="closed" value="true" />
+      <created>1730027366942</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1730027366942</updated>
+    </task>
+    <task id="LOCAL-00027" summary="done FindDoctor Front end">
+      <option name="closed" value="true" />
+      <created>1730040005762</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1730040005762</updated>
+    </task>
+    <task id="LOCAL-00028" summary="done FindDoctor Front end part2">
+      <option name="closed" value="true" />
+      <created>1730041311806</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1730041311806</updated>
+    </task>
+    <task id="LOCAL-00029" summary="fix update doctor img">
+      <option name="closed" value="true" />
+      <created>1730044853102</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1730044853102</updated>
+    </task>
+    <option name="localTasksCounter" value="30" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -347,11 +429,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="push all because forgot" />
-    <MESSAGE value="update" />
-    <MESSAGE value="update before merge ricon branch" />
-    <MESSAGE value="update view username when login success" />
-    <MESSAGE value="done view profile" />
     <MESSAGE value="done update profile" />
     <MESSAGE value="update view css" />
     <MESSAGE value="done demo dashboard and view profile and update profile for admin" />
@@ -370,6 +447,13 @@
     <MESSAGE value="update entity customer" />
     <MESSAGE value="update some of file" />
     <MESSAGE value="update all entity" />
-    <option name="LAST_COMMIT_MESSAGE" value="update all entity" />
+    <MESSAGE value="merge code thanglh and fix apiRequest for profitable my code" />
+    <MESSAGE value="done dashboard to manage serviceType" />
+    <MESSAGE value="done dashboard to manage serviceType part2" />
+    <MESSAGE value="done dashboard to manage info fish" />
+    <MESSAGE value="done FindDoctor Front end" />
+    <MESSAGE value="done FindDoctor Front end part2" />
+    <MESSAGE value="fix update doctor img" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix update doctor img" />
   </component>
 </project>

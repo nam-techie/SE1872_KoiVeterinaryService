@@ -15,6 +15,7 @@ public class Zone {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(columnDefinition = "NVARCHAR(MAX)")
     private String name;
     
     private long fee;

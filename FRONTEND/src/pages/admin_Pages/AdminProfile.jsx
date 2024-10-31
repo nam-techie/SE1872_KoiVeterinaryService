@@ -1,7 +1,7 @@
 // eslint-disable-next-line no-unused-vars
 import React, { useState, useEffect } from 'react';
 import { FaEdit, FaSave, FaEye, FaEyeSlash } from 'react-icons/fa';
-import '../admin_pages/styles/AdminProfile.css';
+import './styles/AdminProfile.css';
 import {useAdminInfo} from "./hooks/useAdminInfo.js";
 import LoadingCat from '../../components/LoadingCat.jsx';
 

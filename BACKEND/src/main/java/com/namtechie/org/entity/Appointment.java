@@ -61,8 +61,8 @@ public class Appointment {
     @JsonManagedReference
     private Payment payment;
 
-    @OneToMany(mappedBy = "appointment",cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToOne(mappedBy = "appointment",cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonManagedReference
-    private List<MedicalRecorded> medicalRecorded;
+    private MedicalRecorded medicalRecorded;
 
 }

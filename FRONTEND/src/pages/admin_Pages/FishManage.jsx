@@ -4,6 +4,7 @@ import './styles/FishManage.css';
 import LoadingCat from '../../components/LoadingCat.jsx';
 import useFish from './hooks/useFish';
 import EditFishModal from './EditFishModal';
+import Pagination from '../../components/Pagination';
 
 const FishManage = () => {
     const { fishes, loading, error, fetchFishes } = useFish();
@@ -11,6 +12,8 @@ const FishManage = () => {
     const [sortBy, setSortBy] = useState('id');
     const [sortOrder, setSortOrder] = useState('asc');
     const [editingFish, setEditingFish] = useState(null);
+    const [currentPage, setCurrentPage] = useState(1);
+    const ITEMS_PER_PAGE = 8;
 
     useEffect(() => {
         fetchFishes();
@@ -68,6 +71,13 @@ const FishManage = () => {
         setEditingFish(null); // Đóng modal
     };
 
+    // Tính toán dữ liệu cho trang hiện tại
+    const totalPages = Math.ceil(filteredFishes.length / ITEMS_PER_PAGE);
+    const currentFishes = filteredFishes.slice(
+        (currentPage - 1) * ITEMS_PER_PAGE,
+        currentPage * ITEMS_PER_PAGE
+    );
+
     return (
         <div className="fish-manage">
             <div className="dashboard-header">
@@ -93,8 +103,12 @@ const FishManage = () => {
                     >
                         <option value="id">Sắp xếp theo ID</option>
                         <option value="name">Sắp xếp theo Tên</option>
+                        <option value="breed">Sắp xếp theo Giống loài</option>
                         <option value="age">Sắp xếp theo Tuổi</option>
+                        <option value="color">Sắp xếp theo Màu sắc</option>
                         <option value="weight">Sắp xếp theo Cân nặng</option>
+                        <option value="healthStatus">Sắp xếp theo Tình trạng sức khỏe</option>
+
                     </select>
                 </div>
                 <button
@@ -109,18 +123,18 @@ const FishManage = () => {
                 <table>
                     <thead>
                         <tr>
-                            <th>MS hồ sơ</th>
-                            <th>Tên cá</th>
-                            <th>Giống loài</th>
-                            <th>Tuổi</th>
-                            <th>Màu sắc</th>
-                            <th>Cân nặng (kg)</th>
-                            <th>Tình trạng sức khỏe</th>
+                            <th onClick={() => handleSort('id')}>MS hồ sơ</th>
+                            <th onClick={() => handleSort('name')}>Tên cá</th>
+                            <th onClick={() => handleSort('breed')}>Giống loài</th>
+                            <th onClick={() => handleSort('age')}>Tuổi</th>
+                            <th onClick={() => handleSort('color')}>Màu sắc</th>
+                            <th onClick={() => handleSort('weight')}>Cân nặng (kg)</th>
+                            <th onClick={() => handleSort('healthStatus')}>Tình trạng sức khỏe</th>
                             <th>Hành động</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {filteredFishes.map((fish) => (
+                        {currentFishes.map((fish) => (
                             <tr key={fish.id}>
                                 <td>{fish.appointmentId}</td>
                                 <td>{fish.name}</td>
@@ -138,6 +152,12 @@ const FishManage = () => {
                         ))}
                     </tbody>
                 </table>
+                
+                <Pagination 
+                    currentPage={currentPage}
+                    totalPages={totalPages}
+                    onPageChange={setCurrentPage}
+                />
             </div>
             {editingFish && (
                 <EditFishModal

@@ -19,9 +19,9 @@ function FindDoctor() {
     }, []);
 
     const filteredDoctors = doctors.filter(doctor =>
-        doctor.fullName.toLowerCase().includes(searchTerm.toLowerCase()) &&
-        (specialty === '' || doctor.doctorInfo.specialty === specialty) &&
-        (experience === '' || doctor.experience >= parseInt(experience))
+        (doctor?.fullName?.toLowerCase() || '').includes(searchTerm.toLowerCase()) &&
+        (specialty === '' || doctor?.doctorInfo?.specialty === specialty) &&
+        (experience === '' || doctor?.experience >= parseInt(experience))
     );
 
     const handleDoctorClick = async (doctor) => {

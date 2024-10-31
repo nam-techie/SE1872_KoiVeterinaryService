@@ -1,6 +1,7 @@
 package com.namtechie.org.model.request;
 
 import lombok.Data;
+import org.springframework.web.multipart.MultipartFile;
 
 @Data
 public class DoctorRequest {
@@ -10,4 +11,5 @@ public class DoctorRequest {
     String specialty;
     String description;
     String qualification;
+    MultipartFile ImageUrl;
 }

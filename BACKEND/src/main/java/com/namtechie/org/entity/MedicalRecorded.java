@@ -12,20 +12,24 @@ public class MedicalRecorded {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @ManyToOne
-    @JoinColumn(name = "appointment_id", nullable = false)
+    @OneToOne
+    @JoinColumn(name = "appointment_id",nullable = false)
     @JsonBackReference
     private Appointment appointment;
 
+    @Column(columnDefinition = "NVARCHAR(MAX)")
     private String name;
 
+    @Column(columnDefinition = "NVARCHAR(MAX)")
     private String breed;
 
     private int age;
 
+    @Column(columnDefinition = "NVARCHAR(MAX)")
     private String color;
 
     private float weight;
 
+    @Column(columnDefinition = "NVARCHAR(MAX)")
     private String healthStatus;
 }

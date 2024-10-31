@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 
 import java.util.List;
@@ -26,14 +27,14 @@ public class Customers {
     private List<Appointment> appointment;
 
 
-    @Column(name = "fullName", length = 255)
+    @Column(name = "full_name", length = 255, columnDefinition = "NVARCHAR(MAX)")
     private String fullName;
 
 
     @Column(name = "phone", length = 50)
     private String phone;
 
-    @Column(name = "address", length = 255)
+    @Column(name = "address", length = 255, columnDefinition = "NVARCHAR(MAX)")
     private String address;
 
     public Customers() {

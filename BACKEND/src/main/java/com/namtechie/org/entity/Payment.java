@@ -22,7 +22,7 @@ public class Payment {
 
     @OneToMany(mappedBy = "payment", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonBackReference
-    private List<TransactionDetail> transactions;
+    private List<PaymentDetail> transactions;
 
     @Column
     private long totalFee;

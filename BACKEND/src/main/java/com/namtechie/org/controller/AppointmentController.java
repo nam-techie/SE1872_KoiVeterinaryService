@@ -1,21 +1,19 @@
 package com.namtechie.org.controller;
 
-import com.namtechie.org.entity.Appointment;
-import com.namtechie.org.entity.AppointmentStatus;
-import com.namtechie.org.entity.Doctor;
-import com.namtechie.org.entity.ServiceType;
-import com.namtechie.org.entity.Zone;
+import com.namtechie.org.entity.*;
 import com.namtechie.org.model.Schedule;
+import com.namtechie.org.model.response.AppointmentResponse;
+import com.namtechie.org.model.response.AppointmentStatusResponse;
+import com.namtechie.org.repository.AppointmentRepository;
+import com.namtechie.org.repository.PaymentDetailRepository;
 import com.namtechie.org.service.*;
 import com.namtechie.org.model.request.AppointmentRequest;
-import com.namtechie.org.model.request.DoctorConfirmRequest;
 import com.namtechie.org.service.AppointmentService;
 import com.namtechie.org.service.TokenService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.data.repository.query.Param;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -25,10 +23,10 @@ import java.sql.Time;
 import java.util.List;
 import java.util.Map;
 
-@RequestMapping("/api")
+@RequestMapping("/api/customer")
 @RestController
+@PreAuthorize("hasAuthority('CUSTOMER')")
 @SecurityRequirement(name = "api")
-@CrossOrigin(origins = "http://localhost:5741")
 public class AppointmentController {
 
     @Autowired
@@ -50,81 +48,82 @@ public class AppointmentController {
     AppointmentService appointmentService;
 
     @Autowired
+    private AppointmentRepository appointmentRepository;
+
+    @Autowired
     PaymentService paymentService;
 
-    @GetMapping(value = "/getFreeScheduleByDoctorId", produces = "application/json")
-    public ResponseEntity<Map<String, List<Schedule>>> getFreeScheduleByDoctorId(@Valid @RequestHeader("AuthenticationToken") String authorizationHeader, @RequestParam long doctorId) {
-        String token = tokenService.getToken(authorizationHeader);
-        if (tokenService.getAccountByToken(token) != null) {
-            return ResponseEntity.ok(scheduleService.findFreeScheduleByDoctorId(doctorId));
+    @Autowired
+    PaymentDetailRepository paymentDetailRepository;
+
+
+    @GetMapping("/listTrueStatus/{paymentId}")
+    public ResponseEntity<List<PaymentDetail>> listFalseStatus(@PathVariable long paymentId) {
+        List<PaymentDetail> paymentDetails = paymentDetailRepository.findListByPaymentIdAndStatus(paymentId, true);
+        return  ResponseEntity.ok(paymentDetails);
+    }
+
+    @GetMapping("/listAppointment/{id}")
+    public ResponseEntity<AppointmentResponse> getAllAppointment(@PathVariable long id) {
+        try {
+            AppointmentResponse appointment = appointmentService.getListAppoint(id);
+            return new ResponseEntity<>(appointment, HttpStatus.OK);  // Trả về HTTP 200 OK
+        } catch (Exception e) {
+            // Log lỗi ra nếu cần
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);  // Trả về HTTP 500 nếu có lỗi
         }
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+    }
+
+
+    @GetMapping("/getListFreeDoctor")
+    public ResponseEntity<List<Object[]>> getListFreeDoctor() {
+        List<Object[]> doctorAppointmentCounts = appointmentRepository.findDoctorAppointmentCounts();
+        return ResponseEntity.ok(doctorAppointmentCounts);
+    }
+
+    @GetMapping(value = "/getFreeScheduleByDoctorId")
+    public ResponseEntity<Map<String, List<Schedule>>> getFreeScheduleByDoctorId(@RequestParam long doctorId) {
+
+        return ResponseEntity.ok(scheduleService.findFreeScheduleByDoctorId(doctorId, false));
+
     }
 
     @GetMapping(value = "/getFreeScheduleWithTime", produces = "application/json")
-    public ResponseEntity<Map<String, List<Schedule>>> getFreeScheduleWithTime(@Valid @RequestHeader("AuthenticationToken") String authorizationHeader) {
-        String token = tokenService.getToken(authorizationHeader);
-        if (tokenService.getAccountByToken(token) != null) {
-            return ResponseEntity.ok(scheduleService.findFreeSchedule());
-        }
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+    public ResponseEntity<Map<String, List<Schedule>>> getFreeScheduleWithTime() {
+        return ResponseEntity.ok(scheduleService.findFreeSchedule());
     }
 
-    @GetMapping(value = "/testFreeScheduleWithTime", produces = "application/json")
+    @GetMapping(value = "/testFreeScheduleWithTime")
     public ResponseEntity testFreeScheduleWithTime() {
         return ResponseEntity.ok(appointmentService.findAppointmentByDoctorIdAndBookingDateAndBookingTime((long) 1, Date.valueOf("2024-10-16"), Time.valueOf("14:00:00")));
     }
 
-    @GetMapping(value = "/getFreeSchedule", produces = "application/json")
-    public ResponseEntity<Map<String, List<Schedule>>> getFreeSchedule(@Valid @RequestHeader("AuthenticationToken") String authorizationHeader) {
-        String token = tokenService.getToken(authorizationHeader);
-        if (tokenService.getAccountByToken(token) != null) {
-            return ResponseEntity.ok(scheduleService.findFreeScheduleOfSession());
-        }
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+    @GetMapping(value = "/getFreeSchedule")
+    public ResponseEntity<Map<String, List<Schedule>>> getFreeSchedule() {
+        return ResponseEntity.ok(scheduleService.findFreeScheduleOfSession());
     }
 
-    @PostMapping("/createAppointment")
-    @PreAuthorize("hasAuthority('CUSTOMER')")
-    public ResponseEntity createAppointment(@Valid @RequestBody AppointmentRequest appointmentRequest) {
-            Appointment appointment = appointmentService.createAppointment(appointmentRequest);
-            return ResponseEntity.ok(appointment);
+    @PostMapping(value = "/createAppointment", produces = "application/json" )
+    public ResponseEntity createAppointment(@RequestBody AppointmentRequest appointmentRequest) {
+        Appointment appointment = appointmentService.createAppointment(appointmentRequest);
+        return ResponseEntity.ok(appointment);
     }
 
-
-    @GetMapping("/getAppointment")
-    @PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity getAppointments() {
-        List<Appointment> appointmentResponses = appointmentService.getAllAppointments();
-        return ResponseEntity.ok(appointmentResponses);
-    }
 
     //Tạm thời bỏ lấy Zone ở đây.
     //Cái này còn hơi đắng đo mà chắc cần token mà
     @GetMapping(value = "/getAllZone", produces = "application/json")
-    public ResponseEntity<List<Zone>> getAllZone(@Valid @RequestHeader("AuthenticationToken") String authorizationHeader) {
-        String token = tokenService.getToken(authorizationHeader);
-        if (tokenService.getAccountByToken(token) != null) {
-            return ResponseEntity.ok(zoneService.findAll());
-        }
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+    public List<Zone> getAllZone() {
+        return zoneService.findAll();
     }
 
     //Tạm thời bở nó ở đây đợi nó có nhà mới
     //Toi nghĩ Service Type thằng nào lấy xem chả được nhỉ?
     @GetMapping(value = "/getAllServiceType", produces = "application/json")
-    public ResponseEntity<List<ServiceType>> getAllServiceType() {
-        return ResponseEntity.ok(serviceTypesService.findAll());
+    public List<ServiceType> getAllServiceType() {
+        return serviceTypesService.findService();
     }
 
-
-
-    @PutMapping("/isDoctorConfirm/{appointmentId}")
-    @PreAuthorize("hasAuthority('VETERINARY')")
-    public ResponseEntity isConfirm(@PathVariable long appointmentId,@Valid @RequestBody DoctorConfirmRequest doctorConfirmRequest) {
-        AppointmentStatus appointmentStatus = appointmentService.confirmDoctorAppointment(appointmentId,doctorConfirmRequest);
-        return ResponseEntity.ok(appointmentStatus);
-    }
 
     //Nằm dỡ ní ơi
     @GetMapping("/getAllDoctor")
@@ -132,11 +131,75 @@ public class AppointmentController {
         return ResponseEntity.ok(doctorService.getAllDoctors());
     }
 
-    @GetMapping("/getDoctorAuto")
-    public ResponseEntity getVeterianAuto(@Param("BookingDate") String bookingDate, @Param("BookingTime") String bookingTimeStr) {
-        Doctor doctor = appointmentService.findAvailableDoctor(bookingDate, bookingTimeStr);
-        return ResponseEntity.ok(doctor);
+//    @GetMapping("/getDoctorAuto")
+//    public ResponseEntity getVeterianAuto(@Param("BookingDate") String bookingDate, @Param("BookingTime") String bookingTimeStr) {
+//        Doctor doctor = appointmentService.findAvailableDoctor(bookingDate, bookingTimeStr);
+//        return ResponseEntity.ok(doctor);
+//    }
+
+    @GetMapping("/listAppointmentUser")
+    public List<AppointmentStatusResponse> listAppointmentCustomer() {
+        List<AppointmentStatusResponse> listAppointment = appointmentService.getListAppointmentCustomer();
+        return listAppointment;
     }
+
+    @GetMapping("/findAppointmentDoctorById/{accountId}")
+    @PreAuthorize("hasAuthority('VETERINARY')")
+    public ResponseEntity findAppointmentDoctorById(@PathVariable long accountId) {
+        List<Appointment> appointmentResponses = appointmentService.findAppointmentByAccountId(accountId);
+        return ResponseEntity.ok(appointmentResponses);
+    }
+
+    @GetMapping("/findAppoinmentId/{accountId}")
+    @PreAuthorize("hasAuthority('VETERINARY')")
+    public ResponseEntity findAppoinmentId(@PathVariable long accountId) {
+        long appointmentId = appointmentService.findAppointmentIdStep(accountId);
+        return ResponseEntity.ok(appointmentId);
+    }
+//
+//    @GetMapping("/getAppointmentIdForUser/{accountId}")
+//    @PreAuthorize("hasAuthority('CUSTOMER')")
+//    public ResponseEntity getAppointmentIdForUser(@PathVariable long accountId) {
+//        long appointmentId = appointmentService.getAppointmentIdForUser(accountId);
+//        return ResponseEntity.ok(appointmentId);
+//    }
+
+
+
+    @PutMapping("/cancelAppointmentByCustomer/{appointmentId}")
+    public ResponseEntity cancelAppointmentByCustomer(@PathVariable long appointmentId) {
+        appointmentService.cancelAppointmentByCustomer(appointmentId);
+        return ResponseEntity.ok("Đã hủy thành công");
+    }
+
+
+
+//    @GetMapping("/countAppointment/{id}")
+//    @PreAuthorize("hasAuthority('CUSTOMER')")
+//    public ResponseEntity countAppointment(@PathVariable long id,@Param("BookingDate") String bookingDate) {
+//        int count = appointmentService.countAppointmentsForDoctorOnDate(id, bookingDate);
+//        return ResponseEntity.ok(count);
+//    }
+
+//    @GetMapping("/getDoctorhaveAppointmentMin")
+//    @PreAuthorize("hasAuthority('CUSTOMER')")
+//    public ResponseEntity getDoctorhaveAppointmentMin(@Param("BookingDate") String bookingDate, @Param("BookingTime") String bookingTime) {
+//        Doctor doctor = appointmentService.findAvailableDoctor(bookingDate, bookingTime);
+//        return ResponseEntity.ok(doctor);
+//    }
+
+    @PostMapping("/sendUrlPayment/{appointmentId}")
+    public ResponseEntity<String> createPaymentTotalUrl(@PathVariable long appointmentId) {
+        try {
+            String paymentUrl = paymentService.returnUrlPayment(appointmentId);
+            return ResponseEntity.ok(paymentUrl);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Đã xảy ra lỗi khi tạo URL thanh toán.");
+        }
+    }
+
 
 }
 

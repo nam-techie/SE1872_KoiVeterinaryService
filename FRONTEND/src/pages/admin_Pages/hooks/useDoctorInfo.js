@@ -31,16 +31,20 @@ export const useDoctorInfo = () => {
         }
     };
 
-    const updateDoctorInfo = async (originalPhone, doctorData) => {
+    const updateDoctorInfo = async (originalPhone, formData) => {
         try {
-            const response = await axiosInstance.put(`/admin/updateDoctorInfo/${originalPhone}`, doctorData);
-            await fetchAllDoctors(); // Cập nhật lại danh sách sau khi cập nhật
+            const response = await axiosInstance.put(
+                `/admin/updateDoctorInfo/${originalPhone}`, 
+                formData,
+                {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                    },
+                }
+            );
             return response.data;
-        } catch (err) {
-            if (err.response && err.response.status === 409) {
-                throw new Error('Số điện thoại đã được sử dụng bởi cá nhân khác.');
-            }
-            throw new Error('Có lỗi xảy ra khi cập nhật thông tin bác sĩ');
+        } catch (error) {
+            throw new Error(error.response?.data?.message || 'Lỗi khi cập nhật thông tin bác sĩ');
         }
     };
     

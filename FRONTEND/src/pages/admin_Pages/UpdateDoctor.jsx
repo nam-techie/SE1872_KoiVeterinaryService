@@ -9,6 +9,7 @@ const UpdateDoctor = ({ doctor, onClose, onUpdate }) => {
     const { updateDoctorInfo, loading } = useDoctorInfo();
     const [doctorInfo, setDoctorInfo] = useState(doctor);
     const [error, setError] = useState(null);
+    const [previewImage, setPreviewImage] = useState(null);
     const originalPhone = doctor.phone; // Lưu số điện thoại ban đầu
 
     const handleInputChange = (e) => {
@@ -19,14 +20,53 @@ const UpdateDoctor = ({ doctor, onClose, onUpdate }) => {
         }));
     };
 
+    const handleImageChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            // Lưu file ảnh vào state
+            setDoctorInfo(prevInfo => ({
+                ...prevInfo,
+                imageFile: file  // Lưu file gốc
+            }));
+
+            // Tạo preview ảnh
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setPreviewImage(reader.result);
+            };
+            reader.readAsDataURL(file);
+        }
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (Object.values(doctorInfo).some(value => value === '')) {
             setError('Vui lòng điền đầy đủ thông tin');
             return;
         }
+
         try {
-            const updatedDoctor = await updateDoctorInfo(originalPhone, doctorInfo);
+            const formData = new FormData();
+            
+            // Thêm các thông tin cơ bản
+            formData.append('fullName', doctorInfo.fullName);
+            formData.append('phone', doctorInfo.phone);
+            formData.append('specialty', doctorInfo.specialty);
+            formData.append('experience', doctorInfo.experience);
+            formData.append('qualification', doctorInfo.qualification);
+            formData.append('description', doctorInfo.description);
+
+            // Thêm file ảnh với key là 'imageUrl'
+            if (doctorInfo.imageFile) {
+                formData.append('imageUrl', doctorInfo.imageFile);
+            }
+
+            // Log để kiểm tra formData
+            for (let pair of formData.entries()) {
+                console.log(pair[0] + ': ' + pair[1]);
+            }
+
+            const updatedDoctor = await updateDoctorInfo(originalPhone, formData);
             onUpdate(updatedDoctor);
         } catch (err) {
             setError(err.message || 'Có lỗi xảy ra khi cập nhật thông tin bác sĩ');
@@ -46,7 +86,21 @@ const UpdateDoctor = ({ doctor, onClose, onUpdate }) => {
             {loading ? <LoadingCat /> : (
                 <div className="update-doctor">
                     <div className="doctor-avatar">
-                        <span>{getInitials(doctorInfo.fullName)}</span>
+                        {previewImage || doctorInfo.imageUrl ? (
+                            <img src={previewImage || doctorInfo.imageUrl} alt={`Ảnh đại diện của ${doctorInfo.fullName}`} />
+                        ) : (
+                            <span>{getInitials(doctorInfo.fullName)}</span>
+                        )}
+                        <input
+                            type="file"
+                            id="avatar-upload"
+                            accept="image/*"
+                            onChange={handleImageChange}
+                            style={{ display: 'none' }}
+                        />
+                        <label htmlFor="avatar-upload" className="avatar-upload-label">
+                            Thay đổi ảnh
+                        </label>
                     </div>
                     <h2>Cập nhật thông tin bác sĩ</h2>
                     {error && <div className="error-message">{error}</div>}

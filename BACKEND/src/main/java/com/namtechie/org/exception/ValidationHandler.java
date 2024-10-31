@@ -22,7 +22,7 @@ public class ValidationHandler {
 
         // Lấy thông báo lỗi từ exception và xây dựng chuỗi thông báo
         for (FieldError fieldError : exception.getBindingResult().getFieldErrors()) {
-            message.append(fieldError.getField()).append(": ").append(fieldError.getDefaultMessage()).append(". ");
+            message.append(fieldError.getDefaultMessage()).append(". ");
         }
         return new ResponseEntity<>(message.toString(), HttpStatus.BAD_REQUEST);
     }
@@ -63,6 +63,16 @@ public class ValidationHandler {
     @ExceptionHandler(ExpiredJwtException.class)
     public ResponseEntity<String> handleExpiredJwtException(ExpiredJwtException exception) {
         return new ResponseEntity<>("Token đã hết hạn, vui lòng đăng nhập lại.", HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler(DoctorNotAvailableException.class)
+    public ResponseEntity<String> handleDoctorNotAvailableException(DoctorNotAvailableException exception) {
+        return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(FuncErrorException.class)
+    public ResponseEntity<String> handleFuncErrorException(FuncErrorException exception) {
+        return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
     }
 }
 

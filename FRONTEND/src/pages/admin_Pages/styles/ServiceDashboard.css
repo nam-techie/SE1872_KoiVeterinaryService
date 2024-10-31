@@ -1,36 +1,37 @@
 .service-dashboard {
     background-color: #fcc151;
-    padding: 20px;
+    padding: 15px;
     border-radius: 8px;
     margin-left: 40px;
+    font-size: 13px;
 }
 
 .dashboard-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
 }
 
 .dashboard-header h2 {
-    font-size: 24px;
+    font-size: 20px;
     color: #333;
     margin: 0;
 }
 
 .action-buttons {
     display: flex;
-    gap: 10px;
+    gap: 8px;
 }
 
 .add-service-btn {
     display: flex;
     align-items: center;
-    padding: 10px 15px;
+    padding: 8px 12px;
     border: none;
     border-radius: 4px;
     cursor: pointer;
-    font-size: 14px;
+    font-size: 13px;
     background-color: #2196F3;
     color: white;
     transition: background-color 0.3s;
@@ -42,10 +43,10 @@
 
 .search-sort-container {
     display: flex;
-    gap: 10px;
-    margin-bottom: 20px;
+    gap: 8px;
+    margin-bottom: 15px;
     background-color: #fff;
-    padding: 15px;
+    padding: 12px;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
@@ -57,86 +58,124 @@
 
 .search-input, .sort-select {
     width: 100%;
-    padding: 10px;
+    padding: 8px;
     border: 1px solid #ddd;
     border-radius: 4px;
-    font-size: 14px;
+    font-size: 13px;
 }
 
 .search-icon {
     position: absolute;
-    right: 10px;
+    right: 8px;
     top: 50%;
     transform: translateY(-50%);
     color: #888;
+    font-size: 13px;
 }
 
 .sort-order-btn {
-    padding: 10px;
+    padding: 8px;
     background-color: #fcc151;
     color: white;
     border: none;
     border-radius: 4px;
     cursor: pointer;
-    font-size: 14px;
+    font-size: 13px;
 }
 
 .sort-order-btn:hover {
     background-color: #1e88e5;
 }
 
+/* Bảng dịch vụ */
 .service-table {
     background-color: white;
     border-radius: 8px;
-    overflow: hidden;
+    overflow-x: auto;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    min-height: 600px;
+    display: flex;
+    flex-direction: column;
 }
 
 .service-table table {
     width: 100%;
     border-collapse: collapse;
+    font-size: 13px;
+    flex: 1;
 }
 
 .service-table th,
 .service-table td {
-    padding: 12px;
+    padding: 8px;
     text-align: left;
     border-bottom: 1px solid #ddd;
+    white-space: nowrap;
 }
 
 .service-table th {
     background-color: #f2f2f2;
-    font-weight: bold;
+    font-weight: 600;
+    font-size: 13px;
+    color: #333;
 }
 
+.service-table tr:hover {
+    background-color: #f5f5f5;
+}
+
+/* Cột mô tả */
 .service-table td.description {
-    max-width: 300px; /* Điều chỉnh chiều rộng tối đa của cột mô tả */
-    white-space: pre-wrap; /* Cho phép xuống dòng và giữ khoảng trắng */
-    word-wrap: break-word; /* Ngắt từ khi cần thiết */
+    max-width: 150px;
+    width: 150px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
+/* Tooltip cho mô tả */
+.service-table td.description:hover::after {
+    content: attr(title);
+    position: absolute;
+    left: 0;
+    top: 100%;
+    z-index: 1;
+    background: #333;
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    white-space: normal;
+    max-width: 250px;
+}
+
+/* Badge trạng thái */
 .status-badge {
-    padding: 5px 10px;
-    border-radius: 20px;
-    font-size: 0.9em;
+    padding: 2px 6px;
+    border-radius: 10px;
+    font-size: 12px;
+    font-weight: 500;
 }
 
 .status-badge.active {
-    background-color: #4CAF50;
-    color: white;
+    background-color: #e8f5e9;
+    color: #4CAF50;
 }
 
 .status-badge.inactive {
-    background-color: #f44336;
-    color: white;
+    background-color: #ffebee;
+    color: #f44336;
 }
 
+/* Nút thao tác */
 .edit-btn, .delete-btn, .restore-btn {
-    padding: 5px 10px;
-    margin: 0 5px;
+    padding: 4px 8px;
+    margin: 0 2px;
+    font-size: 12px;
     border: none;
     border-radius: 4px;
     cursor: pointer;
+    transition: all 0.2s;
 }
 
 .edit-btn {
@@ -144,14 +183,40 @@
     color: white;
 }
 
-.edit-btn:hover {
-    background-color: #1e88e5;
-}
-
 .delete-btn {
-    color: #f44336;
+    background-color: #f44336;
+    color: white;
 }
 
-.edit-btn:hover, .delete-btn:hover {
-    background-color: rgba(0, 0, 0, 0.1);
+.restore-btn {
+    background-color: #4CAF50;
+    color: white;
 }
+
+.edit-btn:hover, .delete-btn:hover, .restore-btn:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+}
+
+/* Responsive */
+@media screen and (max-width: 768px) {
+    .search-sort-container {
+        flex-direction: column;
+    }
+    
+    .service-dashboard {
+        margin-left: 20px;
+        padding: 10px;
+    }
+    
+    .service-table {
+        font-size: 12px;
+    }
+}
+
+tbody tr {
+    height: 60px;
+}
+
+/* Import pagination styles */
+@import '../../../styles/Pagination.css';

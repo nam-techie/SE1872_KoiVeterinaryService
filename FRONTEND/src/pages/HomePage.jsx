@@ -197,7 +197,7 @@ function HomePage() {
                     {doctorLoading && <p>Đang tải danh sách bác sĩ...</p>}
                     {doctorError && <p>{doctorError}</p>}
                     <Slider {...settings2}>
-                        {doctors.map((doctor) => (
+                        {doctors && Array.isArray(doctors) && doctors.map((doctor) => (
                             <div key={doctor.id}>
                                 <DoctorCard
                                     fullname={doctor.fullname}
