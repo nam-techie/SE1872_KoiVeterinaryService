@@ -5,9 +5,12 @@ import Footer from "../../components/Footer";
 import useManageCus from '../../hooks/useManageCus';
 import { FaSearch } from 'react-icons/fa';
 import LoadingCat from '../../components/LoadingCat.jsx';
+import Pagination from '../../components/Pagination';
+import FeedbackForm from '../../components/FeedbackForm';
+import { axiosInstance } from '../../service/apiRequest.js';
 
 const ManageAppointment = () => {
-    const { getAppointments } = useManageCus();
+    const { getAppointments, cancelAppointment, getPaymentUrl } = useManageCus();
     const [appointments, setAppointments] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -16,6 +19,13 @@ const ManageAppointment = () => {
     const [sortBy, setSortBy] = useState('appointmentDate');
     const [sortOrder, setSortOrder] = useState('asc');
     const [statusFilter, setStatusFilter] = useState('all');
+    
+    // Thêm state cho phân trang
+    const [currentPage, setCurrentPage] = useState(1);
+    const appointmentsPerPage = 6; // Số lượng lịch hẹn trên mỗi trang
+
+    const [showFeedbackForm, setShowFeedbackForm] = useState(false);
+    const [selectedAppointmentId, setSelectedAppointmentId] = useState(null);
 
     const fetchAppointments = async () => {
         try {
@@ -62,8 +72,72 @@ const ManageAppointment = () => {
                 const dateB = new Date(b.appointmentDate);
                 return sortOrder === 'asc' ? dateA - dateB : dateB - dateA;
             }
+            if (sortBy === 'status') {
+                const statusA = a.appointmentStatus === 'Đã đánh giá' ? 1 : 0;
+                const statusB = b.appointmentStatus === 'Đã đánh giá' ? 1 : 0;
+                return sortOrder === 'asc' ? statusA - statusB : statusB - statusA;
+            }
             return 0;
         });
+
+    // Tính toán tổng số trang
+    const totalPages = Math.ceil(filteredAndSortedAppointments.length / appointmentsPerPage);
+
+    // Lấy appointments cho trang hiện tại
+    const currentAppointments = filteredAndSortedAppointments.slice(
+        (currentPage - 1) * appointmentsPerPage,
+        currentPage * appointmentsPerPage
+    );
+
+    // Xử lý thay đổi trang
+    const handlePageChange = (pageNumber) => {
+        setCurrentPage(pageNumber);
+    };
+
+    const handleRating = (appointmentId) => {
+        console.log('handleRating called with ID:', appointmentId);
+        setSelectedAppointmentId(appointmentId);
+        setShowFeedbackForm(true);
+        console.log('showFeedbackForm set to:', true);
+    };
+
+    const handleFeedbackSubmit = async (feedbackData) => {
+        try {
+            // Gọi API để gửi feedback
+            await axiosInstance.post('/customer/submitFeedback', feedbackData);
+            setShowFeedbackForm(false);
+            // Có thể thêm thông báo thành công
+        } catch (error) {
+            console.error('Error submitting feedback:', error);
+            // Xử lý lỗi
+        }
+    };
+
+    const handleCancelAppointment = async (appointmentId) => {
+        if (window.confirm('Bạn có chắc chắn muốn hủy lịch hẹn này không?')) {
+            try {
+                await cancelAppointment(appointmentId);
+                // Cập nhật lại danh sách lịch hẹn
+                fetchAppointments();
+                alert('Hủy lịch hẹn thành công');
+            } catch (error) {
+                alert('Có lỗi xảy ra khi hủy lịch hẹn: ' + error.message);
+            }
+        }
+    };
+
+    const handlePayment = async (appointmentId) => {
+        try {
+            const paymentUrl = await getPaymentUrl(appointmentId);
+            if (paymentUrl) {
+                window.location.href = paymentUrl; // Chuyển hướng đến trang thanh toán
+            } else {
+                throw new Error('Không nhận được URL thanh toán');
+            }
+        } catch (error) {
+            alert('Có lỗi xảy ra khi tạo đường dẫn thanh toán: ' + error.message);
+        }
+    };
 
     return (
         <>
@@ -101,21 +175,28 @@ const ManageAppointment = () => {
                             <option value="all">Tất cả trạng thái</option>
                             <option value="Chờ bác sĩ xác nhận">Chờ bác sĩ xác nhận</option>
                             <option value="Đã xác nhận">Đã xác nhận</option>
-                            <option value="Đang cung cấp d���ch vụ">Đang cung cấp dịch vụ</option>
+                            <option value="Đang cung cấp dịch vụ">Đang cung cấp dịch vụ</option>
                             <option value="Thực hiện xong dịch vụ">Thực hiện xong dịch vụ</option>
                             <option value="Chờ thanh toán tiền dịch vụ">Chờ thanh toán tiền dịch vụ</option>
                             <option value="Thanh toán tiền dịch vụ thành công">Thanh toán tiền dịch vụ thành công</option>
                             <option value="Hoàn thành">Hoàn thành</option>
+                            <option value="Đã đánh giá">Đã đánh giá</option>
                             <option value="Đã hủy lịch">Đã hủy lịch</option>
                         </select>
                         
                         <select
                             className={styles.sortSelect}
-                            value={sortOrder}
-                            onChange={(e) => setSortOrder(e.target.value)}
+                            value={`${sortBy}-${sortOrder}`}
+                            onChange={(e) => {
+                                const [newSortBy, newSortOrder] = e.target.value.split('-');
+                                setSortBy(newSortBy);
+                                setSortOrder(newSortOrder);
+                            }}
                         >
-                            <option value="asc">Sắp xếp theo ngày ↑</option>
-                            <option value="desc">Sắp xếp theo ngày ↓</option>
+                            <option value="appointmentDate-asc">Sắp xếp theo ngày ↑</option>
+                            <option value="appointmentDate-desc">Sắp xếp theo ngày ↓</option>
+                            <option value="status-asc">Chưa đánh giá trước</option>
+                            <option value="status-desc">Đã đánh giá trước</option>
                         </select>
                     </div>
                 </div>
@@ -133,7 +214,7 @@ const ManageAppointment = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {filteredAndSortedAppointments.map((appointment) => (
+                            {currentAppointments.map((appointment) => (
                                 <tr key={appointment.appointmentId}>
                                     <td>{appointment.appointmentId}</td>
                                     <td>{appointment.appointmentTime}</td>
@@ -152,6 +233,7 @@ const ManageAppointment = () => {
                                             <button 
                                                 className={styles.cancelButton}
                                                 style={{ marginRight: '10px' }}
+                                                onClick={() => handleCancelAppointment(appointment.appointmentId)}
                                             >
                                                 Hủy lịch
                                             </button>
@@ -161,8 +243,18 @@ const ManageAppointment = () => {
                                             <button 
                                                 className={styles.paymentButton}
                                                 style={{ marginRight: '10px' }}
+                                                onClick={() => handlePayment(appointment.appointmentId)}
                                             >
                                                 Thanh toán
+                                            </button>
+                                        )}
+                                        {appointment.appointmentStatus === 'Hoàn thành' && (
+                                            <button 
+                                                className={styles.ratingButton}
+                                                style={{ marginRight: '10px' }}
+                                                onClick={() => handleRating(appointment.appointmentId)}
+                                            >
+                                                Đánh giá
                                             </button>
                                         )}
                                         <button className={styles.detailButton}>
@@ -174,8 +266,26 @@ const ManageAppointment = () => {
                         </tbody>
                     </table>
                 </div>
+
+                {/* Thêm phân trang ở đây */}
+                <div className={styles.paginationWrapper}>
+                    <Pagination 
+                        currentPage={currentPage}
+                        totalPages={totalPages}
+                        onPageChange={handlePageChange}
+                    />
+                </div>
             </div>
             <Footer />
+
+            {showFeedbackForm && (
+                console.log('Rendering FeedbackForm:', { showFeedbackForm, selectedAppointmentId }),
+                <FeedbackForm
+                    appointmentId={selectedAppointmentId}
+                    onSubmit={handleFeedbackSubmit}
+                    onClose={() => setShowFeedbackForm(false)}
+                />
+            )}
         </>
     );
 };

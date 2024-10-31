@@ -7,7 +7,7 @@ import LoadingCat from '../../components/LoadingCat';
 const AppointmentDashboard = () => {
     const ITEMS_PER_PAGE = 10;
 
-    const { appointments, loading, error, refetch, cancelAppointment } = useAppointment();
+    const { appointments, loading, error, refetch, cancelAppointment, confirmPaymentDeposit } = useAppointment();
     const [searchTerm, setSearchTerm] = useState('');
     const [sortBy, setSortBy] = useState('id');
     const [sortOrder, setSortOrder] = useState('desc');
@@ -20,6 +20,7 @@ const AppointmentDashboard = () => {
     const [showViewModal, setShowViewModal] = useState(false);
     const [statusFilter, setStatusFilter] = useState('');
     const [showPaymentModal, setShowPaymentModal] = useState(false);
+    const [paymentError, setPaymentError] = useState(null);
 
     useEffect(() => {
         // Fetch lần đầu khi component mount
@@ -28,7 +29,7 @@ const AppointmentDashboard = () => {
         // Set interval để fetch mỗi 30 giây
         const interval = setInterval(() => {
             refetch();
-        }, 30000);
+        }, 20000);
 
         // Cleanup function
         return () => clearInterval(interval);
@@ -183,6 +184,21 @@ const AppointmentDashboard = () => {
         setShowPaymentModal(true);
     };
 
+    // Thêm hàm xử lý xác nhận thanh toán
+    const handleConfirmPayment = async (appointment) => {
+        try {
+            await confirmPaymentDeposit(appointment.id);
+            setSuccessMessage('Xác nhận thanh toán thành công!');
+            setShowPaymentModal(false);
+            // Tự động ẩn thông báo sau 3 giây
+            setTimeout(() => {
+                setSuccessMessage(null);
+            }, 3000);
+        } catch (error) {
+            setPaymentError(error.message);
+        }
+    };
+
     return (
         <div className="appointment-dashboard">
             {/* Thêm thông báo thành công */}
@@ -280,7 +296,7 @@ const AppointmentDashboard = () => {
                                     <div className="action-buttons">
                                         {/* Kiểm tra nếu trạng thái là chờ thanh toán hoặc thực hiện xong dịch vụ */}
                                         {(appointment.appointmentStatus === 'Chờ thanh toán tiền dịch vụ' || 
-                                          appointment.appointmentStatus === 'Thực hiện xong dịch vụ') ? (
+                                          appointment.appointmentStatus === 'Chờ thanh toán tổng tiền') ? (
                                             // Chỉ hiển thị nút xác nhận thanh toán
                                             <button 
                                                 className="action-btn payment"
@@ -462,7 +478,7 @@ const AppointmentDashboard = () => {
                                                         ({demoAppointmentDetails.doctorInfo.specialization})
                                                     </span>
                                                 </>
-                                            ) : 'Chưa phân công bác sĩ'}
+                                            ) : 'Chưa ph��n công bác sĩ'}
                                         </span>
                                     </div>
                                     <div className="detail-item">

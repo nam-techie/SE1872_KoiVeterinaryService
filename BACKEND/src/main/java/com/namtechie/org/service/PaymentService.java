@@ -85,6 +85,82 @@ public class PaymentService {
     }
 
 
+    public String returnUrlPayment(long appointmentId) throws Exception {
+        Appointment appointment = appointmentRepository.findAppointmentById(appointmentId);
+        if (appointment == null) {
+            throw new IllegalArgumentException("Không tìm thấy thông tin cuộc hẹn với ID: " + appointmentId);
+        }
+
+        List<AppointmentStatus> statuses = appointmentStatusRepository.findByAppointment(appointment);
+
+        AppointmentStatus latestStatus = null;
+        for (AppointmentStatus status : statuses) {
+            if (latestStatus == null || status.getCreate_date().toLocalDateTime().isAfter(latestStatus.getCreate_date().toLocalDateTime())) {
+                latestStatus = status;
+            }
+        }
+
+        if (latestStatus == null) {
+            throw new IllegalArgumentException("Không tìm thấy trạng thái mới nhất cho cuộc hẹn với ID: " + appointmentId);
+        }
+
+        String urlPayment = null;
+
+        // Kiểm tra trạng thái để xác định URL thanh toán
+        if (latestStatus.getStatus().equals("Đã xác nhận")) { // .getStatus() để lấy tên trạng thái
+            urlPayment = sendPaymentDeposit(appointmentId);
+        } else if (latestStatus.getStatus().equals("Thực hiện xong dịch vụ")) {
+            urlPayment = sendPaymentTotalUrlForCustomer(appointmentId);
+        }
+
+        // Kiểm tra nếu urlPayment vẫn là null sau các điều kiện
+        if (urlPayment == null) {
+            throw new RuntimeException("Không thể tạo URL thanh toán cho cuộc hẹn với ID: " + appointmentId);
+        }
+
+        return urlPayment;
+    }
+
+    public void acceptStatus(long appointmentId) {
+        try {
+            System.out.println("Begin acceptStatus for appointmentId: " + appointmentId);
+            Appointment appointment = appointmentRepository.findAppointmentById(appointmentId);
+            if (appointment == null) {
+                throw new IllegalArgumentException("Không tìm thấy thông tin cuộc hẹn với ID: " + appointmentId);
+            }
+
+            List<AppointmentStatus> statuses = appointmentStatusRepository.findByAppointment(appointment);
+
+            AppointmentStatus latestStatus = null;
+            for (AppointmentStatus status : statuses) {
+                if (latestStatus == null || status.getCreate_date().toLocalDateTime().isAfter(latestStatus.getCreate_date().toLocalDateTime())) {
+                    latestStatus = status;
+                }
+            }
+
+            if (latestStatus == null) {
+                throw new IllegalArgumentException("Không tìm thấy trạng thái mới nhất cho cuộc hẹn với ID: " + appointmentId);
+            }
+
+            System.out.println("Latest status found: " + latestStatus.getStatus());
+
+            // Kiểm tra trạng thái để xác định URL thanh toán
+            if (latestStatus.getStatus().equals("Chờ thanh toán tiền dịch vụ")) {
+                System.out.println("Calling generatePaymentDeposit");
+                generatePaymentDeposit(appointmentId);
+            } else if (latestStatus.getStatus().equals("Chờ thanh toán tổng tiền")) {
+                System.out.println("Calling updateTotalFee");
+                updateTotalFee(appointmentId);
+            }
+            System.out.println("End acceptStatus for appointmentId: " + appointmentId);
+
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("Lỗi hệ thống!");
+        }
+    }
+
+
+
     // của customer thuc hien
     public String sendPaymentDeposit(long appointmentId) throws Exception {
         // Lấy thông tin cuộc hẹn từ AppointmentService
@@ -101,20 +177,6 @@ public class PaymentService {
 
         // Lấy giá tiền đặt cọc từ loại dịch vụ
         long depositPrice = serviceType.getBase_price();
-        PaymentDepositResponse paymentDepositResponse = new PaymentDepositResponse();
-        paymentDepositResponse.setAppointmentId(appointmentId);
-        paymentDepositResponse.setDepositPrice(depositPrice);
-
-        Payment paymentTotal = paymentRepository.findByAppointmentId(appointmentId);
-
-        // Nếu chưa có, tạo bản ghi mới
-        paymentTotal = new Payment();
-        paymentTotal.setAppointment(appointment);
-        paymentTotal.setTotalFee(serviceType.getBase_price());
-        paymentRepository.save(paymentTotal);  // Lưu Payment mới
-
-        generateTransactionRecords(appointmentId, paymentTotal, depositPrice, serviceType.getName());
-
 
         // Gọi hàm createUrl để tạo URL thanh toán và trả về chuỗi đó
         String urlToPayment = createUrl(appointmentId, depositPrice);
@@ -128,7 +190,7 @@ public class PaymentService {
     }
 
     //Admin thuc hien
-    public PaymentDepositResponse generatePaymentDeposit(long appointmentId) {
+    public void generatePaymentDeposit(long appointmentId) {
         Appointment appointment = appointmentRepository.findAppointmentById(appointmentId);
 
 
@@ -159,7 +221,6 @@ public class PaymentService {
 
         appointmentStatusRepository.save(appointmentStatus);
 
-        return paymentDepositResponse;
     }
 
     public void generatePaymentZone(long appointmentId) {
@@ -191,6 +252,7 @@ public class PaymentService {
 
     @Autowired
     MedicalRecordedRepository medicalRecordedRepository;
+
     // bac si thuc hien
     public void saveTransactionRecordedAndDoneWorking(long appointmentId, ServiceTypeRequestAll serviceTypeRequestAll) throws Exception {
         // Lấy thông tin cuộc hẹn từ AppointmentService
@@ -215,6 +277,9 @@ public class PaymentService {
         // Cập nhật lại danh sách MedicalRecorded cho Appointment
         appointment.setMedicalRecorded(medicalRecorded);
         appointmentRepository.save(appointment);
+
+        generatePaymentZone(appointmentId);
+
 
         long totalPrice = 0;
         totalPrice += appointment.getZone().getFee();
@@ -287,7 +352,6 @@ public class PaymentService {
         // Lấy thông tin cuộc hẹn từ AppointmentService
         Appointment appointment = appointmentRepository.findAppointmentById(appointmentId);
 
-        generatePaymentZone(appointmentId);
 
         if (appointment == null) {
             throw new IllegalArgumentException("Không tìm thấy thông tin cuộc hẹn với ID: " + appointmentId);
@@ -320,6 +384,7 @@ public class PaymentService {
         return urlToPayment;
 
     }
+
 
     //admin thuc hien
     public void updateTotalFee(long appointmentId) {

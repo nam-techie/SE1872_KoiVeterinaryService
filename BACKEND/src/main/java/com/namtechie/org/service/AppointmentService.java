@@ -6,6 +6,7 @@ import com.namtechie.org.exception.NotFoundException;
 import com.namtechie.org.model.request.ServiceTypeRequestAll;
 import com.namtechie.org.model.response.AppointmentResponse;
 import com.namtechie.org.model.response.AppointmentStatusResponse;
+import com.namtechie.org.model.response.PaymentDepositResponse;
 import com.namtechie.org.model.response.ServiceDetailResponse;
 import com.namtechie.org.repository.AppointmentRepository;
 
@@ -130,7 +131,7 @@ public class AppointmentService {
 
 
             Customers customer = account.getCustomer();
-            if(appointmentRequest.getPhone() == null){
+            if (appointmentRequest.getPhone() == null) {
                 throw new NotFoundException("Loi he thong");
             }
             customer.setPhone(appointmentRequest.getPhone()); // lưu số đth khách hàng
@@ -156,7 +157,6 @@ public class AppointmentService {
             Date date = Date.valueOf(appointmentRequest.getBookingDate());
             Time time = Time.valueOf(appointmentRequest.getBookingTime());
 
-
             Doctor doctor = null;
             if (appointmentRequest.getDoctorId() != 0) {
                 doctor = doctorRepository.findDoctorById(appointmentRequest.getDoctorId());
@@ -172,7 +172,22 @@ public class AppointmentService {
             }
 
             //khám tại trung tam
-            if (appointmentRequest.getServiceTypeId() == 3) {
+            if (appointmentRequest.getServiceTypeId() == 1) { // dịch vụ tư vấn
+                if (doctor == null) {
+                    long hour = time.toLocalTime().getHour();
+
+                    Time roundedTime = Time.valueOf(hour + "00:00:00");
+
+                    appointmentInfo.setAppointmentBookingDate(date);
+                    appointmentInfo.setAppointmentBookingTime(time);
+                    System.out.println(date);
+                    System.out.println(time);
+                    doctor = findAvailableDoctor1(appointmentRequest.getBookingDate(), appointmentRequest.getBookingTime());
+                    appointment.setDoctorAssigned(false);
+                    appointment.setDoctor(doctor);
+                    appointment.setZone(zoneRepository.findById(15));
+                }
+            } else if (appointmentRequest.getServiceTypeId() == 3) {
                 Zone centerZone = zoneRepository.findById(1);
                 //khách hàng chọn bác sĩ
                 if (doctor != null) {
@@ -186,6 +201,8 @@ public class AppointmentService {
                 } else { //khách hàng ko chọn bác sĩ
                     appointmentInfo.setAppointmentBookingDate(date);
                     appointmentInfo.setAppointmentBookingTime(time);
+                    System.out.println(date);
+                    System.out.println(time);
                     doctor = findAvailableDoctor(appointmentRequest.getBookingDate(), appointmentRequest.getBookingTime());
                     appointment.setDoctorAssigned(false);
                     appointment.setDoctor(doctor);
@@ -201,28 +218,6 @@ public class AppointmentService {
                     appointmentInfo.setAppointmentBookingDate(date);
                     appointmentInfo.setAppointmentBookingTime(time);
                     appointment.setZone(zone);
-                }
-            } else if (appointmentRequest.getServiceTypeId() == 1) { // dịch vụ tư vấn
-                if (doctor == null) {
-                    int hour = time.toLocalTime().getHour();
-
-                    Time roundedTime = Time.valueOf(hour + ":00:00");
-
-                    System.out.println("Giờ làm tròn: " + roundedTime);
-                    //doctor = findAvailableDoctor1(String.valueOf(appointmentRequest.getBookingDate()), String.valueOf(roundedTime));
-                    appointmentInfo.setAppointmentBookingTime(roundedTime);
-                    appointmentInfo.setAppointmentBookingDate(date);
-                    doctor = findAvailableDoctor1(appointmentRequest.getBookingDate(), String.valueOf(roundedTime));
-                    appointment.setDoctorAssigned(false);
-                    appointment.setDoctor(doctor);
-                    appointment.setZone(zoneRepository.findById(15));
-
-//                    appointmentInfo.setAppointmentBookingDate(date);
-//                    appointmentInfo.setAppointmentBookingTime(time);
-//                    doctor = findAvailableDoctor(appointmentRequest.getBookingDate(), appointmentRequest.getBookingTime());
-//                    appointment.setDoctorAssigned(false);
-//                    appointment.setDoctor(doctor);
-//                    appointment.setZone(centerZone);
                 }
             }
 
@@ -248,10 +243,10 @@ public class AppointmentService {
             return appointmentRepository.save(appointment);
         } catch (DoctorNotAvailableException e) {
             throw new DoctorNotAvailableException(e.getMessage());
-        } catch(NullPointerException e){
+        } catch (NullPointerException e) {
             e.printStackTrace();
             throw new NullPointerException("Lỗi hệ thống");
-        }catch (Exception e) {
+        } catch (Exception e) {
             throw new RuntimeException("Không thể đặt dịch vụ");
         }
     }
@@ -362,45 +357,43 @@ public class AppointmentService {
      */
     private Long findDoctorWithFewestAppointments(List<Long> availableDoctorIds, List<Object[]> doctorAppointmentCounts) {
         Long selectedDoctorId = null;
-        Long fewestAppointments = Long.MAX_VALUE;  // Đặt một giá trị lớn để so sánh
-
-        for (Object[] doctorCount : doctorAppointmentCounts) {
-            Long doctorId = (Long) doctorCount[0];
-            Long appointmentCount = (Long) doctorCount[1];
-
-            if (availableDoctorIds.contains(doctorId) && appointmentCount < fewestAppointments) {
-                selectedDoctorId = doctorId;
-                fewestAppointments = appointmentCount;
-            }
-        }
-
-        // Nếu có nhiều bác sĩ có số lượng lịch hẹn bằng nhau, chọn ngẫu nhiên một bác sĩ
+        Long fewestAppointments = Long.MAX_VALUE;
         List<Long> doctorsWithFewestAppointments = new ArrayList<>();
+
+        // Bước 1: Tìm bác sĩ có số lượng lịch hẹn ít nhất
         for (Object[] doctorCount : doctorAppointmentCounts) {
             Long doctorId = (Long) doctorCount[0];
             Long appointmentCount = (Long) doctorCount[1];
 
-            if (availableDoctorIds.contains(doctorId) && appointmentCount.equals(fewestAppointments)) {
-                doctorsWithFewestAppointments.add(doctorId);
+            if (availableDoctorIds.contains(doctorId)) {
+                if (appointmentCount < fewestAppointments) {
+                    fewestAppointments = appointmentCount;
+                    doctorsWithFewestAppointments.clear();
+                    doctorsWithFewestAppointments.add(doctorId);
+                } else if (appointmentCount.equals(fewestAppointments)) {
+                    doctorsWithFewestAppointments.add(doctorId);
+                }
             }
         }
 
+        // Bước 2: Chọn ngẫu nhiên một bác sĩ trong số các bác sĩ có ít lịch hẹn nhất
         if (!doctorsWithFewestAppointments.isEmpty()) {
             Collections.shuffle(doctorsWithFewestAppointments); // Xáo trộn danh sách
-            selectedDoctorId = doctorsWithFewestAppointments.get(0); // Lấy ngẫu nhiên 1 bác sĩ
+            selectedDoctorId = doctorsWithFewestAppointments.get(0); // Chọn ngẫu nhiên một bác sĩ
         }
 
-        return selectedDoctorId;  // Trả về bác sĩ có ít lịch đặt nhất
+        return selectedDoctorId;
     }
 
 
-    private Long getRandomDoctorId(List<Long> doctorIds) {
-        if (doctorIds == null || doctorIds.isEmpty()) {
-            return null; // Trả về null nếu danh sách rỗng
-        }
-        Collections.shuffle(doctorIds); // Xáo trộn danh sách
-        return doctorIds.get(0); // Lấy doctorId ngẫu nhiên từ danh sách đã xáo trộn
-    }
+
+//    private Long getRandomDoctorId(List<Long> doctorIds) {
+//        if (doctorIds == null || doctorIds.isEmpty()) {
+//            return null; // Trả về null nếu danh sách rỗng
+//        }
+//        Collections.shuffle(doctorIds); // Xáo trộn danh sách
+//        return doctorIds.get(0); // Lấy doctorId ngẫu nhiên từ danh sách đã xáo trộn
+//    }
 
 
     public Doctor findAvailableDoctorForSession(String bookingDate, String bookingTime) {
@@ -497,7 +490,7 @@ public class AppointmentService {
         return list;
     }
 
-//    public long getAppointmentIdForUser(long accountId) {
+    //    public long getAppointmentIdForUser(long accountId) {
 //        long  customerId = customersRepository.findCustomersIdByAccountId(accountId);
 //
 //        List<Appointment> list = appointmentRepository.findAppointmentByCustomersId(customerId);
@@ -541,16 +534,19 @@ public class AppointmentService {
 
         List<Appointment> list = appointmentRepository.findAppointmentByDoctorId(doctor.getId());
 
-        for(Appointment appointment : list) {
+        for (Appointment appointment : list) {
             List<AppointmentStatus> appointmentStatus = appointment.getAppointmentStatus();
-            for(AppointmentStatus status : appointmentStatus) {
-                if(status.getStatus().equals("Chờ bác sĩ xác nhận")){
+            for (AppointmentStatus status : appointmentStatus) {
+                if (status.getStatus().equals("Chờ bác sĩ xác nhận")) {
                     return appointment.getId();
                 }
             }
         }
         return 0;
     }
+
+    @Autowired
+    PaymentService paymentService;
 
 
     public AppointmentStatus confirmDoctorAppointment(long appointmentId, DoctorConfirmRequest doctorConfirmRequest) {
@@ -560,10 +556,32 @@ public class AppointmentService {
 
 
             AppointmentStatus status = new AppointmentStatus();
-            status.setAppointment(updateAppointmentStatus.getAppointment());
+            status.setAppointment(appointment);
             if (doctorConfirmRequest.isConfirmed() == true) {
                 status.setNotes(doctorConfirmRequest.getNote());
                 status.setStatus("Đã xác nhận");
+
+                ServiceType serviceType = appointment.getServiceType();
+                if (serviceType == null) {
+                    throw new IllegalArgumentException("Không tìm thấy loại dịch vụ cho cuộc hẹn với ID: " + appointmentId);
+                }
+
+                // Lấy giá tiền đặt cọc từ loại dịch vụ
+                long depositPrice = serviceType.getBase_price();
+                PaymentDepositResponse paymentDepositResponse = new PaymentDepositResponse();
+                paymentDepositResponse.setAppointmentId(appointmentId);
+                paymentDepositResponse.setDepositPrice(depositPrice);
+
+                Payment paymentTotal = paymentRepository.findByAppointmentId(appointmentId);
+
+                // Nếu chưa có, tạo bản ghi mới
+                paymentTotal = new Payment();
+                paymentTotal.setAppointment(appointment);
+                paymentTotal.setTotalFee(serviceType.getBase_price());
+                paymentRepository.save(paymentTotal);  // Lưu Payment mới
+
+                paymentService.generateTransactionRecords(appointmentId, paymentTotal, depositPrice, serviceType.getName());
+
             } else {
                 appointment.setCancel(true);
                 appointmentRepository.save(appointment);
@@ -577,16 +595,17 @@ public class AppointmentService {
         }
     }
 
-    public void cancelAppointmentByCustomer(long appointmentId, String role) {
+    public void cancelAppointmentByCustomer(long appointmentId) {
+        Account account = (Account) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Appointment appointment = appointmentRepository.findAppointmentById(appointmentId);
         appointment.setCancel(true);
         appointmentRepository.save(appointment);
 
         AppointmentStatus status = new AppointmentStatus();
-         status.setAppointment(appointment);
-         status.setStatus("Đã hủy lịch");
-         status.setNotes(role + " hủy");
-         appointmentStatusRepository.save(status);
+        status.setAppointment(appointment);
+        status.setStatus("Đã hủy lịch");
+        status.setNotes(account.getUsername() + " hủy");
+        appointmentStatusRepository.save(status);
     }
 
     @Autowired
@@ -651,7 +670,7 @@ public class AppointmentService {
         return appointmentResponses;
     }
 
-    public List<AppointmentStatusResponse> getListAppointmentCustomer(){
+    public List<AppointmentStatusResponse> getListAppointmentCustomer() {
         List<AppointmentStatusResponse> appointmentResponses = new ArrayList<>();
         Account account = (Account) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Customers customerId = customersRepository.findByAccountId(account.getId());
@@ -668,7 +687,6 @@ public class AppointmentService {
             Timestamp createdDate = appointmentInfo.getCreatedDate();
             appointmentStatusResponse.setAppointmentDate(new Date(createdDate.getTime())); // Chuyển Timestamp thành Date
             appointmentStatusResponse.setAppointmentTime(new Time(createdDate.getTime())); // Chuyển Timestamp thành Time
-
 
 
             ServiceType serviceType = serviceTypeRepository.findByAppointmentId(appointment.getId());
@@ -692,7 +710,6 @@ public class AppointmentService {
         }
         return appointmentResponses;
     }
-
 
 
     public AppointmentResponse getListAppoint(long appointmentId) {
@@ -737,10 +754,10 @@ public class AppointmentService {
             PaymentDetail paymentDetails = paymentDetailRepository.findByPaymentIdAndStatus(payment.getId(), false);
             List<ServiceDetailResponse> serviceDetailResponses = new ArrayList<>();
 
-                serviceDetailResponses.add(new ServiceDetailResponse(paymentDetails.getNotes(), paymentDetails.getPrice()));
-                System.out.println(serviceDetailResponses);
-                appointmentResponse.setTotalPrice(payment.getTotalFee());
-                appointmentResponse.setServiceDetails(serviceDetailResponses);
+            serviceDetailResponses.add(new ServiceDetailResponse(paymentDetails.getNotes(), paymentDetails.getPrice()));
+            System.out.println(serviceDetailResponses);
+            appointmentResponse.setTotalPrice(payment.getTotalFee());
+            appointmentResponse.setServiceDetails(serviceDetailResponses);
 
 
         } else if (latestStatus.getStatus().equals("Chờ thanh toán tổng tiền")) {
@@ -812,8 +829,6 @@ public class AppointmentService {
 
         // Thêm vào danh sách kết quả
         appointmentResponse.setPhoneNumber(infoCus.getPhone());
-
-
 
 
         return appointmentResponse;

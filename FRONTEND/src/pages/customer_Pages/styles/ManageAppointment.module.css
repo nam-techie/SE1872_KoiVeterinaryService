@@ -95,63 +95,74 @@
 }
 
 .status {
-    padding: 8px 16px;
+    padding: 8px 12px;
     border-radius: 20px;
     font-size: 14px;
-    font-weight: 600;
+    font-weight: 500;
     display: inline-block;
-    text-align: center;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
 }
 
-/* Chờ bác sĩ xác nhận */
+/* Trạng thái chờ xác nhận */
 .Chờbácsĩxácnhận {
-    background-color: #FFF3CD;
-    color: #997404;
-    border: 2px solid #FFE69C;
+    background-color: #FFF3E0;
+    color: #FF9800;
+    border: 1px solid #FF9800;
 }
 
-/* Đã xác nhận */
+/* Trạng thái đã xác nhận */
 .Đãxácnhận {
-    background-color: #CCE5FF;
-    color: #0A58CA;
-    border: 2px solid #9EC5FE;
-}
-
-/* Đang cung cấp dịch vụ */
-.Đangcungcấpdịchvụ {
-    background-color: #CFF4FC;
-    color: #055160;
-    border: 2px solid #9EEAF9;
-}
-
-/* Thực hiện xong dịch vụ */
-.Thựchiệnxongdịchvụ {
-    background-color: #DFF5E8;
-    color: #146C43;
-    border: 2px solid #75B798;
-}
-
-/* Chờ thanh toán tiền dịch vụ */
-.Chờthanhtoántiềndịchvụ {
-    background-color: #FFE5D0;
-    color: #B94700;
-    border: 2px solid #FFCD92;
-}
-
-/* Thanh toán tiền dịch vụ thành công */
-.Thanhtoántiềndịchvụthànhcông {
     background-color: #E8F5E9;
-    color: #2E7D32;
-    border: 2px solid #A5D6A7;
+    color: #4CAF50;
+    border: 1px solid #4CAF50;
 }
 
-/* Hoàn thành */
+/* Trạng thái đang cung cấp dịch vụ */
+.Đangcungcấpdịchvụ {
+    background-color: #E3F2FD;
+    color: #2196F3;
+    border: 1px solid #2196F3;
+}
+
+/* Trạng thái thực hiện xong dịch vụ */
+.Thựchiệnxongdịchvụ {
+    background-color: #E1F5FE;
+    color: #03A9F4;
+    border: 1px solid #03A9F4;
+}
+
+/* Trạng thái chờ thanh toán */
+.Chờthanhtoántiềndịchvụ {
+    background-color: #FCE4EC;
+    color: #E91E63;
+    border: 1px solid #E91E63;
+}
+
+/* Trạng thái thanh toán thành công */
+.Thanhtoántiềndịchvụthànhcông {
+    background-color: #F3E5F5;
+    color: #9C27B0;
+    border: 1px solid #9C27B0;
+}
+
+/* Trạng thái hoàn thành */
 .Hoànthành {
-    background-color: #198754;
-    color: white;
-    border: 2px solid #146C43;
-    font-weight: 700;
+    background-color: #E8F5E9;
+    color: #4CAF50;
+    border: 1px solid #4CAF50;
+}
+
+/* Trạng thái đã hủy lịch */
+.Đãhủylịch {
+    background-color: #FFEBEE;
+    color: #F44336;
+    border: 1px solid #F44336;
+}
+
+/* Trạng thái đã đánh giá */
+.Đãđánhgiá {
+    background-color: #E1F0FF;
+    color: #0095FF;
+    border: 1px solid #0095FF;
 }
 
 .detailButton {
@@ -217,10 +228,61 @@
     box-shadow: 0 0 0 2px rgba(0,102,204,0.2);
 }
 
-/* Đã hủy lịch */
-.Đãhủylịch {
-    background-color: #F8D7DA;
-    color: #842029;
-    border: 2px solid #F5C2C7;
-    font-weight: 600;
+.paginationWrapper {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+/* Styles cho các nút phân trang */
+:global(.pagination) {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+:global(.page-btn) {
+    padding: 8px 16px;
+    border: 1px solid #ddd;
+    background-color: white;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+:global(.page-btn:hover) {
+    background-color: #f0f0f0;
+}
+
+:global(.page-btn:disabled) {
+    background-color: #f5f5f5;
+    cursor: not-allowed;
+    color: #999;
+}
+
+:global(.page-info) {
+    padding: 8px 16px;
+    background-color: #f0f0f0;
+    border-radius: 4px;
+}
+
+.ratingButton {
+    padding: 8px 16px;
+    background-color: #ffd700; /* Màu vàng */
+    color: #000;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.ratingButton:hover {
+    background-color: #ffcd00;
+    transform: translateY(-1px);
+}
+
+.ratingButton:active {
+    transform: translateY(0);
 } 

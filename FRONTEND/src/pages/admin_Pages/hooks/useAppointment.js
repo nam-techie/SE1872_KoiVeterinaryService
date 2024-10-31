@@ -32,12 +32,25 @@ const useAppointment = () => {
         }
     };
 
+    const confirmPaymentDeposit = async (appointmentId) => {
+        try {
+            const response = await axiosInstance.post(`/admin/confirmPayment/${appointmentId}`);
+            // Cập nhật lại danh sách sau khi xác nhận thanh toán thành công
+            await fetchAppointments();
+            return response.data;
+        } catch (err) {
+            console.error('Lỗi khi xác nhận thanh toán:', err);
+            throw new Error('Có lỗi xảy ra khi xác nhận thanh toán');
+        }
+    };
+
     return {
         appointments,
         loading,
         error,
         refetch: fetchAppointments,
-        cancelAppointment
+        cancelAppointment,
+        confirmPaymentDeposit
     };
 };
 

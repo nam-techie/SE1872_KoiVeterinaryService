@@ -125,29 +125,34 @@ public class ScheduleService {
                 List<Integer> timeSlots = isMorning ? Arrays.asList(7, 8, 9, 10) : Arrays.asList(13, 14, 15, 16);
                 List<Appointment> appointments = appointmentService.findAllAppointmentOfSession(doctorId, date, isMorning);
 
-                if (appointments.size() >= 1 && appointments.get(0).getServiceType().getId() == 1) {
-                    // Lấy thời gian bắt đầu của cuộc hẹn
-                    Time currentStart = appointments.get(0).getAppointmentInfo().getAppointmentBookingTime();
-                    // Tính thời gian kết thúc (thêm 1 giờ)
-                    Time currentEnd = new Time(currentStart.getTime() + 3600000); // 1 giờ = 3600000 milliseconds
-
-                    // Đánh dấu chỉ một ca cụ thể là bận
-                    scheduleRequests.add(new Schedule(date, currentStart, currentEnd, false));
-                    continue; // Tiếp tục vòng lặp tiếp theo, không đánh dấu cả buổi là bận
+                if (appointments.size() == 1 && appointments.get(0).getServiceType().getId() != 3 ) {
+                    for (int hour : timeSlots) {
+                        Time currentStart = Time.valueOf(hour + ":00:00");
+                        Time currentEnd = Time.valueOf((hour + 1) + ":00:00");
+                        scheduleRequests.add(new Schedule(date, currentStart, currentEnd, false));
+                    }
+                    continue; // Nhảy qua vòng lặp tiếp tục cái khác.
                 }
-
 
                 for (int hour : timeSlots) {
                     Time currentStart = Time.valueOf(hour + ":00:00");
                     Time currentEnd = Time.valueOf((hour + 1) + ":00:00");
+
                     boolean isOccupied = appointments.stream().anyMatch(appointment -> {
                         Time start = appointment.getAppointmentInfo().getAppointmentBookingTime();
                         Time end = new Time(start.getTime() + 3600000); // Cộng 1 giờ
                         return (currentStart.equals(start) || currentStart.after(start)) && currentStart.before(end);
                     });
 
-                    scheduleRequests.add(new Schedule(date, currentStart, currentEnd, !isOccupied));
+                    // Đặt ca là "không rảnh" (false) chỉ nếu ca đã có người đặt
+                    if (isOccupied) {
+                        scheduleRequests.add(new Schedule(date, currentStart, currentEnd, false));
+                    } else {
+                        // Nếu chưa có ai đặt trong ca này thì đánh dấu là "rảnh"
+                        scheduleRequests.add(new Schedule(date, currentStart, currentEnd, true));
+                    }
                 }
+
             }
             freeSchedules.put(String.valueOf(date), scheduleRequests);
         }
@@ -169,7 +174,7 @@ public class ScheduleService {
                 List<Integer> timeSlots = isMorning ? Arrays.asList(7, 8, 9, 10) : Arrays.asList(13, 14, 15, 16);
                 List<Appointment> appointments = appointmentService.findAllAppointmentOfSession(doctorId, date, isMorning);
 
-                if (appointments.size() == 1 && appointments.get(0).getServiceType().getId() != 1) {
+                if (appointments.size() == 1 && appointments.get(0).getServiceType().getId() != 1 ) {
                     for (int hour : timeSlots) {
                         Time currentStart = Time.valueOf(hour + ":00:00");
                         Time currentEnd = Time.valueOf((hour + 1) + ":00:00");
@@ -181,14 +186,22 @@ public class ScheduleService {
                 for (int hour : timeSlots) {
                     Time currentStart = Time.valueOf(hour + ":00:00");
                     Time currentEnd = Time.valueOf((hour + 1) + ":00:00");
+
                     boolean isOccupied = appointments.stream().anyMatch(appointment -> {
                         Time start = appointment.getAppointmentInfo().getAppointmentBookingTime();
                         Time end = new Time(start.getTime() + 3600000); // Cộng 1 giờ
                         return (currentStart.equals(start) || currentStart.after(start)) && currentStart.before(end);
                     });
 
-                    scheduleRequests.add(new Schedule(date, currentStart, currentEnd, !isOccupied));
+                    // Đặt ca là "không rảnh" (false) chỉ nếu ca đã có người đặt
+                    if (isOccupied) {
+                        scheduleRequests.add(new Schedule(date, currentStart, currentEnd, false));
+                    } else {
+                        // Nếu chưa có ai đặt trong ca này thì đánh dấu là "rảnh"
+                        scheduleRequests.add(new Schedule(date, currentStart, currentEnd, true));
+                    }
                 }
+
             }
             freeSchedules.put(String.valueOf(date), scheduleRequests);
         }
