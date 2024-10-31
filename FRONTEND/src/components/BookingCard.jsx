@@ -1,4 +1,5 @@
-import styles from '../styles/BookingPage.module.css';
+
+import styles from '../pages/customer_Pages/styles/CustomerBookingPage.module.css';
 
 /* eslint-disable react/prop-types */
 export function ServiceTypeSelector({ serviceType, setServiceType, service }) {
@@ -26,12 +27,10 @@ export function PhoneInput({ phoneNumber, setPhoneNumber, error }) {
         <div className={styles.formGroup}>
             <label className={styles.label}>Số điện thoại:</label>
             <input
-                type="number"
+                type="text"
                 value={phoneNumber}
                 onChange={(e) => setPhoneNumber(e.target.value)}
                 className={styles.input}
-                maxLength="11"
-                placeholder="Nhập số điện thoại"
             />
             {error && <span className={styles.errorMessage}>{error}</span>}
         </div>
@@ -86,7 +85,7 @@ export function DoctorSelector({ selectedDoctor, handleDoctorSelect, doctors, di
                 <option value="dr0">Không chọn</option>
                 {doctors && doctors.map((doctor) => (
                     <option key={doctor.id} value={doctor.id}>
-                        {doctor.fullName || "Không có tên"} {/* Thêm fallback text */}
+                        {doctor.fullname}
                     </option>
                 ))}
             </select>
@@ -201,19 +200,8 @@ export const ConfirmationModal = ({
                                   }) => {
 
     const getNameById = (id, array) => {
-        // Xử lý trường hợp đặc biệt cho bác sĩ
-        if (id === 'dr0') return 'Không';
-        if (!id || !array) return 'Không xác định';
-        
-        // Nếu array chứa bác sĩ (có thuộc tính fullName)
-        if (array[0]?.fullName !== undefined) {
-            const doctor = array.find(doc => doc.id.toString() === id.toString());
-            return doctor?.fullName || 'Không xác định';
-        }
-        
-        // Xử lý cho các loại khác (service, district)
-        const item = array.find(item => item.id.toString() === id.toString());
-        return item?.name || 'Không xác định';
+        const item = array.find(el => el.id === id);
+        return item ? (item.fullName || item.name || 'Không xác định') : 'Không xác định';
     };
 
     const serviceTypeName = getNameById(serviceType, serviceTypeMap);
@@ -224,14 +212,10 @@ export const ConfirmationModal = ({
         <>
             <div className={styles.confirmationOverlay}></div> {/* Overlay để khóa tương tác bên ngoài */}
             <div className={styles.confirmationModal}>
-                <h2 style={{ whiteSpace: 'nowrap' }}>Xác nhận thông tin đặt dịch vụ</h2>
+                <h2>Xác nhận thông tin đặt dịch vụ</h2>
+                <hr />
                 {serviceType && (
-                    <span className={styles.fieldLabel}>
-                        Loại dịch vụ: 
-                        <span className={styles.fieldValue}>
-                            {getNameById(serviceType, serviceTypeMap)}
-                        </span>
-                    </span>
+                    <span className={styles.fieldLabel}>Loại dịch vụ: <span className={styles.fieldValue}>{serviceTypeName}</span></span>
                 )}
                 {phoneNumber && (
                     <span className={styles.fieldLabel}>Số điện thoại: <span className={styles.fieldValue}>{phoneNumber}</span></span>
@@ -264,6 +248,7 @@ export const ConfirmationModal = ({
                 {serviceType === '3' && (
                     <span className={styles.fieldLabel}>Bác sĩ đã chọn: <span className={styles.fieldValue}>{doctorName}</span></span>
                 )}
+                <hr />
 
                 <div className={styles.confirmationButtons}>
                     {/* Nút Xác nhận để gửi thông tin */}
