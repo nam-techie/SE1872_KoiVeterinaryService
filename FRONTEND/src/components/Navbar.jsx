@@ -90,7 +90,7 @@ export function CustomerNavBar() {
                                     <div className={styles.dropdownMenu}>
                                         <Link to="/customer/manage-appointment">Quản lí Lịch hẹn</Link>
                                         <hr/>
-                                        <Link to="/profile">Thông tin cá nhân</Link>
+                                        <Link to="/customer/profile">Thông tin cá nhân</Link>
                                         <hr/>
                                         <button onClick={handleLogout} className={styles.logoutButton}>
                                             Đăng xuất

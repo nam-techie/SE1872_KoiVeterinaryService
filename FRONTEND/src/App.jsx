@@ -21,6 +21,7 @@ import DoctorSchedulePage from "./pages/doctor_Pages/DoctorSchedulePage.jsx";
 import PageTitle from "./components/PageTitle.jsx";
 import CustomerAppointmentPage from "./pages/customer_Pages/CustomerAppointmentPage.jsx";
 import AdminDashboard from "./pages/admin_Pages/Dashboard.jsx";
+import CustomerProfile from "./pages/customer_Pages/CustomerProfile.jsx";
 
 
 function App() {
@@ -85,6 +86,14 @@ function App() {
                         <PageTitle title="Quản lí lịch hẹn">
                             <RoleBasedRoute allowedRoles={['CUSTOMER', 'ADMIN']}>
                                 <CustomerAppointmentPage/>
+                            </RoleBasedRoute>
+                        </PageTitle>
+                    }/>
+
+                    <Route path="/customer/profile" element={
+                        <PageTitle title="Thông tin cá nhân">
+                            <RoleBasedRoute allowedRoles={['CUSTOMER', 'ADMIN']}>
+                                <CustomerProfile/>
                             </RoleBasedRoute>
                         </PageTitle>
                     }/>

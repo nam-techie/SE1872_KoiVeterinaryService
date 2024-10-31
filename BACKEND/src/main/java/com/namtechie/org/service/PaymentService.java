@@ -59,16 +59,16 @@ public class PaymentService {
 //        return paymentResponse;
 //    }
 
-    public void generateTransactionRecords(long appointmentId,Payment payment, long price,String notes) {
+    public void generateTransactionRecords(long appointmentId, Payment payment, long price, String notes) {
         Payment paymentTotal = paymentRepository.findByAppointmentId(appointmentId);
 
         TransactionDetail transactionLogs = transactionRecordsRepository.findByPaymentIdAndPrice(paymentTotal.getId(), price);
 
-        if(transactionLogs != null){
+        if (transactionLogs != null) {
             transactionLogs.setStatus(true);
             transactionLogs.setNotes(notes);
             transactionRecordsRepository.save(transactionLogs);
-        }else{
+        } else {
             TransactionDetail transactionLog = new TransactionDetail();
             transactionLog.setPayment(payment);
             transactionLog.setTransactionType("Chuyen khoan");
@@ -81,7 +81,7 @@ public class PaymentService {
 
     }
 
-    public void updateTransactionRecords(){
+    public void updateTransactionRecords() {
 
     }
 
@@ -106,11 +106,11 @@ public class PaymentService {
 
         Payment paymentTotal = paymentRepository.findByAppointmentId(appointmentId);
 
-            // Nếu chưa có, tạo bản ghi mới
-            paymentTotal = new Payment();
-            paymentTotal.setAppointment(appointment);
-            paymentTotal.setTotalFee(serviceType.getBase_price());
-            paymentRepository.save(paymentTotal);  // Lưu Payment mới
+        // Nếu chưa có, tạo bản ghi mới
+        paymentTotal = new Payment();
+        paymentTotal.setAppointment(appointment);
+        paymentTotal.setTotalFee(serviceType.getBase_price());
+        paymentRepository.save(paymentTotal);  // Lưu Payment mới
 
         generateTransactionRecords(appointmentId, paymentTotal, depositPrice, "Đang chờ giao dịch chuyển tiền cọc dịch vụ!");
 
@@ -144,7 +144,7 @@ public class PaymentService {
 //        transactionLog.setStatus(true);
 //        transactionRecordsRepository.save(transactionLog);
 
-        generateTransactionRecords(appointmentId,paymentTotal,depositPrice,"Đã nhận tiền cọc dịch vụ!");
+        generateTransactionRecords(appointmentId, paymentTotal, depositPrice, "Đã nhận tiền cọc dịch vụ!");
 
 
         AppointmentStatus appointmentStatus = new AppointmentStatus();
@@ -166,7 +166,7 @@ public class PaymentService {
         Payment paymentTotal = paymentRepository.findByAppointmentId(appointmentId);
 
 
-      generateTransactionRecords(appointmentId, paymentTotal, zonePrice, "Đã chuyển tiền phí di chuyển!");
+        generateTransactionRecords(appointmentId, paymentTotal, zonePrice, "Đã chuyển tiền phí di chuyển!");
 
     }
 
@@ -179,7 +179,7 @@ public class PaymentService {
         Payment paymentTotal = paymentRepository.findByAppointmentId(appointmentId);
 
 
-      generateTransactionRecords(appointmentId, paymentTotal,serviceTypeFee, "Tiền phí dịch vụ kèm thêm!");
+        generateTransactionRecords(appointmentId, paymentTotal, serviceTypeFee, "Tiền phí dịch vụ kèm thêm!");
 
     }
 
@@ -241,7 +241,7 @@ public class PaymentService {
             paymentRepository.save(paymentTotal);  // Lưu Payment mới
         }
 
-        AppointmentStatus doneWorking  = new AppointmentStatus();
+        AppointmentStatus doneWorking = new AppointmentStatus();
 
         doneWorking.setAppointment(appointment);
         doneWorking.setStatus("Done");
@@ -290,9 +290,6 @@ public class PaymentService {
     }
 
 
-
-
-
     // Phương thức createUrl với tham số appointmentId
     public String createUrl(Long appointmentId, long paymentToPayment) throws Exception {
         // Lấy thông tin cuộc hẹn từ AppointmentService
@@ -321,7 +318,7 @@ public class PaymentService {
         String tmnCode = "T0HQKZLG";
         String secretKey = "F0LQRHMUCEDG0543CTWHY1H2VD10MLFD";
         String vnpUrl = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
-        String returnUrl = "https://blearning.vn/guide/swp/docker-local?orderID=" + appointment.getId() + "&random=" + randomString;
+        String returnUrl = "http://localhost:5741/customer/manage-appointment-local?orderID=" + appointment.getId() + "&random=" + randomString;
         String currCode = "VND";
 
         Map<String, String> vnpParams = new TreeMap<>();
@@ -330,8 +327,8 @@ public class PaymentService {
         vnpParams.put("vnp_TmnCode", tmnCode);
         vnpParams.put("vnp_Locale", "vn");
         vnpParams.put("vnp_CurrCode", currCode);
-        vnpParams.put("vnp_TxnRef", String.valueOf(appointment.getId()  + "&random=" + randomString));  // Sử dụng ID của Payment thay vì totalFee
-        vnpParams.put("vnp_OrderInfo", "Thanh toan cho ma GD: " + appointment.getId() + "&random=" + randomString );  // Sử dụng ID thay vì totalFee
+        vnpParams.put("vnp_TxnRef", String.valueOf(appointment.getId() + "&random=" + randomString));  // Sử dụng ID của Payment thay vì totalFee
+        vnpParams.put("vnp_OrderInfo", "Thanh toan cho ma GD: " + appointment.getId() + "&random=" + randomString);  // Sử dụng ID thay vì totalFee
         vnpParams.put("vnp_OrderType", "other");
         vnpParams.put("vnp_Amount", amount);
 
@@ -390,7 +387,7 @@ public class PaymentService {
         String tmnCode = "T0HQKZLG";
         String secretKey = "F0LQRHMUCEDG0543CTWHY1H2VD10MLFD";
         String vnpUrl = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
-        String returnUrl = "https://blearning.vn/guide/swp/docker-local?orderID=" + payment.getId();
+        String returnUrl = "http://localhost:5741/customer/manage-appointment-local?orderID=" + payment.getId();
         String currCode = "VND";
 
         Map<String, String> vnpParams = new TreeMap<>();
