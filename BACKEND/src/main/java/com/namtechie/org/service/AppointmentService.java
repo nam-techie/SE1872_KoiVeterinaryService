@@ -159,6 +159,8 @@ public class AppointmentService {
             Date date = Date.valueOf(appointmentRequest.getBookingDate());
             Time time = Time.valueOf(appointmentRequest.getBookingTime());
 
+
+
             Doctor doctor = null;
             if (appointmentRequest.getDoctorId() != 0) {
                 doctor = doctorRepository.findDoctorById(appointmentRequest.getDoctorId());
