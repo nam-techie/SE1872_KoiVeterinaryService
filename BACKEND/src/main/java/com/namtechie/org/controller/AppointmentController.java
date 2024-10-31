@@ -84,7 +84,7 @@ public class AppointmentController {
     @GetMapping(value = "/getFreeScheduleByDoctorId")
     public ResponseEntity<Map<String, List<Schedule>>> getFreeScheduleByDoctorId(@RequestParam long doctorId) {
 
-        return ResponseEntity.ok(scheduleService.findFreeScheduleByDoctorId(doctorId));
+        return ResponseEntity.ok(scheduleService.findFreeScheduleByDoctorId(doctorId, false));
 
     }
 
@@ -131,11 +131,11 @@ public class AppointmentController {
         return ResponseEntity.ok(doctorService.getAllDoctors());
     }
 
-    @GetMapping("/getDoctorAuto")
-    public ResponseEntity getVeterianAuto(@Param("BookingDate") String bookingDate, @Param("BookingTime") String bookingTimeStr) {
-        Doctor doctor = appointmentService.findAvailableDoctor(bookingDate, bookingTimeStr);
-        return ResponseEntity.ok(doctor);
-    }
+//    @GetMapping("/getDoctorAuto")
+//    public ResponseEntity getVeterianAuto(@Param("BookingDate") String bookingDate, @Param("BookingTime") String bookingTimeStr) {
+//        Doctor doctor = appointmentService.findAvailableDoctor(bookingDate, bookingTimeStr);
+//        return ResponseEntity.ok(doctor);
+//    }
 
     @GetMapping("/listAppointmentUser")
     public List<AppointmentStatusResponse> listAppointmentCustomer() {
@@ -181,12 +181,12 @@ public class AppointmentController {
 //        return ResponseEntity.ok(count);
 //    }
 
-    @GetMapping("/getDoctorhaveAppointmentMin")
-    @PreAuthorize("hasAuthority('CUSTOMER')")
-    public ResponseEntity getDoctorhaveAppointmentMin(@Param("BookingDate") String bookingDate, @Param("BookingTime") String bookingTime) {
-        Doctor doctor = appointmentService.findAvailableDoctor(bookingDate, bookingTime);
-        return ResponseEntity.ok(doctor);
-    }
+//    @GetMapping("/getDoctorhaveAppointmentMin")
+//    @PreAuthorize("hasAuthority('CUSTOMER')")
+//    public ResponseEntity getDoctorhaveAppointmentMin(@Param("BookingDate") String bookingDate, @Param("BookingTime") String bookingTime) {
+//        Doctor doctor = appointmentService.findAvailableDoctor(bookingDate, bookingTime);
+//        return ResponseEntity.ok(doctor);
+//    }
 
 
 }
