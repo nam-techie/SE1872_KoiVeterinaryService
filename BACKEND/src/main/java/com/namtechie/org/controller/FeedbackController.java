@@ -34,7 +34,7 @@ public class FeedbackController {
     }
 
     @GetMapping("/getFeedbackCustomer/{id}")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('CUSTOMER')")
     public ResponseEntity getFeedbackCustomer(@PathVariable long id) {
         FeedBack feedBack = feedbackService.getFeedbackCustomer(id);
         return ResponseEntity.ok(feedBack);

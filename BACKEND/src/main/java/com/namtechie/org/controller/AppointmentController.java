@@ -35,8 +35,7 @@ public class AppointmentController {
     @Autowired
     ZoneService zoneService;
 
-    @Autowired
-    ServiceTypesService serviceTypesService;
+
 
     @Autowired
     TokenService tokenService;
@@ -63,8 +62,8 @@ public class AppointmentController {
         return  ResponseEntity.ok(paymentDetails);
     }
 
-    @GetMapping("/listAppointment/{id}")
-    public ResponseEntity<AppointmentResponse> getAllAppointment(@PathVariable long id) {
+    @GetMapping("/listAppointmentDetail/{id}")
+    public ResponseEntity<AppointmentResponse> getAppointmentDetail(@PathVariable long id) {
         try {
             AppointmentResponse appointment = appointmentService.getListAppoint(id);
             return new ResponseEntity<>(appointment, HttpStatus.OK);  // Trả về HTTP 200 OK
@@ -105,8 +104,13 @@ public class AppointmentController {
 
     @PostMapping(value = "/createAppointment", produces = "application/json" )
     public ResponseEntity createAppointment(@RequestBody AppointmentRequest appointmentRequest) {
-        Appointment appointment = appointmentService.createAppointment(appointmentRequest);
-        return ResponseEntity.ok(appointment);
+        try{
+            Appointment appointment = appointmentService.createAppointment(appointmentRequest);
+            return ResponseEntity.ok(appointment);
+        }catch (Exception e){
+            return  ResponseEntity.status(500).body("Hết giờ làm việc của bác sĩ");
+        }
+
     }
 
 
@@ -117,19 +121,11 @@ public class AppointmentController {
         return zoneService.findAll();
     }
 
-    //Tạm thời bở nó ở đây đợi nó có nhà mới
-    //Toi nghĩ Service Type thằng nào lấy xem chả được nhỉ?
-    @GetMapping(value = "/getAllServiceType", produces = "application/json")
-    public List<ServiceType> getAllServiceType() {
-        return serviceTypesService.findService();
-    }
+
 
 
     //Nằm dỡ ní ơi
-    @GetMapping("/getAllDoctor")
-    public ResponseEntity<List<Doctor>> getAllDoctor() {
-        return ResponseEntity.ok(doctorService.getAllDoctors());
-    }
+
 
 //    @GetMapping("/getDoctorAuto")
 //    public ResponseEntity getVeterianAuto(@Param("BookingDate") String bookingDate, @Param("BookingTime") String bookingTimeStr) {
@@ -143,19 +139,9 @@ public class AppointmentController {
         return listAppointment;
     }
 
-    @GetMapping("/findAppointmentDoctorById/{accountId}")
-    @PreAuthorize("hasAuthority('VETERINARY')")
-    public ResponseEntity findAppointmentDoctorById(@PathVariable long accountId) {
-        List<Appointment> appointmentResponses = appointmentService.findAppointmentByAccountId(accountId);
-        return ResponseEntity.ok(appointmentResponses);
-    }
 
-    @GetMapping("/findAppoinmentId/{accountId}")
-    @PreAuthorize("hasAuthority('VETERINARY')")
-    public ResponseEntity findAppoinmentId(@PathVariable long accountId) {
-        long appointmentId = appointmentService.findAppointmentIdStep(accountId);
-        return ResponseEntity.ok(appointmentId);
-    }
+
+
 //
 //    @GetMapping("/getAppointmentIdForUser/{accountId}")
 //    @PreAuthorize("hasAuthority('CUSTOMER')")

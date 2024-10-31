@@ -82,7 +82,7 @@ public class DoctorService {
 
     public Doctor getDoctorById() {
         Account curruntAccount = getCurrentAccount();
-        return doctorRepository.findDoctorById(curruntAccount.getId());
+        return doctorRepository.findByAccountId(curruntAccount.getId());
     }
 
 
@@ -416,6 +416,7 @@ public class DoctorService {
         List<DoctorWorkResponse> doctorWorkResponses = new ArrayList<>();
         Account account = (Account) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Doctor doctor = doctorRepository.findByAccountId(account.getId());
+        System.out.println(doctor.getId());
 
         List<Appointment> appointments = appointmentRepository.findByDoctorId(doctor.getId());
 
@@ -424,6 +425,7 @@ public class DoctorService {
             doctorWorkResponse.setAppointmentId(appointment.getId());
 
             AppointmentInfo appointmentInfo = appointmentInfoRepository.findByAppointmentId(appointment.getId());
+
 
             // Lấy thời gian và ngày đặt hẹn
             Time bookingTime = appointmentInfo.getAppointmentBookingTime();
