@@ -95,7 +95,7 @@ public class AppointmentController {
 
     @GetMapping(value = "/testFreeScheduleWithTime")
     public ResponseEntity testFreeScheduleWithTime() {
-        return ResponseEntity.ok(appointmentService.findAppointmentByDoctorIdAndBookingDateAndBookingTime((long) 1, Date.valueOf("2024-10-16"), Time.valueOf("14:00:00")));
+        return ResponseEntity.ok(appointmentService.findAppointmentByDoctorIdAndBookingDateAndBookingTime((long) 1, Date.valueOf("2024-10-10"), Time.valueOf("14:00:00")));
     }
 
     @GetMapping(value = "/getFreeSchedule")
