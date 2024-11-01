@@ -1,7 +1,7 @@
 .container {
     margin-top: 90px;
     padding: 20px;
-    background-color: #fcc151;
+    background-color: #FFFFFF;
     min-height: 100vh;
 }
 
@@ -58,7 +58,7 @@
 .headerWrapper {
     overflow: hidden;
     margin-bottom: 20px;
-    background-color: white;
+    background-color: #EEEEEE;
     padding: 15px;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);

@@ -145,7 +145,7 @@ const ManageAppointment = () => {
             <div className={styles.container}>
                 <div className={styles.headerWrapper}>
                     <div className={styles.header}>
-                        <h1>Quản Lý Lịch Hẹn </h1>
+                        <h1>Quản lý Lịch hẹn </h1>
                     </div>
 
                     <div className={styles.searchContainer}>
