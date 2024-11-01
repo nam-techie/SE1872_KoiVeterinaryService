@@ -3,7 +3,7 @@ import { CustomerNavBar } from "../../components/Navbar";
 import styles from "./styles/ManageAppointment.module.css";
 import Footer from "../../components/Footer";
 import useManageCus from '../../hooks/useManageCus';
-import { FaSearch } from 'react-icons/fa';
+import { FaSearch, FaFileAlt, FaMoneyBillWave, FaTruck, FaBox, FaStar, FaHourglassHalf, FaCheckCircle, FaCheckDouble } from 'react-icons/fa';
 import LoadingCat from '../../components/LoadingCat.jsx';
 import Pagination from '../../components/Pagination';
 import FeedbackForm from '../../components/FeedbackForm';
@@ -26,6 +26,7 @@ const ManageAppointment = () => {
 
     const [showFeedbackForm, setShowFeedbackForm] = useState(false);
     const [selectedAppointmentId, setSelectedAppointmentId] = useState(null);
+    const [selectedAppointment, setSelectedAppointment] = useState(null);
 
     const fetchAppointments = async () => {
         try {
@@ -73,7 +74,7 @@ const ManageAppointment = () => {
                 return sortOrder === 'asc' ? dateA - dateB : dateB - dateA;
             }
             if (sortBy === 'status') {
-                const statusA = a.appointmentStatus === 'Đã đánh giá' ? 1 : 0;
+                const statusA = a.appointmentStatus === 'ã đánh giá' ? 1 : 0;
                 const statusB = b.appointmentStatus === 'Đã đánh giá' ? 1 : 0;
                 return sortOrder === 'asc' ? statusA - statusB : statusB - statusA;
             }
@@ -139,6 +140,111 @@ const ManageAppointment = () => {
         }
     };
 
+    const getAppointmentDetails = (appointmentId) => {
+        return {
+            appointmentId: appointmentId,
+            bookingDate: "27/10/2024",
+            bookingTime: "14:00",
+            customerName: "Kiều Trọng Khánh",
+            phoneNumber: "012345789",
+            service: "Khám tại nhà",
+            description: "Nổi bị đau",
+            detailedAddress: "D1, FPT",
+            appointmentDate: "30/10/2024",
+            appointmentTime: "16:00",
+            doctorName: "Phân bổ bởi trung tâm",
+            statusHistory: [
+                { 
+                    label: "Chờ xác nhận", 
+                    completed: true,
+                    timestamp: "15:38 27-08-2024"
+                },
+                { 
+                    label: "Đã xác nhận", 
+                    completed: true,
+                    timestamp: "16:08 27-08-2024"
+                },
+                { 
+                    label: "Chờ thanh toán phí lần 1", 
+                    completed: true,
+                    timestamp: "16:10 27-08-2024"
+                },
+                { 
+                    label: "Đã thanh toán", 
+                    completed: true,
+                    timestamp: "16:15 27-08-2024"
+                },
+                { 
+                    label: "Đang thực hiện dịch vụ", 
+                    completed: true,
+                    timestamp: "16:30 27-08-2024"
+                },
+                { 
+                    label: "Chờ thanh toán phí lần 2", 
+                    completed: true,
+                    timestamp: "17:00 27-08-2024"
+                },
+                { 
+                    label: "Đã thanh toán", 
+                    completed: true,
+                    timestamp: "17:15 27-08-2024"
+                },
+                { 
+                    label: "Hoàn thành", 
+                    completed: false
+                }
+            ],
+            costs: [
+                {
+                    name: "Phí khám ban đầu",
+                    description: "Mô tả",
+                    quantity: 1,
+                    price: 1000000
+                },
+                {
+                    name: "Dịch vụ bổ sung",
+                    description: "Mô tả",
+                    quantity: 2,
+                    price: 500000
+                }
+            ],
+            totalCost: 1500000,
+            petInfo: {
+                name: "Max",
+                breed: "Golden Retriever",
+                type: "Dog",
+                diagnosis: "Bị nấm vẩy",
+                notes: "Tái khám lần sau, cần theo dõi thêm"
+            }
+        };
+    };
+
+    const handleViewDetail = (appointmentId) => {
+        const details = getAppointmentDetails(appointmentId);
+        setSelectedAppointment(details);
+    };
+
+    const getStatusIcon = (status) => {
+        switch (status) {
+            case 'Chờ xác nhận':
+                return <FaFileAlt />;
+            case 'Đã xác nhận':
+                return <FaMoneyBillWave />;
+            case 'Chờ thanh toán phí lần 1':
+                return <FaMoneyBillWave />;
+            case 'Đã thanh toán':
+                return <FaMoneyBillWave />;
+            case 'Đang thực hiện dịch vụ':
+                return <FaTruck />;
+            case 'Chờ thanh toán phí lần 2':
+                return <FaMoneyBillWave />;
+            case 'Hoàn thành':
+                return <FaStar />;
+            default:
+                return <FaFileAlt />;
+        }
+    };
+
     return (
         <>
             <CustomerNavBar />
@@ -178,7 +284,7 @@ const ManageAppointment = () => {
                             <option value="Đang cung cấp dịch vụ">Đang cung cấp dịch vụ</option>
                             <option value="Thực hiện xong dịch vụ">Thực hiện xong dịch vụ</option>
                             <option value="Chờ thanh toán tiền dịch vụ">Chờ thanh toán tiền dịch vụ</option>
-                            <option value="Thanh toán tiền dịch vụ thành công">Thanh toán tiền dịch vụ thành công</option>
+                            <option value="Thanh toán tiền dịch vụ thành c��ng">Thanh toán tiền dịch vụ thành công</option>
                             <option value="Hoàn thành">Hoàn thành</option>
                             <option value="Đã đánh giá">Đã đánh giá</option>
                             <option value="Đã hủy lịch">Đã hủy lịch</option>
@@ -257,7 +363,10 @@ const ManageAppointment = () => {
                                                 Đánh giá
                                             </button>
                                         )}
-                                        <button className={styles.detailButton}>
+                                        <button 
+                                            className={styles.detailButton}
+                                            onClick={() => handleViewDetail(appointment.appointmentId)}
+                                        >
                                             Xem chi tiết
                                         </button>
                                     </td>
@@ -285,6 +394,93 @@ const ManageAppointment = () => {
                     onSubmit={handleFeedbackSubmit}
                     onClose={() => setShowFeedbackForm(false)}
                 />
+            )}
+
+            {/* Modal */}
+            {selectedAppointment && (
+                <div className={styles.modalOverlay}>
+                    <div className={styles.modalContent}>
+                        <div className={styles.modalHeader}>
+                            <h2>Chi tiết lịch hẹn #{selectedAppointment.appointmentId}</h2>
+                            <button 
+                                className={styles.modalCloseButton}
+                                onClick={() => setSelectedAppointment(null)}
+                            >
+                                ×
+                            </button>
+                        </div>
+
+                        <div className={styles.appointmentInfo}>
+                            <div className={styles.section}>
+                                <h3>Thông tin khách hàng</h3>
+                                <div className={styles.infoGrid}>
+                                    <div className={styles.infoItem}>
+                                        <span className={styles.infoLabel}>Họ tên:</span>
+                                        <span className={styles.infoValue}>{selectedAppointment.customerName}</span>
+                                    </div>
+                                    <div className={styles.infoItem}>
+                                        <span className={styles.infoLabel}>Số điện thoại:</span>
+                                        <span className={styles.infoValue}>{selectedAppointment.phoneNumber}</span>
+                                    </div>
+                                    <div className={styles.infoItem}>
+                                        <span className={styles.infoLabel}>Địa chỉ:</span>
+                                        <span className={styles.infoValue}>{selectedAppointment.address}</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className={styles.section}>
+                                <h3>Thông tin thú cưng</h3>
+                                <div className={styles.infoGrid}>
+                                    <div className={styles.infoItem}>
+                                        <span className={styles.infoLabel}>Tên thú cưng:</span>
+                                        <span className={styles.infoValue}>{selectedAppointment.petInfo?.name}</span>
+                                    </div>
+                                    <div className={styles.infoItem}>
+                                        <span className={styles.infoLabel}>Giống:</span>
+                                        <span className={styles.infoValue}>{selectedAppointment.petInfo?.breed}</span>
+                                    </div>
+                                    <div className={styles.infoItem}>
+                                        <span className={styles.infoLabel}>Tuổi:</span>
+                                        <span className={styles.infoValue}>{selectedAppointment.petInfo?.age}</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className={styles.section}>
+                                <h3>Thông tin lịch hẹn</h3>
+                                <div className={styles.infoGrid}>
+                                    <div className={styles.infoItem}>
+                                        <span className={styles.infoLabel}>Ngày tạo:</span>
+                                        <span className={styles.infoValue}>{selectedAppointment.bookingDate}</span>
+                                    </div>
+                                    <div className={styles.infoItem}>
+                                        <span className={styles.infoLabel}>Dịch vụ:</span>
+                                        <span className={styles.infoValue}>{selectedAppointment.service}</span>
+                                    </div>
+                                    <div className={styles.infoItem}>
+                                        <span className={styles.infoLabel}>Ngày hẹn:</span>
+                                        <span className={styles.infoValue}>{selectedAppointment.appointmentDate}</span>
+                                    </div>
+                                    <div className={styles.infoItem}>
+                                        <span className={styles.infoLabel}>Giờ hẹn:</span>
+                                        <span className={styles.infoValue}>{selectedAppointment.appointmentTime}</span>
+                                    </div>
+                                    <div className={styles.infoItem}>
+                                        <span className={styles.infoLabel}>Yêu cầu bác sĩ:</span>
+                                        <span className={styles.infoValue}>{selectedAppointment.doctorRequest ? "Có" : "Không"}</span>
+                                    </div>
+                                    <div className={styles.infoItem}>
+                                        <span className={styles.infoLabel}>Bác sĩ phụ trách:</span>
+                                        <div>
+                                            <div className={styles.doctorInfo}>{selectedAppointment.doctorName}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             )}
         </>
     );
