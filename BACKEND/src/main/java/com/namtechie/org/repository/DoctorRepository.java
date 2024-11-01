@@ -23,4 +23,6 @@ public interface DoctorRepository extends JpaRepository<Doctor, Long> {
     Doctor findByAppointmentId(Long appointmentId);
 
 
+
+
 }
