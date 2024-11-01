@@ -1,6 +1,7 @@
 package com.namtechie.org.controller;
 
 import com.namtechie.org.entity.*;
+import com.namtechie.org.exception.DoctorNotAvailableException;
 import com.namtechie.org.model.Schedule;
 import com.namtechie.org.model.response.AppointmentResponse;
 import com.namtechie.org.model.response.AppointmentStatusResponse;
@@ -103,14 +104,17 @@ public class AppointmentController {
     }
 
     @PostMapping(value = "/createAppointment", produces = "application/json" )
-    public ResponseEntity createAppointment(@RequestBody AppointmentRequest appointmentRequest) {
-        try{
+    public ResponseEntity<?> createAppointment(@RequestBody AppointmentRequest appointmentRequest) {
+        try {
             Appointment appointment = appointmentService.createAppointment(appointmentRequest);
             return ResponseEntity.ok(appointment);
-        }catch (Exception e){
-            return  ResponseEntity.status(500).body("Hết giờ làm việc của bác sĩ");
+        } catch (DoctorNotAvailableException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                               .body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                               .body("Hết giờ làm việc của bác sĩ");
         }
-
     }
 
 

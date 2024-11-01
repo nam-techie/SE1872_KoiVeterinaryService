@@ -21,7 +21,7 @@ import java.sql.Time;
 import java.util.List;
 import java.util.Map;
 
-@RequestMapping("/api")
+@RequestMapping("/api/customer")
 @RestController
 @SecurityRequirement(name = "api")
 public class HomeController {

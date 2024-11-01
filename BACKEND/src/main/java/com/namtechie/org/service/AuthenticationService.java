@@ -3,7 +3,6 @@ package com.namtechie.org.service;
 import com.namtechie.org.entity.Account;
 import com.namtechie.org.entity.Customers;
 import com.namtechie.org.entity.Role;
-import com.namtechie.org.exception.BadCredentialsException;
 import com.namtechie.org.exception.DuplicateEntity;
 import com.namtechie.org.exception.NotFoundException;
 import com.namtechie.org.model.*;
@@ -17,6 +16,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -138,6 +138,7 @@ public class AuthenticationService implements UserDetailsService {
             throw new EntityNotFoundException("Tài khoản hoặc mật khẩu sai!");
         } catch (Exception e) {
             // Xử lý các lỗi khác
+            e.printStackTrace();
             throw new RuntimeException("Đã xảy ra lỗi trong quá trình đăng nhập, vui lòng thử lại sau.");
         }
     }
@@ -145,7 +146,11 @@ public class AuthenticationService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return accountRepository.findAccountByUsername(username);
+        Account account =  accountRepository.findAccountByUsername(username);
+        if (account == null) {
+            throw new UsernameNotFoundException("Tài khoản không tồn tại: " + username);
+        }
+        return account;
     }
 
     public Account getCurrentAccount() {
