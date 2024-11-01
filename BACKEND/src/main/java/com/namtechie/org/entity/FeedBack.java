@@ -1,6 +1,7 @@
 package com.namtechie.org.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
@@ -17,6 +18,7 @@ public class FeedBack {
 
     @OneToOne
     @JoinColumn(name = "appointment_id", nullable = false)
+    @JsonIgnore
     private Appointment appointment;
 
     @Column

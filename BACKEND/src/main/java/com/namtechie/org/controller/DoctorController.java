@@ -1,5 +1,6 @@
 package com.namtechie.org.controller;
 
+import com.namtechie.org.entity.Appointment;
 import com.namtechie.org.entity.AppointmentStatus;
 import com.namtechie.org.entity.Doctor;
 import com.namtechie.org.model.request.DoctorConfirmRequest;
@@ -108,6 +109,18 @@ public class DoctorController {
         return ResponseEntity.ok(listDoctorWork);
     }
 
+    @GetMapping("/findAppointmentDoctorById/{accountId}")
+    @PreAuthorize("hasAuthority('VETERINARY')")
+    public ResponseEntity findAppointmentDoctorById(@PathVariable long accountId) {
+        List<Appointment> appointmentResponses = appointmentService.findAppointmentByAccountId(accountId);
+        return ResponseEntity.ok(appointmentResponses);
+    }
 
+    @GetMapping("/findAppoinmentId/{accountId}")
+    @PreAuthorize("hasAuthority('VETERINARY')")
+    public ResponseEntity findAppoinmentId(@PathVariable long accountId) {
+        long appointmentId = appointmentService.findAppointmentIdStep(accountId);
+        return ResponseEntity.ok(appointmentId);
+    }
 
 }

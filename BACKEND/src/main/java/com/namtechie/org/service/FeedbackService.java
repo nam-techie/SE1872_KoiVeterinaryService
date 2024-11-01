@@ -26,9 +26,9 @@ public class FeedbackService {
     @Autowired
     AppointmentStatusRepository appointmentStatusRepository;
 
-    public FeedBack createFeedbackService(FeedbackRequest feedbackRequest) {
+    public FeedBack createFeedbackService(long appointmentId,FeedbackRequest feedbackRequest) {
         try {
-            Appointment appointment = appointmentRepository.findAppointmentById(feedbackRequest.getAppointmentId());
+            Appointment appointment = appointmentRepository.findAppointmentById(appointmentId);
             FeedBack feedBacks = new FeedBack();
             feedBacks.setRating(feedbackRequest.getRating());
             feedBacks.setComment(feedbackRequest.getComment());
