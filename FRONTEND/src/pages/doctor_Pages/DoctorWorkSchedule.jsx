@@ -1,17 +1,18 @@
+// eslint-disable-next-line no-unused-vars
 import React from 'react';
 import { Calendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
+import 'react-big-calendar/lib/css/react-big-calendar.css';
 import 'moment/locale/vi';
 import styles from './styles/DoctorWorkSchedule.module.css';
 import { DoctorNavBar } from "../../components/Navbar.jsx";
 import useDoctorWork from './hooks/useDoctorWork';
-import LoadingCat from '../../components/LoadingCat.jsx';
 
 moment.locale('vi');
 const localizer = momentLocalizer(moment);
 
 function DoctorWorkSchedule() {
-    const { appointments, loading, error } = useDoctorWork();
+    const { appointments, error } = useDoctorWork();
 
     const eventStyleGetter = (event) => {
         let backgroundColor = '';
@@ -48,7 +49,7 @@ function DoctorWorkSchedule() {
         };
     };
 
-    if (loading) return <LoadingCat />;
+
     if (error) return <div>Có lỗi xảy ra: {error}</div>;
 
     return (

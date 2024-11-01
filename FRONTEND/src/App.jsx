@@ -7,9 +7,9 @@ import ServiceIntro from "./pages/ServiceIntro.jsx";
 import AboutMe from "./pages/AboutMe.jsx";
 import DoctorDashBoard from "./pages/doctor_Pages/DoctorDashBoard.jsx";
 import GoogleLoginSuccess from "./pages/GoogleLoginSuccess.jsx";
-import CustomerBookingPage from "./pages/customer_Pages/CustomerBookingPage.jsx";
+import BookingPage from "./pages/customer_Pages/BookingPage.jsx";
 import LoadingCat from "./components/LoadingCat.jsx";
-import DoctorAppointmentPage from "./pages/doctor_Pages/DoctorAppointmentPage.jsx";
+import DoctorAppointment from "./pages/doctor_Pages/DoctorAppointment.jsx";
 import ForgotPassword from "./pages/ForgotPassWord.jsx";
 import VerifyOTP from "./pages/Verify-OTP.jsx";
 import ResetPassword from "./pages/ResetPassword.jsx";
@@ -17,12 +17,9 @@ import FAQPage from "./pages/FAQPage.jsx";
 import TermAndRefund from "./pages/TermAndRefund.jsx";
 import FindDoctor from './pages/FindDoctor';
 import Dashboard from "./pages/admin_Pages/Dashboard.jsx";
-import DoctorSchedulePage from "./pages/doctor_Pages/DoctorSchedulePage.jsx";
-import PageTitle from "./components/PageTitle.jsx";
-import CustomerAppointmentPage from "./pages/customer_Pages/CustomerAppointmentPage.jsx";
-import AdminDashboard from "./pages/admin_Pages/Dashboard.jsx";
-import CustomerProfile from "./pages/customer_Pages/CustomerProfile.jsx";
-
+import AppointmentPage from "./pages/customer_Pages/AppointmentPage.jsx";
+import ManageAppointment from "./pages/customer_Pages/ManageAppointment.jsx";
+import DoctorWorkSchedule from "./pages/doctor_Pages/DoctorWorkSchedule.jsx";
 
 function App() {
 
@@ -38,22 +35,9 @@ function App() {
 
 
                     {/* Trang công khai */}
-                    <Route path="/" element={
-                        <PageTitle title="Home">
-                            <PublicRoute><HomePage/></PublicRoute>
-                        </PageTitle>
-                    }/>
-
-                    <Route path="/homepage" element={
-                        <PageTitle title="Home">
-                            <PublicRoute><HomePage/></PublicRoute>
-                        </PageTitle>
-                    }/>
-                    <Route path="/service" element={
-                        <PageTitle title="Our Services">
-                            <PublicRoute><ServiceIntro/></PublicRoute>
-                        </PageTitle>
-                    }/>
+                    <Route path="/" element={<PublicRoute><HomePage/></PublicRoute>}/>
+                    <Route path="/homepage" element={<PublicRoute><HomePage/></PublicRoute>}/>
+                    <Route path="/service" element={<PublicRoute><ServiceIntro/></PublicRoute>}/>
                     <Route path="/aboutme" element={<PublicRoute><AboutMe/></PublicRoute>}/>
                     <Route path="/success" element={<PublicRoute><GoogleLoginSuccess/></PublicRoute>}/>
                     <Route path="/loading" element={<PublicRoute><LoadingCat/></PublicRoute>}/>
@@ -62,75 +46,62 @@ function App() {
                     <Route path="/doctor-list" element={<PublicRoute><FindDoctor/></PublicRoute>}/>
 
                     {/* Trang không cho phép truy cập nếu đã đăng nhập (có token) */}
-                    <Route path="/login" element={
-                        <PageTitle title="Login">
-                            <RestrictedRoute><Login/></RestrictedRoute>
-                        </PageTitle>
-                    }/>
-                    <Route path="/register" element={
-                        <PageTitle title="Register">
-                            <RestrictedRoute><Register/></RestrictedRoute>
-                        </PageTitle>
-                    }/>
+                    <Route path="/login" element={<RestrictedRoute><Login/></RestrictedRoute>}/>
+                    <Route path="/register" element={<RestrictedRoute><Register/></RestrictedRoute>}/>
 
-                    {/*Trang dành cho customer */}
-                    <Route path="/customer/booking" element={
-                        <PageTitle title="Book an Appointment">
-                            <RoleBasedRoute allowedRoles={['CUSTOMER', 'ADMIN']}>
-                                <CustomerBookingPage/>
-                            </RoleBasedRoute>
-                        </PageTitle>
+                    Trang chỉ customer và admin truy cập được (doctor không truy cập được)
+                    <Route path="/customer/booking-page" element={
+                        <RoleBasedRoute allowedRoles={['CUSTOMER', 'ADMIN']}>
+                            <BookingPage/>
+                        </RoleBasedRoute>
                     }/>
-
                     <Route path="/customer/manage-appointment" element={
-                        <PageTitle title="Quản lí lịch hẹn">
-                            <RoleBasedRoute allowedRoles={['CUSTOMER', 'ADMIN']}>
-                                <CustomerAppointmentPage/>
-                            </RoleBasedRoute>
-                        </PageTitle>
+                        <RoleBasedRoute allowedRoles={['CUSTOMER', 'ADMIN']}>
+                            <ManageAppointment/>
+                        </RoleBasedRoute>
                     }/>
-
-                    <Route path="/customer/profile" element={
-                        <PageTitle title="Thông tin cá nhân">
-                            <RoleBasedRoute allowedRoles={['CUSTOMER', 'ADMIN']}>
-                                <CustomerProfile/>
-                            </RoleBasedRoute>
-                        </PageTitle>
-                    }/>
-
-
-                    {/*Trang chỉ doctor và admin truy cập được*/}
-                    <Route path="/doctor/dashboard" element={
-                        <PageTitle title="Tổng quan">
-                            <RoleBasedRoute allowedRoles={['VETERINARY', 'ADMIN']}>
-                                <DoctorDashBoard/>
-                            </RoleBasedRoute>
-                        </PageTitle>
-                    }/>
-
-                    <Route path="/doctor/manage-appointment" element={
-                        <PageTitle title="Lịch đặt">
-                            <RoleBasedRoute allowedRoles={['VETERINARY', 'ADMIN']}>
-                                <DoctorAppointmentPage/>
-                            </RoleBasedRoute>
-                        </PageTitle>
-                    }/>
-
-                    <Route path="/doctor/work-schedule" element={
-                        <PageTitle title="Lịch làm việc">
-                            <RoleBasedRoute allowedRoles={['VETERINARY', 'ADMIN']}>
-                                <DoctorSchedulePage/>
-                            </RoleBasedRoute>
-                        </PageTitle>
-                    }/>
-
-                    {/* Trang chỉ admin truy cập được */}
-                    <Route path="/admin" element={
-                        <RoleBasedRoute allowedRoles={['ADMIN']}>
-                            <Dashboard/>
+                    <Route path="/customer/appointment" element={
+                        <RoleBasedRoute allowedRoles={['CUSTOMER', 'ADMIN']}>
+                            <AppointmentPage/>
                         </RoleBasedRoute>
                     }/>
 
+                    Trang chỉ doctor và admin truy cập được
+                    <Route path="/doctor/dashboard" element={
+                        <RoleBasedRoute allowedRoles={['VETERINARY', 'ADMIN']}>
+                            <DoctorDashBoard/>
+                        </RoleBasedRoute>
+                    }/>
+
+                    <Route path="/doctor/manage-appointment" element={
+                        <RoleBasedRoute allowedRoles={['VETERINARY', 'ADMIN']}>
+                            <DoctorAppointment/>
+                        </RoleBasedRoute>
+                    }/>
+                    <Route path="/doctor/work-schedule" element={
+                        <RoleBasedRoute allowedRoles={['VETERINARY', 'ADMIN']}>
+                            <DoctorWorkSchedule/>
+                        </RoleBasedRoute>
+                    }/>
+
+
+
+                    {/*/!* Trang dashboard của doctor *!/*/}
+                    {/*<Route path="/doctor-dashboard" element={*/}
+                    {/*  <RoleBasedRoute allowedRoles={['doctor']}>*/}
+                    {/*    <DoctorDashboard />*/}
+                    {/*  </RoleBasedRoute>*/}
+                    {/*} />*/}
+
+                    {/* Trang chỉ admin truy cập được */}
+                    <Route path="/admin" element={
+                      <RoleBasedRoute allowedRoles={['ADMIN']}>
+                        <Dashboard />
+                      </RoleBasedRoute>
+                    } />
+
+                    {/* Trang không tìm thấy */}
+                    {/*<Route path="*" element={<NotFoundPage />} />*/}
                 </Routes>
             </Router>
 

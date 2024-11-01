@@ -1,43 +1,25 @@
-import React, { useState } from 'react';
-import { Modal, Button, Input, Form } from 'antd';
 import { DoctorNavBar } from "../../components/Navbar.jsx";
 import { Card, Row, Col } from 'antd';
-import styles from '../doctor_Pages/styles/DoctorDashBoard.module.css';
-import avatar from "../../assets/homePage_images/doctorAvatar.jpg";
+import styles from "../../styles/DoctorDashBoard.module.css";
+import  avatar from "../../assets/homePage_images/doctorAvatar.jpg"
 
 function DoctorDashBoard() {
-    const [isModalVisible, setIsModalVisible] = useState(false);
-    const [form] = Form.useForm();
-
-    // Mock data for doctor information
-    const [doctorInfo, setDoctorInfo] = useState({
+    // Mock data for doctor information with image URL
+    const doctorInfo = {
+        id: 1,
+        account_id: 101,
         fullname: "Bác Sĩ A",
+        sex: true,
         phone: "0123456789",
         experience: 10,
         image_url: avatar
-    });
+    };
 
+    // Mock data for dashboard stats
     const dashboardInfo = {
         totalAppointmentsToday: 8,
         unconfirmedAppointments: 3,
         totalFeedback: 5
-    };
-
-    // Show modal
-    const showModal = () => {
-        setIsModalVisible(true);
-        form.setFieldsValue(doctorInfo); // Set current doctor info to the form
-    };
-
-    // Handle cancel modal
-    const handleCancel = () => {
-        setIsModalVisible(false);
-    };
-
-    // Handle form submission (updating info)
-    const handleFormSubmit = (values) => {
-        setDoctorInfo({ ...doctorInfo, ...values });
-        setIsModalVisible(false);
     };
 
     return (
@@ -45,75 +27,52 @@ function DoctorDashBoard() {
             <DoctorNavBar />
             <div className={styles.doctorDashBoardWrapper}>
                 <div className={styles.doctorDashBoardContainer}>
-                    {/* Left section: Doctor Info */}
+                    {/* Left side: Doctor Information */}
                     <div className={styles.doctorInfoSection}>
                         <h2>{doctorInfo.fullname}</h2>
-                        <img src={doctorInfo.image_url} alt="Doctor Avatar" className={styles.doctorAvatar} />
-                        <p><strong>Số điện thoại:</strong> {doctorInfo.phone}</p>
-                        <p><strong>Kinh nghiệm:</strong> {doctorInfo.experience} năm</p>
-                        <Button type="primary" onClick={showModal}>Chỉnh sửa thông tin</Button>
+                        <img
+                            src={doctorInfo.image_url}
+                            alt="Doctor Avatar"
+                            className={styles.doctorAvatar} // Class for styling the image
+                        />
+                        <p><strong>Sex:</strong> {doctorInfo.sex ? "Male" : "Female"}</p>
+                        <p><strong>Phone:</strong> {doctorInfo.phone}</p>
+                        <p><strong>Experience:</strong> {doctorInfo.experience} years</p>
                     </div>
 
-                    {/* Right section: Dashboard Stats */}
+                    {/* Right side: Dashboard with 3 vertical sections */}
                     <div className={styles.dashboardStatsSection}>
-                        <Row gutter={[16, 16]}>
+                        <Row gutter={[16, 16]} style={{ height: '100%' }}>
                             <Col span={24}>
-                                <Card bordered={false} className={`${styles.statCard} ${styles.appointmentsCard}`}>
-                                    <h1>Hôm nay bạn có {dashboardInfo.totalAppointmentsToday} lịch hẹn</h1>
+                                <Card
+                                    bordered={false}
+                                    className={`${styles.statCard} ${styles.appointmentsCard}`}
+                                >
+                                    <h1>Chào bác sĩ! Hôm nay anh đã nhận được {dashboardInfo.totalAppointmentsToday} lịch đặt</h1>
+                                    <p>Ấn vào đây để hoàn thành Nhé</p>
                                 </Card>
                             </Col>
                             <Col span={24}>
-                                <Card bordered={false} className={`${styles.statCard} ${styles.unconfirmedCard}`}>
-                                    <h1>Có {dashboardInfo.unconfirmedAppointments} đơn chưa xác nhận</h1>
+                                <Card
+                                    bordered={false}
+                                    className={`${styles.statCard} ${styles.unconfirmedCard}`}
+                                >
+                                    <h1>Chào bác sĩ! Có {dashboardInfo.unconfirmedAppointments} đơn chưa hoàn thành</h1>
+                                    <p>Ấn vào đây để hoàn thành Nhé</p>
+                                </Card>
+                            </Col>
+                            <Col span={24}>
+                                <Card
+                                    bordered={false}
+                                    className={`${styles.statCard} ${styles.feedbackCard}`}
+                                >
+                                    <h1>Chào bác sĩ! Hôm nay anh đã nhận được {dashboardInfo.totalFeedback} đánh giá</h1>
+                                    <p>Ấn vào đây để hoàn thành Nhé</p>
                                 </Card>
                             </Col>
                         </Row>
                     </div>
                 </div>
-
-                {/* Modal for editing personal info */}
-                <Modal
-                    title="Chỉnh sửa thông tin cá nhân"
-                    visible={isModalVisible}
-                    onCancel={handleCancel}
-                    footer={null}
-                >
-                    <Form
-                        form={form}
-                        layout="vertical"
-                        onFinish={handleFormSubmit}
-                    >
-                        <Form.Item
-                            label="Họ và tên"
-                            name="fullname"
-                            rules={[{ required: true, message: 'Vui lòng nhập họ và tên!' }]}
-                        >
-                            <Input />
-                        </Form.Item>
-
-                        <Form.Item
-                            label="Số điện thoại"
-                            name="phone"
-                            rules={[{ required: true, message: 'Vui lòng nhập số điện thoại!' }]}
-                        >
-                            <Input />
-                        </Form.Item>
-
-                        <Form.Item
-                            label="Kinh nghiệm (năm)"
-                            name="experience"
-                            rules={[{ required: true, message: 'Vui lòng nhập số năm kinh nghiệm!' }]}
-                        >
-                            <Input type="number" />
-                        </Form.Item>
-
-                        <Form.Item>
-                            <Button type="primary" htmlType="submit">
-                                Lưu thông tin
-                            </Button>
-                        </Form.Item>
-                    </Form>
-                </Modal>
             </div>
         </>
     );

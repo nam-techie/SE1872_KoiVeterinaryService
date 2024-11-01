@@ -46,6 +46,11 @@ function ServiceIntro() {
         <>
             <CustomerNavBar />
             <div className={styles.serviceIntroContainer}>
+                <div className={styles.breadCrumb}>
+                    <a href="/homepage">Trang Chủ</a>
+                    <IoIosArrowForward size={22} color={"orange"} />
+                    <span>Về KOI CUNG</span>
+                </div>
 
                 <div className={styles.serviceIntroFist}>
                     <h1>Dịch Vụ Của Trung Tâm Chúng Tôi</h1>
@@ -57,7 +62,7 @@ function ServiceIntro() {
                         <div className={styles.serviceIntroSecondCard}>
                             <BsFillTelephoneInboundFill size={35} color="orange" />
                             <h4>Dịch Vụ Tư Vấn Trực Tuyến</h4>
-                            <a href="/customer/booking" className={styles.scheduleButton}>
+                            <a href="/customer/booking-page" className={styles.scheduleButton}>
                                 Đặt lịch ngay
                             </a>
                         </div>
@@ -65,7 +70,7 @@ function ServiceIntro() {
                         <div className={styles.serviceIntroSecondCard}>
                             <TbStethoscope size={35} color="orange" />
                             <h4>Dịch Vụ Điều Trị Bệnh Tại Nhà</h4>
-                            <a href="/customer/booking" className={styles.scheduleButton}>
+                            <a href="/customer/booking-page" className={styles.scheduleButton}>
                                 Đặt lịch ngay
                             </a>
                         </div>
@@ -73,7 +78,7 @@ function ServiceIntro() {
                         <div className={styles.serviceIntroSecondCard}>
                             <FaBriefcaseMedical size={35} color="orange" />
                             <h4>Tìm Bác Sĩ</h4>
-                            <a href="/customer/booking" className={styles.scheduleButton}>
+                            <a href="/customer/booking-page" className={styles.scheduleButton}>
                                 Đặt lịch ngay
                             </a>
                         </div>
@@ -81,7 +86,7 @@ function ServiceIntro() {
                         <div className={styles.serviceIntroSecondCard}>
                             <FaHospital size={35} color="orange" />
                             <h4>Điều Trị Tại Trung Tâm</h4>
-                            <a href="/customer/booking" className={styles.scheduleButton}>
+                            <a href="/customer/booking-page" className={styles.scheduleButton}>
                                 Đặt lịch ngay
                             </a>
                         </div>

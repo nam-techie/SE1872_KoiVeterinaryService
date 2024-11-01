@@ -2,7 +2,7 @@ import { useBookingPage } from "../../hooks/useBookingPage.js";
 import { useDoctorList, useService, useDistrictList } from '../../hooks/useService.js';
 import { ServiceTypeSelector, PhoneInput, DescriptionInput, DateSelector, TimeSelector, DistrictSelector, AgreementCheckbox } from '../../components/BookingCard.jsx';
 import { DetailedAddressInput, DoctorSelector, SubmitButton, ConfirmationModal } from '../../components/BookingCard.jsx';
-import styles from "../customer_Pages/styles/CustomerBookingPage.module.css";
+import styles from './styles/BookingPage.module.css'
 import { useState, useEffect } from "react";
 import { CustomerNavBar } from "../../components/Navbar.jsx";
 import Footer from "../../components/Footer.jsx";  // CSS Module import

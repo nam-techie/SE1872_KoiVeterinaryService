@@ -10,7 +10,10 @@ function AboutMe() {
         <>
             <CustomerNavBar/>
             <div className={styles.aboutMeContainer}>
-
+                <div className={styles.breadCrumb}>
+                    <a href="/homepage">Trang Chủ</a><IoIosArrowForward size={22}
+                                                                        color={"orange"}/><span>Về KOI CUNG</span>
+                </div>
                 <div className={styles.aboutMeFirst}>
                     <div className={styles.aboutMeFirstContent}>
                         <div className={styles.aboutMeFirstContentLeft}>

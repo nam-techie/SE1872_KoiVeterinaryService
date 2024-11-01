@@ -48,7 +48,7 @@ function Footer() {
                         </li>
                         <li className={styles.footerListItem}>
                             <i className={`fas fa-map-marker-alt ${styles.contactSectionIcon}`}></i>
-                            <span> Lô E2a-7, Đ. D1, Long Thạnh Mỹ, TP.Thủ Đức, HCM</span>
+                            <span> Lô E2a-7, Đường D1, Long Thạnh Mỹ, Thủ Đức, TP.HCM</span>
                         </li>
                     </ul>
                 </div>

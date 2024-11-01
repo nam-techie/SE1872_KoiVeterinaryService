@@ -64,6 +64,7 @@ function FindDoctor() {
                             className={styles.searchInput}
                         />
                     </div>
+                    <button className={styles.searchButton}>Tìm bác sĩ</button>
                 </div>
                 <h2>Danh sách Bác sĩ</h2>
                 <div className={styles.doctorGrid}>
