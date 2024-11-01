@@ -10,7 +10,7 @@ export const useDoctorInfo = () => {
     const fetchAllDoctors = async () => {
         try {
             setLoading(true);
-            const response = await axiosInstance.get('/admin/listAllVeterinary');
+            const response = await axiosInstance.get('/getAllDoctor');
             // Đảm bảo rằng mỗi bác sĩ trong response.data có trường id
             setDoctors(response.data);
             setLoading(false);

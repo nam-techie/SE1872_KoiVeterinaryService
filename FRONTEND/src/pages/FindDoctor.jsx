@@ -42,10 +42,10 @@ function FindDoctor() {
             <CustomerNavBar/>
             <div className={styles.findDoctorContainer}>
                 <h1>Tìm Bác sĩ</h1>
-                <div className={styles.searchContainer}>
-                    <div className={styles.searchItem}>
+                <div className={styles.searchBarContainer}>
+                    <div className={styles.filterWrapper}>
                         <select
-                            className={styles.filterSelect}
+                            className={styles.experienceSelect}
                             value={experience}
                             onChange={(e) => setExperience(e.target.value)}
                         >
@@ -55,16 +55,18 @@ function FindDoctor() {
                             <option value="15">15 năm trở lên</option>
                         </select>
                     </div>
-                    <div className={styles.searchItem}>
+                    <div className={styles.inputWrapper}>
                         <input
                             type="text"
                             placeholder="Nhập tên bác sĩ..."
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
-                            className={styles.searchInput}
+                            className={styles.doctorSearchInput}
                         />
                     </div>
-                    <button className={styles.searchButton}>Tìm bác sĩ</button>
+                    <div className={styles.buttonWrapper}>
+                        <button className={styles.findDoctorButton}>Tìm bác sĩ</button>
+                    </div>
                 </div>
                 <h2>Danh sách Bác sĩ</h2>
                 <div className={styles.doctorGrid}>

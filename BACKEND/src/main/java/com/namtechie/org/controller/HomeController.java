@@ -39,16 +39,10 @@ public class HomeController {
 //        return ResponseEntity.ok(appointmentService.findAppointmentByDoctorIdAndBookingDateAndBookingTime((long) 1, Date.valueOf("2024-10-16"), Time.valueOf("14:00:00")));
 //    }
 
-    @GetMapping("/getAllDoctor")
-    public ResponseEntity<List<Doctor>> getAllDoctor() {
-        return ResponseEntity.ok(doctorService.getAllDoctors());
-    }
+
 
 
     //Tạm thời bở nó ở đây đợi nó có nhà mới
     //Toi nghĩ Service Type thằng nào lấy xem chả được nhỉ?
-    @GetMapping(value = "/getAllServiceType", produces = "application/json")
-    public List<ServiceType> getAllServiceType() {
-        return serviceTypesService.findService();
-    }
+
 }

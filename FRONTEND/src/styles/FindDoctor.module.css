@@ -256,3 +256,89 @@
 .searchContainer > *:not(:last-child) {
     margin-right: 10px;
 }
+
+.searchBarContainer {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 15px;
+    margin: 20px auto;
+    max-width: 1000px;
+}
+
+.filterWrapper {
+    width: 200px;
+}
+
+.inputWrapper {
+    flex: 1;
+}
+
+.experienceSelect {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    font-size: 14px;
+    color: #495057;
+    background-color: white;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.doctorSearchInput {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    font-size: 14px;
+    background-color: white;
+    transition: all 0.2s ease;
+}
+
+.findDoctorButton {
+    padding: 12px 30px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+
+.findDoctorButton:hover {
+    background-color: #45a049;
+}
+
+/* Hiệu ứng focus cho input và select */
+.experienceSelect:focus,
+.doctorSearchInput:focus {
+    outline: none;
+    border-color: #4CAF50;
+    box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
+}
+
+@media (max-width: 768px) {
+    .searchBarContainer {
+        flex-direction: column;
+        gap: 15px;
+        padding: 15px;
+    }
+
+    .filterWrapper {
+        width: 100%;
+    }
+
+    .buttonWrapper {
+        width: 100%;
+    }
+
+    .findDoctorButton {
+        width: 100%;
+    }
+}

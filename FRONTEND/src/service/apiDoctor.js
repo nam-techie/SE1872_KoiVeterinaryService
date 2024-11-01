@@ -3,7 +3,7 @@ import {axiosInstance} from "./apiRequest.js";
 
 export const getDoctorList = async () => {
     try {
-        const response = await axiosInstance.get("/customer/getAllDoctor");
+        const response = await axiosInstance.get("/getAllDoctor");
         console.log(response.data);
         return response.data;
     } catch (error) {

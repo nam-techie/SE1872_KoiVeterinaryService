@@ -2,6 +2,7 @@ package com.namtechie.org.controller;
 
 import com.namtechie.org.entity.Account;
 import com.namtechie.org.entity.Doctor;
+import com.namtechie.org.entity.ServiceType;
 import com.namtechie.org.exception.BadCredentialsException;
 import com.namtechie.org.exception.NotFoundException;
 import com.namtechie.org.model.UpdateDoctorLogin;
@@ -9,9 +10,12 @@ import com.namtechie.org.model.request.*;
 import com.namtechie.org.model.response.AccountResponse;
 import com.namtechie.org.model.response.DoctorInfoResponse;
 import com.namtechie.org.model.response.InfoCustomerResponse;
+import com.namtechie.org.repository.DoctorRepository;
+import com.namtechie.org.repository.ServiceTypeRepository;
 import com.namtechie.org.service.AuthenticationService;
 import com.namtechie.org.service.CustomerService;
 import com.namtechie.org.service.DoctorService;
+import com.namtechie.org.service.ServiceTypesService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
@@ -38,7 +42,24 @@ public class AuthenticationController {
     @Autowired
     private DoctorService doctorService;
 
+    @Autowired
+    DoctorRepository doctorRepository;
+
+    @Autowired
+    ServiceTypesService serviceTypesService;
+
+
     //API provide for CUSTOMER
+
+    @GetMapping(value = "/getAllServiceType", produces = "application/json")
+    public List<ServiceType> getAllServiceType() {
+        return serviceTypesService.findService();
+    }
+
+    @GetMapping("/getAllDoctor")
+    public ResponseEntity<List<Doctor>> getAllDoctor() {
+        return ResponseEntity.ok(doctorService.getAllDoctors());
+    }
 
     @GetMapping("/getInfoDoctor")
     public List<Doctor> getInfoDoctor() {

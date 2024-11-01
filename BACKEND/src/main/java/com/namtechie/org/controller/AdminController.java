@@ -105,11 +105,7 @@ public class AdminController {
         return doctorInfoResponse;
     }
 
-    @GetMapping("/listAllVeterinary")
-    public List<Doctor> getAllDoctor() {
-        List<Doctor> listDoctor = doctorRepository.findAll();
-        return listDoctor;
-    }
+
 
     @DeleteMapping("/deleteVeterinaryInfo")
     public ResponseEntity deleteDoctor(long id) {
@@ -326,6 +322,12 @@ public class AdminController {
             // Bắt các lỗi chung khác
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Có lỗi xảy ra: " + e.getMessage());
         }
+    }
+
+    @GetMapping("/getFullInfo/{appointmentId}")
+    public ResponseEntity<InfoResponse> getFullInfo(long appointmentId){
+        InfoResponse infoResponse = appointmentService.getFullInfoAppointment(appointmentId);
+        return ResponseEntity.ok(infoResponse);
     }
 
 

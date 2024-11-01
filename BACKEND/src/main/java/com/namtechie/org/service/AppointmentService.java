@@ -36,30 +36,25 @@ public class AppointmentService {
     @Autowired
     private ZoneRepository zoneRepository;
 
-    @Autowired
-    private DoctorsSchedulesRepository doctorSchedulesRepository;
 
     @Autowired
     private AppointmentRepository appointmentRepository;
 
-    @Autowired
-    private AppointmentInfoRepository appointmentDetailRepository;
 
     @Autowired
     private AppointmentStatusRepository appointmentStatusRepository;
 
     @Autowired
     private DoctorRepository doctorRepository;
-    @Autowired
-    private ModelMapper modelMapper;
-    @Autowired
-    private AccountRepository accountRepository;
+
+
     @Autowired
     private CustomerRepository customersRepository;
+
     @Autowired
     ScheduleService scheduleService;
-    @Autowired
-    private ServiceTypesService serviceTypesService;
+
+
     @Autowired
     private PaymentRepository paymentRepository;
 
@@ -804,13 +799,118 @@ public class AppointmentService {
 
         return appointmentResponse;
     }
-//
-//    public InfoResponse getFullInfoAppointment(long appointmentId) {
-//        InfoResponse infoResponse = new InfoResponse();
-//
-//
-//    }
 
+
+    public InfoResponse getFullInfoAppointment(long appointmentId) {
+        InfoResponse infoResponse = new InfoResponse();
+
+        Appointment appointment = appointmentRepository.findAppointmentById(appointmentId);
+
+        // Set Info appointmentId
+        infoResponse.setAppointmentId(appointmentId);
+
+        // Set Info Customer Response
+        InfoCusResponse infoCusResponse = new InfoCusResponse();
+        Customers infoCus = appointment.getCustomers();
+        if (infoCus != null) {
+            infoCusResponse.setFullName(infoCus.getFullName());
+            infoCusResponse.setAddress(infoCus.getAddress());
+            infoCusResponse.setPhone(infoCus.getPhone());
+        } else {
+            infoCusResponse.setFullName(null);
+        }
+
+        infoResponse.setInfoCusResponse(infoCusResponse);
+
+        // Set Info Koi Response
+        InfoKoiResponse infoKoiResponse = new InfoKoiResponse();
+        MedicalRecorded infoKoi = appointment.getMedicalRecorded();
+        if (infoKoi != null) {
+            infoKoiResponse.setName(infoKoi.getName());
+            infoKoiResponse.setBreed(infoKoi.getBreed());
+            infoKoiResponse.setAge(infoKoi.getAge());
+            infoKoiResponse.setColor(infoKoi.getColor());
+            infoKoiResponse.setWeight(infoKoi.getWeight());
+            infoKoiResponse.setHealthStatus(infoKoi.getHealthStatus());
+        } else {
+            infoKoiResponse.setName(null);
+        }
+
+        infoResponse.setInfoKoiResponse(infoKoiResponse);
+
+        // Set Info Appointment Response
+        InfoAppointmentResponse infoAppointmentResponse = new InfoAppointmentResponse();
+        AppointmentInfo appointmentInfo = appointmentInfoRepository.findByAppointmentId(appointmentId);
+        if (appointmentInfo != null) {
+            infoAppointmentResponse.setAppointmentTime(appointmentInfo.getCreatedDate());
+            infoAppointmentResponse.setAppointmentDate(appointmentInfo.getAppointmentBookingDate());
+
+            ServiceType serviceType = serviceTypeRepository.findByAppointmentId(appointmentId);
+            infoAppointmentResponse.setServiceType(serviceType.getName());
+            infoAppointmentResponse.setTime(appointmentInfo.getAppointmentBookingTime());
+            infoAppointmentResponse.setAddress(appointmentInfo.getAddress());
+
+            // Lấy tất cả các trạng thái của appointment
+            List<AppointmentStatus> statuses = appointmentStatusRepository.findByAppointment(appointment);
+
+            // Tìm trạng thái có createDate lớn nhất (mới nhất)
+            AppointmentStatus latestStatus = null;
+            for (AppointmentStatus status : statuses) {
+                if (latestStatus == null || status.getCreate_date().toLocalDateTime().isAfter(latestStatus.getCreate_date().toLocalDateTime())) {
+                    latestStatus = status;
+                }
+            }
+
+            // Set Info Status
+            infoResponse.setStatus(latestStatus.getStatus());
+
+            Doctor doctor = appointment.getDoctor();
+
+            infoAppointmentResponse.setStatus(latestStatus.getStatus());
+            infoAppointmentResponse.setDoctorName(doctor.getFullName());
+            infoAppointmentResponse.setDoctorAssigned(appointment.isDoctorAssigned());
+        } else {
+            infoAppointmentResponse.setStatus(null);
+        }
+
+        infoResponse.setInfoAppointmentResponse(infoAppointmentResponse);
+
+        List<InfoServiceTypeResponse> infoServiceTypeResponses = new ArrayList<>();
+        Payment payment = paymentRepository.findByAppointmentId(appointmentId);
+        List<PaymentDetail> paymentDetail = paymentDetailRepository.findByPaymentId(payment.getId());
+        if (paymentDetail != null) {
+            InfoServiceTypeResponse infoServiceTypeResponse = new InfoServiceTypeResponse();
+            long serviceId = 0;
+            for (PaymentDetail detail : paymentDetail) {
+                infoServiceTypeResponse.setServiceTypeId(serviceId);
+                infoServiceTypeResponse.setServiceTypeName(detail.getNotes());
+                infoServiceTypeResponse.setServiceTypePrice(detail.getPrice());
+                infoServiceTypeResponse.setStatusPayment(detail.isStatus());
+                serviceId++;
+                infoServiceTypeResponses.add(infoServiceTypeResponse);
+            }
+        } else {
+            infoAppointmentResponse.setStatus(null);
+        }
+        infoResponse.setInfoServiceTypeResponse(infoServiceTypeResponses);
+
+        // Set Info Feedback Response
+        InfoFeedbackResponse infoFeedbackResponse = new InfoFeedbackResponse();
+        FeedBack feedBack = appointment.getFeedBack();
+        if (feedBack != null) {
+            infoFeedbackResponse.setRate(feedBack.getRating());
+            infoFeedbackResponse.setFeedback(feedBack.getComment());
+        } else {
+            infoFeedbackResponse.setFeedback(null);
+        }
+        infoResponse.setInfoFeedbackResponse(infoFeedbackResponse);
+
+        return infoResponse;
+    }
 
 
 }
+
+
+
+
