@@ -2,6 +2,8 @@ package com.namtechie.org.model.response;
 
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 public class DoctorInfoResponse {
     String fullName;
@@ -11,4 +13,5 @@ public class DoctorInfoResponse {
     String description;
     String qualification;
     String ImageUrl;
+    double rate;
 }

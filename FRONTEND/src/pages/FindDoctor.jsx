@@ -1,6 +1,9 @@
 import React, {useState, useEffect} from 'react';
 import {CustomerNavBar} from '../components/Navbar';
 import styles from '../styles/FindDoctor.module.css';
+import { FaStar, FaStarHalfAlt } from 'react-icons/fa';
+import { AiOutlineStar } from 'react-icons/ai';
+import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import { getDoctorList, getDoctorDetail } from '../service/apiDoctor';
 
 function FindDoctor() {
@@ -9,32 +12,136 @@ function FindDoctor() {
     const [experience, setExperience] = useState('');
     const [selectedDoctor, setSelectedDoctor] = useState(null);
     const [doctors, setDoctors] = useState([]);
+    const [currentPage, setCurrentPage] = useState(1);
+    const feedbacksPerPage = 1;
+    const [doctorDetail, setDoctorDetail] = useState(null);
 
+    // Fetch danh sách bác sĩ khi component mount
     useEffect(() => {
         const fetchDoctors = async () => {
-            const doctorData = await getDoctorList();
-            setDoctors(doctorData);
+            const data = await getDoctorList();
+            setDoctors(data);
         };
         fetchDoctors();
     }, []);
 
-    const filteredDoctors = doctors.filter(doctor =>
-        (doctor?.fullName?.toLowerCase() || '').includes(searchTerm.toLowerCase()) &&
-        (specialty === '' || doctor?.doctorInfo?.specialty === specialty) &&
-        (experience === '' || doctor?.experience >= parseInt(experience))
+    const filteredDoctors = doctors.filter(doctorData =>
+        (doctorData.doctor?.fullName?.toLowerCase() || '').includes(searchTerm.toLowerCase()) &&
+        (specialty === '' || doctorData.doctor?.specialty === specialty) &&
+        (experience === '' || doctorData.doctor?.experience >= parseInt(experience))
     );
 
     const handleDoctorClick = async (doctor) => {
         try {
-            const doctorDetails = await getDoctorDetail(doctor.id);
-            if (doctorDetails) {
-                setSelectedDoctor(doctorDetails);
-            } else {
-                console.error('Không thể lấy thông tin chi tiết bác sĩ');
+            const details = await getDoctorDetail(doctor.id);
+            if (details) {
+                setDoctorDetail(details);
+                setCurrentPage(1);
             }
         } catch (error) {
-            console.error('Lỗi khi xử lý thông tin chi tiết bác sĩ:', error);
+            console.error("Lỗi khi lấy chi tiết bác sĩ:", error);
         }
+    };
+
+    const handlePageChange = (pageNumber) => {
+        setCurrentPage(pageNumber);
+    };
+
+    const renderStars = (rating) => {
+        // Nếu rating là null, undefined, 0 hoặc NaN
+        if (!rating || isNaN(rating)) {
+            return <span className={styles.noRating}>Chưa có đánh giá</span>;
+        }
+
+        const stars = [];
+        const fullStars = Math.floor(rating);
+        const hasHalfStar = rating % 1 !== 0;
+
+        // Thêm sao đầy
+        for (let i = 0; i < fullStars; i++) {
+            stars.push(<FaStar key={`star-${i}`} className={styles.starIcon} />);
+        }
+
+        // Thêm nửa sao nếu có
+        if (hasHalfStar) {
+            stars.push(<FaStarHalfAlt key="half-star" className={styles.starIcon} />);
+        }
+
+        // Thêm sao rỗng cho đủ 5 sao
+        const emptyStars = 5 - Math.ceil(rating);
+        for (let i = 0; i < emptyStars; i++) {
+            stars.push(<AiOutlineStar key={`empty-star-${i}`} className={styles.starIcon} />);
+        }
+
+        return (
+            <div className={styles.ratingContainer}>
+                {stars}
+                <span className={styles.ratingText}>({rating})</span>
+            </div>
+        );
+    };
+
+    const renderFeedbackSection = () => {
+        if (!doctorDetail?.feedback || doctorDetail.feedback.length === 0) {
+            return (
+                <div className={styles.feedbackSection}>
+                    <h3>Đánh giá từ khách hàng</h3>
+                    <p className={styles.noFeedback}>Chưa có đánh giá nào</p>
+                </div>
+            );
+        }
+
+        const indexOfLastFeedback = currentPage * feedbacksPerPage;
+        const indexOfFirstFeedback = indexOfLastFeedback - feedbacksPerPage;
+        const currentFeedbacks = doctorDetail.feedback.slice(indexOfFirstFeedback, indexOfLastFeedback);
+        const totalPages = Math.ceil(doctorDetail.feedback.length / feedbacksPerPage);
+
+        return (
+            <div className={styles.feedbackSection}>
+                <h3>Đánh giá từ khách hàng</h3>
+                {currentFeedbacks.map(feedback => (
+                    <div key={feedback.id} className={styles.feedbackItem}>
+                        <div className={styles.feedbackHeader}>
+                            <div className={styles.customerInfo}>
+                                <span className={styles.customerName}>{feedback.username}</span>
+                                <span className={styles.feedbackTime}>{feedback.createdDate}</span>
+                            </div>
+                            <div className={styles.ratingContainer}>
+                                {renderStars(feedback.rating)}
+                            </div>
+                        </div>
+                        <div className={styles.serviceName}>
+                            Dịch vụ: {feedback.serviceName}
+                        </div>
+                        <div className={styles.feedbackComment}>
+                            {feedback.comments}
+                        </div>
+                    </div>
+                ))}
+
+                {totalPages > 1 && (
+                    <div className={styles.pagination}>
+                        <button 
+                            className={styles.pageButton}
+                            onClick={() => handlePageChange(currentPage - 1)}
+                            disabled={currentPage === 1}
+                        >
+                            <IoIosArrowBack />
+                        </button>
+                        <span className={styles.pageInfo}>
+                            {currentPage}/{totalPages}
+                        </span>
+                        <button 
+                            className={styles.pageButton}
+                            onClick={() => handlePageChange(currentPage + 1)}
+                            disabled={currentPage === totalPages}
+                        >
+                            <IoIosArrowForward />
+                        </button>
+                    </div>
+                )}
+            </div>
+        );
     };
 
     return (
@@ -64,50 +171,57 @@ function FindDoctor() {
                             className={styles.doctorSearchInput}
                         />
                     </div>
-                    <div className={styles.buttonWrapper}>
-                        <button className={styles.findDoctorButton}>Tìm bác sĩ</button>
-                    </div>
                 </div>
+
                 <h2>Danh sách Bác sĩ</h2>
                 <div className={styles.doctorGrid}>
-                    {filteredDoctors.map(doctor => (
-                        <div key={doctor.id} className={styles.doctorCard}>
+                    {filteredDoctors.map(doctorData => (
+                        <div key={doctorData.doctor.id} className={styles.doctorCard}>
                             <div className={styles.doctorImageContainer}>
-                                {doctor.imageUrl ? (
-                                    <img 
-                                        src={doctor.imageUrl} 
-                                        alt={doctor.fullName} 
-                                        className={styles.doctorImage}
-                                        onError={(e) => {
-                                            e.target.onerror = null;
-                                            e.target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(doctor.fullName)}&background=random`;
-                                        }}
-                                    />
-                                ) : (
-                                    <img 
-                                        src={`https://ui-avatars.com/api/?name=${encodeURIComponent(doctor.fullName)}&background=random`}
-                                        alt={doctor.fullName} 
-                                        className={styles.doctorImage}
-                                    />
-                                )}
+                                <img 
+                                    src={doctorData.doctor.imageUrl}
+                                    alt={doctorData.doctor.fullName}
+                                    className={styles.doctorImage}
+                                    onError={(e) => {
+                                        e.target.onerror = null;
+                                        e.target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(doctorData.doctor.fullName)}&background=random`;
+                                    }}
+                                />
                             </div>
-                            <h3 className={styles.doctorName}>{doctor.fullName}</h3>
-                            <p className={styles.doctorPhone}>SĐT: {doctor.phone}</p>
-                            <p className={styles.doctorExperience}>Kinh nghiệm: {doctor.experience} năm</p>
-                            <button className={styles.detailButton} onClick={() => handleDoctorClick(doctor)}>Xem chi tiết</button>
+                            <h3 className={styles.doctorName}>{doctorData.doctor.fullName}</h3>
+                            <p className={styles.doctorPhone}>SĐT: {doctorData.doctor.phone}</p>
+                            <p className={styles.doctorExperience}>Kinh nghiệm: {doctorData.doctor.experience} năm</p>
+                            <div className={styles.doctorRating}>
+                                {renderStars(doctorData.rateAverage)}
+                            </div>
+                            <button 
+                                className={styles.detailButton}
+                                onClick={() => handleDoctorClick(doctorData.doctor)}
+                            >
+                                Xem chi tiết
+                            </button>
                         </div>
                     ))}
                 </div>
-                {selectedDoctor && (
+
+                {doctorDetail && (
                     <div className={styles.modal}>
                         <div className={styles.modalContent}>
-                            <h2>{selectedDoctor.fullName}</h2>
-                            <p><strong>Số điện thoại:</strong> {selectedDoctor.phone}</p>
-                            <p><strong>Kinh nghiệm:</strong> {selectedDoctor.experience} năm</p>
-                            <p><strong>Chuyên khoa:</strong> {selectedDoctor.specialty}</p>
-                            <p><strong>Mô tả:</strong> {selectedDoctor.description}</p>
-                            <p><strong>Bằng cấp:</strong> {selectedDoctor.qualification}</p>
-                            <button onClick={() => setSelectedDoctor(null)}>Đóng</button>
+                            <h2>{doctorDetail.doctorInfo.fullName}</h2>
+                            <p><strong>Số điện thoại:</strong> {doctorDetail.doctorInfo.phone}</p>
+                            <p><strong>Kinh nghiệm:</strong> {doctorDetail.doctorInfo.experience} năm</p>
+                            <p><strong>Chuyên khoa:</strong> {doctorDetail.doctorInfo.specialty}</p>
+                            <p><strong>Mô tả:</strong> {doctorDetail.doctorInfo.description}</p>
+                            <p><strong>Bằng cấp:</strong> {doctorDetail.doctorInfo.qualification}</p>
+                            
+                            {renderFeedbackSection()}
+                            
+                            <button onClick={() => {
+                                setDoctorDetail(null);
+                                setCurrentPage(1);
+                            }}>
+                                Đóng
+                            </button>
                         </div>
                     </div>
                 )}

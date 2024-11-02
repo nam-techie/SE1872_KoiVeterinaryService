@@ -3,6 +3,7 @@ package com.namtechie.org.controller;
 import com.namtechie.org.entity.*;
 import com.namtechie.org.exception.DoctorNotAvailableException;
 import com.namtechie.org.model.Schedule;
+import com.namtechie.org.model.request.FeedbackRequest;
 import com.namtechie.org.model.response.AppointmentResponse;
 import com.namtechie.org.model.response.AppointmentStatusResponse;
 import com.namtechie.org.repository.AppointmentRepository;
@@ -13,7 +14,6 @@ import com.namtechie.org.service.AppointmentService;
 import com.namtechie.org.service.TokenService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -188,6 +188,15 @@ public class AppointmentController {
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Đã xảy ra lỗi khi tạo URL thanh toán.");
         }
+    }
+
+    @Autowired
+    FeedbackService feedbackService;
+
+    @PostMapping("/createFeedback/{appointmentId}")
+    public ResponseEntity createFeedback(@PathVariable long appointmentId,@RequestBody FeedbackRequest feedBack) {
+        FeedBack feedBack1 = feedbackService.createFeedbackService(appointmentId,feedBack);
+        return ResponseEntity.ok(feedBack1);
     }
 
 

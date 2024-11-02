@@ -78,15 +78,15 @@ export function DoctorSelector({ selectedDoctor, handleDoctorSelect, doctors, di
         <div className={styles.formGroup}>
             <label className={styles.label}>Chọn bác sĩ (không bắt buộc):</label>
             <select
-                value={disabled ? '' : selectedDoctor} /* Nếu disabled thì giá trị mặc định là rỗng */
+                value={disabled ? '' : selectedDoctor}
                 onChange={(e) => handleDoctorSelect(e.target.value)}
                 disabled={disabled}
                 className={disabled ? styles.selectDisabled : styles.select}
             >
                 <option value="dr0">Không chọn</option>
-                {doctors && doctors.map((doctor) => (
-                    <option key={doctor.id} value={doctor.id}>
-                        {doctor.fullName || "Không có tên"} {/* Thêm fallback text */}
+                {doctors && doctors.map((doctorResponse) => (
+                    <option key={doctorResponse.doctor.id} value={doctorResponse.doctor.id}>
+                        {doctorResponse.doctor.fullName || "Không có tên"}
                     </option>
                 ))}
             </select>
@@ -205,10 +205,10 @@ export const ConfirmationModal = ({
         if (id === 'dr0') return 'Không';
         if (!id || !array) return 'Không xác định';
         
-        // Nếu array chứa bác sĩ (có thuộc tính fullName)
-        if (array[0]?.fullName !== undefined) {
-            const doctor = array.find(doc => doc.id.toString() === id.toString());
-            return doctor?.fullName || 'Không xác định';
+        // Xử lý cho bác sĩ
+        if (array[0]?.doctor) {  // Kiểm tra nếu là mảng DoctorResponse
+            const doctorResponse = array.find(dr => dr.doctor.id.toString() === id.toString());
+            return doctorResponse?.doctor?.fullName || 'Không xác định';
         }
         
         // Xử lý cho các loại khác (service, district)

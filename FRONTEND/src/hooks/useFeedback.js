@@ -3,10 +3,11 @@ import { axiosInstance } from '../service/apiRequest';
 
 const useFeedback = () => {
     const submitFeedback = async (feedbackData) => {
+        const { appointmentId, ...restData } = feedbackData;
         try {
             const response = await axiosInstance.post(
-                '/createFeedback',
-                feedbackData
+                `/customer/createFeedback/${appointmentId}`,
+                restData
             );
 
             console.log('Response from API:', response.data);

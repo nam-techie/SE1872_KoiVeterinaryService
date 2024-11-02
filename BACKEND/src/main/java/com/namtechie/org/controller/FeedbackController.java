@@ -19,12 +19,7 @@ public class FeedbackController {
     @Autowired
     private FeedbackService feedbackService;
 
-    @PostMapping("/createFeedback/{appointmentId}")
-    @PreAuthorize("hasAuthority('CUSTOMER')")
-    public ResponseEntity createFeedback(@PathVariable long appointmentId,@RequestBody FeedbackRequest feedBack) {
-        FeedBack feedBack1 = feedbackService.createFeedbackService(appointmentId,feedBack);
-        return ResponseEntity.ok(feedBack1);
-    }
+
 
     @GetMapping("/getFeedbackAdmin")
     @PreAuthorize("hasAuthority('ADMIN')")

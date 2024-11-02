@@ -375,6 +375,11 @@ const AppointmentDashboard = () => {
     return amount ? amount.toLocaleString() : "0";
   };
 
+  // Thêm hàm kiểm tra trạng thái cho phép thanh toán
+  const canConfirmPayment = (status) => {
+    return status === "Chờ thanh toán tiền dịch vụ" || status === "Chờ thanh toán tổng tiền";
+  };
+
   return (
     <div className="appointment-dashboard">
       {/* Thêm thông báo thành công */}
@@ -485,6 +490,14 @@ const AppointmentDashboard = () => {
                     {canEdit(appointment.appointmentStatus) && (
                       <button className="action-btn edit">
                         <i className="fas fa-edit"></i> Cập nhật
+                      </button>
+                    )}
+                    {canConfirmPayment(appointment.appointmentStatus) && (
+                      <button
+                        className="action-btn payment"
+                        onClick={() => handleShowPaymentModal(appointment)}
+                      >
+                        <i className="fas fa-money-bill"></i> Xác nhận thanh toán
                       </button>
                     )}
                     {canCancel(appointment.appointmentStatus) && (

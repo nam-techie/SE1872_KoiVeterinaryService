@@ -55,8 +55,14 @@ public class DoctorService {
 
     @Autowired
     ModelMapper modelMapper;
+
+    @Autowired
+    FeedbackRepository feedbackRepository;
+
     @Autowired
     private CloudinaryService cloudinaryService;
+    @Autowired
+    private CustomerRepository customerRepository;
 
 
     public Account getCurrentAccount() {
@@ -67,6 +73,38 @@ public class DoctorService {
     public List<Doctor> getAllDoctors() {
         return doctorRepository.findAll();
     }
+
+    public List<DoctorResponse> getListAllDoctors() {
+        List<DoctorResponse> doctorResponses = new ArrayList<>();
+        List<Doctor> doctors = doctorRepository.findAll();
+
+        for (Doctor d : doctors) {
+            DoctorResponse doctorResponse = new DoctorResponse();
+            double rateAverage = 0;
+            int count = 0;
+
+            List<Appointment> appointments = appointmentRepository.findByDoctorId(d.getId());
+            for (Appointment appointment : appointments) {
+                FeedBack feedBack = feedbackRepository.findByAppointment(appointment);
+                if (feedBack != null) {
+                    rateAverage += feedBack.getRating();
+                    count++;
+                }
+            }
+
+            if (!appointments.isEmpty()) {
+                rateAverage /= count;
+            } else {
+                rateAverage = 0;
+            }
+
+            doctorResponse.setDoctor(d);
+            doctorResponse.setRateAverage(rateAverage);
+            doctorResponses.add(doctorResponse);
+        }
+        return doctorResponses;
+    }
+
 
     public void deleteDoctor(long id) {
         try {
@@ -107,6 +145,37 @@ public class DoctorService {
 
         return doctorInfoResponse;
     }
+
+    public DoctorInfoDetailResponse infoDetailDoctor(long doctorId) {
+        DoctorInfoDetailResponse response = new DoctorInfoDetailResponse();
+        DoctorInfoResponse doctorInfoResponse = getAllInfoDoctor(doctorId);
+        List<DoctorFeedbackResponse> feedbackResponses = new ArrayList<>();
+
+        List<Appointment> appointments = appointmentRepository.findByDoctorId(doctorId);
+        int count = 1;
+
+        for (Appointment appointment : appointments) {
+            FeedBack feedBack = feedbackRepository.findByAppointment(appointment);
+            if (feedBack != null && !feedBack.isDeleted()) { // Kiểm tra isDeleted trực tiếp
+                DoctorFeedbackResponse feedbackResponse = new DoctorFeedbackResponse();
+                feedbackResponse.setId(count++); // Đặt id theo số thứ tự của feedback
+                Customers customer = appointment.getCustomers();
+                feedbackResponse.setUsername(customer.getFullName());
+                feedbackResponse.setRating(feedBack.getRating());
+                feedbackResponse.setCreatedDate(feedBack.getCreated_date());
+                ServiceType serviceType = appointment.getServiceType();
+                feedbackResponse.setServiceName(serviceType.getName());
+                feedbackResponse.setComments(feedBack.getComment());
+
+                feedbackResponses.add(feedbackResponse);
+            }
+        }
+
+        response.setDoctorInfo(doctorInfoResponse);
+        response.setFeedback(feedbackResponses);
+        return response;
+    }
+
 
     public void updateInfoDoctor(String phone, DoctorRequest doctorRequest) {
         try {

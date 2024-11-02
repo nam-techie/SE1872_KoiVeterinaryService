@@ -7,9 +7,7 @@ import com.namtechie.org.exception.BadCredentialsException;
 import com.namtechie.org.exception.NotFoundException;
 import com.namtechie.org.model.UpdateDoctorLogin;
 import com.namtechie.org.model.request.*;
-import com.namtechie.org.model.response.AccountResponse;
-import com.namtechie.org.model.response.DoctorInfoResponse;
-import com.namtechie.org.model.response.InfoCustomerResponse;
+import com.namtechie.org.model.response.*;
 import com.namtechie.org.repository.DoctorRepository;
 import com.namtechie.org.repository.ServiceTypeRepository;
 import com.namtechie.org.service.AuthenticationService;
@@ -42,8 +40,6 @@ public class AuthenticationController {
     @Autowired
     private DoctorService doctorService;
 
-    @Autowired
-    DoctorRepository doctorRepository;
 
     @Autowired
     ServiceTypesService serviceTypesService;
@@ -57,8 +53,8 @@ public class AuthenticationController {
     }
 
     @GetMapping("/getAllDoctor")
-    public ResponseEntity<List<Doctor>> getAllDoctor() {
-        return ResponseEntity.ok(doctorService.getAllDoctors());
+    public ResponseEntity<List<DoctorResponse>> getListAllDoctors() {
+        return ResponseEntity.ok(doctorService.getListAllDoctors());
     }
 
     @GetMapping("/getInfoDoctor")
@@ -67,9 +63,8 @@ public class AuthenticationController {
     }
 
     @GetMapping("/getDoctorDetail/{doctorId}")
-    public DoctorInfoResponse getDoctorDetail(@PathVariable long doctorId) {
-        DoctorInfoResponse doctorInfoResponse = doctorService.getAllInfoDoctor(doctorId);
-        return doctorInfoResponse;
+    public DoctorInfoDetailResponse getDoctorDetail(@PathVariable long doctorId) {
+        return doctorService.infoDetailDoctor(doctorId);
     }
 
     @PostMapping("/register")
