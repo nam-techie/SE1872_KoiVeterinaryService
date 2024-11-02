@@ -1,8 +1,7 @@
+// eslint-disable-next-line no-unused-vars
 import React, { useState, useEffect } from "react";
 import "./styles/AppointmentDashboard.css";
 import useAppointment from "./hooks/useAppointment";
-import { FaSearch, FaSort } from "react-icons/fa";
-import LoadingCat from "../../components/LoadingCat";
 
 const AppointmentDashboard = () => {
   const ITEMS_PER_PAGE = 10;
@@ -34,18 +33,33 @@ const AppointmentDashboard = () => {
   const [loadingDetails, setLoadingDetails] = useState(false);
   const [detailsError, setDetailsError] = useState(null);
 
+  // Thêm hàm fetchAppointments riêng
+  const fetchAppointments = async () => {
+    try {
+      const data = await refetch();
+      if (data) {
+        setAppointments(data);
+        setLoading(false);
+      }
+    } catch (err) {
+      setError(err.message);
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    // Fetch lần đầu khi component mount
-    refetch();
+    fetchAppointments();
 
-    // Set interval để fetch mỗi 30 giây
     const interval = setInterval(() => {
-      refetch();
-    }, 20000);
+      fetchAppointments();
+    }, 5000);
 
-    // Cleanup function
     return () => clearInterval(interval);
-  }, []); // Empty dependency array
+  }, []);
+
+  // Thay đổi cách hiển thị loading
+  
+  if (error) return <div>{error}</div>;
 
   const statusOptions = [
     { value: "", label: "Tất cả trạng thái" },
@@ -176,9 +190,6 @@ const AppointmentDashboard = () => {
     .filter((service) => service.isPaid)
     .reduce((sum, service) => sum + service.price, 0);
   const unpaidAmount = totalAmount - paidAmount;
-
-  if (loading) return <LoadingCat />;
-  if (error) return <div>{error}</div>;
 
   // Hàm tìm kiếm
   const handleSearch = (value) => {

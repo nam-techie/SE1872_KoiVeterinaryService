@@ -115,7 +115,8 @@ function HomePage() {
                                 <h4>Đặt Lịch Hẹn</h4>
                             </div>
 
-                            <div className={styles.functionButton}>
+                            <div className={styles.functionButton}
+                                onClick={() => window.location.href = "/doctor-list"}>
                                 <FaUserDoctor size={30} color="orange" style={{marginRight: '10px'}}/>
                                 <h4>Tìm Bác Sĩ</h4>
                             </div>

@@ -1,5 +1,5 @@
 .appointment-dashboard {
-    background-color: #989898;
+    background-color: #EEEEEE;
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -124,7 +124,7 @@ tr:last-child td {
     border: 2px solid #FFCD92;
 }
 
-/* Thanh toán ti���n dịch vụ thành công */
+/* Thanh toán tiền dịch vụ thành công */
 .status[data-status="Thanh toán tiền dịch vụ thành công"] {
     background-color: #E8F5E9;
     color: #2E7D32;
@@ -1551,4 +1551,20 @@ tr:last-child td {
     .info-grid.appointment-info {
         grid-template-columns: 1fr;
     }
+}
+
+/* Thêm style cho trạng thái "Đã đánh giá" */
+.status[data-status="Đã đánh giá"] {
+  background-color: #8B5CF6; /* Màu tím */
+  color: white;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 500;
+  display: inline-block;
+}
+
+/* Đảm bảo hover effect giống các status khác nếu có */
+.status[data-status="Đã đánh giá"]:hover {
+  opacity: 0.9;
 }
