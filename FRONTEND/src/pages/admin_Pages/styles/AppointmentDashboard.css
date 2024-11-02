@@ -124,7 +124,7 @@ tr:last-child td {
     border: 2px solid #FFCD92;
 }
 
-/* Thanh toán tiền dịch vụ thành công */
+/* Thanh toán ti���n dịch vụ thành công */
 .status[data-status="Thanh toán tiền dịch vụ thành công"] {
     background-color: #E8F5E9;
     color: #2E7D32;
@@ -1492,5 +1492,63 @@ tr:last-child td {
     .payment-method .label {
         margin-right: 0;
         margin-bottom: 8px;
+    }
+}
+
+/* Style cho ô phân công bác sĩ */
+.assign-type {
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-weight: 500 !important;
+    position: relative;
+}
+
+.assign-type::before {
+    content: '';
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    margin-right: 8px;
+}
+
+.assign-type.customer-choice {
+    color: #0891b2 !important;
+    background-color: #ecfeff !important;
+    border: 1px solid #22d3ee !important;
+}
+
+.assign-type.customer-choice::before {
+    background-color: #0891b2;
+}
+
+.assign-type.center-assign {
+    color: #9333ea !important;
+    background-color: #faf5ff !important;
+    border: 1px solid #d946ef !important;
+}
+
+.assign-type.center-assign::before {
+    background-color: #9333ea;
+}
+
+/* Điều chỉnh grid để hiển thị 6 ô cân đối */
+.info-grid.appointment-info {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+    .info-grid.appointment-info {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 640px) {
+    .info-grid.appointment-info {
+        grid-template-columns: 1fr;
     }
 }
