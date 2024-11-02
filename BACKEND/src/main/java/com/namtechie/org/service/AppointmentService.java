@@ -877,22 +877,43 @@ public class AppointmentService {
 
         List<InfoServiceTypeResponse> infoServiceTypeResponses = new ArrayList<>();
         Payment payment = paymentRepository.findByAppointmentId(appointmentId);
-        List<PaymentDetail> paymentDetail = paymentDetailRepository.findByPaymentId(payment.getId());
-        if (paymentDetail != null) {
-            InfoServiceTypeResponse infoServiceTypeResponse = new InfoServiceTypeResponse();
+        if (payment != null) {
+            List<PaymentDetail> paymentDetail = paymentDetailRepository.findByPaymentId(payment.getId());
             long serviceId = 0;
+            long donePayment = 0;
+            long notDonePayment = 0;
+            long totalPayment = payment.getTotalFee();
+
             for (PaymentDetail detail : paymentDetail) {
+                InfoServiceTypeResponse infoServiceTypeResponse = new InfoServiceTypeResponse();
+
                 infoServiceTypeResponse.setServiceTypeId(serviceId);
                 infoServiceTypeResponse.setServiceTypeName(detail.getNotes());
                 infoServiceTypeResponse.setServiceTypePrice(detail.getPrice());
                 infoServiceTypeResponse.setStatusPayment(detail.isStatus());
+
+                // Cộng dồn donePayment hoặc notDonePayment dựa trên statusPayment
+                if (!detail.isStatus()) {
+                    notDonePayment += detail.getPrice();
+                } else {
+                    donePayment += detail.getPrice();
+                }
+
                 serviceId++;
                 infoServiceTypeResponses.add(infoServiceTypeResponse);
             }
+
+
+            infoResponse.setTransactionMethod("VNPAY");
+            infoResponse.setDonePayment(donePayment);
+            infoResponse.setNotDonePayment(notDonePayment);
+            infoResponse.setTotalPayment(totalPayment);
         } else {
             infoAppointmentResponse.setStatus(null);
         }
+
         infoResponse.setInfoServiceTypeResponse(infoServiceTypeResponses);
+
 
         // Set Info Feedback Response
         InfoFeedbackResponse infoFeedbackResponse = new InfoFeedbackResponse();

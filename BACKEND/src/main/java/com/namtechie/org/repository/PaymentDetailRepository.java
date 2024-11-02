@@ -14,6 +14,7 @@ public interface PaymentDetailRepository extends JpaRepository<PaymentDetail, Lo
 
     PaymentDetail findByPaymentIdAndStatus(Long paymentId, boolean status);
 
+    boolean existsByPaymentIdAndStatus(Long paymentId, boolean status);
 
 
 }

@@ -325,9 +325,16 @@ public class AdminController {
     }
 
     @GetMapping("/getFullInfo/{appointmentId}")
-    public ResponseEntity<InfoResponse> getFullInfo(long appointmentId){
-        InfoResponse infoResponse = appointmentService.getFullInfoAppointment(appointmentId);
-        return ResponseEntity.ok(infoResponse);
+    public ResponseEntity<?> getFullInfo(@PathVariable long appointmentId){
+        try {
+            InfoResponse infoResponse = appointmentService.getFullInfoAppointment(appointmentId);
+            return ResponseEntity.ok(infoResponse);
+        } catch (Exception e) {
+            // Log lỗi
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Có lỗi xảy ra khi lấy thông tin: " + e.getMessage());
+        }
     }
 
 

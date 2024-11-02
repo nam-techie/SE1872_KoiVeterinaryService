@@ -808,16 +808,24 @@ tr:last-child td {
 /* Hiển thị trạng thái hiện tại */
 .current-status {
     text-align: center;
-    margin-top: 20px;
-    color: #64748b;
-    font-size: 14px;
+    margin-top: 1.5rem;
+    font-size: 1rem;
+    color: #4b5563;
 }
 
 .status-text {
-    color: #22C55E;
     font-weight: 600;
-    margin-left: 5px;
+    color: #22C55E;
+    margin-left: 0.5rem;
 }
+
+/* Thêm style cho trạng thái đã hủy */
+.status-text[data-status="Đã hủy lịch"],
+.status-text.cancelled {
+    color: #dc3545 !important; /* Màu đỏ */
+}
+
+
 
 /* Tooltip khi hover */
 .timeline-dot:hover::after {
@@ -883,137 +891,168 @@ tr:last-child td {
 
 /* Chi tiết thanh toán */
 .payment-details-section {
-    margin-top: 30px;
-    padding: 24px;
-    background-color: white;
-    border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    margin: 2rem;
+    padding: 2rem;
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 2px 20px rgba(0,0,0,0.08);
 }
 
 .payment-details-section h3 {
     color: #2c3e50;
-    font-size: 1.2rem;
-    margin-bottom: 20px;
-    padding-bottom: 12px;
+    font-size: 1.5rem;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
     border-bottom: 2px solid #eef2f7;
-    font-weight: 600;
 }
 
+/* Bảng chi tiết */
 .payment-table {
-    width: 100%;
-    border-radius: 8px;
+    margin-bottom: 2rem;
+    border-radius: 12px;
     overflow: hidden;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.04);
 }
 
 .payment-table table {
     width: 100%;
-    border-collapse: collapse;
+    border-collapse: separate;
+    border-spacing: 0;
     background: white;
 }
 
 .payment-table th {
-    background-color: #f8fafc;
-    color: #2c3e50;
+    background: #f8fafc;
+    padding: 1.2rem 1.5rem;
     font-weight: 600;
-    padding: 16px;
-    text-align: left;
-    border-bottom: 2px solid #e2e8f0;
+    color: #2c3e50;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 0.5px;
 }
 
 .payment-table td {
-    padding: 16px;
-    border-bottom: 1px solid #e2e8f0;
-    color: #1e293b;
+    padding: 1.2rem 1.5rem;
+    border-bottom: 1px solid #eef2f7;
+    color: #2c3e50;
 }
 
-/* Căn chỉnh các cột */
-.payment-table th:nth-child(1),
-.payment-table td:nth-child(1) {
-    width: 12%;
-    padding-left: 20px;
+/* Tổng quan thanh toán */
+.payment-summary-container {
+    background: #f8fafc;
+    padding: 2rem;
+    border-radius: 12px;
+    margin-top: 2rem;
 }
 
-.payment-table th:nth-child(2),
-.payment-table td:nth-child(2) {
-    width: 25%;
+.payment-method-box {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+    border-left: 4px solid #3498db;
 }
 
-.payment-table th:nth-child(3),
-.payment-table td:nth-child(3),
-.payment-table th:nth-child(5),
-.payment-table td:nth-child(5) {
-    width: 15%;
-    text-align: right;
-    padding-right: 20px;
-}
-
-.payment-table th:nth-child(4),
-.payment-table td:nth-child(4) {
-    width: 18%;
-    text-align: center;
-}
-
-/* Style cho trạng thái */
-.payment-status {
-    padding: 8px 16px;
-    border-radius: 20px;
-    font-size: 0.9rem;
+.method-label {
+    color: #64748b;
     font-weight: 500;
-    display: inline-block;
-    min-width: 120px;
+    margin-right: 1rem;
+}
+
+.method-value {
+    color: #2c3e50;
+    font-weight: 600;
+}
+
+.payment-summary-boxes {
+    display: flex;
+    gap: 1.5rem;
+    justify-content: space-between;
+}
+
+.summary-box {
+    flex: 1;
+    background: white;
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.04);
     text-align: center;
+    transition: transform 0.2s ease;
+}
+
+.summary-box:hover {
+    transform: translateY(-3px);
+}
+
+.summary-box.paid {
+    border-left: 4px solid #27ae60;
+}
+
+.summary-box.unpaid {
+    border-left: 4px solid #e74c3c;
+}
+
+.summary-box.total {
+    border-left: 4px solid #2c3e50;
+}
+
+.summary-label {
+    display: block;
+    color: #64748b;
+    font-size: 0.9rem;
+    margin-bottom: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.summary-value {
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+.summary-box.paid .summary-value {
+    color: #27ae60;
+}
+
+.summary-box.unpaid .summary-value {
+    color: #e74c3c;
+}
+
+.summary-box.total .summary-value {
+    color: #2c3e50;
+}
+
+/* Status badges */
+.payment-status {
+    display: inline-block;
+    padding: 0.6rem 1.2rem;
+    border-radius: 30px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    text-align: center;
+    min-width: 140px;
 }
 
 .payment-status.paid {
-    background-color: #dcfce7;
+    background: #dcfce7;
     color: #166534;
 }
 
 .payment-status.unpaid {
-    background-color: #fee2e2;
+    background: #fee2e2;
     color: #991b1b;
 }
 
-/* Style cho footer tổng cộng */
-.payment-table tfoot {
-    background-color: #f8fafc;
-    border-top: 2px solid #4a90e2;
-}
-
-.payment-table tfoot td {
-    padding: 16px 20px;
-    font-weight: 600;
-}
-
-.total-label {
-    text-align: right !important;
-    color: #2c3e50;
-    font-size: 1.1em;
-}
-
-.total-amount {
-    text-align: right !important;
-    color: #2c3e50;
-    font-size: 1.1em;
-}
-
-/* Hover effect cho rows */
-.payment-table tbody tr:hover {
-    background-color: #f8fafc;
-}
-
 /* Responsive */
-@media (max-width: 768px) {
-    .payment-table {
-        overflow-x: auto;
+@media (max-width: 1024px) {
+    .payment-summary-boxes {
+        flex-direction: column;
+        gap: 1rem;
     }
     
-    .payment-table table {
-        min-width: 800px;
-    }
-    
-    .payment-status {
-        min-width: 100px;
+    .summary-box {
+        width: 100%;
     }
 }
 
@@ -1168,7 +1207,7 @@ tr:last-child td {
     height: 100%;
 }
 
-/* Xử lý văn bản dài */
+/* Xử lý văn b��n dài */
 .info-item span {
     word-wrap: break-word;
     overflow-wrap: break-word;

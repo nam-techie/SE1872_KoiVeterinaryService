@@ -79,9 +79,16 @@ const FeedbackDashboard = () => {
         if (sortBy === 'rating') {
             return sortOrder === 'asc' ? a.rating - b.rating : b.rating - a.rating;
         } else if (sortBy === 'appointmentId') {
+            const appointmentIdA = a.appointment?.id ?? 'Chưa cập nhật';
+            const appointmentIdB = b.appointment?.id ?? 'Chưa cập nhật';
+            
+            if (appointmentIdA === 'Chưa cập nhật' && appointmentIdB === 'Chưa cập nhật') return 0;
+            if (appointmentIdA === 'Chưa cập nhật') return sortOrder === 'asc' ? 1 : -1;
+            if (appointmentIdB === 'Chưa cập nhật') return sortOrder === 'asc' ? -1 : 1;
+            
             return sortOrder === 'asc' 
-                ? a.appointment.id - b.appointment.id
-                : b.appointment.id - a.appointment.id;
+                ? appointmentIdA - appointmentIdB
+                : appointmentIdB - appointmentIdA;
         } else if (sortBy === 'created_date') {
             return sortOrder === 'asc' 
                 ? new Date(a.created_date) - new Date(b.created_date)
@@ -160,7 +167,7 @@ const FeedbackDashboard = () => {
                     <tbody>
                         {currentFeedbacks.map((feedback) => (
                             <tr key={feedback.id}>
-                                <td>{feedback.appointment.id}</td>
+                                <td>{feedback.appointment?.id ?? 'Chưa cập nhật'}</td>
                                 <td>{renderStars(feedback.rating)}</td>
                                 <td>{feedback.comment}</td>
                                 <td>{new Date(feedback.created_date).toLocaleDateString()}</td>

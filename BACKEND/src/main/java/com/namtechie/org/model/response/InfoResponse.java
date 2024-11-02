@@ -14,5 +14,9 @@ public class InfoResponse {
     InfoAppointmentResponse infoAppointmentResponse;
     String status;
     List<InfoServiceTypeResponse> infoServiceTypeResponse;
+    long donePayment;
+    long notDonePayment;
+    long totalPayment;
+    String transactionMethod;
     InfoFeedbackResponse infoFeedbackResponse;
 }
