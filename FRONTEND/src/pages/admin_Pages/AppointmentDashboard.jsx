@@ -530,7 +530,7 @@ const AppointmentDashboard = () => {
                 <div className="modal-overlay">
                     <div className="view-modal-content">
                         <div className="modal-header">
-                            <h2>Chi tiết lịch hẹn #{appointmentDetails.id}</h2>
+                            <h2>Chi tiết lịch hẹn #{appointmentDetails.appointmentId}</h2>
                             <button className="close-btn" onClick={() => setShowViewModal(false)}>&times;</button>
                         </div>
 

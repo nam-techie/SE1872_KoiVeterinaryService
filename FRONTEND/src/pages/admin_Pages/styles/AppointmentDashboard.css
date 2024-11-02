@@ -1207,7 +1207,7 @@ tr:last-child td {
     height: 100%;
 }
 
-/* Xử lý văn b��n dài */
+/* Xử lý văn bn dài */
 .info-item span {
     word-wrap: break-word;
     overflow-wrap: break-word;
@@ -1364,4 +1364,133 @@ tr:last-child td {
     font-size: 12px;
     white-space: nowrap;
     z-index: 10;
+}
+
+/* Phương thức thanh toán */
+.payment-info {
+    background: #fff;
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 24px;
+}
+
+.payment-method {
+    display: flex;
+    align-items: center;
+    background: #f8fafc;
+    padding: 16px 24px;
+    border-radius: 8px;
+    border-left: 4px solid #3b82f6;
+    margin-bottom: 24px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.payment-method .label {
+    font-weight: 600;
+    color: #475569;
+    margin-right: 12px;
+    min-width: 180px;
+}
+
+.payment-method .value {
+    color: #1e293b;
+    font-weight: 500;
+    background: #fff;
+    padding: 8px 16px;
+    border-radius: 6px;
+    border: 1px solid #e2e8f0;
+}
+
+.payment-summary-boxes {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+.summary-box {
+    background: #fff;
+    padding: 24px;
+    border-radius: 12px;
+    text-align: center;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+}
+
+.summary-box::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+}
+
+.summary-box.paid::before {
+    background: #22c55e;
+}
+
+.summary-box.unpaid::before {
+    background: #ef4444; 
+}
+
+.summary-box.total::before {
+    background: #3b82f6;
+}
+
+.summary-label {
+    color: #64748b;
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 12px;
+}
+
+.summary-value {
+    font-size: 1.75rem;
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+.summary-box.paid .summary-value {
+    color: #15803d;
+}
+
+.summary-box.unpaid .summary-value {
+    color: #b91c1c;
+}
+
+.summary-box.total .summary-value {
+    color: #1e40af;
+}
+
+.summary-box:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 12px rgba(0,0,0,0.1);
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+    .payment-summary-boxes {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 640px) {
+    .payment-summary-boxes {
+        grid-template-columns: 1fr;
+    }
+    
+    .payment-method {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+    
+    .payment-method .label {
+        margin-right: 0;
+        margin-bottom: 8px;
+    }
 }
