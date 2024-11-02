@@ -349,7 +349,10 @@ public class DoctorService {
                     appointmentStatusResponse.setAppointmentStatus(latestStatus.getStatus());
                 } else if (latestStatus.getStatus().equals("Đã hủy lịch")) {
                     appointmentStatusResponse.setAppointmentStatus(latestStatus.getStatus());
+                }else if (latestStatus.getStatus().equals("Đã đánh giá")) {
+                    appointmentStatusResponse.setAppointmentStatus(latestStatus.getStatus());
                 }
+
 
             }
             appointmentResponses.add(appointmentStatusResponse);
