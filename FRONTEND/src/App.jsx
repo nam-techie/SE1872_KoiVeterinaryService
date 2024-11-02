@@ -20,6 +20,7 @@ import Dashboard from "./pages/admin_Pages/Dashboard.jsx";
 import AppointmentPage from "./pages/customer_Pages/AppointmentPage.jsx";
 import ManageAppointment from "./pages/customer_Pages/ManageAppointment.jsx";
 import DoctorWorkSchedule from "./pages/doctor_Pages/DoctorWorkSchedule.jsx";
+import CustomerProfile from "./pages/customer_Pages/CustomerProfile.jsx";
 
 function App() {
 
@@ -63,6 +64,11 @@ function App() {
                     <Route path="/customer/appointment" element={
                         <RoleBasedRoute allowedRoles={['CUSTOMER', 'ADMIN']}>
                             <AppointmentPage/>
+                        </RoleBasedRoute>
+                    }/>
+                    <Route path="/customer/profile" element={
+                        <RoleBasedRoute allowedRoles={['CUSTOMER', 'ADMIN']}>
+                            <CustomerProfile/>
                         </RoleBasedRoute>
                     }/>
 
