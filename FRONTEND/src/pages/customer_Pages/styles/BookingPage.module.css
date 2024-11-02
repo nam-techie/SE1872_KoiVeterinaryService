@@ -1,192 +1,211 @@
 .appointmentForm {
-    max-width: 1000px;
-    margin: 120px auto; /* Thêm margin-top để tạo khoảng cách với phần tử trên */
-    padding: 50px 20px; /* Padding top/bottom bên trong form */
-    border-radius: 10px;
-    background-color: #f9f9f9;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.75); /* Thêm box shadow */
+    max-width: 1200px;
+    margin: 40px auto 0;
+    padding: 40px;
+    border-radius: 16px;
+    background: #ffffff;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
 }
 
 .formTitle {
     text-align: center;
-    color: orange;
-    font-size: 28px;
-    margin-bottom: 30px;
+    color: #FF6B35;
+    font-size: 36px;
+    font-weight: 700;
+    margin-bottom: 40px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
 .appointmentColumnContainer {
     display: flex;
+    gap: 40px;
     justify-content: space-between;
 }
 
 .appointmentColumn {
-    width: 48%;
+    width: calc(50% - 20px);
 }
 
 .formGroup {
-    margin-bottom: 20px;
+    margin-bottom: 25px;
 }
 
 .label {
-    font-weight: bold;
+    font-weight: 600;
     display: block;
-    margin-bottom: 5px;
+    margin-bottom: 8px;
+    color: #2D3436;
+    font-size: 15px;
 }
 
 .input, .select, .textarea {
     width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+    padding: 12px 16px;
+    border: 2px solid #E0E0E0;
+    border-radius: 12px;
     font-size: 16px;
-    box-sizing: border-box;
+    transition: all 0.3s ease;
+    background-color: #FFFFFF;
 }
 
-/* Đảm bảo các ô input, select, textarea có cùng kích thước */
-.input, .select, .textarea {
-    width: 100%; /* Chiếm 100% chiều rộng của container */
-    height: 40px; /* Chiều cao cố định cho các ô input và select */
-    padding: 10px; /* Khoảng đệm bên trong */
-    border: 1px solid #ccc; /* Đường viền màu xám */
-    border-radius: 4px; /* Bo góc */
-    font-size: 16px; /* Kích thước chữ */
-    box-sizing: border-box; /* Đảm bảo padding không ảnh hưởng đến kích thước */
-    background-color: white; /* Màu nền trắng */
+.input:focus, .select:focus, .textarea:focus {
+    border-color: #FF6B35;
+    box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.1);
+    outline: none;
 }
 
-/* Độ cao riêng cho textarea, cao hơn các ô input và select */
 .textarea {
-    height: 100px;
+    height: 120px;
+    resize: vertical;
 }
 
-/* Đảm bảo các ô input, select, textarea có cùng kích thước */
-.input, .select, .textarea {
-    width: 100%; /* Chiếm 100% chiều rộng của container */
-    height: 40px; /* Chiều cao cố định cho các ô input và select */
-    padding: 10px; /* Khoảng đệm bên trong */
-    border: 1px solid #ccc; /* Đường viền màu xám */
-    border-radius: 4px; /* Bo góc */
-    font-size: 16px; /* Kích thước chữ */
-    box-sizing: border-box; /* Đảm bảo padding không ảnh hưởng đến kích thước */
-    background-color: white; /* Màu nền trắng */
-}
-
-/* Độ cao riêng cho textarea, cao hơn các ô input và select */
-.textarea {
-    height: 100px;
-}
-
-/* Khi các ô bị disable, chỉ thay đổi màu nền nhưng không thay đổi kích thước */
 .inputDisabled, .selectDisabled, .textareaDisabled {
-    background-color: #e0e0e0; /* Nền xám nhạt khi bị disable */
-    color: #000; /* Chữ giữ nguyên màu đen */
-    cursor: not-allowed; /* Con trỏ chuột báo hiệu không thể tương tác */
-    opacity: 1; /* Đảm bảo chữ không bị mờ */
-    width: 100%; /* Giữ nguyên kích thước */
-    height: 40px; /* Giữ nguyên chiều cao */
+    background-color: #F5F5F5;
+    color: #666;
+    border: 2px solid #E0E0E0;
+    cursor: not-allowed;
 }
 
-/* Đảm bảo chữ trong select vẫn giữ nguyên màu đen khi bị disable */
-.selectDisabled option {
-    color: #000;
-}
-
-/* Định dạng lỗi cho các ô */
 .errorMessage {
-    color: red;
+    color: #FF3B30;
     font-size: 14px;
-    margin-top: 5px;
+    margin-top: 6px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
 }
 
-/* Nút submit */
 .submitButton {
-    background-color: #FFA500; /* Màu cam */
+    margin-top: 60px;
+    background: linear-gradient(135deg, #FF6B35 0%, #FF8C42 100%);
     color: white;
-    padding: 15px 20px;
+    padding: 16px 24px;
     border: none;
-    cursor: pointer;
-    border-radius: 5px;
+    border-radius: 12px;
     width: 100%;
     font-size: 18px;
-    box-sizing: border-box;
-    transition: background-color 0.3s ease;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(255, 107, 53, 0.2);
 }
 
-/* Nút submit khi hover */
 .submitButton:hover {
-    background-color: orangered; /* Màu cam đậm hơn khi hover */
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255, 107, 53, 0.3);
 }
 
-/* Nút submit khi bị disable */
 .submitButton:disabled {
-    background-color: #e0e0e0; /* Nền xám khi disable */
-    color: white; /* Chữ trắng khi disable */
-    cursor: not-allowed; /* Con trỏ chuột không cho phép tương tác */
-    opacity: 0.6; /* Độ mờ để thể hiện trạng thái bị disable */
+    background: #E0E0E0;
+    transform: none;
+    box-shadow: none;
 }
 
+/* Modal Styling */
 .confirmationOverlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.5); /* Nền đen mờ để làm tối phần sau */
-    z-index: 999; /* Đảm bảo overlay ở trên tất cả các thành phần */
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(5px);
 }
 
-/* Định dạng modal để căn giữa */
 .confirmationModal {
     background-color: white;
-    padding: 20px;
-    border-radius: 10px;
-    width: 400px; /* Chiều rộng cố định của modal */
-    margin: 0 auto; /* Căn giữa theo chiều ngang */
-    position: fixed; /* Modal luôn ở giữa màn hình */
-    top: 50%; /* Đặt modal cách 50% từ đỉnh màn hình */
-    left: 50%; /* Đặt modal cách 50% từ trái màn hình */
-    transform: translate(-50%, -50%); /* Di chuyển modal chính xác giữa màn hình */
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    z-index: 1000; /* Modal nằm trên overlay */
+    padding: 30px;
+    border-radius: 20px;
+    width: 500px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+    animation: modalFadeIn 0.3s ease;
 }
 
-/* Các nút trong modal */
+@keyframes modalFadeIn {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -60%);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%);
+    }
+}
+
 .confirmationButtons {
     display: flex;
-    justify-content: space-between;
-    margin-top: 20px;
+    gap: 20px;
+    margin-top: 30px;
 }
 
 .confirmBtn, .editBtn {
-    padding: 10px 20px;
+    padding: 12px 24px;
     font-size: 16px;
+    font-weight: 600;
     border: none;
+    border-radius: 12px;
     cursor: pointer;
-    border-radius: 5px;
-    width: 48%;
+    transition: all 0.3s ease;
+    flex: 1;
 }
 
 .confirmBtn {
-    background-color: #28a745;
+    background: linear-gradient(135deg, #2ECC71 0%, #27AE60 100%);
     color: white;
 }
 
 .editBtn {
-    background-color: #dc3545;
+    background: linear-gradient(135deg, #E74C3C 0%, #C0392B 100%);
     color: white;
 }
 
 .confirmBtn:hover, .editBtn:hover {
-    opacity: 0.9;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
-/* Định dạng các nhãn và giá trị trong modal */
 .fieldLabel {
-    font-weight: bold;
-    display: block;
-    margin-top: 10px;
+    font-weight: 600;
+    color: #2D3436;
+    margin-top: 15px;
+    font-size: 15px;
 }
 
 .fieldValue {
-    margin-left: 10px;
+    color: #636E72;
+    margin: 5px 0 15px;
+    padding: 8px 12px;
+    background-color: #F8F9FA;
+    border-radius: 8px;
+    font-size: 15px;
+}
+
+/* Thêm styles mới cho container checkbox và agreement text */
+.agreementContainer {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px;
+    background: #F7FAFC;
+    border-radius: 8px;
+    margin-bottom: 40px;
+}
+
+.agreementLink {
+    color: #FF6B35;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.agreementLink:hover {
+    color: #E85826;
+    text-decoration: underline;
+}
+
+/* Phần checkbox và text */
+.agreementContainer input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+}
+
+/* Nếu vẫn còn khoảng trống, có thể thêm style cho Footer */
+footer {
+    margin-top: 0;
 }
