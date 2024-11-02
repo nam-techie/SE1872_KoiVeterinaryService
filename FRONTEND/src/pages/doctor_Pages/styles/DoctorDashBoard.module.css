@@ -1,138 +1,201 @@
-/* Đảm bảo html và body chiếm toàn bộ chiều cao và không có cuộn ngang */
-html, body {
-    height: 100%;
-    margin: 0;
-    padding: 0;
-    overflow-x: hidden; /* Ẩn cuộn ngang */
-    box-sizing: border-box;
+.dashboard {
+  display: flex;
+  padding: 20px;
+  gap: 20px;
+  min-height: 100vh;
+  background-color: #f5f5f5;
+  margin-left: 250px;
 }
 
-/* Wrapper toàn trang */
-.doctorDashBoardWrapper {
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    min-height: 100vh; /* Chiều cao tối thiểu 100% khung nhìn */
-    width: 100vw; /* Chiếm toàn bộ chiều rộng khung nhìn */
-    background-color: #f9fafc;
-    padding: 0; /* Loại bỏ khoảng trống */
-    margin: 0;
-    overflow: hidden; /* Loại bỏ cuộn dọc không cần thiết */
+.profileSection {
+  flex: 1;
+  max-width: 400px;
 }
 
-/* Container cho nội dung chính */
-.doctorDashBoardContainer {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between; /* Tách đều các phần */
-    width: 100%; /* Chiếm toàn bộ chiều rộng */
-    max-width: 1200px; /* Giới hạn chiều rộng tối đa */
-    padding: 0 20px; /* Thêm một ít padding trái phải */
-    background-color: #ffffff;
-    border-radius: 12px;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-    box-sizing: border-box;
-    height: 100vh; /* Chiều cao tối đa của container */
+.statsSection {
+  flex: 2;
 }
 
-/* Phần thông tin bác sĩ */
-.doctorInfoSection {
-    flex: 1;
-    padding: 20px;
-    text-align: center;
-    border-right: 1px solid #eee;
-    box-sizing: border-box;
+.statsSection h2 {
+  color: #333;
+  border-bottom: 2px solid #ff6b4a;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
 }
 
-.doctorAvatar {
-    width: 150px;
-    height: 150px;
-    border-radius: 50%;
-    object-fit: cover;
-    margin-bottom: 20px;
+.profileCard {
+  background: white;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.doctorInfoSection h2 {
-    font-size: 1.8em;
-    font-weight: bold;
-    color: #333;
+.avatar {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin: 0 auto 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.doctorInfoSection p {
-    margin: 10px 0;
-    font-size: 1.1em;
-    color: #555;
+.profileInfo {
+  margin-bottom: 20px;
 }
 
-/* Phần thẻ thống kê */
-.dashboardStatsSection {
-    flex: 2;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    padding-left: 20px;
-    padding-right: 20px; /* Thêm padding phải để căn chỉnh khung phải */
-    box-sizing: border-box;
-    width: 100%; /* Chiếm toàn bộ chiều rộng */
-    justify-content: center;
-    align-items: center; /* Căn giữa các mục trong khung */
+.profileInfo h2 {
+  color: #333;
+  margin-bottom: 20px;
+  border-bottom: 2px solid #ff6b4a;
+  padding-bottom: 10px;
 }
 
-/* Thẻ thống kê */
-.statCard {
-    background-color: #fff;
-    border-radius: 12px;
-    padding: 20px;
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.05);
-    transition: transform 0.2s, box-shadow 0.2s;
-    cursor: pointer;
-    width: 100%; /* Đảm bảo thẻ chiếm toàn bộ chiều rộng của container */
-    margin-bottom: 10px;
-}
-.statCard:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+.profileInfo p {
+  margin: 8px 0;
+  color: #666;
 }
 
-.statCard h1 {
-    font-size: 1.4em;
-    color: #333;
-    margin-bottom: 10px;
+.buttonGroup {
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
 }
 
-.statCard p {
-    font-size: 1em;
-    color: #666;
-    margin: 0;
+.buttonGroup button {
+  flex: 1;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  font-weight: 500;
 }
 
-/* Màu sắc thẻ */
-.appointmentsCard {
-    border-left: 5px solid #ff7875;
+.buttonGroup button:first-child {
+  background-color: #ff8400;
 }
 
-.unconfirmedCard {
-    border-left: 5px solid #ffc53d;
+.buttonGroup button:last-child {
+  background-color: #28a745;
 }
 
-.feedbackCard {
-    border-left: 5px solid #73d13d;
+.buttonGroup button:hover {
+  opacity: 0.9;
 }
 
-/* Responsive Design cho màn hình nhỏ */
-@media (max-width: 768px) {
-    .doctorDashBoardContainer {
-        flex-direction: column;
-        width: 100%;
-    }
-
-    .doctorInfoSection {
-        border-right: none;
-        border-bottom: 1px solid #eee;
-    }
-
-    .dashboardStatsSection {
-        padding-left: 0;
-    }
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
 }
 
+.modalContent {
+  background: white;
+  padding: 30px 40px;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 500px;
+}
+
+.modalContent h3 {
+  margin-bottom: 25px;
+  color: #333;
+  border-bottom: 2px solid #ff6b4a;
+  padding-bottom: 10px;
+  text-align: center;
+}
+
+.formGroup {
+  margin-bottom: 20px;
+  width: 100%;
+}
+
+.formGroup label {
+  display: block;
+  margin-bottom: 8px;
+  color: #666;
+  font-weight: 500;
+}
+
+.formGroup input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 1rem;
+  box-sizing: border-box;
+}
+
+.formGroup input:focus {
+  outline: none;
+  border-color: #ff6b4a;
+}
+
+.modalButtons {
+  display: flex;
+  gap: 15px;
+  margin-top: 25px;
+  justify-content: flex-end;
+}
+
+.saveButton,
+.cancelButton {
+  padding: 10px 25px;
+  border: none;
+  border-radius: 5px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: opacity 0.3s;
+}
+
+.saveButton {
+  background-color: #ff8c00;
+  color: white;
+}
+
+.cancelButton {
+  background-color: #6c757d;
+  color: white;
+}
+
+.saveButton:hover,
+.cancelButton:hover {
+  opacity: 0.9;
+}
+
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+  margin-top: 20px;
+}
+
+.statsCard {
+  background: white;
+  padding: 30px 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.statsCard h3 {
+  color: #666;
+  margin-bottom: 15px;
+  font-size: 1.1rem;
+}
+
+.statsNumber {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #007bff;
+}

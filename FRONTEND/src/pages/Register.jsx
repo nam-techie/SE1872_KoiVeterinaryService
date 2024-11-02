@@ -1,6 +1,8 @@
 import styles from '../styles/Register.module.css'; // Đảm bảo đường dẫn đúng
 import { useRegister } from '../hooks/useRegister.js';
 import {CustomerNavBar} from "../components/Navbar.jsx";
+import Footer from "../components/Footer.jsx";
+import ContactButton from "../components/ContactButton.jsx";
 
 function Register() {
     const {
@@ -119,6 +121,8 @@ function Register() {
                     </div>
                 </form>
             </div>
+            <ContactButton/>
+            <Footer/>
         </>
 
     );

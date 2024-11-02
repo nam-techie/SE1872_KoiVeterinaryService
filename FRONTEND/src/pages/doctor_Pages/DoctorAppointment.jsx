@@ -102,6 +102,8 @@ function DoctorAppointment() {
     const [form] = Form.useForm();
     const [isServiceFormVisible, setIsServiceFormVisible] = useState(false);
     const [currentAppointment, setCurrentAppointment] = useState(null);
+    const [isCancelModalVisible, setIsCancelModalVisible] = useState(false);
+    const [cancelForm] = Form.useForm();
 
     // Thêm các hàm xử lý trạng thái
     const handleConfirm = async (record) => {
@@ -118,13 +120,25 @@ function DoctorAppointment() {
     };
 
     const handleCancel = (record) => {
-        const updatedAppointments = appointments.map(appointment => {
-            if (appointment.id === record.id) {
-                return { ...appointment, status: 'Đã hủy' };
-            }
-            return appointment;
-        });
-        setAppointments(updatedAppointments);
+        setCurrentAppointment(record);
+        setIsCancelModalVisible(true);
+    };
+
+    const handleCancelConfirm = async (values) => {
+        try {
+            const doctorCancelRequest = {
+                doctorId: "currentDoctorId",
+                cancelReason: values.cancelReason
+            };
+
+            await confirmAppointment(currentAppointment.id, doctorCancelRequest);
+            setIsCancelModalVisible(false);
+            cancelForm.resetFields();
+            message.success('Đã hủy lịch hẹn thành công');
+            await refreshAppointments();
+        } catch (error) {
+            message.error('Có lỗi xảy ra khi hủy lịch hẹn');
+        }
     };
 
     const handleStartService = async (record) => {
@@ -311,10 +325,12 @@ function DoctorAppointment() {
             await saveServiceRecord(currentAppointment.id, serviceData);
             setIsServiceFormVisible(false);
             form.resetFields();
+            message.destroy();
             message.success('Đã lưu hồ sơ bệnh nhân thành công');
-            await refreshAppointments(); // Refresh lại danh sách sau khi lưu thành công
+            await refreshAppointments();
         } catch (error) {
             console.error('Error saving service record:', error);
+            message.destroy();
             message.error('Có lỗi xảy ra khi lưu hồ sơ bệnh nhân');
         }
     };
@@ -414,6 +430,50 @@ function DoctorAppointment() {
         </Modal>
     );
 
+    const CancelConfirmModal = () => (
+        <Modal
+            title="Xác nhận hủy lịch hẹn"
+            open={isCancelModalVisible}
+            onCancel={() => {
+                setIsCancelModalVisible(false);
+                cancelForm.resetFields();
+            }}
+            footer={null}
+        >
+            <Form
+                form={cancelForm}
+                layout="vertical"
+                onFinish={handleCancelConfirm}
+            >
+                <Form.Item
+                    name="cancelReason"
+                    label="Lý do hủy"
+                    rules={[{ required: true, message: 'Vui lòng nhập lý do hủy lịch hẹn' }]}
+                >
+                    <TextArea 
+                        rows={4}
+                        placeholder="Nhập lý do hủy lịch hẹn..."
+                    />
+                </Form.Item>
+
+                <Form.Item className={styles.modalFooter}>
+                    <Button 
+                        onClick={() => {
+                            setIsCancelModalVisible(false);
+                            cancelForm.resetFields();
+                        }}
+                        style={{ marginRight: 8 }}
+                    >
+                        Đóng
+                    </Button>
+                    <Button type="primary" danger htmlType="submit">
+                        Xác nhận hủy
+                    </Button>
+                </Form.Item>
+            </Form>
+        </Modal>
+    );
+
     return (
         <>
             <DoctorNavBar/>
@@ -423,7 +483,7 @@ function DoctorAppointment() {
                 {/* Search and Filter Section */}
                 <div className={styles.filterSection}>
                     <Input.Search
-                        placeholder="Tìm kiếm theo ID hoặc dịch vụ..."
+                        placeholder="Tìm kiếm theo ID hoặc dch vụ..."
                         allowClear
                         onSearch={handleSearch}
                         onChange={(e) => handleSearch(e.target.value)}
@@ -613,7 +673,7 @@ function DoctorAppointment() {
                                     name="fishWeight"
                                     rules={[{ required: true, message: 'Vui lòng nhập cân nặng' }]}
                                 >
-                                    <Input placeholder="Nhập cân nặng" />
+                                    <Input placeholder="Nhp cân nặng" />
                                 </Form.Item>
                             </div>
 
@@ -700,6 +760,7 @@ function DoctorAppointment() {
                     </div>
                 </Modal>
                 <ServiceRecordForm />
+                <CancelConfirmModal />
             </div>
         </>
     );
