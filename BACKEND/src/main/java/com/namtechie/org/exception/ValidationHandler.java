@@ -74,6 +74,11 @@ public class ValidationHandler {
     public ResponseEntity<String> handleFuncErrorException(FuncErrorException exception) {
         return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(InvalidPhoneNumberException.class)
+    public ResponseEntity<String> InvalidPhoneResponseException(InvalidPhoneNumberException exception) {
+        return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
+    }
 }
 
 

@@ -2,6 +2,8 @@ package com.namtechie.org.service;
 
 import com.namtechie.org.entity.Appointment;
 import com.namtechie.org.exception.DoctorNotAvailableException;
+
+import com.namtechie.org.exception.InvalidPhoneNumberException;
 import com.namtechie.org.exception.NotFoundException;
 import com.namtechie.org.model.*;
 import com.namtechie.org.model.request.*;
@@ -125,10 +127,17 @@ public class AppointmentService {
 
 
             Customers customer = account.getCustomer();
-            if (appointmentRequest.getPhone() == null) {
-                throw new NotFoundException("Loi he thong");
+//            if (appointmentRequest.getPhone() == null) {
+//                throw new NotFoundException("Loi he thong");
+//            }
+//            customer.setPhone(appointmentRequest.getPhone()); // lưu số đth khách hàng
+
+            if (appointmentRequest.getPhone() != null &&
+                    !appointmentRequest.getPhone().matches("(0[3|5|7|8|9])+(\\d{8})")) {
+                throw new InvalidPhoneNumberException("Số điện thoại không hợp lệ");
             }
-            customer.setPhone(appointmentRequest.getPhone()); // lưu số đth khách hàng
+
+            appointment.setPhone(appointmentRequest.getPhone());
 
 
             // Step 3: Tìm ServiceType từ serviceID trong AppointmentRequest
@@ -152,12 +161,6 @@ public class AppointmentService {
             Time time = Time.valueOf(appointmentRequest.getBookingTime());
 
             LocalTime bookingTime = time.toLocalTime();
-
-// Kiểm tra giờ làm việc
-            if ((bookingTime.isAfter(LocalTime.of(11, 0)) && bookingTime.isBefore(LocalTime.of(13, 0))) ||
-                    (bookingTime.isAfter(LocalTime.of(17, 0)) || bookingTime.isBefore(LocalTime.of(7, 0)))) {
-                throw new NullPointerException("Đã hết giờ làm việc của bác sĩ");
-            }
 
 
             Doctor doctor = null;
@@ -212,6 +215,12 @@ public class AppointmentService {
                     if (dayOfWeek == DayOfWeek.SATURDAY || dayOfWeek == DayOfWeek.SUNDAY) {
                         throw new DoctorNotAvailableException("Dịch vụ tư vấn chỉ hoạt động từ thứ Hai đến thứ Sáu.");
                     }
+// Kiểm tra giờ làm việc
+
+                    if ((bookingTime.isAfter(LocalTime.of(11, 0)) && bookingTime.isBefore(LocalTime.of(13, 0))) ||
+                            (bookingTime.isAfter(LocalTime.of(17, 0)) || bookingTime.isBefore(LocalTime.of(7, 0)))) {
+                        throw new NullPointerException("Đã hết giờ làm việc của bác sĩ");
+                    }
                     Time timeLocate = Time.valueOf(appointmentRequest.getBookingTime());
                     System.out.println("das" + timeLocate);
                     appointmentInfo.setAppointmentBookingDate(date);
@@ -244,6 +253,8 @@ public class AppointmentService {
             throw new DoctorNotAvailableException(e.getMessage());
         } catch (NullPointerException e) {
             throw new NullPointerException("Lỗi hệ thống");
+        } catch (InvalidPhoneNumberException e) {
+            throw new InvalidPhoneNumberException(e.getMessage());
         } catch (Exception e) {
             throw new RuntimeException("Không thể đặt dịch vụ");
         }

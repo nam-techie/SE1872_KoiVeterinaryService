@@ -11,7 +11,6 @@ import java.sql.Time;
 public class AppointmentRequest {
     long serviceTypeId;
 
-
     String phone;
 
     String description;

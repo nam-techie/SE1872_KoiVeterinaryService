@@ -2,6 +2,7 @@ package com.namtechie.org.controller;
 
 import com.namtechie.org.entity.*;
 import com.namtechie.org.exception.DoctorNotAvailableException;
+import com.namtechie.org.exception.InvalidPhoneNumberException;
 import com.namtechie.org.model.Schedule;
 import com.namtechie.org.model.request.FeedbackRequest;
 import com.namtechie.org.model.response.AppointmentResponse;
@@ -108,10 +109,10 @@ public class AppointmentController {
         try {
             Appointment appointment = appointmentService.createAppointment(appointmentRequest);
             return ResponseEntity.ok(appointment);
-        } catch (DoctorNotAvailableException e) {
+        } catch (DoctorNotAvailableException | InvalidPhoneNumberException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                                .body(e.getMessage());
-        } catch (Exception e) {
+        }  catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                                .body("Hết giờ làm việc của bác sĩ");
         }
