@@ -84,6 +84,7 @@ const DashboardManage = () => {
         dashboardData,
         monthlyData,
         weeklyData,
+        yearlyData,
         loading,
         error,
         recentActivities,
@@ -306,6 +307,31 @@ const DashboardManage = () => {
                     <h2>Biểu Đồ Theo Tháng</h2>
                     <ResponsiveContainer width="100%" height={400}>
                         <BarChart data={monthlyData || []} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
+                            <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
+                            <XAxis dataKey="name" stroke="#666" fontSize={12} />
+                            <YAxis 
+                                yAxisId="left" 
+                                orientation="left"
+                                stroke="#8884d8"
+                            />
+                            <YAxis 
+                                yAxisId="right" 
+                                orientation="right"
+                                stroke="#82ca9d"
+                            />
+                            <Tooltip />
+                            <Legend />
+                            <Bar yAxisId="left" dataKey="revenue" name="Doanh Thu (nghìn đồng)" fill="#8884d8" radius={[4, 4, 0, 0]} />
+                            <Bar yAxisId="right" dataKey="orders" name="Số Đơn Hàng" fill="#82ca9d" radius={[4, 4, 0, 0]} />
+                        </BarChart>
+                    </ResponsiveContainer>
+                </div>
+
+                {/* Biểu đồ theo năm */}
+                <div className="chart-container">
+                    <h2>Biểu Đồ Theo Năm</h2>
+                    <ResponsiveContainer width="100%" height={400}>
+                        <BarChart data={yearlyData || []} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
                             <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
                             <XAxis dataKey="name" stroke="#666" fontSize={12} />
                             <YAxis 
