@@ -3,14 +3,11 @@ package com.namtechie.org.controller;
 import com.namtechie.org.entity.Appointment;
 import com.namtechie.org.entity.AppointmentStatus;
 import com.namtechie.org.entity.Doctor;
-import com.namtechie.org.model.request.DoctorConfirmRequest;
-import com.namtechie.org.model.request.ServiceTypeRequestAll;
+import com.namtechie.org.model.request.*;
 import com.namtechie.org.model.response.AppointmentStatusResponse;
 import com.namtechie.org.model.response.DoctorAppointmentResponse;
 import com.namtechie.org.model.response.DoctorWorkResponse;
 import com.namtechie.org.repository.DoctorRepository;
-import com.namtechie.org.model.request.DoctorRequest;
-import com.namtechie.org.model.request.MedicalFishResquest;
 import com.namtechie.org.service.AppointmentService;
 import com.namtechie.org.service.DoctorService;
 import com.namtechie.org.service.PaymentService;
@@ -57,12 +54,19 @@ public class DoctorController {
         return ResponseEntity.ok(appointmentStatus);
     }
 
+    @PutMapping("/isDoctorCancel/{status}")
+    public ResponseEntity isCancel(@PathVariable boolean status,@RequestBody CancelReasonRequest cancelReasonRequest) {
+        appointmentService.cancelAppointmentByDoctor(status, cancelReasonRequest);
+        return ResponseEntity.ok("Đã hủy lịch thành công!!!");
+    }
+
 
     @PutMapping("/updateWorkingStatus/{appointmentId}")
-    public ResponseEntity updateWorkingStatus(@PathVariable long appointmentId, @RequestBody String notes) {
-        doctorService.updateWorkingStatus(appointmentId, notes);
+    public ResponseEntity updateWorkingStatus(@PathVariable long appointmentId) {
+        doctorService.updateWorkingStatus(appointmentId);
         return ResponseEntity.ok("Da tiep nhan dich vu");
     }
+
 
 //    @PutMapping("/doneWorkingStatus/{appointmentId}")
 //    public ResponseEntity doneWorkingStatus(@PathVariable  long appointmentId, @RequestBody String notes) {
@@ -136,5 +140,13 @@ public class DoctorController {
         }
         return ResponseEntity.ok("Đã lưu hồ sơ bệnh nhân thành công");
     }
+
+    @GetMapping("/countStatusTotal")
+    public ResponseEntity<CountAppointmentDoctorRequest> countStatusTotal() {
+        CountAppointmentDoctorRequest response = doctorService.countStatusTotal();
+        return ResponseEntity.ok(response);
+    }
+
+
 
 }

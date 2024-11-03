@@ -88,7 +88,8 @@ function DoctorAppointment() {
         refreshAppointments, 
         confirmAppointment,
         startService,
-        saveServiceRecord 
+        saveServiceRecord,
+        cancelAppointment 
     } = useDoctorAppointment();
     const [searchText, setSearchText] = useState('');
     const [selectedDate, setSelectedDate] = useState(null);
@@ -126,18 +127,11 @@ function DoctorAppointment() {
 
     const handleCancelConfirm = async (values) => {
         try {
-            const doctorCancelRequest = {
-                doctorId: "currentDoctorId",
-                cancelReason: values.cancelReason
-            };
-
-            await confirmAppointment(currentAppointment.id, doctorCancelRequest);
+            await cancelAppointment(currentAppointment.id, values.cancelReason);
             setIsCancelModalVisible(false);
             cancelForm.resetFields();
-            message.success('Đã hủy lịch hẹn thành công');
-            await refreshAppointments();
         } catch (error) {
-            message.error('Có lỗi xảy ra khi hủy lịch hẹn');
+            console.error('Error canceling appointment:', error);
         }
     };
 

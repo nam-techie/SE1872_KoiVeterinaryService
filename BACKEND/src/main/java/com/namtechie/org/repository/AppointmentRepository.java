@@ -66,6 +66,12 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
             "ORDER BY appointment_count DESC")
     List<Object[]> findTopServiceTypesWithMostAppointments(Pageable pageable);
 
+    @Query("SELECT COUNT(a) FROM Appointment a WHERE a.doctor.id = :doctorId")
+    Long countTotalAppointmentsByDoctor(@Param("doctorId") long doctorId);
+
+    @Query("SELECT COUNT(a) FROM Appointment a WHERE a.doctor.id = :doctorId AND a.isCancel = true")
+    Long countCancelledAppointmentsByDoctor(@Param("doctorId") long doctorId);
+
 
 
 }
