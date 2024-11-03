@@ -2,12 +2,14 @@ import { useState } from 'react';
 import { axiosInstance } from '../service/apiRequest';
 
 const useFeedback = () => {
-    const submitFeedback = async (feedbackData) => {
-        const { appointmentId, ...restData } = feedbackData;
+    const submitFeedback = async (appointmentId, feedbackData) => {
         try {
             const response = await axiosInstance.post(
                 `/customer/createFeedback/${appointmentId}`,
-                restData
+                {
+                    rating: feedbackData.rating,
+                    comment: feedbackData.comment
+                }
             );
 
             console.log('Response from API:', response.data);

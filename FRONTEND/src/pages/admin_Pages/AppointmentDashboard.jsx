@@ -821,24 +821,24 @@ const AppointmentDashboard = () => {
                 <div className="rating">
                   <label>Đánh giá:</label>
                   <div className="stars">
-                    {[...Array(appointmentDetails.rating || 0)].map(
+                    {[...Array(appointmentDetails?.infoFeedbackResponse?.rate || 0)].map(
                       (_, index) => (
                         <i key={index} className="fas fa-star"></i>
                       )
                     )}
-                    {[...Array(5 - (appointmentDetails.rating || 0))].map(
+                    {[...Array(5 - (appointmentDetails?.infoFeedbackResponse?.rate || 0))].map(
                       (_, index) => (
                         <i key={index} className="far fa-star"></i>
                       )
                     )}
                     <span className="rating-number">
-                      ({appointmentDetails.rating}/5)
+                      ({appointmentDetails?.infoFeedbackResponse?.rate}/5)
                     </span>
                   </div>
                 </div>
                 <div className="comment">
                   <label>Nhận xét:</label>
-                  <p>{appointmentDetails.comment || "Chưa có nhận xét"}</p>
+                  <p>{appointmentDetails?.infoFeedbackResponse?.feedback || "Chưa có nhận xét"}</p>
                 </div>
               </div>
             </div>

@@ -5,15 +5,32 @@ import moment from 'moment';
 
 const useDoctorAppointment = () => {
     const [appointments, setAppointments] = useState([]);
+    const [stats, setStats] = useState({
+        totalAppointments: 0,
+        cancelledAppointments: 0,
+        doneAppointments: 0,
+        waitAppointments: 0
+    });
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+
+    const fetchStats = async () => {
+        try {
+            const response = await axiosInstance.get('/veterinary/countStatusTotal');
+            if (response.data) {
+                setStats(response.data);
+            }
+        } catch (err) {
+            console.error('Error fetching stats:', err);
+            message.error('Có lỗi xảy ra khi tải thống kê');
+        }
+    };
 
     const fetchAppointments = async () => {
         try {
             setLoading(true);
             const response = await axiosInstance.get('/veterinary/getListAppointmentDoctor');
             
-            // Transform backend data to match frontend structure
             const transformedData = response.data.map(appointment => ({
                 id: appointment.appointmentId.toString(),
                 date: moment(appointment.appointmentDate).format('YYYY-MM-DD'),
@@ -21,10 +38,12 @@ const useDoctorAppointment = () => {
                 service: appointment.serviceType,
                 status: appointment.appointmentStatus,
             }));
-            console.log(transformedData);
 
             setAppointments(transformedData);
             setError(null);
+            
+            // Fetch stats after appointments
+            await fetchStats();
         } catch (err) {
             setError('Không thể tải danh sách lịch hẹn');
             message.error('Có lỗi xảy ra khi tải danh sách lịch hẹn');
@@ -100,6 +119,31 @@ const useDoctorAppointment = () => {
         }
     };
 
+    const cancelAppointment = async (appointmentId, cancelReason) => {
+        try {
+            setLoading(true);
+            const response = await axiosInstance.put(
+                `/veterinary/isDoctorCancel/true`,
+                {
+                    appointmentId: appointmentId,
+                    cancelReason: cancelReason
+                }
+            );
+            
+            if (response.data) {
+                message.success('Đã hủy lịch hẹn thành công');
+                await fetchAppointments();
+            }
+            return response.data;
+        } catch (err) {
+            message.error('Có lỗi xảy ra khi hủy lịch hẹn');
+            console.error('Error canceling appointment:', err);
+            throw err;
+        } finally {
+            setLoading(false);
+        }
+    };
+
     // Initial fetch
     useEffect(() => {
         fetchAppointments();
@@ -107,12 +151,14 @@ const useDoctorAppointment = () => {
 
     return {
         appointments,
+        stats,
         loading,
         error,
         refreshAppointments: fetchAppointments,
         confirmAppointment,
         startService,
-        saveServiceRecord
+        saveServiceRecord,
+        cancelAppointment
     };
 };
 

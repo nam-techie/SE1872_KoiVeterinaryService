@@ -60,6 +60,8 @@ public class AppointmentService {
     private PaymentDetailRepository paymentDetailRepository;
     @Autowired
     private CustomerRepository customerRepository;
+    @Autowired
+    private FeedbackRepository feedbackRepository;
 
 
     public List<Doctor> findAllDoctor() {
@@ -572,6 +574,19 @@ public class AppointmentService {
         appointmentStatusRepository.save(status);
     }
 
+    public void cancelAppointmentByDoctor(boolean status,  CancelReasonRequest cancelReasonRequest) {
+        Account account = (Account) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Appointment appointment = appointmentRepository.findAppointmentById(cancelReasonRequest.getAppointmentId());
+        appointment.setCancel(status);
+        appointmentRepository.save(appointment);
+
+        AppointmentStatus appointmentStatus = new AppointmentStatus();
+        appointmentStatus.setAppointment(appointment);
+        appointmentStatus.setStatus("Đã hủy lịch");
+        appointmentStatus.setNotes(account.getUsername() + " hủy");
+        appointmentStatusRepository.save(appointmentStatus);
+    }
+
     @Autowired
     private AppointmentInfoRepository appointmentInfoRepository;
 
@@ -915,7 +930,7 @@ public class AppointmentService {
 
         // Set Info Feedback Response
         InfoFeedbackResponse infoFeedbackResponse = new InfoFeedbackResponse();
-        FeedBack feedBack = appointment.getFeedBack();
+        FeedBack feedBack = feedbackRepository.findByAppointmentId(appointmentId);
         if (feedBack != null) {
             infoFeedbackResponse.setRate(feedBack.getRating());
             infoFeedbackResponse.setFeedback(feedBack.getComment());

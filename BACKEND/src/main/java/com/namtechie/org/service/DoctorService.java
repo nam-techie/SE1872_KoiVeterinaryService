@@ -4,10 +4,7 @@ package com.namtechie.org.service;
 import com.namtechie.org.entity.*;
 import com.namtechie.org.exception.DuplicateEntity;
 import com.namtechie.org.exception.NotFoundException;
-import com.namtechie.org.model.request.DoctorRequest;
-import com.namtechie.org.model.request.MedicalFishResquest;
-import com.namtechie.org.model.request.UpdateDoctor;
-import com.namtechie.org.model.request.VeterinaryRequest;
+import com.namtechie.org.model.request.*;
 import com.namtechie.org.model.response.*;
 import com.namtechie.org.repository.*;
 import com.namtechie.org.repository.DoctorInfoRepository;
@@ -294,17 +291,18 @@ public class DoctorService {
         }
     }
 
-    public void updateWorkingStatus(long id, String notes) {
+    public void updateWorkingStatus(long id) {
 
         Appointment appointment = appointmentRepository.findAppointmentById(id);
         AppointmentStatus appointmentStatus = new AppointmentStatus();
 
         appointmentStatus.setAppointment(appointment);
         appointmentStatus.setStatus("Đang cung cấp dịch vụ");
-        appointmentStatus.setNotes(notes);
+        appointmentStatus.setNotes("Bác sĩ đang thực hiện");
 
         appointmentStatusRepository.save(appointmentStatus);
     }
+
 
 //    public void doneWorkingStatus(long id, String notes) {
 //
@@ -405,9 +403,10 @@ public class DoctorService {
                 if (latestStatus.getStatus().equals("Chờ bác sĩ xác nhận")) {
                     appointmentStatusResponse.setAppointmentStatus(latestStatus.getStatus());
                 } else if (latestStatus.getStatus().equals("Đã xác nhận") ||
-                        latestStatus.getStatus().equals("Chờ thanh toán tiền dịch vụ") ||
-                        latestStatus.getStatus().equals("Thanh toán tiền dịch vụ thành công")) {
+                        latestStatus.getStatus().equals("Chờ thanh toán tiền dịch vụ")) {
                     appointmentStatusResponse.setAppointmentStatus("Đã xác nhận");
+                } else if (latestStatus.getStatus().equals("Thanh toán tiền dịch vụ thành công")) {
+                    appointmentStatusResponse.setAppointmentStatus(latestStatus.getStatus());
                 } else if (latestStatus.getStatus().equals("Đang cung cấp dịch vụ")) {
                     appointmentStatusResponse.setAppointmentStatus(latestStatus.getStatus());
                 } else if (latestStatus.getStatus().equals("Thực hiện xong dịch vụ") ||
@@ -554,6 +553,43 @@ public class DoctorService {
             doctorWorkResponses.add(doctorWorkResponse);
         }
         return doctorWorkResponses;
+    }
+
+    public CountAppointmentDoctorRequest countStatusTotal() {
+        Account account = (Account) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Doctor doctor = doctorRepository.findByAccountId(account.getId());
+        CountAppointmentDoctorRequest response = new CountAppointmentDoctorRequest();
+
+        long countTotal = appointmentRepository.countTotalAppointmentsByDoctor(doctor.getId());
+        long countCancel = appointmentRepository.countCancelledAppointmentsByDoctor(doctor.getId());
+
+        long countDone = 0;
+        long countWait = 0;
+
+        List<Appointment> appointments = appointmentRepository.findByDoctorId(doctor.getId());
+        for (Appointment appointment : appointments) {
+            List<AppointmentStatus> statuses = appointmentStatusRepository.findByAppointment(appointment);
+
+            // Tìm trạng thái có createDate lớn nhất (mới nhất)
+            AppointmentStatus latestStatus = null;
+            for (AppointmentStatus status : statuses) {
+                if (latestStatus == null || status.getCreate_date().toLocalDateTime().isAfter(latestStatus.getCreate_date().toLocalDateTime())) {
+                    latestStatus = status;
+                }
+            }
+            if ("Thực hiện xong dịch vụ".equals(latestStatus.getStatus())) {
+                countDone++;
+            } else if ("Chờ bác sĩ xác nhận".equals(latestStatus.getStatus())) {
+                countWait++;
+            }
+        }
+
+        response.setTotalAppointments(countTotal);
+        response.setCancelledAppointments(countCancel);
+        response.setDoneAppointments(countDone);
+        response.setWaitAppointments(countWait);
+
+        return response;
     }
 
 
