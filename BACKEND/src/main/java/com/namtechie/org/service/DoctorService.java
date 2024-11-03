@@ -86,7 +86,7 @@ public class DoctorService {
             List<Appointment> appointments = appointmentRepository.findByDoctorId(d.getId());
             for (Appointment appointment : appointments) {
                 FeedBack feedBack = feedbackRepository.findByAppointment(appointment);
-                if (feedBack != null) {
+                if (feedBack != null && !feedBack.isDeleted()) {
                     rateAverage += feedBack.getRating();
                     count++;
                 }

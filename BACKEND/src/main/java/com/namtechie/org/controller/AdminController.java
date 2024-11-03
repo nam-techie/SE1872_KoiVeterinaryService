@@ -337,6 +337,18 @@ public class AdminController {
         }
     }
 
+    @GetMapping("/listDashboardTotalRequest")
+    public ResponseEntity<DashboardTotalRequest> listDashboardTotalRequest(){
+        DashboardTotalRequest response = appointmentService.listDashboardTotalRequest();
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/getAppointment7DaysUpComing")
+    public  ResponseEntity<List<DashboardDetailAppointmentResponse>> getAppointment7DaysUpComing(){
+        List<DashboardDetailAppointmentResponse> responses = appointmentService.dashboardDetailAppointmentResponses();
+        return ResponseEntity.ok(responses);
+    }
+
 
 
 

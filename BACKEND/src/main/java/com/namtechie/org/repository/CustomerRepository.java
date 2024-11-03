@@ -17,4 +17,6 @@ public interface CustomerRepository extends JpaRepository<Customers, Long> {
     long findCustomersIdByAccountId(@Param("accountId") long accountId);
 
 
+
+
 }

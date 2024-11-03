@@ -4,18 +4,19 @@ import com.namtechie.org.entity.Appointment;
 import com.namtechie.org.exception.DoctorNotAvailableException;
 import com.namtechie.org.exception.NotFoundException;
 import com.namtechie.org.model.ScheduleForConsulting;
-import com.namtechie.org.model.request.ServiceTypeRequestAll;
+import com.namtechie.org.model.request.*;
 import com.namtechie.org.model.response.*;
 import com.namtechie.org.repository.AppointmentRepository;
 
 import com.namtechie.org.entity.*;
-import com.namtechie.org.model.request.AppointmentRequest;
 import com.namtechie.org.model.Schedule;
-import com.namtechie.org.model.request.DoctorConfirmRequest;
 import com.namtechie.org.repository.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
 import javax.print.Doc;
@@ -928,6 +929,91 @@ public class AppointmentService {
 
         return infoResponse;
     }
+
+    public DashboardTotalRequest listDashboardTotalRequest() {
+        DashboardTotalRequest dashboardTotalRequest = new DashboardTotalRequest();
+        List<AppointmentDetail> appointmentDetails = new ArrayList<>();
+        List<Appointment> appointment = appointmentRepository.findAll();
+        for (Appointment app : appointment) {
+            AppointmentDetail appointmentDetail = new AppointmentDetail();
+
+            AppointmentInfo appointmentInfo = appointmentInfoRepository.findByAppointmentId(app.getId());
+            Payment payment = paymentRepository.findByAppointmentId(app.getId());
+            Doctor doctor = app.getDoctor();
+            ServiceType service = app.getServiceType();
+            Zone zone = app.getZone();
+            Customers customers = app.getCustomers();
+
+            appointmentDetail.setAppointmentId(app.getId());
+            appointmentDetail.setOrderTime(appointmentInfo.getCreatedDate());
+            appointmentDetail.setCustomerId(customers.getId());
+
+            if (payment != null) {
+                List<PaymentDetail> paymentDetail = paymentDetailRepository.findByPaymentId(payment.getId());
+                for (PaymentDetail detail : paymentDetail) {
+                    if (detail.isStatus()) {
+                        appointmentDetail.setTotalAmount(detail.getPrice());
+                    }
+                }
+            } else {
+                appointmentDetail.setTotalAmount(0);
+            }
+            appointmentDetail.setDoctorId(doctor.getId());
+            appointmentDetail.setServiceId(service.getId());
+            appointmentDetail.setZoneId(zone.getId());
+            appointmentDetail.setCancel(app.isCancel());
+            appointmentDetails.add(appointmentDetail);
+        }
+        long countCustomer = customersRepository.count();
+        long countAppointment = appointmentRepository.count();
+
+        dashboardTotalRequest.setAppointments(appointmentDetails);
+        dashboardTotalRequest.setTotalCustomers(countCustomer);
+        dashboardTotalRequest.setTotalAppointments(countAppointment);
+        return dashboardTotalRequest;
+    }
+
+
+
+    public List<DashboardDetailAppointmentResponse> dashboardDetailAppointmentResponses() {
+        List<DashboardDetailAppointmentResponse> responses = new ArrayList<>();
+        Pageable pageable = PageRequest.of(0, 9); // Bắt đầu từ trang 0 và giới hạn 7 bản ghi
+        List<Appointment> upcomingAppointments = appointmentRepository.findTop7UpcomingAppointments(pageable);
+
+        for (Appointment app : upcomingAppointments) {
+            DashboardDetailAppointmentResponse response = new DashboardDetailAppointmentResponse(); // Tạo mới cho mỗi Appointment
+
+            AppointmentInfo appointmentInfo = appointmentInfoRepository.findByAppointmentId(app.getId());
+            ServiceType serviceType = app.getServiceType();
+            Doctor doctor = app.getDoctor();
+            Customers customers = app.getCustomers();
+            Zone zone = app.getZone();
+
+            List<AppointmentStatus> statuses = appointmentStatusRepository.findByAppointment(app);
+
+            // Tìm trạng thái có createDate lớn nhất (mới nhất)
+            AppointmentStatus latestStatus = null;
+            for (AppointmentStatus status : statuses) {
+                if (latestStatus == null || status.getCreate_date().toLocalDateTime().isAfter(latestStatus.getCreate_date().toLocalDateTime())) {
+                    latestStatus = status;
+                }
+            }
+
+            response.setAppointmentId(app.getId());
+            response.setAppointmentName(serviceType.getName());
+            response.setBookingDate(appointmentInfo.getAppointmentBookingDate());
+            response.setBookingTime(appointmentInfo.getAppointmentBookingTime());
+            response.setAppointmentTime(appointmentInfo.getCreatedDate());
+            response.setAppointmentStatus(latestStatus != null ? latestStatus.getStatus() : ""); // Kiểm tra nếu latestStatus không null
+            response.setDoctorName(doctor.getFullName());
+            response.setCustomerName(customers.getFullName());
+            response.setAddress((appointmentInfo.getAddress() != null ? appointmentInfo.getAddress() : "null") + ", " + (zone != null ? zone.getName() : "null"));
+
+            responses.add(response); // Thêm vào danh sách
+        }
+        return responses;
+    }
+
 
 
 }
