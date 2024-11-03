@@ -145,7 +145,7 @@ public class AuthenticationController {
 
 
     @GetMapping("/getInfoCustomer")
-    public ResponseEntity getInfoCustomer() {
+    public ResponseEntity<InfoCustomerResponse> getInfoCustomer() {
         InfoCustomerResponse customerInfo = customerService.getInfoCustomer();
         return ResponseEntity.ok(customerInfo);
     }

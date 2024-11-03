@@ -3,6 +3,7 @@ package com.namtechie.org.service;
 import com.namtechie.org.entity.Account;
 import com.namtechie.org.entity.Customers;
 import com.namtechie.org.model.request.CustomerInfoRequest;
+import com.namtechie.org.model.response.CustomerProfileUpdateResponse;
 import com.namtechie.org.model.response.InfoCustomerResponse;
 import com.namtechie.org.repository.AccountRepository;
 import com.namtechie.org.repository.CustomerRepository;
@@ -22,9 +23,11 @@ public class CustomerService {
     AuthenticationService authenticationService;
 
     @Autowired
-    ModelMapper modelMapper;
+    AccountRepository  accountRepository;
+
     @Autowired
-    private AccountRepository accountRepository;
+    ModelMapper modelMapper;
+
 
     public InfoCustomerResponse getInfoCustomer() {
         try {
@@ -93,6 +96,26 @@ public class CustomerService {
         }
     }
 
+    public void updateProfile(long accountId, CustomerProfileUpdateResponse cusUpdate) {
+        Account account = accountRepository.findAccountById(accountId);
+        try{
+            if (account != null) {
+                account.setEmail(cusUpdate.getEmail());
+
+                Customers customer = customerRepository.findByAccountId(accountId);
+                customer.setFullName(cusUpdate.getCustomerUsername());
+                customer.setPhone(cusUpdate.getPhoneNumber());
+                customer.setAddress(cusUpdate.getAddress());
+                customerRepository.save(customer);
+            }else{
+                throw new RuntimeException("Error123");
+            }
+        } catch (RuntimeException e) {
+            throw new RuntimeException("Error");
+        }
+
+
+    }
 
 
     public List<Customers> getAllCustomers() {

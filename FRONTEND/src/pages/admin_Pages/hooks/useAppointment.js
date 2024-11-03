@@ -44,13 +44,24 @@ const useAppointment = () => {
         }
     };
 
+    const getAppointmentDetails = async (appointmentId) => {
+        try {
+            const response = await axiosInstance.get(`/admin/getFullInfoAppointment/${appointmentId}`);
+            return response.data;
+        } catch (err) {
+            console.error('Lỗi khi lấy chi tiết lịch hẹn:', err);
+            throw new Error('Có lỗi xảy ra khi lấy thông tin chi tiết lịch hẹn');
+        }
+    };
+
     return {
         appointments,
         loading,
         error,
         refetch: fetchAppointments,
         cancelAppointment,
-        confirmPaymentDeposit
+        confirmPaymentDeposit,
+        getAppointmentDetails
     };
 };
 

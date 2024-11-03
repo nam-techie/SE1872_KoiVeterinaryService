@@ -149,8 +149,11 @@
 
 .dropdownMenu a,
 .dropdownMenu button {
-    display: block;
+    display: flex;
+    align-items: center;
+    gap: 8px;
     width: 90%;
+    margin: 0 auto; /* Căn giữa các items */
     padding: 10px;
     font-size: 14px;
     color: gray;
@@ -159,6 +162,12 @@
     background: none;
     border: none;
     text-align: left;
+}
+
+.dropdownMenu svg {
+    width: 16px; /* Giảm kích thước icon xuống */
+    height: 16px;
+    margin-left: 5px; /* Thêm margin để căn chỉnh với text */
 }
 
 .dropdownMenu a:hover,
@@ -171,6 +180,7 @@
     color: gray;
     width: 100%;
     text-align: left;
+    padding-left: 15px; /* Thêm padding để căn chỉnh với các items khác */
 }
 
 

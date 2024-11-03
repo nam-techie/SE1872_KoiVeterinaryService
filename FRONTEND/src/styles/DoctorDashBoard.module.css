@@ -1,107 +1,123 @@
 /* Center the container on the page */
 .doctorDashBoardWrapper {
     display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    background-color: #f0f2f5;
-    padding-left: 100px; /* Adjusted padding */
+    min-height: 100vh;
+    padding-left: 250px; /* Để tạo khoảng cách cho sidebar */
+    background-color: #f5f5f5;
 }
 
 .doctorDashBoardContainer {
+    flex: 1;
     display: flex;
-    justify-content: space-between;
-    width: 75%; /* Reduced width */
-    padding: 20px;
-    background-color: white;
-    border-radius: 15px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 24px;
+    gap: 24px;
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
 .doctorInfoSection {
-    flex: 1;
-    padding: 30px; /* Reduced padding */
-    border-right: 1px solid #ddd;
-    display: flex;
-    flex-direction: column;
-    text-align: left;
-    margin-right: 40px; /* Reduced margin */
+    width: 300px;
+    background: white;
+    padding: 24px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    height: fit-content;
 }
 
-
 .doctorAvatar {
-    width: 200px; /* Reduced size */
+    width: 200px;
     height: 200px;
     border-radius: 50%;
     object-fit: cover;
-    margin-bottom: 15px; /* Adjusted spacing */
+    margin: 20px auto;
+    display: block;
 }
 
 .doctorInfoSection h2 {
-    font-size: 1.8em; /* Reduced size */
-    margin-bottom: 15px;
+    text-align: center;
+    margin-bottom: 20px;
+    color: #1a1a1a;
+    font-size: 24px;
 }
 
 .doctorInfoSection p {
-    margin: 5px 0;
-    font-size: 1.2em; /* Slightly reduced */
-    color: #333;
+    margin: 12px 0;
+    color: #4a4a4a;
+    font-size: 16px;
 }
 
-/* Styling for the stat cards */
+.doctorInfoSection p strong {
+    color: #1a1a1a;
+    margin-right: 8px;
+}
+
+.dashboardStatsSection {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
 .statCard {
+    border-radius: 8px;
+    padding: 24px;
+    height: calc(33.33% - 14px);
     transition: all 0.3s ease;
-    text-align: left;
-    font-size: 1.2em; /* Reduced font size */
     cursor: pointer;
-    background-color: white;
-    padding: 30px; /* Reduced padding */
-    border-radius: 10px;
-    height: 160px; /* Reduced height */
-    width: 700px; /* Reduced width */
-    position: relative;
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
-    transform: skew(10deg) rotate(180deg);
-    overflow: hidden;
-}
-
-/* Ensure the inner content isn't skewed or rotated */
-.statCard > * {
-    transform: skew(-10deg) rotate(180deg);
 }
 
 .statCard:hover {
-    transform: translateY(-8px) skew(10deg) rotate(180deg);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+    transform: translateY(-5px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
 }
 
-.appointmentsCard {
-    background-color: #ff7875;
-    color: white;
-    margin-left: 5px; /* Adjusted margin */
-}
-
-.unconfirmedCard {
-    background-color: #ffc53d;
-    color: white;
-    margin-left: 30px;
-}
-
-.feedbackCard {
-    background-color: #73d13d;
-    color: white;
-    margin-left: 60px;
-}
-
-/* Styling for the h1 and p tags in each card */
 .statCard h1 {
-    margin-top: 10px; /* Reduced margin */
-    font-size: 1.3em; /* Reduced font size */
-    color: whitesmoke;
-    margin-bottom: 5px; /* Adjusted spacing */
+    font-size: 20px;
+    margin-bottom: 12px;
+    color: #1a1a1a;
 }
 
 .statCard p {
-    margin: 0;
-    font-size: 1em; /* Reduced font size */
+    color: #666;
+    font-size: 16px;
+}
+
+.appointmentsCard {
+    background: linear-gradient(135deg, #e6f7ff 0%, #bae7ff 100%);
+    border: 1px solid #91d5ff;
+}
+
+.unconfirmedCard {
+    background: linear-gradient(135deg, #fff7e6 0%, #ffe7ba 100%);
+    border: 1px solid #ffd591;
+}
+
+.feedbackCard {
+    background: linear-gradient(135deg, #f6ffed 0%, #d9f7be 100%);
+    border: 1px solid #b7eb8f;
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+    .doctorDashBoardContainer {
+        flex-direction: column;
+    }
+
+    .doctorInfoSection {
+        width: 100%;
+    }
+}
+
+@media (max-width: 768px) {
+    .doctorDashBoardWrapper {
+        padding-left: 0;
+    }
+
+    .doctorDashBoardContainer {
+        padding: 16px;
+    }
+
+    .statCard {
+        height: auto;
+    }
 }

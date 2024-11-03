@@ -1,50 +1,262 @@
 .doctorAppointmentContainer {
-    padding-top: 50px;
-    max-width: 1000px;
-    margin: 0 auto;
-    padding-left: 190px;
-
+    padding: 24px;
+    margin-left: 200px;
+    min-height: 100vh;
+    background-color: #f5f5f5;
 }
 
-.doctorAppointmentHeader {
+.doctorAppointmentContainer h1 {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 24px;
+}
+
+.filterSection {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 24px;
+    align-items: center;
+    background: white;
+    padding: 16px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.appointmentTable {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.appointmentTable :global(.ant-table-thead > tr > th) {
+    background: #fafafa;
+    font-weight: 600;
+    padding: 16px;
+}
+
+.appointmentTable :global(.ant-table-tbody > tr > td) {
+    padding: 16px;
+}
+
+.actionButtons {
+    display: flex;
+    gap: 8px;
+}
+
+.actionButtons button {
+    border-radius: 4px;
+    padding: 4px 12px;
+    font-size: 14px;
+    min-width: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.status {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 14px;
+    display: inline-block;
+    font-weight: 500;
+    min-width: 120px;
     text-align: center;
-    margin-bottom: 20px;
 }
 
-.doctorAppointmentList {
-    background-color: #f0f2f5;
-    padding: 20px;
-    border-radius: 10px;
+.chờ-bác-sĩ-xác-nhận {
+    background-color: #e6f7ff;
+    color: #1890ff;
+    border: 1px solid #91d5ff;
 }
 
-.doctorAppointmentListItem {
-    background-color: white;
-    padding: 15px;
-    border-radius: 10px;
-    margin-bottom: 10px;
-    display: flex;
-    justify-content: space-between;
+.đã-xác-nhận {
+    background-color: #d9f7be;
+    color: #52c41a;
+    border: 1px solid #b7eb8f;
 }
 
-.doctorAppointmentActions {
-    display: flex;
-    gap: 10px;
+.chờ-thanh-toán-tiền-dịch-vụ {
+    background-color: #fff7e6;
+    color: #fa8c16;
+    border: 1px solid #ffd591;
 }
 
-.doctorAppointmentButton {
+.đang-thực-hiện-dịch-vụ {
+    background-color: #f0f5ff;
+    color: #2f54eb;
+    border: 1px solid #adc6ff;
+}
+
+.đã-thanh-toán {
+    background-color: #fff7e6;
+    color: #fa8c16;
+    border: 1px solid #ffd591;
+}
+
+.đã-hủy {
+    background-color: #fff1f0;
+    color: #ff4d4f;
+    border: 1px solid #ffa39e;
+}
+
+.hoàn-thành {
+    background-color: #d9f7be;
+    color: #389e0d;
+    border: 1px solid #95de64;
+}
+
+.actionButtons :global(.ant-btn-primary) {
     background-color: #1890ff;
+    border-color: #1890ff;
     color: white;
-    border: none;
-    border-radius: 5px;
-    padding: 10px 15px;
-    cursor: pointer;
 }
 
-.doctorAppointmentButton:hover {
+.actionButtons :global(.ant-btn-primary:hover) {
     background-color: #40a9ff;
+    border-color: #40a9ff;
 }
 
-.doctorAppointmentButton:disabled {
-    background-color: grey;
-    cursor: not-allowed;
+.actionButtons :global(.ant-btn-danger) {
+    background-color: #ff4d4f;
+    border-color: #ff4d4f;
+    color: white;
+}
+
+.actionButtons :global(.ant-btn-danger:hover) {
+    background-color: #ff7875;
+    border-color: #ff7875;
+}
+
+.actionButtons button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+}
+
+:global(.ant-input-search) {
+    width: 250px !important;
+}
+
+:global(.ant-picker) {
+    width: 200px;
+}
+
+:global(.ant-select) {
+    width: 200px;
+}
+
+@media (max-width: 1200px) {
+    .doctorAppointmentContainer {
+        padding: 16px;
+    }
+
+    .filterSection {
+        flex-wrap: wrap;
+    }
+
+    :global(.ant-input-search),
+    :global(.ant-picker),
+    :global(.ant-select) {
+        width: 100% !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .doctorAppointmentContainer {
+        margin-left: 0;
+    }
+
+    .actionButtons {
+        flex-direction: column;
+    }
+
+    .actionButtons button {
+        width: 100%;
+    }
+}
+
+:global(.ant-input-search .ant-input) {
+    border-radius: 4px;
+}
+
+:global(.ant-input-search .ant-input-search-button) {
+    border-radius: 0 4px 4px 0;
+}
+
+.completionModal {
+    :global(.ant-modal-content) {
+        border-radius: 8px;
+        padding: 0;
+    }
+
+    :global(.ant-modal-header) {
+        border-radius: 8px 8px 0 0;
+        background: #f5f5f5;
+        padding: 16px 24px;
+        margin-bottom: 0;
+        border-bottom: 1px solid #f0f0f0;
+    }
+
+    :global(.ant-modal-body) {
+        padding: 24px;
+        max-height: calc(100vh - 200px);
+        overflow-y: auto;
+    }
+
+    /* Style cho section */
+    .section {
+        background: white;
+        border-radius: 6px;
+        padding: 16px;
+        margin-bottom: 16px;
+        border: 1px solid #e8e8e8;
+    }
+
+    /* Style cho section title */
+    .sectionTitle {
+        font-size: 16px;
+        padding-bottom: 8px;
+        margin-bottom: 16px;
+        border-bottom: 1px solid #e8e8e8;
+    }
+
+    /* Style riêng cho section Hồ sơ bệnh án */
+    .section:first-child {
+        .sectionTitle {
+            color: #1890ff;
+        }
+    }
+
+    /* Style riêng cho section Dịch vụ bổ sung */
+    .section:last-child {
+        .sectionTitle {
+            color: #52c41a;
+        }
+    }
+
+    :global(.ant-form-item) {
+        margin-bottom: 16px;
+    }
+
+    :global(.ant-form-item-label) {
+        padding-bottom: 4px;
+    }
+
+    :global(.ant-input), 
+    :global(.ant-input-textarea) {
+        padding: 8px 12px;
+        border-radius: 4px;
+    }
+
+    :global(.ant-checkbox-group) {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+        padding: 16px 0;
+    }
+
+    :global(.ant-modal-footer) {
+        padding: 16px 24px;
+        border-top: 1px solid #f0f0f0;
+    }
 }

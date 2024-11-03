@@ -126,7 +126,7 @@ function HomePage() {
                 {/* Phần thứ hai */}
                 <div className={styles.homePageSecond}>
                     <div className={styles.homePageSecondTitle}>
-                        <h1>Tại sao lại chọn KOI CUNG?</h1>
+                        <h1>Tại sao lại chọn KoiKung?</h1>
                         <div className={styles.orangeLine}></div>
                     </div>
                     <div className={styles.homePageSecondContent}>
@@ -192,7 +192,7 @@ function HomePage() {
                 </div>
 
                 <div className={styles.homePageThird}>
-                    <h1>Đội Ngũ Y Bác Sĩ Của Chúng Tôi</h1>
+                    <h1>Đội ngũ Chuyên gia của chúng tôi</h1>
                     <div className={styles.orangeLine}></div>
                     {doctorLoading && <p>Đang tải danh sách bác sĩ...</p>}
                     {doctorError && <p>{doctorError}</p>}
@@ -212,7 +212,7 @@ function HomePage() {
                     </Slider>
                 </div>
                 <div className={styles.homePageFourth}>
-                    <h1>Một Số Hình Ảnh Tại Trung Tâm Của Chúng Tôi</h1>
+                    <h1>Một số hình ảnh tại trung tâm</h1>
                     <div className={styles.orangeLine}></div>
 
                     <Masonry

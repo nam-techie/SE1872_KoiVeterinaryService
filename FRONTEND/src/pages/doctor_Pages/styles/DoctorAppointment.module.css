@@ -96,3 +96,24 @@
         margin-bottom: 8px;
     }
 }
+
+.infoItem {
+    margin-bottom: 12px;
+}
+
+.label {
+    color: #666;
+    margin-right: 8px;
+    font-weight: 500;
+}
+
+.value {
+    color: #333;
+}
+
+.sectionTitle {
+    color: #1890ff;
+    border-bottom: 1px solid #f0f0f0;
+    padding-bottom: 8px;
+    margin-bottom: 16px;
+}

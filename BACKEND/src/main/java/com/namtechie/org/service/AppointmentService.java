@@ -523,7 +523,7 @@ public class AppointmentService {
     PaymentService paymentService;
 
 
-    public AppointmentStatus confirmDoctorAppointment(long appointmentId, DoctorConfirmRequest doctorConfirmRequest) {
+    public AppointmentStatus confirmDoctorAppointment(long appointmentId) {
         try {
             AppointmentStatus updateAppointmentStatus = appointmentStatusRepository.findByAppointmentId(appointmentId);
             Appointment appointment = appointmentRepository.findAppointmentById(appointmentId);
@@ -531,37 +531,30 @@ public class AppointmentService {
 
             AppointmentStatus status = new AppointmentStatus();
             status.setAppointment(appointment);
-            if (doctorConfirmRequest.isConfirmed() == true) {
-                status.setNotes(doctorConfirmRequest.getNote());
-                status.setStatus("Đã xác nhận");
+            status.setNotes("Bác sĩ chấp nhận");
+            status.setStatus("Đã xác nhận");
 
-                ServiceType serviceType = appointment.getServiceType();
-                if (serviceType == null) {
-                    throw new IllegalArgumentException("Không tìm thấy loại dịch vụ cho cuộc hẹn với ID: " + appointmentId);
-                }
-
-                // Lấy giá tiền đặt cọc từ loại dịch vụ
-                long depositPrice = serviceType.getBase_price();
-                PaymentDepositResponse paymentDepositResponse = new PaymentDepositResponse();
-                paymentDepositResponse.setAppointmentId(appointmentId);
-                paymentDepositResponse.setDepositPrice(depositPrice);
-
-                Payment paymentTotal = paymentRepository.findByAppointmentId(appointmentId);
-
-                // Nếu chưa có, tạo bản ghi mới
-                paymentTotal = new Payment();
-                paymentTotal.setAppointment(appointment);
-                paymentTotal.setTotalFee(serviceType.getBase_price());
-                paymentRepository.save(paymentTotal);  // Lưu Payment mới
-
-                paymentService.generateTransactionRecords(appointmentId, paymentTotal, depositPrice, serviceType.getName());
-
-            } else {
-                appointment.setCancel(true);
-                appointmentRepository.save(appointment);
-                status.setNotes(doctorConfirmRequest.getNote());
-                status.setStatus("Từ chối");
+            ServiceType serviceType = appointment.getServiceType();
+            if (serviceType == null) {
+                throw new IllegalArgumentException("Không tìm thấy loại dịch vụ cho cuộc hẹn với ID: " + appointmentId);
             }
+
+            // Lấy giá tiền đặt cọc từ loại dịch vụ
+            long depositPrice = serviceType.getBase_price();
+            PaymentDepositResponse paymentDepositResponse = new PaymentDepositResponse();
+            paymentDepositResponse.setAppointmentId(appointmentId);
+            paymentDepositResponse.setDepositPrice(depositPrice);
+
+            Payment paymentTotal = paymentRepository.findByAppointmentId(appointmentId);
+
+            // Nếu chưa có, tạo bản ghi mới
+            paymentTotal = new Payment();
+            paymentTotal.setAppointment(appointment);
+            paymentTotal.setTotalFee(serviceType.getBase_price());
+            paymentRepository.save(paymentTotal);  // Lưu Payment mới
+
+            paymentService.generateTransactionRecords(appointmentId, paymentTotal, depositPrice, serviceType.getName());
+
             return appointmentStatusRepository.save(status);
         } catch (Exception e) {
             e.printStackTrace();

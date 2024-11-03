@@ -3,6 +3,7 @@ import { FaStar } from 'react-icons/fa';
 import styles from '../pages/admin_Pages/styles/FeedbackForm.module.css';
 import useFeedback from '../hooks/useFeedback';
 import { toast } from 'react-toastify';
+import PropTypes from 'prop-types';
 
 const FeedbackForm = ({ appointmentId, onSubmit, onClose }) => {
     const [rating, setRating] = useState(0);
@@ -13,12 +14,14 @@ const FeedbackForm = ({ appointmentId, onSubmit, onClose }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            await submitFeedback({
-                appointmentId,
-                rating,
-                comment
-            });
+            const feedbackData = {
+                rating: rating,
+                comment: comment
+            };
+            
+            await submitFeedback(appointmentId, feedbackData);
             toast.success('Gửi đánh giá thành công!');
+            onSubmit?.();
             onClose();
         } catch (error) {
             toast.error(error.message);
@@ -97,6 +100,12 @@ const FeedbackForm = ({ appointmentId, onSubmit, onClose }) => {
             </div>
         </div>
     );
+};
+
+FeedbackForm.propTypes = {
+    appointmentId: PropTypes.string.isRequired,
+    onSubmit: PropTypes.func,
+    onClose: PropTypes.func.isRequired
 };
 
 export default FeedbackForm; 

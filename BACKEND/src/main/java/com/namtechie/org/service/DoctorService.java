@@ -225,14 +225,14 @@ public class DoctorService {
         }
     }
 
-    public void updateWorkingStatus(long id, String notes) {
+    public void updateWorkingStatus(long id) {
 
         Appointment appointment = appointmentRepository.findAppointmentById(id);
         AppointmentStatus appointmentStatus = new AppointmentStatus();
 
         appointmentStatus.setAppointment(appointment);
         appointmentStatus.setStatus("Đang cung cấp dịch vụ");
-        appointmentStatus.setNotes(notes);
+        appointmentStatus.setNotes("Bác sĩ đang thực hiện");
 
         appointmentStatusRepository.save(appointmentStatus);
     }
@@ -336,19 +336,23 @@ public class DoctorService {
                 if (latestStatus.getStatus().equals("Chờ bác sĩ xác nhận")) {
                     appointmentStatusResponse.setAppointmentStatus(latestStatus.getStatus());
                 } else if (latestStatus.getStatus().equals("Đã xác nhận") ||
-                        latestStatus.getStatus().equals("Chờ thanh toán tiền dịch vụ") ||
-                        latestStatus.getStatus().equals("Thanh toán tiền dịch vụ thành công")) {
+                         latestStatus.getStatus().equals("Chờ thanh toán tiền dịch vụ")){
                     appointmentStatusResponse.setAppointmentStatus("Đã xác nhận");
+                } else if (latestStatus.getStatus().equals("Thanh toán tiền dịch vụ thành công")) {
+                    appointmentStatusResponse.setAppointmentStatus(latestStatus.getStatus());
                 } else if (latestStatus.getStatus().equals("Đang cung cấp dịch vụ")) {
                     appointmentStatusResponse.setAppointmentStatus(latestStatus.getStatus());
                 } else if (latestStatus.getStatus().equals("Thực hiện xong dịch vụ") ||
                         latestStatus.getStatus().equals("Chờ thanh toán tổng tiền")) {
                     appointmentStatusResponse.setAppointmentStatus("Thực hiện xong dịch vụ");
-                } else if (latestStatus.getStatus().equals("Đã hoàn thành")) {
+                } else if (latestStatus.getStatus().equals("Hoàn thành")) {
                     appointmentStatusResponse.setAppointmentStatus(latestStatus.getStatus());
                 } else if (latestStatus.getStatus().equals("Đã hủy lịch")) {
                     appointmentStatusResponse.setAppointmentStatus(latestStatus.getStatus());
+                }else if (latestStatus.getStatus().equals("Đã đánh giá")) {
+                    appointmentStatusResponse.setAppointmentStatus(latestStatus.getStatus());
                 }
+
 
             }
             appointmentResponses.add(appointmentStatusResponse);

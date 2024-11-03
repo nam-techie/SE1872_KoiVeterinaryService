@@ -13,14 +13,13 @@ import java.util.List;
 
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/customer")
 @SecurityRequirement(name = "api")
 public class FeedbackController {
     @Autowired
     private FeedbackService feedbackService;
 
     @PostMapping("/createFeedback/{appointmentId}")
-    @PreAuthorize("hasAuthority('CUSTOMER')")
     public ResponseEntity createFeedback(@PathVariable long appointmentId,@RequestBody FeedbackRequest feedBack) {
         FeedBack feedBack1 = feedbackService.createFeedbackService(appointmentId,feedBack);
         return ResponseEntity.ok(feedBack1);

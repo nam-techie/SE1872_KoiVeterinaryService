@@ -951,39 +951,63 @@ tr:last-child td {
 
 .payment-table {
     width: 100%;
-    border-collapse: collapse;
-    margin-top: 10px;
-}
-
-.payment-table th,
-.payment-table td {
-    padding: 12px;
-    text-align: left;
-    border-bottom: 1px solid #e0e0e0;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin-bottom: 20px;
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
 }
 
 .payment-table th {
-    background: #f5f5f5;
-    font-weight: 500;
-    color: #333;
+    background-color: #f8f9fa;
+    padding: 15px;
+    font-weight: 600;
+    color: #495057;
+    border-bottom: 2px solid #dee2e6;
+    text-align: left;
+}
+
+/* Căn phải cho cột đơn giá */
+.payment-table th:nth-child(3),
+.payment-table td:nth-child(3) {
+    text-align: right;
+    padding-right: 30px;
+    width: 150px; /* Đặt độ rộng cố định cho cột giá */
+}
+
+/* Căn giữa cho cột trạng thái */
+.payment-table th:nth-child(4),
+.payment-table td:nth-child(4) {
+    text-align: center;
+    width: 150px; /* Đặt độ rộng cố định cho cột trạng thái */
+}
+
+.payment-table td {
+    padding: 12px 15px;
+    border-bottom: 1px solid #e9ecef;
+    color: #212529;
 }
 
 .status-badge {
-    padding: 4px 8px;
-    border-radius: 12px;
-    font-size: 0.85rem;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.85em;
     font-weight: 500;
     display: inline-block;
+    min-width: 120px;
+    text-align: center;
 }
 
 .status-badge.paid {
-    background: #e8f5e9;
-    color: #2e7d32;
+    background-color: #d4edda;
+    color: #155724;
 }
 
 .status-badge.unpaid {
-    background: #ffebee;
-    color: #c62828;
+    background-color: #f8d7da;
+    color: #721c24;
 }
 
 .payment-table tbody tr:hover {
@@ -1237,4 +1261,240 @@ tr:last-child td {
     color: #dc3545;
     font-style: italic;
     margin: 15px 0;
+}
+
+.feedback-section {
+    margin-top: 30px;
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+}
+
+.feedback-section h3 {
+    color: #1890ff;
+    margin-bottom: 20px;
+    font-size: 1.2em;
+}
+
+.rating-container {
+    padding: 15px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.star-rating {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.rating-label {
+    font-weight: 600;
+    margin-right: 10px;
+    color: #333;
+}
+
+.stars {
+    display: inline-flex;
+    margin-right: 10px;
+}
+
+.star {
+    font-size: 20px;
+    color: #ddd;
+    margin-right: 2px;
+}
+
+.star.filled {
+    color: #ffd700;
+}
+
+.rating-value {
+    color: #666;
+    font-size: 0.9em;
+}
+
+.feedback-content {
+    border-top: 1px solid #eee;
+    padding-top: 15px;
+}
+
+.feedback-label {
+    display: block;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.feedback-text {
+    color: #666;
+    line-height: 1.5;
+    font-style: italic;
+    background-color: #f8f9fa;
+    padding: 12px;
+    border-radius: 6px;
+    margin: 0;
+}
+
+/* Thêm hiệu ứng hover */
+.rating-container:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transition: box-shadow 0.3s ease;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+    .star-rating {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .stars {
+        margin: 10px 0;
+    }
+}
+
+.appointment-timeline {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+}
+
+.timeline-step {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    position: relative;
+    padding-left: 20px;
+    transition: all 0.3s ease;
+}
+
+.timeline-step::before {
+    content: '';
+    position: absolute;
+    left: 20px;
+    top: 30px;
+    bottom: -20px;
+    width: 2px;
+    background-color: #e9ecef;
+}
+
+.timeline-step:last-child::before {
+    display: none;
+}
+
+.step-number {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #e9ecef;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    color: #6c757d;
+    z-index: 1;
+    transition: all 0.3s ease;
+}
+
+.step-content {
+    flex: 1;
+    padding: 10px 15px;
+    background-color: white;
+    border-radius: 6px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    transition: all 0.3s ease;
+}
+
+/* Trạng thái active */
+.timeline-step.active .step-number {
+    background-color: #007bff;
+    color: white;
+    transform: scale(1.1);
+}
+
+.timeline-step.active .step-content {
+    font-weight: bold;
+    color: #007bff;
+    border-left: 3px solid #007bff;
+    background-color: #f8f9fa;
+}
+
+/* Trạng thái đã qua */
+.timeline-step.past .step-number {
+    background-color: #28a745;
+    color: white;
+}
+
+.timeline-step.past .step-content {
+    color: #28a745;
+}
+
+.timeline-step.past::before {
+    background-color: #28a745;
+}
+
+/* Thêm hiệu ứng hover */
+.timeline-step:hover .step-number {
+    transform: scale(1.1);
+}
+
+.timeline-step:hover .step-content {
+    background-color: #f8f9fa;
+}
+
+.total-row {
+    background-color: #f8f9fa;
+    font-weight: bold;
+}
+
+.total-label {
+    text-align: right !important;
+    padding-right: 20px !important;
+}
+
+.total-amount {
+    color: #28a745;
+    font-size: 1.1em;
+}
+
+.payment-table tr.total-row td {
+    border-top: 2px solid #dee2e6;
+    padding: 15px 10px;
+}
+
+.total-section {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin-top: 20px;
+    padding: 15px 20px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border: 2px solid #e9ecef;
+}
+
+.total-label {
+    font-size: 1.2em;
+    font-weight: 600;
+    color: #343a40;
+    margin-right: 30px; /* Căn chỉnh để thẳng với cột đơn giá */
+}
+
+.total-amount {
+    font-size: 1.4em;
+    font-weight: 700;
+    color: #28a745;
+    background: white;
+    padding: 8px 20px;
+    border-radius: 6px;
+    box-shadow: 0 2px 4px rgba(40, 167, 69, 0.1);
+    border: 2px solid #28a745;
+    min-width: 150px; /* Đặt độ rộng tối thiểu bằng với cột đơn giá */
+    text-align: right;
+    display: inline-block;
 }

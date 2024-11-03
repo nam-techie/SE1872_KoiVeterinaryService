@@ -167,6 +167,12 @@ public class AuthenticationService implements UserDetailsService {
         }
     }
 
+    public Account getUserById() {
+        Account account = (Account) SecurityContextHolder.getContext().getAuthentication();
+
+        return account;
+    }
+
     private String generateUsername() {
         // Tìm kiếm số lượng bác sĩ hiện có để tạo username tiếp theo
         List<Account> veterinaryAccounts = accountRepository.findByRoleIgnoreCase(Role.VETERINARY.name());
