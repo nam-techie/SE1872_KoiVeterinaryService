@@ -1,7 +1,7 @@
 .container {
     margin-top: 90px;
     padding: 20px;
-    background-color: #fcc151;
+    background-color: #FFFFFF;
     min-height: 100vh;
 }
 
@@ -58,7 +58,7 @@
 .headerWrapper {
     overflow: hidden;
     margin-bottom: 20px;
-    background-color: white;
+    background-color: #EEEEEE;
     padding: 15px;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -285,4 +285,258 @@
 
 .ratingButton:active {
     transform: translateY(0);
+}
+
+/* Modal styles */
+.modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modalContent {
+    background-color: white;
+    width: 1200px;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+}
+
+/* Header của modal */
+.modalHeader {
+    padding: 15px 20px;
+    position: relative;
+}
+
+.modalHeader h2 {
+    font-size: 18px;
+    color: #333;
+    text-align: center;
+    margin: 0;
+}
+
+.modalCloseButton {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    color: #666;
+}
+
+/* Nội dung modal */
+.appointmentInfo {
+    padding: 20px;
+}
+
+/* Style cho các section */
+.section {
+    margin-bottom: 20px;
+}
+
+.section h3 {
+    font-size: 16px;
+    color: #333;
+    margin-bottom: 15px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #eee;
+}
+
+/* Grid layout cho thông tin */
+.infoGrid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    margin-top: 10px;
+}
+
+.infoItem {
+    display: flex;
+    gap: 20px;
+    white-space: nowrap;
+    overflow: visible;
+}
+
+.infoLabel {
+    color: #666;
+    min-width: 150px;
+    flex-shrink: 0;
+}
+
+.infoValue {
+    color: #333;
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: visible;
+    text-overflow: clip;
+    flex: 1;
+}
+
+/* Style cho bác sĩ phụ trách */
+.doctorInfo {
+    color: #333;
+    font-size: 14px;
+    white-space: nowrap;
+    overflow: visible;
+    text-overflow: clip;
+}
+
+.doctorSpecialty {
+    color: #666;
+    font-size: 12px;
+    margin-top: 2px;
+}
+
+/* Loại bỏ scrollbar mặc định */
+.modalContent::-webkit-scrollbar {
+    display: none;
+}
+
+/* Thêm padding bottom cho content */
+.modalContent {
+    padding-bottom: 20px;
+}
+
+.statusTimeline {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 60px 40px;
+    position: relative;
+}
+
+/* Đường kẻ ngang */
+.statusTimeline::before {
+    content: '';
+    position: absolute;
+    top: 25px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background-color: #ddd;
+    z-index: 1;
+}
+
+.statusItem {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    z-index: 2;
+    text-align: center;
+}
+
+.statusIcon {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: #fff;
+    border: 2px solid #ddd;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    color: #ddd;
+}
+
+/* Dot hoàn thành */
+.completed .statusIcon {
+    background-color: #4CAF50;
+    border-color: #4CAF50;
+    color: white;
+}
+
+/* Text phía dưới dot */
+.statusItem span {
+    font-size: 12px;
+    color: #666;
+    max-width: 100px;
+    line-height: 1.2;
+}
+
+/* Style cho item đã hoàn thành */
+.completed span {
+    color: #4CAF50;
+}
+
+/* Thêm timestamp */
+.timestamp {
+    font-size: 11px;
+    color: #999;
+    margin-top: 4px;
+}
+
+.costTable {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+}
+
+.costTable th,
+.costTable td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+.costTable th {
+    background-color: #f5f5f5;
+}
+
+.description {
+    font-size: 0.9em;
+    color: #666;
+    margin-top: 4px;
+}
+
+.petInfo {
+    margin-top: 20px;
+    padding: 20px;
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.petGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin-top: 10px;
+}
+
+.diagnosis {
+    background-color: #fff3cd;
+    padding: 2px 8px;
+    border-radius: 4px;
+}
+
+.modalFooter {
+    padding-top: 15px;
+    margin-top: 15px;
+    border-top: 1px solid #eee;
+    text-align: right;
+}
+
+.modalCloseBtn {
+    padding: 8px 20px;
+    background-color: #6c757d;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.modalCloseBtn:hover {
+    background-color: #5a6268;
 } 

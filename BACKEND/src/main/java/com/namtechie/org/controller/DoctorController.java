@@ -4,6 +4,7 @@ import com.namtechie.org.entity.Appointment;
 import com.namtechie.org.entity.AppointmentStatus;
 import com.namtechie.org.entity.Doctor;
 import com.namtechie.org.model.request.DoctorConfirmRequest;
+import com.namtechie.org.model.request.ServiceTypeRequestAll;
 import com.namtechie.org.model.response.AppointmentStatusResponse;
 import com.namtechie.org.model.response.DoctorAppointmentResponse;
 import com.namtechie.org.model.response.DoctorWorkResponse;
@@ -12,6 +13,7 @@ import com.namtechie.org.model.request.DoctorRequest;
 import com.namtechie.org.model.request.MedicalFishResquest;
 import com.namtechie.org.service.AppointmentService;
 import com.namtechie.org.service.DoctorService;
+import com.namtechie.org.service.PaymentService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,8 +52,8 @@ public class DoctorController {
     }
 
     @PutMapping("/isDoctorConfirm/{appointmentId}")
-    public ResponseEntity isConfirm(@PathVariable long appointmentId,@Valid @RequestBody DoctorConfirmRequest doctorConfirmRequest) {
-        AppointmentStatus appointmentStatus = appointmentService.confirmDoctorAppointment(appointmentId,doctorConfirmRequest);
+    public ResponseEntity isConfirm(@PathVariable long appointmentId) {
+        AppointmentStatus appointmentStatus = appointmentService.confirmDoctorAppointment(appointmentId);
         return ResponseEntity.ok(appointmentStatus);
     }
 
@@ -121,6 +123,18 @@ public class DoctorController {
     public ResponseEntity findAppoinmentId(@PathVariable long accountId) {
         long appointmentId = appointmentService.findAppointmentIdStep(accountId);
         return ResponseEntity.ok(appointmentId);
+    }
+    @Autowired
+    PaymentService  paymentService;
+
+    @PostMapping("/saveServiceTypeAdd/{appointmentId}")
+    public ResponseEntity saveServiceTypeAdd(@PathVariable long appointmentId, @RequestBody ServiceTypeRequestAll serviceTypeRequestAll) {
+        try {
+            paymentService.saveTransactionRecordedAndDoneWorking(appointmentId,serviceTypeRequestAll);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return ResponseEntity.ok("Đã lưu hồ sơ bệnh nhân thành công");
     }
 
 }

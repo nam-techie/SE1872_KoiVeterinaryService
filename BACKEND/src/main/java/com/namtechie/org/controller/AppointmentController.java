@@ -66,7 +66,7 @@ public class AppointmentController {
     @GetMapping("/listAppointmentDetail/{id}")
     public ResponseEntity<AppointmentResponse> getAppointmentDetail(@PathVariable long id) {
         try {
-            AppointmentResponse appointment = appointmentService.getListAppoint(id);
+            AppointmentResponse appointment = appointmentService.getAppointmentDetail(id);
             return new ResponseEntity<>(appointment, HttpStatus.OK);  // Trả về HTTP 200 OK
         } catch (Exception e) {
             // Log lỗi ra nếu cần
@@ -95,7 +95,7 @@ public class AppointmentController {
 
     @GetMapping(value = "/testFreeScheduleWithTime")
     public ResponseEntity testFreeScheduleWithTime() {
-        return ResponseEntity.ok(appointmentService.findAppointmentByDoctorIdAndBookingDateAndBookingTime((long) 1, Date.valueOf("2024-10-16"), Time.valueOf("14:00:00")));
+        return ResponseEntity.ok(appointmentService.findAppointmentByDoctorIdAndBookingDateAndBookingTime((long) 2, Date.valueOf("2024-11-10"), Time.valueOf("14:00:00")));
     }
 
     @GetMapping(value = "/getFreeSchedule")

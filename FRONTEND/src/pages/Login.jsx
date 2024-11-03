@@ -3,6 +3,8 @@ import styles from '../styles/Login.module.css'; // Đảm bảo đường dẫn
 import { FcGoogle } from "react-icons/fc";
 import { CustomerNavBar } from "../components/Navbar.jsx";
 import LoadingCat from '../components/LoadingCat.jsx'; // Import LoadingCat
+import Footer from "../components/Footer.jsx";
+import ContactButton from "../components/ContactButton.jsx";
 
 function Login() {
     const {
@@ -101,6 +103,8 @@ function Login() {
                 {/* Hiển thị LoadingCat khi đang loading */}
                 {loading && <LoadingCat />}
             </div>
+            <ContactButton/>
+            <Footer/>
         </>
     );
 };

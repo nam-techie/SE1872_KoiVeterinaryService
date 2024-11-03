@@ -45,10 +45,24 @@ const useManageCus = () => {
         }
     };
 
+    const submitFeedback = async (appointmentId, feedbackData) => {
+        try {
+            const response = await axiosInstance.post(
+                `/customer/createFeedback/${appointmentId}`,
+                feedbackData
+            );
+            return response.data;
+        } catch (err) {
+            console.error('Error submitting feedback:', err);
+            throw new Error('Có lỗi xảy ra khi gửi đánh giá');
+        }
+    };
+
     return {
         getAppointments,
         cancelAppointment,
         getPaymentUrl,
+        submitFeedback,
     };
 };
 

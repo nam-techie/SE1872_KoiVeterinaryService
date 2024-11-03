@@ -1,81 +1,211 @@
+import React, { useState, useMemo } from 'react';
+import styles from './styles/DoctorDashBoard.module.css';
 import { DoctorNavBar } from "../../components/Navbar.jsx";
-import { Card, Row, Col } from 'antd';
-import styles from "../../styles/DoctorDashBoard.module.css";
-import  avatar from "../../assets/homePage_images/doctorAvatar.jpg"
 
-function DoctorDashBoard() {
-    // Mock data for doctor information with image URL
-    const doctorInfo = {
-        id: 1,
-        account_id: 101,
-        fullname: "Bác Sĩ A",
-        sex: true,
-        phone: "0123456789",
-        experience: 10,
-        image_url: avatar
-    };
+// Mock Data
+const mockDoctor = {
+  name: "Dr. Nguyễn Văn A",
+  gender: "Nam",
+  phone: "0123456789",
+  experience: "10 năm",
+  avatar: "https://example.com/default-avatar.jpg"
+};
 
-    // Mock data for dashboard stats
-    const dashboardInfo = {
-        totalAppointmentsToday: 8,
-        unconfirmedAppointments: 3,
-        totalFeedback: 5
-    };
+const mockStats = {
+  totalAppointments: 15,
+  pendingAppointments: 5,
+  ongoingAppointments: 3
+};
 
-    return (
-        <>
-            <DoctorNavBar />
-            <div className={styles.doctorDashBoardWrapper}>
-                <div className={styles.doctorDashBoardContainer}>
-                    {/* Left side: Doctor Information */}
-                    <div className={styles.doctorInfoSection}>
-                        <h2>{doctorInfo.fullname}</h2>
-                        <img
-                            src={doctorInfo.image_url}
-                            alt="Doctor Avatar"
-                            className={styles.doctorAvatar} // Class for styling the image
-                        />
-                        <p><strong>Sex:</strong> {doctorInfo.sex ? "Male" : "Female"}</p>
-                        <p><strong>Phone:</strong> {doctorInfo.phone}</p>
-                        <p><strong>Experience:</strong> {doctorInfo.experience} years</p>
-                    </div>
+// Thêm hàm tạo avatar từ tên
+const getInitials = (name) => {
+  return name
+    .split(' ')
+    .map(word => word[0])
+    .join('')
+    .toUpperCase()
+    .slice(0, 2);
+};
 
-                    {/* Right side: Dashboard with 3 vertical sections */}
-                    <div className={styles.dashboardStatsSection}>
-                        <Row gutter={[16, 16]} style={{ height: '100%' }}>
-                            <Col span={24}>
-                                <Card
-                                    bordered={false}
-                                    className={`${styles.statCard} ${styles.appointmentsCard}`}
-                                >
-                                    <h1>Chào bác sĩ! Hôm nay anh đã nhận được {dashboardInfo.totalAppointmentsToday} lịch đặt</h1>
-                                    <p>Ấn vào đây để hoàn thành Nhé</p>
-                                </Card>
-                            </Col>
-                            <Col span={24}>
-                                <Card
-                                    bordered={false}
-                                    className={`${styles.statCard} ${styles.unconfirmedCard}`}
-                                >
-                                    <h1>Chào bác sĩ! Có {dashboardInfo.unconfirmedAppointments} đơn chưa hoàn thành</h1>
-                                    <p>Ấn vào đây để hoàn thành Nhé</p>
-                                </Card>
-                            </Col>
-                            <Col span={24}>
-                                <Card
-                                    bordered={false}
-                                    className={`${styles.statCard} ${styles.feedbackCard}`}
-                                >
-                                    <h1>Chào bác sĩ! Hôm nay anh đã nhận được {dashboardInfo.totalFeedback} đánh giá</h1>
-                                    <p>Ấn vào đây để hoàn thành Nhé</p>
-                                </Card>
-                            </Col>
-                        </Row>
-                    </div>
-                </div>
+// Tạo component AvatarPlaceholder
+const AvatarPlaceholder = ({ name, className }) => {
+  // Tạo màu ngẫu nhiên nhưng ổn định cho mỗi tên
+  const backgroundColor = useMemo(() => {
+    const colors = ['#FF6B4A', '#4A90E2', '#50C878', '#9B59B6', '#F1C40F'];
+    let hash = 0;
+    for (let i = 0; i < name.length; i++) {
+      hash = name.charCodeAt(i) + ((hash << 5) - hash);
+    }
+    return colors[Math.abs(hash) % colors.length];
+  }, [name]);
+
+  return (
+    <div 
+      className={className}
+      style={{
+        backgroundColor,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        color: 'white',
+        fontSize: '2.5rem',
+        fontWeight: 'bold'
+      }}
+    >
+      {getInitials(name)}
+    </div>
+  );
+};
+
+const DoctorDashBoard = () => {
+  const [doctor, setDoctor] = useState(mockDoctor);
+  const [showEditForm, setShowEditForm] = useState(false);
+  const [showPasswordForm, setShowPasswordForm] = useState(false);
+  const [newAvatar, setNewAvatar] = useState(null);
+
+  const handleEditSubmit = (e) => {
+    e.preventDefault();
+    // Handle edit profile logic here
+  };
+
+  const handlePasswordChange = (e) => {
+    e.preventDefault();
+    // Handle password change logic here
+  };
+
+  const handleAvatarChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setNewAvatar(URL.createObjectURL(file));
+    }
+  };
+
+  // Cập nhật phần render avatar trong profileCard
+  const renderAvatar = () => {
+    if (newAvatar) {
+      return <img src={newAvatar} alt="Doctor avatar" className={styles.avatar} />;
+    }
+    if (doctor.avatar && doctor.avatar !== "https://example.com/default-avatar.jpg") {
+      return <img src={doctor.avatar} alt="Doctor avatar" className={styles.avatar} />;
+    }
+    return <AvatarPlaceholder name={doctor.name} className={styles.avatar} />;
+  };
+
+  return (
+    <>
+      <DoctorNavBar/>
+      <div className={styles.dashboard}>
+        {/* Left Section - Profile */}
+        <div className={styles.profileSection}>
+          <div className={styles.profileCard}>
+            {renderAvatar()}
+            <div className={styles.profileInfo}>
+              <h2>{doctor.name}</h2>
+              <p>Giới tính: {doctor.gender}</p>
+              <p>Số điện thoại: {doctor.phone}</p>
+              <p>Kinh nghiệm: {doctor.experience}</p>
             </div>
-        </>
-    );
-}
+            <div className={styles.buttonGroup}>
+              <button onClick={() => setShowEditForm(true)}>Chỉnh sửa thông tin</button>
+              <button onClick={() => setShowPasswordForm(true)}>Đổi mật khẩu</button>
+            </div>
+          </div>
+
+          {/* Edit Profile Form */}
+          {showEditForm && (
+            <div className={styles.modal}>
+              <div className={styles.modalContent}>
+                <h3>Chỉnh sửa thông tin</h3>
+                <form onSubmit={handleEditSubmit}>
+                  <div className={styles.formGroup}>
+                    <label>Họ và tên:</label>
+                    <input type="text" defaultValue={doctor.name} />
+                  </div>
+                  
+                  <div className={styles.formGroup}>
+                    <label>Giới tính:</label>
+                    <select defaultValue={doctor.gender}>
+                      <option value="Nam">Nam</option>
+                      <option value="Nữ">Nữ</option>
+                    </select>
+                  </div>
+
+                  <div className={styles.formGroup}>
+                    <label>Số điện thoại:</label>
+                    <input type="tel" defaultValue={doctor.phone} />
+                  </div>
+
+                  <div className={styles.formGroup}>
+                    <label>Kinh nghiệm:</label>
+                    <input type="text" defaultValue={doctor.experience} />
+                  </div>
+
+                  <div className={styles.formGroup}>
+                    <label>Ảnh đại diện:</label>
+                    <input type="file" onChange={handleAvatarChange} accept="image/*" />
+                  </div>
+
+                  <div className={styles.modalButtons}>
+                    <button type="submit" className={styles.saveButton}>Lưu</button>
+                    <button type="button" className={styles.cancelButton} onClick={() => setShowEditForm(false)}>Hủy</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          )}
+
+          {/* Change Password Form */}
+          {showPasswordForm && (
+            <div className={styles.modal}>
+              <div className={styles.modalContent}>
+                <h3>Đổi mật khẩu</h3>
+                <form onSubmit={handlePasswordChange}>
+                  <div className={styles.formGroup}>
+                    <label>Mật khẩu hiện tại:</label>
+                    <input type="password" />
+                  </div>
+                  
+                  <div className={styles.formGroup}>
+                    <label>Mật khẩu mới:</label>
+                    <input type="password" />
+                  </div>
+
+                  <div className={styles.formGroup}>
+                    <label>Xác nhận mật khẩu mới:</label>
+                    <input type="password" />
+                  </div>
+
+                  <div className={styles.modalButtons}>
+                    <button type="submit" className={styles.saveButton}>Lưu</button>
+                    <button type="button" className={styles.cancelButton} onClick={() => setShowPasswordForm(false)}>Hủy</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Right Section - Statistics */}
+        <div className={styles.statsSection}>
+          <h2>Tổng quan hôm nay</h2>
+          <div className={styles.statsGrid}>
+            <div className={styles.statsCard}>
+              <h3>Tổng số lịch hẹn</h3>
+              <p className={styles.statsNumber}>{mockStats.totalAppointments}</p>
+            </div>
+            <div className={styles.statsCard}>
+              <h3>Lịch hẹn chờ xác nhận</h3>
+              <p className={styles.statsNumber}>{mockStats.pendingAppointments}</p>
+            </div>
+            <div className={styles.statsCard}>
+              <h3>Lịch hẹn đang thực hiện</h3>
+              <p className={styles.statsNumber}>{mockStats.ongoingAppointments}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+};
 
 export default DoctorDashBoard;

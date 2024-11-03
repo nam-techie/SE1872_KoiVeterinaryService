@@ -62,14 +62,5 @@ public class PaymentController {
 
 
 
-    @PostMapping("/saveServiceTypeAdd/{appointmentId}")
-    @PreAuthorize("hasAuthority('VETERINARY')")
-    public ResponseEntity saveServiceTypeAdd(@PathVariable long appointmentId, @RequestBody ServiceTypeRequestAll serviceTypeRequestAll) {
-        try {
-            paymentService.saveTransactionRecordedAndDoneWorking(appointmentId,serviceTypeRequestAll);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-        return ResponseEntity.ok("Đã lưu hồ sơ bệnh nhân thành công");
-    }
+
 }

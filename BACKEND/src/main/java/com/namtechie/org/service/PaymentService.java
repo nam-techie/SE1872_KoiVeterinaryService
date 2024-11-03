@@ -407,6 +407,8 @@ public class PaymentService {
         appointmentStatus.setStatus("Thanh toán tổng tiền thành công");
         appointmentStatusRepository.save(appointmentStatus);
 
+        System.out.println(appointmentId);
+
 
         AppointmentStatus appointmentStatuss = new AppointmentStatus();
         appointmentStatuss.setAppointment(appointment);

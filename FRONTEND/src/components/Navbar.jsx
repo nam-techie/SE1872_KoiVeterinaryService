@@ -28,7 +28,7 @@ export function CustomerNavBar() {
                     <div className={styles.welcomeInfo}>
                         {isLoggedIn && (
                             <span>
-          Xin Chào <span style={{color: "orangered"}}>{username}</span>
+          Xin chào <span style={{color: "orangered"}}>{username}</span>
         </span>
                         )}
                     </div>
@@ -88,12 +88,26 @@ export function CustomerNavBar() {
                                 <FaUserLarge size={35} color={"white"}/>
                                 {isDropdownOpen && (
                                     <div className={styles.dropdownMenu}>
-                                        <Link to="/customer/manage-appointment">Quản lí Lịch hẹn</Link>
+                                        <Link to="/customer/manage-appointment" className={styles.dropdownLink}>
+                                            <AiFillSchedule size={20} /> Quản lí Lịch hẹn
+                                        </Link>
                                         <hr/>
-                                        <Link to="/profile">Thông tin cá nhân</Link>
+                                        <Link to="/customer/profile" className={styles.dropdownLink}>
+                                            <FaUserLarge size={20} /> Thông tin cá nhân
+                                        </Link>
                                         <hr/>
-                                        <button onClick={handleLogout} className={styles.logoutButton}>
-                                            Đăng xuất
+                                        <button 
+                                            onClick={handleLogout} 
+                                            className={styles.logoutButton}
+                                            style={{
+                                                color: 'red',
+                                                fontWeight: 'bold',
+                                                display: 'flex',
+                                                alignItems: 'center',
+                                                gap: '8px'
+                                            }}
+                                        >
+                                            Đăng xuất <IoLogOutSharp size={20} />
                                         </button>
                                     </div>
                                 )}
@@ -125,13 +139,13 @@ export const DoctorNavBar = () => {
                 [{role}] {username} {/* Hiển thị role và username */}
             </div>
             <div className={styles.DoctorSidebarLinks}>
-                <a className={styles.DoctorSidebarLink} href="/doctor/doctor-dashboard">
+                <a className={styles.DoctorSidebarLink} href="/doctor/dashboard">
                     <MdDashboard className={styles.icon} size={40}/> Tổng quan
                 </a>
-                <a className={styles.DoctorSidebarLink} href="/doctor/doctor-work-schedule">
+                <a className={styles.DoctorSidebarLink} href="/doctor/work-schedule">
                     <AiFillSchedule className={styles.icon} size={40}/> Lịch làm việc
                 </a>
-                <a className={styles.DoctorSidebarLink} href="/doctor/doctor-appointment">
+                <a className={styles.DoctorSidebarLink} href="/doctor/manage-appointment">
                     <PiNewspaperClippingFill className={styles.icon} size={40}/> Quản lí Lịch đặt
                 </a>
                 <hr className={styles.separator}/>

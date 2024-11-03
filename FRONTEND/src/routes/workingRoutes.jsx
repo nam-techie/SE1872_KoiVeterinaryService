@@ -7,7 +7,7 @@ export const PublicRoute = ({ children }) => {
 
     // Nếu vai trò là doctor hoặc admin, điều hướng đến trang dashboard của họ
     if (role === 'VETERINARY') {
-        return <Navigate to="/doctor/doctor-dashboard" />;
+        return <Navigate to="/doctor/dashboard" />;
     }
     if (role === 'ADMIN') {
         return <Navigate to="/admin" />;

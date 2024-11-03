@@ -20,6 +20,7 @@ import Dashboard from "./pages/admin_Pages/Dashboard.jsx";
 import AppointmentPage from "./pages/customer_Pages/AppointmentPage.jsx";
 import ManageAppointment from "./pages/customer_Pages/ManageAppointment.jsx";
 import DoctorWorkSchedule from "./pages/doctor_Pages/DoctorWorkSchedule.jsx";
+import CustomerProfile from "./pages/customer_Pages/CustomerProfile.jsx";
 
 function App() {
 
@@ -65,20 +66,25 @@ function App() {
                             <AppointmentPage/>
                         </RoleBasedRoute>
                     }/>
+                    <Route path="/customer/profile" element={
+                        <RoleBasedRoute allowedRoles={['CUSTOMER', 'ADMIN']}>
+                            <CustomerProfile/>
+                        </RoleBasedRoute>
+                    }/>
 
                     Trang chỉ doctor và admin truy cập được
-                    <Route path="/doctor/doctor-dashboard" element={
+                    <Route path="/doctor/dashboard" element={
                         <RoleBasedRoute allowedRoles={['VETERINARY', 'ADMIN']}>
                             <DoctorDashBoard/>
                         </RoleBasedRoute>
                     }/>
 
-                    <Route path="/doctor/doctor-appointment" element={
+                    <Route path="/doctor/manage-appointment" element={
                         <RoleBasedRoute allowedRoles={['VETERINARY', 'ADMIN']}>
                             <DoctorAppointment/>
                         </RoleBasedRoute>
                     }/>
-                    <Route path="/doctor/doctor-work-schedule" element={
+                    <Route path="/doctor/work-schedule" element={
                         <RoleBasedRoute allowedRoles={['VETERINARY', 'ADMIN']}>
                             <DoctorWorkSchedule/>
                         </RoleBasedRoute>

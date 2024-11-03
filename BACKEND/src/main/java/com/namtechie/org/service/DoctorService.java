@@ -413,9 +413,11 @@ public class DoctorService {
                 } else if (latestStatus.getStatus().equals("Thực hiện xong dịch vụ") ||
                         latestStatus.getStatus().equals("Chờ thanh toán tổng tiền")) {
                     appointmentStatusResponse.setAppointmentStatus("Thực hiện xong dịch vụ");
-                } else if (latestStatus.getStatus().equals("Đã hoàn thành")) {
+                } else if (latestStatus.getStatus().equals("Hoàn thành")) {
                     appointmentStatusResponse.setAppointmentStatus(latestStatus.getStatus());
                 } else if (latestStatus.getStatus().equals("Đã hủy lịch")) {
+                    appointmentStatusResponse.setAppointmentStatus(latestStatus.getStatus());
+                } else if (latestStatus.getStatus().equals("Đã đánh giá")) {
                     appointmentStatusResponse.setAppointmentStatus(latestStatus.getStatus());
                 }
 
@@ -544,7 +546,7 @@ public class DoctorService {
                     doctorWorkResponse.setAppointmentStatus(status);
                 } else if (status.equals("Thực hiện xong dịch vụ") || status.equals("Chờ thanh toán tổng tiền")) {
                     doctorWorkResponse.setAppointmentStatus("Thực hiện xong dịch vụ");
-                } else if (status.equals("Đã hoàn thành") || status.equals("Đã hủy lịch")) {
+                } else if (status.equals("Hoàn thành") || status.equals("Đã hủy lịch")) {
                     doctorWorkResponse.setAppointmentStatus(status);
                 }
             }

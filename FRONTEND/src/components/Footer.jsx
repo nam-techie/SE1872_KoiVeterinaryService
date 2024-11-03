@@ -9,12 +9,12 @@ function Footer() {
                 <div className={styles.footerSection}>
                     <h3 className={styles.footerSectionTitle}>Về KoiKung</h3>
                     <ul className={styles.footerList}>
-                        <li className={styles.footerListItem}><a href="#" className={styles.footerLink}>Giới thiệu</a>
+                        <li className={styles.footerListItem}><a href="/aboutme" className={styles.footerLink}>Giới thiệu</a>
                         </li>
                         <li className={styles.footerListItem}><a href="#" className={styles.footerLink}>Bác sĩ</a></li>
-                        <li className={styles.footerListItem}><a href="#" className={styles.footerLink}>Điều khoản Dịch
+                        <li className={styles.footerListItem}><a href="/service" className={styles.footerLink}>Điều khoản Dịch
                             vụ</a></li>
-                        <li className={styles.footerListItem}><a href="#" className={styles.footerLink}>Câu hỏi thường
+                        <li className={styles.footerListItem}><a href="/faqs" className={styles.footerLink}>Câu hỏi thường
                             gặp</a></li>
                     </ul>
                 </div>

@@ -169,15 +169,22 @@ export function SubmitButton({ handleSubmit, isDisabled }) {
 
 export function AgreementCheckbox({ setAgree }) {
     return (
-        <div className={styles.formGroup}>
+        <div className={styles.agreementContainer}>
             <input
                 type="checkbox"
-                id="agree"
-                onChange={(e) => setAgree(e.target.checked)} /* Cập nhật trạng thái khi checkbox được chọn */
+                onChange={(e) => setAgree(e.target.checked)}
             />
-            <label htmlFor="agree">
-                Tôi đã đồng ý với <a href="/terms">Điều Khoản và Dịch Vụ</a>
-            </label>
+            <span>
+                Tôi đã đồng ý với{' '}
+                <a 
+                    href="/terms" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className={styles.agreementLink}
+                >
+                    Điều khoản và Dịch vụ
+                </a>
+            </span>
         </div>
     );
 }

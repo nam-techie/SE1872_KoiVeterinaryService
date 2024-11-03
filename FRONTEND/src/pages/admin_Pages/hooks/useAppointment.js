@@ -61,7 +61,7 @@ const useAppointment = () => {
         try {
             const response = await axiosInstance.get(`/admin/getFullInfo/${appointmentId}`);
             return response.data;
-            
+
         } catch (err) {
             console.error('Lỗi khi lấy thông tin chi tiết:', err);
             throw new Error('Không thể lấy thông tin chi tiết lịch hẹn');

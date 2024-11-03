@@ -3,10 +3,12 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    min-height: calc(100vh - 80px);
     background-color: #f8f8f8;
+    padding: 20px 0 20px;
     margin-top: 80px;
     font-family: Arial, sans-serif;
+    box-sizing: border-box;
 }
 
 .registerForm {

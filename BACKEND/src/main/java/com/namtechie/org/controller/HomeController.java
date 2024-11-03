@@ -24,6 +24,7 @@ import java.util.Map;
 @RequestMapping("/api/customer")
 @RestController
 @SecurityRequirement(name = "api")
+@PreAuthorize("hasAuthority('CUSTOMER')")
 public class HomeController {
 
     @Autowired

@@ -4,56 +4,73 @@ import {IoIosArrowForward} from "react-icons/io";
 import Location from "../assets/aboutMe_images/Location.jpg"
 import Footer from "../components/Footer.jsx";
 import ContactButton from "../components/ContactButton.jsx";
+import { useEffect, useRef } from 'react';
 
 function AboutMe() {
+    const fadeRefs = useRef([]);
+
+    useEffect(() => {
+        const observerCallback = (entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add(styles.isVisible);
+                }
+            });
+        };
+
+        const observerOptions = {
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver(observerCallback, observerOptions);
+
+        fadeRefs.current.forEach(ref => {
+            if (ref) observer.observe(ref);
+        });
+
+        return () => observer.disconnect();
+    }, []);
+
     return (
         <>
             <CustomerNavBar/>
             <div className={styles.aboutMeContainer}>
-                <div className={styles.breadCrumb}>
-                    <a href="/homepage">Trang Chủ</a><IoIosArrowForward size={22}
-                                                                        color={"orange"}/><span>Về KOI CUNG</span>
-                </div>
                 <div className={styles.aboutMeFirst}>
                     <div className={styles.aboutMeFirstContent}>
                         <div className={styles.aboutMeFirstContentLeft}>
-                            <h2>Giới thiệu trung tâm KoiKung</h2>
-                            <p>
-                                Chào mừng bạn đến với KoiKung – Trung tâm chuyên cung cấp dịch vụ chăm sóc và tư vấn
-                                toàn diện cho cá Koi, từ những người yêu Koi đến các chuyên gia nuôi dưỡng lâu năm.
-                                Tại KoiKung, chúng tôi hiểu rằng cá Koi không chỉ là thú cưng, mà còn là biểu tượng của
-                                sự may mắn, thịnh vượng và vẻ đẹp hoàn mỹ trong văn hóa Á Đông.
-                            </p>
+                            <div className={`${styles.fadeInSection}`} ref={el => fadeRefs.current[0] = el}>
+                                <h2>Giới thiệu trung tâm KoiKung</h2>
+                                <p>
+                                    Chào mừng bạn đến với KoiKung – Nơi hội tụ đam mê và chuyên môn trong việc chăm sóc cá Koi. 
+                                    Chúng tôi tự hào là trung tâm hàng đầu trong lĩnh vực chăm sóc và tư vấn toàn diện cho cá Koi, 
+                                    mang đến những giải pháp chuyên nghiệp và tận tâm nhất.
+                                </p>
+                            </div>
 
-                            <h3>Ý nghĩa của tên gọi KoiKung</h3>
-                            <p>
-                                “Koi” tượng trưng cho cá Koi – loài cá được yêu thích bởi sự đa dạng màu sắc, vẻ đẹp
-                                thanh thoát và ý nghĩa phong thủy sâu sắc.
-                                Còn “Kung” lấy cảm hứng từ từ “Kungfu” – biểu trưng cho sự khéo léo, kỹ thuật điêu luyện
-                                và sự tận tâm. Tên gọi “KoiKung” thể hiện triết lý hoạt động của chúng tôi:
-                                kết hợp giữa tình yêu, sự đam mê và kỹ năng chăm sóc cá Koi một cách tỉ mỉ, chuyên
-                                nghiệp.
-                            </p>
+                            <div className={`${styles.fadeInSection}`} ref={el => fadeRefs.current[1] = el}>
+                                <h3>Ý nghĩa của tên gọi KoiKung</h3>
+                                <p>
+                                    "Koi" - Biểu tượng của sự thanh cao và may mắn trong văn hóa Á Đông, kết hợp cùng "Kung" - 
+                                    tinh thần của sự điêu luyện và tận tâm. KoiKung không chỉ là một cái tên, mà còn là cam kết 
+                                    về sự chuyên nghiệp và đẳng cấp trong từng dịch vụ chúng tôi cung cấp.
+                                </p>
+                            </div>
 
-                            <h3>Sứ mệnh của KoiKung</h3>
-                            <p>
-                                Tại KoiKung, chúng tôi cam kết mang đến dịch vụ chăm sóc cá Koi toàn diện, bao gồm tư
-                                vấn,
-                                thăm khám, điều trị, và các giải pháp chăm sóc tại nhà.
-                                Với đội ngũ chuyên gia giàu kinh nghiệm và cơ sở vật chất hiện đại, chúng tôi không
-                                ngừng
-                                cải tiến và áp dụng các phương pháp tiên tiến để giúp cá Koi của bạn phát triển khỏe
-                                mạnh và
-                                đẹp nhất.
-                            </p>
+                            <div className={`${styles.fadeInSection}`} ref={el => fadeRefs.current[2] = el}>
+                                <h3>Sứ mệnh của KoiKung</h3>
+                                <p>
+                                    Với đội ngũ chuyên gia giàu kinh nghiệm và cơ sở vật chất hiện đại, chúng tôi cam kết 
+                                    mang đến những dịch vụ chăm sóc toàn diện nhất cho cá Koi của bạn. Từ tư vấn chuyên sâu 
+                                    đến các giải pháp chăm sóc tại nhà, KoiKung luôn đồng hành cùng bạn trong việc tạo nên 
+                                    một môi trường sống hoàn hảo cho những chú cá Koi của bạn.
+                                </p>
+                            </div>
                         </div>
-
                     </div>
                 </div>
 
                 <div className={styles.aboutMeSecond}>
                     <h1> Phải Là Koi Cung Vì</h1>
-                    <div className={styles.orangeLine}></div>
                     <div className={styles.aboutMeCardContent}>
                         <div className={styles.aboutmeCard}>
                             <h3 className={styles.aboutmeCardTitle}>Chăm sóc cá nhân hóa</h3>
@@ -89,9 +106,9 @@ function AboutMe() {
                     </div>
                 </div>
                 <div className={styles.aboutmeThird}>
-                    <div className={styles.aboutmeThirdContent}>
-                        <div className={styles.aboutmeThirdLeft}>
-                            <h2>Thông tin bổ sung</h2>
+                    <div className={styles.aboutmeThirdLeft}>
+                        <h2>Thông tin bổ sung</h2>
+                        <div className={styles.contentWrapper}>
                             <p>
                                 Với mỗi khách hàng đến với KoiKung, chúng tôi mong muốn trở thành người bạn đồng hành
                                 đáng
@@ -109,9 +126,9 @@ function AboutMe() {
                                 hành trình khám phá và nuôi dưỡng vẻ đẹp của cá Koi!
                             </p>
                         </div>
-                        <div className={styles.aboutmeThirdRight}>
-                            <img src={Location} alt="KoiKung"/>
-                        </div>
+                    </div>
+                    <div className={styles.aboutmeThirdRight}>
+                        <img src={Location} alt="KoiKung Info"/>
                     </div>
                 </div>
             </div>

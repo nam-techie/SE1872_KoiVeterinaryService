@@ -46,11 +46,6 @@ function ServiceIntro() {
         <>
             <CustomerNavBar />
             <div className={styles.serviceIntroContainer}>
-                <div className={styles.breadCrumb}>
-                    <a href="/homepage">Trang Chủ</a>
-                    <IoIosArrowForward size={22} color={"orange"} />
-                    <span>Về KOI CUNG</span>
-                </div>
 
                 <div className={styles.serviceIntroFist}>
                     <h1>Dịch Vụ Của Trung Tâm Chúng Tôi</h1>

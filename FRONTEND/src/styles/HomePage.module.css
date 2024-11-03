@@ -22,6 +22,18 @@
     position: relative;
 }
 
+.homePageFirstContent::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3));
+    border-radius: 10px;
+    z-index: 1;
+}
+
 .buttonsContainer {
     position: absolute;
     bottom: 20px;
@@ -32,6 +44,8 @@
 }
 
 .homePageFirstContent h1 {
+    position: relative;
+    z-index: 2;
     color: white;
     font-size: 2.5rem;
     font-weight: bold;
@@ -39,6 +53,8 @@
 }
 
 .homePageFirstContent span {
+    position: relative;
+    z-index: 2;
     padding-top: 20px;
     color: white;
     font-size: 1.2rem;
@@ -125,55 +141,58 @@
 
 /* Phần bên phải chia 4 ô */
 .homePageSecordRightPart {
-    flex-basis: 45%;
     display: flex;
-    flex-direction: column; /* Thay đổi thành sắp xếp theo chiều dọc */
-    align-items: center; /* Căn giữa icon và tiêu đề */
-    gap: 10px; /* Khoảng cách giữa các phần */
-    text-align: left;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    height: 100%;
+    width: 100%;
+}
+
+.homePageSecordRightPart > div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
 }
 
 .hPSRPIcon {
     color: #FF4500;
     font-size: 40px;
-    margin-bottom: 10px; /* Khoảng cách dưới icon */
-    text-align: left;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.homePageSecordRightPart h2 {
+    font-size: 24px;
+    color: #FF4500;
+    margin-bottom: 15px;
+    text-align: center;
+    width: 100%;
+    white-space: nowrap;
+    font-weight: 600;
 }
 
 .hPSRPContent {
-    font-size: 16px;
-    color: #333;
-    line-height: 1.5;
-}
-
-h2 {
-    font-size: 20px;
-    color: #FF4500;
-    margin-bottom: 10px;
-}
-
-/* Đảm bảo phần hình ảnh bên trái */
-.homePageSecondLeft {
-    flex: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.homePageSecondLeft img {
-    width: 70%;
-    height: auto;
-    border-radius: 10px;
-    margin-right: 20px;
-    margin-bottom: 30px;
+    font-size: 15px;
+    color: #666;
+    line-height: 1.6;
+    text-align: justify; /* Căn đều 2 bên */
+    margin: 0;
+    width: 100%;
+    padding: 0 10px;
+    min-height: 80px; /* Đảm bảo các box có chiều cao tương đương */
 }
 
 .homePageSecondRight {
     flex: 1;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content:left;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
     gap: 20px;
+    justify-content: center;
+    max-width: 800px;
 }
 
 .doctorCard {
@@ -188,7 +207,7 @@ h2 {
     transition: transform 0.2s ease-in-out;
     width: 250px;
     margin: 20px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Thêm bóng cho thẻ */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .doctorCard:hover {
@@ -196,12 +215,12 @@ h2 {
 }
 
 .doctorImage {
-    width: 100px; /* Hoặc điều chỉnh kích thước theo ý muốn */
-    height: 100px; /* Hoặc điều chỉnh kích thước theo ý muốn */
-    border-radius: 50%; /* Bo cong thành hình tròn */
-    object-fit: cover; /* Đảm bảo hình ảnh không bị biến dạng */
-    margin-bottom: 15px; /* Khoảng cách giữa hình và thông tin */
-    border: 2px solid #ddd; /* Đường viền cho hình ảnh */
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 15px;
+    border: 2px solid #ddd;
 }
 
 .doctorInf {
@@ -221,7 +240,7 @@ h2 {
     font-size: 1rem;
     color: #666;
     margin-bottom: 5px;
-    line-height: 1.4; /* Khoảng cách giữa các dòng */
+    line-height: 1.4;
 }
 
 .homePageFourth{
@@ -249,3 +268,18 @@ h2 {
      max-height: 150px;
      margin-bottom: 10px;
  }
+
+@media (max-width: 768px) {
+    .homePageSecordRightPart h2 {
+        font-size: 20px;
+    }
+    
+    .hPSRPContent {
+        font-size: 14px;
+        min-height: auto;
+    }
+    
+    .homePageSecondRight {
+        grid-template-columns: 1fr;
+    }
+}
