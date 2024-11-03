@@ -66,7 +66,7 @@ public class AppointmentController {
     @GetMapping("/listAppointmentDetail/{id}")
     public ResponseEntity<AppointmentResponse> getAppointmentDetail(@PathVariable long id) {
         try {
-            AppointmentResponse appointment = appointmentService.getListAppoint(id);
+            AppointmentResponse appointment = appointmentService.getAppointmentDetail(id);
             return new ResponseEntity<>(appointment, HttpStatus.OK);  // Trả về HTTP 200 OK
         } catch (Exception e) {
             // Log lỗi ra nếu cần

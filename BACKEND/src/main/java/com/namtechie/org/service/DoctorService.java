@@ -225,14 +225,14 @@ public class DoctorService {
         }
     }
 
-    public void updateWorkingStatus(long id) {
+    public void updateWorkingStatus(long id, String notes) {
 
         Appointment appointment = appointmentRepository.findAppointmentById(id);
         AppointmentStatus appointmentStatus = new AppointmentStatus();
 
         appointmentStatus.setAppointment(appointment);
         appointmentStatus.setStatus("Đang cung cấp dịch vụ");
-        appointmentStatus.setNotes("Bác sĩ đang thực hiện");
+        appointmentStatus.setNotes(notes);
 
         appointmentStatusRepository.save(appointmentStatus);
     }
@@ -336,10 +336,9 @@ public class DoctorService {
                 if (latestStatus.getStatus().equals("Chờ bác sĩ xác nhận")) {
                     appointmentStatusResponse.setAppointmentStatus(latestStatus.getStatus());
                 } else if (latestStatus.getStatus().equals("Đã xác nhận") ||
-                         latestStatus.getStatus().equals("Chờ thanh toán tiền dịch vụ")){
+                        latestStatus.getStatus().equals("Chờ thanh toán tiền dịch vụ") ||
+                        latestStatus.getStatus().equals("Thanh toán tiền dịch vụ thành công")) {
                     appointmentStatusResponse.setAppointmentStatus("Đã xác nhận");
-                } else if (latestStatus.getStatus().equals("Thanh toán tiền dịch vụ thành công")) {
-                    appointmentStatusResponse.setAppointmentStatus(latestStatus.getStatus());
                 } else if (latestStatus.getStatus().equals("Đang cung cấp dịch vụ")) {
                     appointmentStatusResponse.setAppointmentStatus(latestStatus.getStatus());
                 } else if (latestStatus.getStatus().equals("Thực hiện xong dịch vụ") ||
@@ -349,10 +348,9 @@ public class DoctorService {
                     appointmentStatusResponse.setAppointmentStatus(latestStatus.getStatus());
                 } else if (latestStatus.getStatus().equals("Đã hủy lịch")) {
                     appointmentStatusResponse.setAppointmentStatus(latestStatus.getStatus());
-                }else if (latestStatus.getStatus().equals("Đã đánh giá")) {
+                } else if (latestStatus.getStatus().equals("Đã đánh giá")) {
                     appointmentStatusResponse.setAppointmentStatus(latestStatus.getStatus());
                 }
-
 
             }
             appointmentResponses.add(appointmentStatusResponse);
@@ -479,7 +477,7 @@ public class DoctorService {
                     doctorWorkResponse.setAppointmentStatus(status);
                 } else if (status.equals("Thực hiện xong dịch vụ") || status.equals("Chờ thanh toán tổng tiền")) {
                     doctorWorkResponse.setAppointmentStatus("Thực hiện xong dịch vụ");
-                } else if (status.equals("Đã hoàn thành") || status.equals("Đã hủy lịch")) {
+                } else if (status.equals("Hoàn thành") || status.equals("Đã hủy lịch")) {
                     doctorWorkResponse.setAppointmentStatus(status);
                 }
             }

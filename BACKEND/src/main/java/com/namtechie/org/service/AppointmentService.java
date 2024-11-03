@@ -25,6 +25,7 @@ import javax.print.Doc;
 import java.sql.Date;
 import java.sql.Time;
 import java.sql.Timestamp;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.*;
@@ -215,6 +216,11 @@ public class AppointmentService {
                 }
             } else if (appointmentRequest.getServiceTypeId() == 1) { // dịch vụ tư vấn
                 if (doctor == null) {
+                    LocalDate bookingDate = date.toLocalDate();
+                    DayOfWeek dayOfWeek = bookingDate.getDayOfWeek();
+                    if (dayOfWeek == DayOfWeek.SATURDAY || dayOfWeek == DayOfWeek.SUNDAY) {
+                        throw new DoctorNotAvailableException("Dịch vụ tư vấn chỉ hoạt động từ thứ Hai đến thứ Sáu.");
+                    }
                     Time timeLocate = Time.valueOf(appointmentRequest.getBookingTime());
                     System.out.println("das" + timeLocate);
                     appointmentInfo.setAppointmentBookingDate(date);
@@ -679,7 +685,7 @@ public class AppointmentService {
     }
 
 
-    public AppointmentResponse getListAppoint(long appointmentId) {
+    public AppointmentResponse getAppointmentDetail(long appointmentId) {
 //        List<AppointmentResponse> appointmentResponses = new ArrayList<>();
 
 //        List<Appointment> appointments = appointmentRepository.findAll();

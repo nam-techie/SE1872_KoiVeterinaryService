@@ -59,8 +59,8 @@ public class DoctorController {
 
 
     @PutMapping("/updateWorkingStatus/{appointmentId}")
-    public ResponseEntity updateWorkingStatus(@PathVariable long appointmentId) {
-        doctorService.updateWorkingStatus(appointmentId);
+    public ResponseEntity updateWorkingStatus(@PathVariable long appointmentId, @RequestBody String notes) {
+        doctorService.updateWorkingStatus(appointmentId, notes);
         return ResponseEntity.ok("Da tiep nhan dich vu");
     }
 
