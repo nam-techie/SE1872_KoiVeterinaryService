@@ -3,23 +3,19 @@ package com.namtechie.org.service;
 import com.namtechie.org.entity.Appointment;
 import com.namtechie.org.exception.DoctorNotAvailableException;
 import com.namtechie.org.exception.NotFoundException;
-import com.namtechie.org.model.ScheduleForConsulting;
+import com.namtechie.org.model.*;
 import com.namtechie.org.model.request.*;
 import com.namtechie.org.model.response.*;
 import com.namtechie.org.repository.AppointmentRepository;
 
 import com.namtechie.org.entity.*;
-import com.namtechie.org.model.Schedule;
 import com.namtechie.org.repository.*;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
-import javax.print.Doc;
 import java.sql.Date;
 import java.sql.Time;
 import java.sql.Timestamp;
@@ -61,6 +57,8 @@ public class AppointmentService {
 
     @Autowired
     private PaymentDetailRepository paymentDetailRepository;
+    @Autowired
+    private CustomerRepository customerRepository;
 
 
     public List<Doctor> findAllDoctor() {
@@ -974,11 +972,10 @@ public class AppointmentService {
     }
 
 
-
     public List<DashboardDetailAppointmentResponse> dashboardDetailAppointmentResponses() {
         List<DashboardDetailAppointmentResponse> responses = new ArrayList<>();
         Pageable pageable = PageRequest.of(0, 9); // Bắt đầu từ trang 0 và giới hạn 7 bản ghi
-        List<Appointment> upcomingAppointments = appointmentRepository.findTop7UpcomingAppointments(pageable);
+        List<Appointment> upcomingAppointments = appointmentRepository.findTop9RecentAppointments(pageable);
 
         for (Appointment app : upcomingAppointments) {
             DashboardDetailAppointmentResponse response = new DashboardDetailAppointmentResponse(); // Tạo mới cho mỗi Appointment
@@ -1014,6 +1011,67 @@ public class AppointmentService {
         return responses;
     }
 
+    public DetailTopAppointment findTop3Variable() {
+        DetailTopAppointment detail = new DetailTopAppointment();
+        Pageable pageable = PageRequest.of(0, 3);
+        Pageable pageableService = PageRequest.of(0, 1);
+
+        // Lấy top khách hàng
+        List<CustomerInfo> topCustomerInfos = new ArrayList<>();
+        List<Object[]> topCustomers = appointmentRepository.findTopCustomersWithMostAppointments(pageable);
+        for (Object[] customer : topCustomers) {
+            long customerId = (Long) customer[0];
+            long appointmentCount = (Long) customer[1];
+
+            // Lấy tên khách hàng từ id
+            Customers customerName = customerRepository.findById(customerId);
+            if (customerName != null) {
+                String name = customerName.getFullName();
+                topCustomerInfos.add(new CustomerInfo(customerId, name, appointmentCount));
+            } else {
+                topCustomerInfos.add(new CustomerInfo(customerId, "Unknown", appointmentCount));
+            }
+        }
+
+        // Lấy top bác sĩ
+        List<DoctorInfoTop3> topDoctorInfos = new ArrayList<>();
+        List<Object[]> topDoctors = appointmentRepository.findTopDoctorsWithMostAppointments(pageable);
+        for (Object[] doctor : topDoctors) {
+            long doctorId = (Long) doctor[0];
+            long appointmentCount = (Long) doctor[1];
+
+            // Lấy tên bác sĩ từ id
+            Doctor doc = doctorRepository.findDoctorById(doctorId);
+            if (doc != null) {
+                String name = doc.getFullName();
+                topDoctorInfos.add(new DoctorInfoTop3(doctorId, name, appointmentCount));
+            } else {
+                topDoctorInfos.add(new DoctorInfoTop3(doctorId, "Unknown", appointmentCount));
+            }
+        }
+
+        // Lấy top dịch vụ
+        List<ServiceInfo> topServiceInfos = new ArrayList<>();
+        List<Object[]> topServiceTypes = appointmentRepository.findTopServiceTypesWithMostAppointments(pageableService);
+        for (Object[] service : topServiceTypes) {
+            long serviceTypeId = (Long) service[0];
+            long appointmentCount = (Long) service[1];
+
+            // Lấy tên dịch vụ từ id
+            ServiceType ser = serviceTypeRepository.findById(serviceTypeId);
+            if (ser != null) {
+                String name = ser.getName();
+                topServiceInfos.add(new ServiceInfo(serviceTypeId, name, appointmentCount));
+            } else {
+                topServiceInfos.add(new ServiceInfo(serviceTypeId, "Unknown", appointmentCount));
+            }
+        }
+
+        detail.setTopCustomers(topCustomerInfos);
+        detail.setTopDoctors(topDoctorInfos);
+        detail.setTopServices(topServiceInfos);
+        return detail;
+    }
 
 
 }

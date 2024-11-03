@@ -49,6 +49,8 @@ const getStatusColor = (status) => {
             return '#3F51B5';  // Màu indigo
         case 'Đã hủy lịch':
             return '#f44336';  // Màu đỏ
+        case 'Chờ thanh toán tổng tiền':
+            return '#FFC107';  // Màu vàng
         default:
             return '#757575';  // Màu xám mặc định
     }
@@ -85,7 +87,8 @@ const DashboardManage = () => {
         loading,
         error,
         recentActivities,
-        upcomingAppointments
+        upcomingAppointments,
+        topStats
     } = useDashboard(dateRange);
 
     const handleDateChange = (type, date) => {
@@ -217,6 +220,59 @@ const DashboardManage = () => {
                         </div>
                     </div>
                 </div>
+
+                <div className="top-stats-container">
+                    <h2>Thống Kê Hàng Đầu</h2>
+                    <div className="top-stats-grid">
+                        <div className="top-stat-card">
+                            <h3>Top Bác Sĩ</h3>
+                            <div className="top-list">
+                                {topStats.topDoctors.map((doctor, index) => (
+                                    <div key={doctor.id} className="top-item">
+                                        <div className="rank">{index + 1}</div>
+                                        <div className="info">
+                                            <span className="name">{doctor.name}</span>
+                                            <span className="id">Mã bác sĩ: {doctor.id}</span>
+                                            <span className="count">{doctor.appointmentCount} cuộc hẹn</span>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+
+                        <div className="top-stat-card">
+                            <h3>Top Khách Hàng</h3>
+                            <div className="top-list">
+                                {topStats.topCustomers.map((customer, index) => (
+                                    <div key={customer.id} className="top-item">
+                                        <div className="rank">{index + 1}</div>
+                                        <div className="info">
+                                            <span className="name">{customer.name}</span>
+                                            <span className="id">Mã khách hàng: {customer.id}</span>
+                                            <span className="count">{customer.appointmentCount} lần đặt</span>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+
+                        <div className="top-stat-card">
+                            <h3>Dịch Vụ Phổ Biến Nhất</h3>
+                            <div className="top-list">
+                                {topStats.topServices.map((service) => (
+                                    <div key={service.id} className="top-item">
+                                        <div className="rank">1</div>
+                                        <div className="info">
+                                            <span className="name">{service.name}</span>
+                                            <span className="id">Mã dịch vụ: {service.id}</span>
+                                            <span className="count">{service.appointmentCount} lần đặt</span>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <div className="chart-section">
@@ -275,12 +331,14 @@ const DashboardManage = () => {
                 <h2>Hoạt Động Gần Đây</h2>
                 <div className="activity-list">
                     {upcomingAppointments
-                        .sort((a, b) => a.appointmentId - b.appointmentId)
+                        .sort((a, b) => b.appointmentId - a.appointmentId)
                         .map((appointment, index) => (
-                        <div key={index} className="activity-item">
+                        <div key={appointment.appointmentId} className="activity-item">
                             <div className="activity-info">
                                 <div className="activity-header">
-                                    <span className="appointment-id">Mã cuộc hẹn: #{appointment.appointmentId}</span>
+                                    <span className="appointment-id">
+                                        Mã cuộc hẹn: #{appointment.appointmentId}
+                                    </span>
                                     <span className="appointment-time">
                                         Thời gian tạo: {formatCreatedTime(appointment.appointmentTime)}
                                     </span>
@@ -289,7 +347,9 @@ const DashboardManage = () => {
                                 <div className="appointment-details">
                                     <div className="detail-row">
                                         <span className="label">Thời gian khám:</span>
-                                        <span className="value">{formatDateTime(appointment.bookingDate, appointment.bookingTime)}</span>
+                                        <span className="value">
+                                            {formatDateTime(appointment.bookingDate, appointment.bookingTime)}
+                                        </span>
                                     </div>
                                     <div className="detail-row">
                                         <span className="label">Khách hàng:</span>
@@ -306,7 +366,8 @@ const DashboardManage = () => {
                                         </span>
                                     </div>
                                 </div>
-                                <div className="appointment-status" style={getStatusStyle(appointment.appointmentStatus)}>
+                                <div className="appointment-status" 
+                                     style={{backgroundColor: getStatusColor(appointment.appointmentStatus)}}>
                                     {appointment.appointmentStatus}
                                 </div>
                             </div>

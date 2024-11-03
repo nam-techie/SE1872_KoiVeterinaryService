@@ -349,6 +349,12 @@ public class AdminController {
         return ResponseEntity.ok(responses);
     }
 
+    @GetMapping("/findTop3Variable")
+    public ResponseEntity<DetailTopAppointment> findTop3Variable(){
+        DetailTopAppointment detail = appointmentService.findTop3Variable();
+        return ResponseEntity.ok(detail);
+    }
+
 
 
 

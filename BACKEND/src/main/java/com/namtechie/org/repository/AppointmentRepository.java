@@ -17,7 +17,7 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
 
     List<Appointment> findAll();
 
-  //  Appointment findById(long id);
+    //  Appointment findById(long id);
 
     Appointment findAppointmentById(long id);
 
@@ -47,9 +47,25 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
 
     List<Appointment> findAllByDoctor(Doctor doctor);
 
-    @Query("SELECT a FROM Appointment a WHERE a.appointmentInfo.appointmentBookingDate >= CURRENT_DATE " +
-            "ORDER BY a.appointmentInfo.appointmentBookingDate ASC, a.appointmentInfo.appointmentBookingTime ASC")
-    List<Appointment> findTop7UpcomingAppointments(Pageable pageable);
+    @Query("SELECT a FROM Appointment a " +
+            "ORDER BY a.appointmentInfo.appointmentBookingDate DESC, a.appointmentInfo.appointmentBookingTime DESC")
+    List<Appointment> findTop9RecentAppointments(Pageable pageable);
+
+    @Query("SELECT a.customers.id, COUNT(a) AS appointment_count FROM Appointment a " +
+            "GROUP BY a.customers.id " +
+            "ORDER BY appointment_count DESC")
+    List<Object[]> findTopCustomersWithMostAppointments(Pageable pageable);
+
+    @Query("SELECT a.doctor.id, COUNT(a) AS appointment_count FROM Appointment a " +
+            "GROUP BY a.doctor.id " +
+            "ORDER BY appointment_count DESC")
+    List<Object[]> findTopDoctorsWithMostAppointments(Pageable pageable);
+
+    @Query("SELECT a.serviceType.id, COUNT(a) AS appointment_count FROM Appointment a " +
+            "GROUP BY a.serviceType.id " +
+            "ORDER BY appointment_count DESC")
+    List<Object[]> findTopServiceTypesWithMostAppointments(Pageable pageable);
+
 
 
 }

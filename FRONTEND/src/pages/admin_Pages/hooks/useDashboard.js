@@ -28,7 +28,7 @@ const useDashboard = () => {
         },
         {
             time: "14:00 - 02/03/2024",
-            title: "Điều Trị Bệnh",
+            title: "Điều Trị B���nh",
             description: "Khách hàng: Trần Thị B - Cá: Koi Showa - Dịch vụ: Điều trị đốm trắng",
             status: "Đang xử lý"
         },
@@ -61,6 +61,12 @@ const useDashboard = () => {
     const [timeFilter, setTimeFilter] = useState('month');
 
     const [upcomingAppointments, setUpcomingAppointments] = useState([]);
+
+    const [topStats, setTopStats] = useState({
+        topCustomers: [],
+        topServices: [],
+        topDoctors: []
+    });
 
     const handleTimeFilterChange = useCallback((filterType) => {
         setTimeFilter(filterType);
@@ -130,7 +136,7 @@ const useDashboard = () => {
             return true;
         });
 
-        // Đếm số khách hàng unique trong kỳ
+        // Đm số khách hàng unique trong kỳ
         const uniqueCustomers = new Set(
             filteredAppointments.map(apt => apt.customerId)
         ).size;
@@ -196,7 +202,7 @@ const useDashboard = () => {
     useEffect(() => {
         const fetchDashboardStats = async () => {
             try {
-                const response = await axiosInstance.get('/admin/dashboard-stats');
+                const response = await axiosInstance.get('/admin/listDashboardTotalRequest');
                 setDashboardStats({
                     totalOrders: response.data.totalOrders || 0,
                     totalRevenue: response.data.totalRevenue || 0,
@@ -214,8 +220,8 @@ const useDashboard = () => {
     const fetchUpcomingAppointments = useCallback(async () => {
         try {
             const response = await axiosInstance.get('/admin/getAppointment7DaysUpComing');
-            // Sắp xếp dữ liệu ngay khi nhận về
-            const sortedAppointments = response.data.sort((a, b) => a.appointmentId - b.appointmentId);
+            // Sắp xếp theo appointmentId giảm dần (ID lớn nhất lên đầu)
+            const sortedAppointments = response.data.sort((a, b) => b.appointmentId - a.appointmentId);
             setUpcomingAppointments(sortedAppointments);
         } catch (err) {
             console.error('Error fetching upcoming appointments:', err);
@@ -225,6 +231,19 @@ const useDashboard = () => {
     useEffect(() => {
         fetchUpcomingAppointments();
     }, [fetchUpcomingAppointments]);
+
+    const fetchTopStats = useCallback(async () => {
+        try {
+            const response = await axiosInstance.get('/admin/findTop3Variable');
+            setTopStats(response.data);
+        } catch (err) {
+            console.error('Error fetching top stats:', err);
+        }
+    }, []);
+
+    useEffect(() => {
+        fetchTopStats();
+    }, [fetchTopStats]);
 
     return {
         dashboardStats,
@@ -237,7 +256,8 @@ const useDashboard = () => {
         updateDateRange,
         recentActivities,
         upcomingAppointments,
-        yearlyData
+        yearlyData,
+        topStats
     };
 };
 
