@@ -23,7 +23,7 @@ function ContactButton() {
                     style={iconStyle}
                 />
             </Link>
-            <Link to="https://zalo.me/0816518989" target="_blank" className={styles.iconWrapper}>
+            <Link to="https://zalo.me/0901922117" target="_blank" className={styles.iconWrapper}>
                 <GrContact
                     size={50}
                     className={styles.userIcon}

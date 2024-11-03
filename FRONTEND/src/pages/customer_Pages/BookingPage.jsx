@@ -6,6 +6,8 @@ import styles from './styles/BookingPage.module.css'
 import { useState, useEffect } from "react";
 import { CustomerNavBar } from "../../components/Navbar.jsx";
 import Footer from "../../components/Footer.jsx";  // CSS Module import
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function BookingPage() {
     const {
@@ -142,6 +144,7 @@ function BookingPage() {
                 )}
             </div>
             <Footer/>
+            <ToastContainer position="top-center" />
         </>
     );
 }

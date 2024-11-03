@@ -68,9 +68,28 @@ const ManageAppointment = () => {
         })
         .sort((a, b) => {
             if (sortBy === 'appointmentDate') {
+                // So sánh ngày
                 const dateA = new Date(a.appointmentDate);
                 const dateB = new Date(b.appointmentDate);
-                return sortOrder === 'asc' ? dateA - dateB : dateB - dateA;
+                const dateComparison = sortOrder === 'asc' ? 
+                    (dateB - dateA) : // Mới nhất trước khi mũi tên lên (↑)
+                    (dateA - dateB);  // Cũ nhất trước khi mũi tên xuống (↓)
+                
+                // Nếu cùng ngày thì so sánh giờ
+                if (dateComparison === 0) {
+                    const [hoursA, minutesA, secondsA = 0] = a.appointmentTime.split(':').map(Number);
+                    const [hoursB, minutesB, secondsB = 0] = b.appointmentTime.split(':').map(Number);
+                    
+                    // Chuyển đổi thành tổng số giây để so sánh
+                    const timeA = hoursA * 3600 + minutesA * 60 + secondsA;
+                    const timeB = hoursB * 3600 + minutesB * 60 + secondsB;
+                    
+                    return sortOrder === 'asc' ? 
+                        (timeB - timeA) : // Thời gian mới nhất trước khi mũi tên lên (↑)
+                        (timeA - timeB);  // Thời gian cũ nhất trước khi mũi tên xuống (↓)
+                }
+                
+                return dateComparison;
             }
             if (sortBy === 'status') {
                 const statusA = a.appointmentStatus === 'Đã đánh giá' ? 1 : 0;

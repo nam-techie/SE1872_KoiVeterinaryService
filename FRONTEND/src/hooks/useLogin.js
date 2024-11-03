@@ -32,15 +32,19 @@ export const useLogin = () => {
             // Chuyển hướng đến LoadingCat trước
             navigate('/loading');
 
-            // Điều hướng đến trang thành công sau 2 giây
+            // Điều hướng đến trang thành công sau 3 giây
             setTimeout(() => {
                 navigate('/homepage')
             }, 3000);
             // Thời gian hiển thị LoadingCat
 
         } catch (error) {
-            // Hiển thị thông báo lỗi trực tiếp từ backend
-            setError(error.message || 'Đăng nhập thất bại, hãy thử lại');
+            // Kiểm tra nếu là lỗi 401 và có response body
+            if (error.response && error.response.status === 401) {
+                setError('Tài khoản hoặc mật khẩu sai!');
+            } else {
+                setError(error.message || 'Đăng nhập thất bại, hãy thử lại');
+            }
         } finally {
             setLoading(false);  // Tắt trạng thái loading
         }

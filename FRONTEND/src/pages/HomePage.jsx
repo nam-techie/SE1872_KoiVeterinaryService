@@ -104,7 +104,7 @@ function HomePage() {
                             columnClassName={styles.myMasonryGridColumn}
                         >
                             <div className={styles.functionButton}
-                                 onClick={() => window.open("https://zalo.me/0816518989", "_blank", "noopener,noreferrer")}>
+                                 onClick={() => window.open("https://zalo.me/0901922117", "_blank", "noopener,noreferrer")}>
                                 <BsFillTelephoneFill size={30} color="orange" style={{marginRight: '10px'}}/>
                                 <h4>Gọi tổng đài</h4>
                             </div>
