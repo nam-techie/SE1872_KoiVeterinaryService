@@ -37,10 +37,10 @@ export function CustomerNavBar() {
         <FaMapMarkerAlt/> Lô E2a-7, Đ. D1, Long Thạnh Mỹ, TP.Thủ Đức, HCM
       </span>
                         <span>
-        <FaPhoneAlt/> 1800.999 (Miễn phí)
+        <FaPhoneAlt/> 1800 3502 (Miễn phí)
       </span>
                         <span>
-        <FaClock/> 06:00 - 19:00 (Thứ Hai - Chủ Nhật)
+        <FaClock/> 07:00 - 17:00 (Thứ Hai - Thứ Sáu)
       </span>
                     </div>
                 </div>

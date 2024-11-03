@@ -2,6 +2,18 @@ import {useState, useEffect} from 'react';
 import {getdoctorScheduleHome, getdoctorScheduleCenter, getdoctorScheduleCenterByID} from '../service/apiDoctor.js';
 import {useNavigate} from "react-router-dom";
 import {postBookingData} from "../service/apiAppointments.js";
+import { toast } from 'react-toastify';
+
+// Cấu hình mặc định cho toast
+const toastConfig = {
+    position: "top-center",
+    autoClose: 1000, // Giảm thời gian hiển thị xuống 1 giây
+    hideProgressBar: true, // Ẩn thanh progress để tăng performance
+    closeOnClick: true,
+    pauseOnHover: false, // Không pause khi hover
+    draggable: false, // Tắt tính năng drag để tăng performance
+    progress: undefined,
+};
 
 export function useBookingPage() {
     const [serviceType, setServiceType] = useState('');
@@ -107,35 +119,38 @@ export function useBookingPage() {
         const createdDate = new Date();
         const currentTime = `${createdDate.getHours()}:${createdDate.getMinutes()}:${createdDate.getSeconds()}`;
         
-        const serviceTypeId = parseInt(serviceType);
-        const phone = phoneNumber;
-        const desc = description;
-        const date = serviceType === '1' ? createdDate.toISOString().split('T')[0] : selectedDate;
-        const time = serviceType === '1' ? currentTime : selectedTime;
-        const address = (serviceType === '1' || serviceType === '3') ? null : detailedAddress;
-        const zoneId = parseInt(!selectedDistrict || selectedDistrict === "" ? "0" : selectedDistrict);
-        const doctorId = parseInt(!selectedDoctor || selectedDoctor === "dr0" ? "0" : selectedDoctor);
-
         const bookingData = {
-            serviceTypeId,
-            phone,
-            description: desc,
-            zoneId,
-            address,
-            doctorId,
-            bookingDate: date,
-            bookingTime: time
+            serviceTypeId: parseInt(serviceType),
+            phone: phoneNumber,
+            description: description,
+            zoneId: parseInt(!selectedDistrict || selectedDistrict === "" ? "0" : selectedDistrict),
+            address: (serviceType === '1' || serviceType === '3') ? null : detailedAddress,
+            doctorId: parseInt(!selectedDoctor || selectedDoctor === "dr0" ? "0" : selectedDoctor),
+            bookingDate: serviceType === '1' ? createdDate.toISOString().split('T')[0] : selectedDate,
+            bookingTime: serviceType === '1' ? currentTime : selectedTime
         };
 
         console.log(bookingData);
-
         try {
             const response = await postBookingData(bookingData);
             if (response.status === 200 || response.status === 201) {
-                navigate("/homepage");
+                toast.success("Đặt lịch thành công!", {
+                    ...toastConfig,
+                    onClose: () => {
+                        setTimeout(() => navigate('/customer/manage-appointment'), 100);
+                    }
+                });
             }
         } catch (error) {
-            console.error('Error submitting booking:', error);
+            if (error.response) {
+                toast.error(error.response.data.replace(/\n/g, ' '), {
+                    ...toastConfig,
+                    autoClose: 2000
+                });
+            } else {
+                toast.error("Có lỗi xảy ra khi đặt lịch. Vui lòng thử lại!", toastConfig);
+            }
+            console.error("Error submitting booking:", error);
         }
     };
 

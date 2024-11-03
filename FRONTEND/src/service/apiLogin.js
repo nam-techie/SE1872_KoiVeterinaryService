@@ -1,32 +1,30 @@
-
-import { axiosInstance } from "./apiRequest";
-
 export const login = async (username, password) => {
     try {
-        const response = await axiosInstance.post('/login', {
-            username,
-            password,
+        const response = await fetch('http://localhost:8080/api/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ username, password }),
         });
-        // const response = await  axios.post("accounts.json",{
-        //     username,
-        //     password,
-        // });
-        console.log('Response from server:', response.data);
-        return response.data;
 
-    } catch (error) {
-        if (error.response) {
-            const {message, errors} = error.response.data;
-            let errorMessage = message;
-
-            if (errors && errors.length > 0) {
-                errorMessage += ": " + errors.join(", ");
-            }
-            throw new Error(errorMessage);
-        } else if (error.request) {
-            throw new Error('Không thể kết nối đến server. Vui lòng thử lại sau.');
+        // Kiểm tra content-type của response
+        const contentType = response.headers.get('content-type');
+        let data;
+        
+        if (contentType && contentType.includes('application/json')) {
+            data = await response.json();
         } else {
-            throw new Error('Đã xảy ra lỗi. Vui lòng thử lại.');
+            // Nếu không phải JSON, đọc như text
+            data = await response.text();
         }
+
+        if (!response.ok) {
+            throw new Error(data);
+        }
+
+        return data;
+    } catch (error) {
+        throw error;
     }
 };
