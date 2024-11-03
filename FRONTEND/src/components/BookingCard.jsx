@@ -231,6 +231,13 @@ export const ConfirmationModal = ({
         <>
             <div className={styles.confirmationOverlay}></div> {/* Overlay để khóa tương tác bên ngoài */}
             <div className={styles.confirmationModal}>
+                <button 
+                    className={styles.closeButton}
+                    onClick={() => setShowConfirm(false)}
+                >
+                    ×
+                </button>
+                
                 <h2 style={{ whiteSpace: 'nowrap' }}>Xác nhận thông tin đặt dịch vụ</h2>
                 {serviceType && (
                     <span className={styles.fieldLabel}>

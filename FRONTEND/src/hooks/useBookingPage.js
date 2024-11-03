@@ -7,12 +7,20 @@ import { toast } from 'react-toastify';
 // Cấu hình mặc định cho toast
 const toastConfig = {
     position: "top-center",
-    autoClose: 1000, // Giảm thời gian hiển thị xuống 1 giây
+    autoClose: 2000, // Giảm thời gian hiển thị xuống 1 giây
     hideProgressBar: true, // Ẩn thanh progress để tăng performance
     closeOnClick: true,
     pauseOnHover: false, // Không pause khi hover
     draggable: false, // Tắt tính năng drag để tăng performance
     progress: undefined,
+    style: {
+        width: '500px',        // Đặt chiều rộng cố định
+        textAlign: 'center',   // Căn giữa text
+        padding: '15px',       // Thêm padding
+        whiteSpace: 'nowrap',    // Thay đổi thành nowrap để text hiển thị trên một hàng
+        overflow: 'hidden',      // Ẩn phần text bị tràn
+        textOverflow: 'ellipsis' // Hiển thị dấu ... nếu text quá dài
+    }
 };
 
 export function useBookingPage() {
