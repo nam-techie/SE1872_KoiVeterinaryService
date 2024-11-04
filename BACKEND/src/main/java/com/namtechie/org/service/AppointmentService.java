@@ -973,11 +973,13 @@ public class AppointmentService {
 
             if (payment != null) {
                 List<PaymentDetail> paymentDetail = paymentDetailRepository.findByPaymentId(payment.getId());
+                long total = 0;
                 for (PaymentDetail detail : paymentDetail) {
                     if (detail.isStatus()) {
-                        appointmentDetail.setTotalAmount(detail.getPrice());
+                        total += detail.getPrice();
                     }
                 }
+                appointmentDetail.setTotalAmount(total);
             } else {
                 appointmentDetail.setTotalAmount(0);
             }
