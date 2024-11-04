@@ -1001,11 +1001,11 @@ public class AppointmentService {
 
     public List<DashboardDetailAppointmentResponse> dashboardDetailAppointmentResponses() {
         List<DashboardDetailAppointmentResponse> responses = new ArrayList<>();
-        Pageable pageable = PageRequest.of(0, 9); // Bắt đầu từ trang 0 và giới hạn 7 bản ghi
+        Pageable pageable = PageRequest.of(0, 9); // Bắt đầu từ trang 0 và giới hạn 9 bản ghi
         List<Appointment> upcomingAppointments = appointmentRepository.findTop9RecentAppointments(pageable);
 
         for (Appointment app : upcomingAppointments) {
-            DashboardDetailAppointmentResponse response = new DashboardDetailAppointmentResponse(); // Tạo mới cho mỗi Appointment
+            DashboardDetailAppointmentResponse response = new DashboardDetailAppointmentResponse();
 
             AppointmentInfo appointmentInfo = appointmentInfoRepository.findByAppointmentId(app.getId());
             ServiceType serviceType = app.getServiceType();
@@ -1013,7 +1013,10 @@ public class AppointmentService {
             Customers customers = app.getCustomers();
             Zone zone = app.getZone();
 
-            System.out.println(zone);
+            // Kiểm tra null cho các đối tượng
+            if (appointmentInfo == null || serviceType == null || doctor == null || customers == null || zone == null) {
+                continue; // Bỏ qua vòng lặp này nếu bất kỳ đối tượng nào bị null
+            }
 
             List<AppointmentStatus> statuses = appointmentStatusRepository.findByAppointment(app);
 
@@ -1035,7 +1038,7 @@ public class AppointmentService {
             response.setCustomerName(customers.getFullName());
             response.setAddress((appointmentInfo.getAddress() != null ? appointmentInfo.getAddress() : "null") + ", " + (zone != null ? zone.getName() : "null"));
 
-            responses.add(response); // Thêm vào danh sách
+            responses.add(response);
         }
         return responses;
     }

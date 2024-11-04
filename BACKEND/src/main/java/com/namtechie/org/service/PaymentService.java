@@ -407,15 +407,21 @@ public class PaymentService {
         appointmentStatus.setStatus("Thanh toán tổng tiền thành công");
         appointmentStatusRepository.save(appointmentStatus);
 
-        System.out.println(appointmentId);
-
+        // Delay 1 giây trước khi thêm trạng thái tiếp theo
+        try {
+            Thread.sleep(1000); // Đơn vị tính là milliseconds
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
         AppointmentStatus appointmentStatuss = new AppointmentStatus();
         appointmentStatuss.setAppointment(appointment);
         appointmentStatuss.setStatus("Hoàn thành");
         appointmentStatusRepository.save(appointmentStatuss);
 
+        System.out.println(appointmentId);
     }
+
 
     private String generateRandomString(int length) {
         String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
