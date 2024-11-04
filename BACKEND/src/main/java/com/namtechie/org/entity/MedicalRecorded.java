@@ -13,23 +13,23 @@ public class MedicalRecorded {
     private long id;
 
     @OneToOne
-    @JoinColumn(name = "appointment_id",nullable = false)
+    @JoinColumn(name = "appointment_id", nullable = false)
     @JsonBackReference
     private Appointment appointment;
 
-    @Column(columnDefinition = "NVARCHAR(MAX)")
+    @Column(columnDefinition = "TEXT")
     private String name;
 
-    @Column(columnDefinition = "NVARCHAR(MAX)")
+    @Column(columnDefinition = "TEXT")
     private String breed;
 
     private int age;
 
-    @Column(columnDefinition = "NVARCHAR(MAX)")
+    @Column(columnDefinition = "TEXT")
     private String color;
 
     private float weight;
 
-    @Column(columnDefinition = "NVARCHAR(MAX)")
+    @Column(columnDefinition = "TEXT")
     private String healthStatus;
 }

@@ -22,7 +22,7 @@ public class AppointmentInfo {
     @JsonBackReference
     private Appointment appointment;
 
-    @Column(columnDefinition = "NVARCHAR(MAX)")
+    @Column(columnDefinition = "TEXT")
     private String address;
 
     @Column(nullable = false)
@@ -36,7 +36,7 @@ public class AppointmentInfo {
     private Timestamp createdDate;
 
     //này là miêu tả nội dung điều trị (note hay description gì cũng được)
-    @Column(columnDefinition = "NVARCHAR(MAX)")
+    @Column(columnDefinition = "TEXT")
     private String descriptions;
 
 }

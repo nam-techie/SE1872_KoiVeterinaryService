@@ -64,7 +64,7 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .cors(cors -> cors.configurationSource(request -> {
                     CorsConfiguration config = new CorsConfiguration();
-                    config.setAllowedOrigins(List.of("http://localhost:5741")); // Sửa port cho đúng với frontend
+                    config.setAllowedOrigins(List.of("https://se-1872-koi-veterinary-service.vercel.app")); // Sửa port cho đúng với frontend
                     config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
                     config.setAllowedHeaders(List.of("*"));
                     config.setAllowCredentials(true);
@@ -78,7 +78,7 @@ public class SecurityConfig {
                                 .authenticated()
                 )
                 .oauth2Login(oauth2 -> oauth2
-                        .loginPage("http://localhost:5741/login")  // Trang login trên frontend
+                        .loginPage("https://se-1872-koi-veterinary-service-74rpx9exp-nams-projects-507a019c.vercel.app/login")  // Trang login trên frontend
                         .userInfoEndpoint(userInfo -> userInfo.userService(oauth2UserService()))  // Lấy thông tin người dùng từ Google
                         .successHandler(authenticationSuccessHandler())  // Sử dụng successHandler để trả về token
                 )

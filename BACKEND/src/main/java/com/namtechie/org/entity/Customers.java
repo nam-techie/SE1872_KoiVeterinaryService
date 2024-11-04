@@ -2,13 +2,10 @@ package com.namtechie.org.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 
 import java.util.List;
-
 
 @Entity
 @Data
@@ -26,19 +23,16 @@ public class Customers {
     @JsonIgnoreProperties({"customers"})
     private List<Appointment> appointment;
 
-
-    @Column(name = "full_name", length = 255, columnDefinition = "NVARCHAR(MAX)")
+    @Column(name = "full_name", columnDefinition = "TEXT")
     private String fullName;
-
 
     @Column(name = "phone", length = 50)
     private String phone;
 
-    @Column(name = "address", length = 255, columnDefinition = "NVARCHAR(MAX)")
+    @Column(name = "address", columnDefinition = "TEXT")
     private String address;
 
     public Customers() {
-
     }
 
     public Customers(Account account) {

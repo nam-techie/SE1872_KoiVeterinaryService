@@ -1,13 +1,11 @@
 package com.namtechie.org.entity;
 
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.sql.Date;
-
 
 @Data
 @Entity
@@ -24,7 +22,7 @@ public class FeedBack {
     @Column
     private int rating;
 
-    @Column(columnDefinition = "NVARCHAR(MAX)")
+    @Column(columnDefinition = "TEXT")
     private String comment;
 
     @Column(nullable = false)
@@ -32,5 +30,4 @@ public class FeedBack {
     private Date created_date;
 
     private boolean isDeleted;
-
 }

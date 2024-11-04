@@ -1,6 +1,7 @@
 
 import { axiosInstance } from './apiRequest';
 
+
 export const register = async (username, email, password, confirmPassword) => {
     try {
         const response = await axiosInstance.post('/register', { // Sử dụng đường dẫn proxy

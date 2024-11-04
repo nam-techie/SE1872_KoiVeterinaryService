@@ -52,6 +52,9 @@ public class Appointment {
     @Column(nullable = false)
     private boolean isCancel;
 
+    @Column(nullable = false)
+    private String phone;
+
     @OneToOne(mappedBy = "appointment", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonManagedReference
     @JsonIgnore
