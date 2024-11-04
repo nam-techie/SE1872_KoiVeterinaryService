@@ -2,7 +2,7 @@ import axios from "axios";
 
 // Tạo một Axios instance với URL gốc cho tất cả các API
 export const axiosInstance = axios.create({
-    baseURL: "http://localhost:8080/api",
+    baseURL: "https://se1872koiveterinaryservice-production-deb1.up.railway.app",
 });
 
 // Thêm một interceptor để tự động thêm token vào tất cả các yêu cầu
