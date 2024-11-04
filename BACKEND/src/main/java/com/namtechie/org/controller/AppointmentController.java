@@ -3,11 +3,15 @@ package com.namtechie.org.controller;
 import com.namtechie.org.entity.*;
 import com.namtechie.org.exception.DoctorNotAvailableException;
 import com.namtechie.org.model.Schedule;
+import com.namtechie.org.model.request.CustomerInfoRequest;
 import com.namtechie.org.model.request.FeedbackRequest;
 import com.namtechie.org.model.response.AppointmentResponse;
 import com.namtechie.org.model.response.AppointmentStatusResponse;
+import com.namtechie.org.model.response.InfoCustomerResponse;
+import com.namtechie.org.model.response.InfoResponse;
 import com.namtechie.org.repository.AppointmentRepository;
 import com.namtechie.org.repository.PaymentDetailRepository;
+import com.namtechie.org.repository.ZoneRepository;
 import com.namtechie.org.service.*;
 import com.namtechie.org.model.request.AppointmentRequest;
 import com.namtechie.org.service.AppointmentService;
@@ -21,6 +25,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.sql.Date;
 import java.sql.Time;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -31,12 +36,16 @@ import java.util.Map;
 public class AppointmentController {
 
     @Autowired
+    ZoneRepository zoneRepository;
+
+    @Autowired
     ScheduleService scheduleService;
 
     @Autowired
     ZoneService zoneService;
 
-
+    @Autowired
+    CustomerService customerService;
 
     @Autowired
     TokenService tokenService;
@@ -118,11 +127,20 @@ public class AppointmentController {
     }
 
 
-    //Tạm thời bỏ lấy Zone ở đây.
-    //Cái này còn hơi đắng đo mà chắc cần token mà
+
+
     @GetMapping(value = "/getAllZone", produces = "application/json")
     public List<Zone> getAllZone() {
-        return zoneService.findAll();
+        List<Zone> zoneList = new ArrayList<>();
+        List<Zone> allZones = zoneRepository.findAll();
+
+        // Lọc các zone có ID từ 2 đến 14
+        for (Zone zone : allZones) {
+            if (zone.getId() >= 2 && zone.getId() <= 14) {
+                zoneList.add(zone);
+            }
+        }
+        return zoneList;
     }
 
 
@@ -197,6 +215,31 @@ public class AppointmentController {
     public ResponseEntity createFeedback(@PathVariable long appointmentId,@RequestBody FeedbackRequest feedBack) {
         FeedBack feedBack1 = feedbackService.createFeedbackService(appointmentId,feedBack);
         return ResponseEntity.ok(feedBack1);
+    }
+
+    @GetMapping("/getFullInfoCustomer/{appointmentId}")
+    public ResponseEntity<?> getFullInfoCustomer(@PathVariable long appointmentId){
+        try {
+            InfoResponse infoResponse = appointmentService.getFullInfoAppointment(appointmentId);
+            return ResponseEntity.ok(infoResponse);
+        } catch (Exception e) {
+            // Log lỗi
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Có lỗi xảy ra khi lấy thông tin: " + e.getMessage());
+        }
+    }
+
+    @GetMapping("/getInfoCustomer")
+    public ResponseEntity<InfoCustomerResponse> getInfoCustomer() {
+        InfoCustomerResponse customerInfo = customerService.getInfoCustomer();
+        return ResponseEntity.ok(customerInfo);
+    }
+
+    @PutMapping("/updateInfoCustomer")
+    public ResponseEntity updateInfoCustomer(@RequestBody CustomerInfoRequest customerInfo) {
+        CustomerInfoRequest newUpdate = customerService.updateCustomerInfo(customerInfo);
+        return ResponseEntity.ok(newUpdate);
     }
 
 

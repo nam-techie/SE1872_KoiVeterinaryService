@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @Service
 public class CustomerService {
@@ -23,7 +24,7 @@ public class CustomerService {
     AuthenticationService authenticationService;
 
     @Autowired
-    AccountRepository  accountRepository;
+    AccountRepository accountRepository;
 
     @Autowired
     ModelMapper modelMapper;
@@ -62,33 +63,42 @@ public class CustomerService {
     }
 
 
-
-
     public CustomerInfoRequest updateCustomerInfo(CustomerInfoRequest customerInfo) {
         try {
             // Lấy tài khoản hiện tại của người dùng đã xác thực
             Account curruntAccount = authenticationService.getCurrentAccount();
+            if (customerInfo.getEmail().equals(curruntAccount.getEmail()) || !accountRepository.existsByEmail(customerInfo.getEmail())) {
+                curruntAccount.setEmail(customerInfo.getEmail());
+            }
 
             // Kiểm tra xem khách hàng có tồn tại không, nếu không thì khởi tạo mới
             Customers customer = customerRepository.findByAccountId(curruntAccount.getId());
             if (customer == null) {
-                customer = new Customers();  // Khởi tạo đối tượng Customer mới
-                customer.setAccount(curruntAccount);  // Liên kết với tài khoản
+                Customers newCustomer = new Customers();
+                newCustomer.setPhone(customerInfo.getPhoneNumber());
+                newCustomer.setFullName(customerInfo.getFullName());
+                newCustomer.setAddress(customerInfo.getAddress());
+                customerRepository.save(newCustomer);
+            } else {
+                // Kiểm tra email trùng lặp
+
+                if (customerInfo.getPhoneNumber().equals(customer.getPhone()) || !customerRepository.existsByPhone(customerInfo.getPhoneNumber())) {
+                    customer.setPhone(customerInfo.getPhoneNumber());
+                }
+
+                // Cập nhật các giá trị khác
+                if (!Objects.equals(customerInfo.getFullName(), customer.getFullName())) {
+                    customer.setFullName(customerInfo.getFullName());
+                }
+                if (!Objects.equals(customerInfo.getAddress(), customer.getAddress())) {
+                    customer.setAddress(customerInfo.getAddress());
+                }
+                customerRepository.save(customer);
             }
 
-            // So sánh và cập nhật các giá trị
-            if (!Objects.equals(customerInfo.getFullName(), customer.getFullName())){
-                customer.setFullName(customerInfo.getFullName());
-            }
-            if (!Objects.equals(customerInfo.getPhoneNumber(), customer.getPhone())) {
-                customer.setPhone(customerInfo.getPhoneNumber());
-            }
-            if (!Objects.equals(customerInfo.getAddress(), customer.getAddress())) {
-                customer.setAddress(customerInfo.getAddress());
-            }
 
             // Lưu thông tin cập nhật vào database
-            customerRepository.save(customer);
+            accountRepository.save(curruntAccount);
             return modelMapper.map(customer, CustomerInfoRequest.class);
         } catch (Exception e) {
             e.printStackTrace();
@@ -96,9 +106,10 @@ public class CustomerService {
         }
     }
 
+
     public void updateProfile(long accountId, CustomerProfileUpdateResponse cusUpdate) {
         Account account = accountRepository.findAccountById(accountId);
-        try{
+        try {
             if (account != null) {
                 account.setEmail(cusUpdate.getEmail());
 
@@ -107,7 +118,7 @@ public class CustomerService {
                 customer.setPhone(cusUpdate.getPhoneNumber());
                 customer.setAddress(cusUpdate.getAddress());
                 customerRepository.save(customer);
-            }else{
+            } else {
                 throw new RuntimeException("Error123");
             }
         } catch (RuntimeException e) {

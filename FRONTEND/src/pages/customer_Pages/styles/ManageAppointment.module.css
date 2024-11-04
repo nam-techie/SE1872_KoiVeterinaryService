@@ -102,67 +102,74 @@
     display: inline-block;
 }
 
-/* Trạng thái chờ xác nhận */
-.Chờbácsĩxácnhận {
+/* Status = 1: Chờ bác sĩ xác nhận */
+.status1 {
     background-color: #FFF3E0;
     color: #FF9800;
     border: 1px solid #FF9800;
 }
 
-/* Trạng thái đã xác nhận */
-.Đãxácnhận {
+/* Status = 2: Đã xác nhận */
+.status2 {
     background-color: #E8F5E9;
     color: #4CAF50;
     border: 1px solid #4CAF50;
 }
 
-/* Trạng thái đang cung cấp dịch vụ */
-.Đangcungcấpdịchvụ {
-    background-color: #E3F2FD;
-    color: #2196F3;
-    border: 1px solid #2196F3;
-}
-
-/* Trạng thái thực hiện xong dịch vụ */
-.Thựchiệnxongdịchvụ {
-    background-color: #E1F5FE;
-    color: #03A9F4;
-    border: 1px solid #03A9F4;
-}
-
-/* Trạng thái chờ thanh toán */
-.Chờthanhtoántiềndịchvụ {
+/* Status = 3: Chờ thanh toán tiền dịch vụ */
+.status3 {
     background-color: #FCE4EC;
     color: #E91E63;
     border: 1px solid #E91E63;
 }
 
-/* Trạng thái thanh toán thành công */
-.Thanhtoántiềndịchvụthànhcông {
+/* Status = 4: Thanh toán tiền dịch vụ thành công */
+.status4 {
     background-color: #F3E5F5;
     color: #9C27B0;
     border: 1px solid #9C27B0;
 }
 
-/* Trạng thái hoàn thành */
-.Hoànthành {
+/* Status = 5: Đang cung cấp dịch vụ */
+.status5 {
+    background-color: #E3F2FD;
+    color: #2196F3;
+    border: 1px solid #2196F3;
+}
+
+/* Status = 6: Thực hiện xong dịch vụ */
+.status6 {
+    background-color: #E1F5FE;
+    color: #03A9F4;
+    border: 1px solid #03A9F4;
+}
+
+/* Status = 7: Chờ thanh toán phí phát sinh */
+.status7 {
+    background-color: #EDE7F6;
+    color: #673AB7;
+    border: 1px solid #673AB7;
+}
+
+/* Status = 8: Hoàn thành */
+.status8 {
     background-color: #E8F5E9;
     color: #4CAF50;
     border: 1px solid #4CAF50;
 }
 
-/* Trạng thái đã hủy lịch */
-.Đãhủylịch {
+/* Status = 9: Đã đánh giá */
+.status9 {
+    background-color: #F5F5F5;
+    color: #607D8B;
+    border: 1px solid #607D8B;
+}
+
+/* Status = 10: Đã hủy lịch */
+.status10 {
     background-color: #FFEBEE;
     color: #F44336;
     border: 1px solid #F44336;
-}
-
-/* Trạng thái đã đánh giá */
-.Đãđánhgiá {
-    background-color: #E1F0FF;
-    color: #0095FF;
-    border: 1px solid #0095FF;
 }
 
 .detailButton {
@@ -411,70 +418,125 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin: 60px 40px;
+    margin: 40px 20px;
     position: relative;
+    padding: 0 20px;
 }
 
-/* Đường kẻ ngang */
+/* Đường kẻ ngang kết nối các step */
 .statusTimeline::before {
     content: '';
     position: absolute;
     top: 25px;
-    left: 0;
-    right: 0;
-    height: 2px;
-    background-color: #ddd;
+    left: 50px;
+    right: 50px;
+    height: 3px;
+    background-color: #e0e0e0;
     z-index: 1;
 }
 
-.statusItem {
+/* Container cho mỗi step */
+.statusStep {
+    position: relative;
+    z-index: 2;
     display: flex;
     flex-direction: column;
     align-items: center;
-    position: relative;
-    z-index: 2;
-    text-align: center;
+    flex: 1;
 }
 
-.statusIcon {
-    width: 50px;
-    height: 50px;
+/* Circle indicator cho mỗi step */
+.statusDot {
+    width: 30px;
+    height: 30px;
     border-radius: 50%;
     background-color: #fff;
-    border: 2px solid #ddd;
-    margin-bottom: 15px;
+    border: 3px solid #e0e0e0;
+    margin-bottom: 8px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 24px;
-    color: #ddd;
+    position: relative;
+    transition: all 0.3s ease;
 }
 
-/* Dot hoàn thành */
-.completed .statusIcon {
+/* Label cho mỗi step */
+.statusLabel {
+    font-size: 12px;
+    color: #757575;
+    text-align: center;
+    max-width: 120px;
+    line-height: 1.2;
+    transition: all 0.3s ease;
+}
+
+/* Styles cho các step đã hoàn thành */
+.completed .statusDot {
     background-color: #4CAF50;
     border-color: #4CAF50;
+    box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.2);
+}
+
+.completed .statusDot::after {
+    content: '✓';
     color: white;
+    font-size: 14px;
 }
 
-/* Text phía dưới dot */
-.statusItem span {
-    font-size: 12px;
-    color: #666;
-    max-width: 100px;
-    line-height: 1.2;
-}
-
-/* Style cho item đã hoàn thành */
-.completed span {
+.completed .statusLabel {
     color: #4CAF50;
+    font-weight: 500;
 }
 
-/* Thêm timestamp */
-.timestamp {
-    font-size: 11px;
-    color: #999;
-    margin-top: 4px;
+/* Styles cho step hiện tại */
+.active .statusDot {
+    background-color: #fff;
+    border-color: #2196F3;
+    box-shadow: 0 0 0 3px rgba(33, 150, 243, 0.2);
+    animation: pulse 1.5s infinite;
+}
+
+.active .statusLabel {
+    color: #2196F3;
+    font-weight: 500;
+}
+
+/* Đường kẻ kết nối giữa các step đã hoàn thành */
+.completed::after {
+    content: '';
+    position: absolute;
+    top: 25px;
+    left: 50%;
+    width: 100%;
+    height: 3px;
+    background-color: #4CAF50;
+    z-index: 1;
+}
+
+/* Animation cho step hiện tại */
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(33, 150, 243, 0.4);
+    }
+    70% {
+        box-shadow: 0 0 0 6px rgba(33, 150, 243, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(33, 150, 243, 0);
+    }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .statusLabel {
+        font-size: 10px;
+        max-width: 80px;
+    }
+    
+    .statusDot {
+        width: 24px;
+        height: 24px;
+    }
 }
 
 .costTable {

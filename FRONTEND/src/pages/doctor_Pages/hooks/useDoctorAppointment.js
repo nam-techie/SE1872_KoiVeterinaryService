@@ -3,6 +3,38 @@ import { axiosInstance } from '../../../service/apiRequest';
 import { message } from 'antd';
 import moment from 'moment';
 
+const fetchAppointmentDetail = async (appointmentId) => {
+    try {
+        const response = await axiosInstance.get(`/veterinary/getListAppointmentDoctor/${appointmentId}`);
+        
+        // Transform data to match the component's expected format
+        const transformedData = {
+            id: response.data.id,
+            customerInfo: {
+                name: response.data.fullNameCustomer,
+                phone: response.data.phoneNumber,
+                address: response.data.addressDetails
+            },
+            appointmentInfo: {
+                createdDate: response.data.createdDate,
+                service: response.data.nameService,
+                appointmentDate: response.data.appointmentBookingDate,
+                appointmentTime: response.data.appointmentBookingTime,
+                address: `${response.data.addressDetails}, ${response.data.nameZone}`,
+                status: response.data.appointmentStatus,
+                doctor: response.data.isSelectDoctor,
+                description: response.data.description
+            }
+        };
+
+        return transformedData;
+    } catch (err) {
+        console.error('Error fetching appointment detail:', err);
+        message.error('Có lỗi xảy ra khi tải chi tiết lịch hẹn');
+        throw err;
+    }
+};
+
 const useDoctorAppointment = () => {
     const [appointments, setAppointments] = useState([]);
     const [stats, setStats] = useState({
@@ -158,7 +190,8 @@ const useDoctorAppointment = () => {
         confirmAppointment,
         startService,
         saveServiceRecord,
-        cancelAppointment
+        cancelAppointment,
+        fetchAppointmentDetail,
     };
 };
 

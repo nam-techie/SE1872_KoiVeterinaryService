@@ -1,11 +1,8 @@
 import { useState, useEffect } from 'react';
-import {axiosInstance} from '../services/apiRequest.js';
-
-
+import { axiosInstance } from '../service/apiRequest';
 
 export const useCustomerInfo = () => {
     const [user, setUser] = useState({
-        username: '',
         email: '',
         fullName: '',
         phoneNumber: '',
@@ -17,10 +14,9 @@ export const useCustomerInfo = () => {
     const fetchCustomerInfo = async () => {
         try {
             setLoading(true);
-            const response = await axiosInstance.get('/getInfoCustomer');
+            const response = await axiosInstance.get('/customer/getInfoCustomer');
             const data = response.data;
             setUser({
-                username: data.username,
                 email: data.email,
                 fullName: data.fullName,
                 phoneNumber: data.phone,
@@ -35,27 +31,15 @@ export const useCustomerInfo = () => {
         }
     };
 
-    useEffect(() => {
-        fetchCustomerInfo();
-    }, []);
-
     const updateCustomerInfo = async (formData) => {
-        const formDataToSend = new FormData();
-        formDataToSend.append('fullName', formData.fullName);
-        formDataToSend.append('phoneNumber', formData.phoneNumber);
-        formDataToSend.append('address', formData.address);
-        if (formData.image) {
-            formDataToSend.append('image', formData.image);
-        }
-
         try {
-            const response = await axiosInstance.put('/updateInfoCustomer', formDataToSend, {
-                headers: {
-                    'Content-Type': 'multipart/form-data'
-                }
+            const response = await axiosInstance.put('/customer/updateInfoCustomer', {
+                fullName: formData.fullName,
+                phoneNumber: formData.phoneNumber,
+                address: formData.address,
+                email: formData.email
             });
             await fetchCustomerInfo(); // Refresh user data after update
-            console.log(response);
             return response.data;
         } catch (error) {
             console.error('Lỗi khi cập nhật thông tin khách hàng:', error);
@@ -63,6 +47,9 @@ export const useCustomerInfo = () => {
         }
     };
 
+    useEffect(() => {
+        fetchCustomerInfo();
+    }, []);
 
     return { user, loading, error, updateCustomerInfo };
 };

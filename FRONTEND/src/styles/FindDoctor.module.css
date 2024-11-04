@@ -165,28 +165,49 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    z-index: 1000;
 }
 
 .modalContent {
     background-color: white;
-    padding: 20px;
+    padding: 30px;
     border-radius: 8px;
-    max-width: 500px;
-    width: 100%;
+    max-width: 600px;
+    width: 90%;
+    max-height: 80vh;
+    overflow-y: auto;
+    position: relative;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;     /* Firefox */
 }
+
+/* Ẩn thanh cuộn cho Webkit browsers (Chrome, Safari) */
+.modalContent::-webkit-scrollbar {
+    display: none;
+}
+
+/* Xóa bỏ các style không cần thiết liên quan đến scrollbar */
+/* .modalContent::-webkit-scrollbar-track,
+.modalContent::-webkit-scrollbar-thumb,
+.modalContent::-webkit-scrollbar-thumb:hover {
+    display: none;
+} */
 
 .modalContent h2 {
     margin-top: 0;
 }
 
 .modalContent button {
-    margin-top: 10px;
-    padding: 10px 20px;
-    background-color: #4CAF50;
+    margin-top: 15px;
+    padding: 6px 20px;
+    background: #DC3545;
     color: white;
     border: none;
     border-radius: 4px;
     cursor: pointer;
+    font-size: 13px;
+    transition: background-color 0.2s ease;
 }
 
 .modalContent button:hover {
@@ -427,68 +448,42 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 20px;
-    margin: 20px 0;
-    padding: 10px 0;
+    gap: 10px;
+    margin: 15px 0;
 }
 
 .pageButton {
+    width: 30px;
+    height: 30px;
+    border: none;
+    background-color: #4CAF50;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 40px;
-    height: 40px;
-    border: 2px solid #4CAF50;
-    background-color: white;
-    color: #4CAF50;
-    cursor: pointer;
-    border-radius: 50%;
+    margin-bottom: 20px;
     transition: all 0.2s ease;
-    font-size: 16px;
+    font-size: 18px;
 }
 
 .pageButton:hover:not(:disabled) {
-    background-color: #4CAF50;
+    background-color: #45a049;
     color: white;
 }
 
 .pageButton:disabled {
+    background-color: #E8F5E9;
+    color: #666;
     cursor: not-allowed;
-    opacity: 0.5;
-    border-color: #ccc;
-    color: #ccc;
 }
 
 .pageInfo {
-    font-size: 16px;
+    font-size: 13px;
     color: #666;
-    min-width: 80px;
+    min-width: 25px;
     text-align: center;
-}
-
-.modalContent {
-    max-height: 80vh;
-    overflow-y: auto;
-    padding: 20px;
-}
-
-/* Tùy chỉnh thanh cuộn */
-.modalContent::-webkit-scrollbar {
-    width: 8px;
-}
-
-.modalContent::-webkit-scrollbar-track {
-    background: #f1f1f1;
-    border-radius: 4px;
-}
-
-.modalContent::-webkit-scrollbar-thumb {
-    background: #888;
-    border-radius: 4px;
-}
-
-.modalContent::-webkit-scrollbar-thumb:hover {
-    background: #555;
 }
 
 .noRating {

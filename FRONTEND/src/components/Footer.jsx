@@ -11,7 +11,7 @@ function Footer() {
                     <ul className={styles.footerList}>
                         <li className={styles.footerListItem}><a href="/aboutme" className={styles.footerLink}>Giới thiệu</a>
                         </li>
-                        <li className={styles.footerListItem}><a href="#" className={styles.footerLink}>Bác sĩ</a></li>
+                        <li className={styles.footerListItem}><a href="/doctor-list" className={styles.footerLink}>Bác sĩ</a></li>
                         <li className={styles.footerListItem}><a href="/service" className={styles.footerLink}>Điều khoản Dịch
                             vụ</a></li>
                         <li className={styles.footerListItem}><a href="/faqs" className={styles.footerLink}>Câu hỏi thường
@@ -23,13 +23,13 @@ function Footer() {
                 <div className={styles.footerSection}>
                     <h3 className={styles.footerSectionTitle}>Dịch vụ</h3>
                     <ul className={styles.footerList}>
-                        <li className={styles.footerListItem}><a href="#" className={styles.footerLink}>Tư vấn trực
+                        <li className={styles.footerListItem}><a href="/customer/booking-page" className={styles.footerLink}>Tư vấn trực
                             tuyến</a></li>
-                        <li className={styles.footerListItem}><a href="#" className={styles.footerLink}>Khảo sát tại
+                        <li className={styles.footerListItem}><a href="/customer/booking-page" className={styles.footerLink}>Khảo sát tại
                             nhà</a></li>
-                        <li className={styles.footerListItem}><a href="#" className={styles.footerLink}>Đặt lịch tại
+                        <li className={styles.footerListItem}><a href="/customer/booking-page" className={styles.footerLink}>Đặt lịch tại
                             trung tâm</a></li>
-                        <li className={styles.footerListItem}><a href="#" className={styles.footerLink}>Y tế tại nhà</a>
+                        <li className={styles.footerListItem}><a href="/customer/booking-page" className={styles.footerLink}>Y tế tại nhà</a>
                         </li>
                     </ul>
                 </div>
@@ -70,8 +70,12 @@ function Footer() {
 
             {/* Phần mạng xã hội */}
             <div className={styles.socialMedia}>
-                <a href="#" className={styles.socialIcon}><i className="fab fa-facebook-f"></i></a>
-                <a href="#" className={styles.socialIcon}><i className="fab fa-youtube"></i></a>
+                <a href="https://www.facebook.com/nhatan200804" className={styles.socialIcon}><i className="fab fa-facebook-f"></i></a>
+                <a href="https://www.facebook.com/nhatan200804" className={styles.socialIcon}><i className="fab fa-youtube"></i></a>
+                <a href="https://www.facebook.com/nhatan200804" className={styles.socialIcon}><i className="fab fa-instagram"></i></a>
+                <a href="https://www.facebook.com/nhatan200804" className={styles.socialIcon}><i className="fab fa-tiktok"></i></a>
+                <a href="https://www.facebook.com/nhatan200804" className={styles.socialIcon}><i className="fab fa-threads"></i></a>
+                <a href="https://www.facebook.com/nhatan200804" className={styles.socialIcon}><i className="fab fa-telegram"></i></a>
             </div>
 
             {/* Phần Footer Bottom */}

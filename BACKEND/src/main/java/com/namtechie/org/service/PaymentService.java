@@ -179,7 +179,7 @@ public class PaymentService {
         long depositPrice = serviceType.getBase_price();
 
         // Gọi hàm createUrl để tạo URL thanh toán và trả về chuỗi đó
-        String urlToPayment = createUrl(appointmentId, depositPrice);
+        String urlToPayment = createUrl(appointmentId, depositPrice, 1);
         AppointmentStatus appointmentStatus = new AppointmentStatus();
         appointmentStatus.setAppointment(appointment);
         appointmentStatus.setStatus("Chờ thanh toán tiền dịch vụ");
@@ -373,7 +373,7 @@ public class PaymentService {
         }
 
         // Gọi hàm createUrl để tạo URL thanh toán và trả về chuỗi đó
-        String urlToPayment = createUrl(appointmentId, totalPrice);
+        String urlToPayment = createUrl(appointmentId, totalPrice, 2);
         AppointmentStatus appointmentStatus = new AppointmentStatus();
         appointmentStatus.setAppointment(appointment);
         appointmentStatus.setStatus("Chờ thanh toán tổng tiền");
@@ -429,7 +429,7 @@ public class PaymentService {
 
 
     // Phương thức createUrl với tham số appointmentId
-    public String createUrl(Long appointmentId, long paymentToPayment) throws Exception {
+    public String createUrl(Long appointmentId, long paymentToPayment, int part) throws Exception {
         // Lấy thông tin cuộc hẹn từ AppointmentService
 //        Payment payment = paymentRepository.findByAppointmentId(appointmentId);
 //        if (payment == null) {
@@ -456,7 +456,7 @@ public class PaymentService {
         String tmnCode = "T0HQKZLG";
         String secretKey = "F0LQRHMUCEDG0543CTWHY1H2VD10MLFD";
         String vnpUrl = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
-        String returnUrl = "https://blearning.vn/guide/swp/docker-local?orderID=" + appointment.getId() + "&random=" + randomString;
+        String returnUrl = "http://localhost:5741/customer/manage-appointment?orderID=" + appointment.getId() + "&random=" + randomString + "&part=" + part;
         String currCode = "VND";
 
         Map<String, String> vnpParams = new TreeMap<>();
@@ -525,7 +525,7 @@ public class PaymentService {
         String tmnCode = "T0HQKZLG";
         String secretKey = "F0LQRHMUCEDG0543CTWHY1H2VD10MLFD";
         String vnpUrl = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
-        String returnUrl = "https://blearning.vn/guide/swp/docker-local?orderID=" + payment.getId();
+        String returnUrl = "http://localhost:5741/customer/manage-appointment?orderID=" + payment.getId();
         String currCode = "VND";
 
         Map<String, String> vnpParams = new TreeMap<>();
