@@ -4,8 +4,6 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
-
-
 import java.sql.Timestamp;
 
 @Entity
@@ -15,7 +13,6 @@ public class PaymentDetail {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-
     private long price;
 
     @ManyToOne
@@ -23,9 +20,8 @@ public class PaymentDetail {
     @JsonBackReference
     private Payment payment;
 
-    @Column(columnDefinition = "NVARCHAR(MAX)")
+    @Column(columnDefinition = "TEXT")
     private String transactionType;
-
 
     private String transactionMethod;
 
@@ -34,7 +30,6 @@ public class PaymentDetail {
 
     private boolean status;
 
-    @Column(columnDefinition = "NVARCHAR(MAX)")
+    @Column(columnDefinition = "TEXT")
     private String notes;
-
 }
