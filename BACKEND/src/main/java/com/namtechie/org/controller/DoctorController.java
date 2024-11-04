@@ -152,40 +152,7 @@ public class DoctorController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/getInfoCurrentDoctor")
-    public ResponseEntity<DoctorInfoAndFeedbackResponse> getInfoCurrentDoctor() {
-        DoctorInfoAndFeedbackResponse currentDoctor = doctorService.getResponseInfoAndFeedback();
-        return ResponseEntity.ok(currentDoctor);
-    }
 
-    @PutMapping("/updateDoctorInfoByDoctor")
-    public ResponseEntity<String> updateDoctorInfo(
-            @ModelAttribute DoctorRequest doctorRequest) {  // Thay @RequestBody bằng @ModelAttribute
-        try {
-            doctorService.updateInfoDoctorByDoctor(doctorRequest);
-            return ResponseEntity.ok("Cập nhật thông tin bác sĩ thành công");
-        } catch (DuplicateEntity e) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
-        } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
-        }
-    }
-
-    @GetMapping("/changePasswordDoctor")
-    public ResponseEntity<?> changePasswordDoctor(ChangePasswordRequest changePasswordRequest) {
-        try {
-            authenticationService.changePassword(changePasswordRequest);
-            return ResponseEntity.ok("Mật khẩu đã được thay đổi thành công.");
-        } catch (BadCredentialsException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Mật khẩu cũ không đúng.");
-        } catch (DuplicateEntity e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Mật khẩu mới và xác nhận mật khẩu không trùng.");
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Mật khẩu mới không được trùng với mật khẩu cũ.");
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Đã xảy ra lỗi trong quá trình thay đổi mật khẩu.");
-        }
-    }
 
 
 }

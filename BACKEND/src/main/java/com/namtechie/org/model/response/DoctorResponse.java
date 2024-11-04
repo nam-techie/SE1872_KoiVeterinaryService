@@ -8,8 +8,6 @@ import lombok.NonNull;
 
 @Data
 @NonNull
-@AllArgsConstructor
-@NoArgsConstructor
 public class DoctorResponse {
     Doctor doctor;
     double rateAverage;

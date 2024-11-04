@@ -128,37 +128,7 @@ public class DoctorService {
         return doctors;
     }
 
-    public DoctorInfoAndFeedbackResponse getResponseInfoAndFeedback() {
-        DoctorInfoAndFeedbackResponse response = new DoctorInfoAndFeedbackResponse();
-        Account account = (Account) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        response.setDoctorInfo(getInfoCurrentDoctor(account));
-        response.setFeedback(feedbackService.listTop4FeedbackOfDoctor(account));
-        return response;
-    }
 
-    public DoctorInfoResponse getInfoCurrentDoctor(Account account) {
-        Doctor doctor = doctorRepository.findByAccountId(account.getId());
-        DoctorInfoResponse doctorInfoResponse = new DoctorInfoResponse();
-        doctorInfoResponse.setDoctorId(doctor.getId());
-        doctorInfoResponse.setFullName(doctor.getFullName());
-        doctorInfoResponse.setPhone(doctor.getPhone());
-        doctorInfoResponse.setExperience(doctor.getExperience());
-        doctorInfoResponse.setImageUrl(doctor.getImageUrl());
-
-        DoctorInfo doctorInfo = doctorInfoRepository.findDoctorInfoByDoctorId(doctor.getId());
-        doctorInfoResponse.setDescription(doctorInfo.getDescription());
-        doctorInfoResponse.setQualification(doctorInfo.getQualification());
-        doctorInfoResponse.setSpecialty(doctorInfo.getSpecialty());
-        List<DoctorResponse> doctors = getListAllDoctors();
-        for (DoctorResponse doctorResponse : doctors) {
-            Doctor docCompare = doctorResponse.getDoctor();
-            if (docCompare.equals(doctor)) {
-                doctorInfoResponse.setRate(doctorResponse.getRateAverage());
-            }
-        }
-
-        return doctorInfoResponse;
-    }
 
     public DoctorInfoResponse getAllInfoDoctor(long doctorId) {
         DoctorInfoResponse doctorInfoResponse = new DoctorInfoResponse();
@@ -245,41 +215,6 @@ public class DoctorService {
         }
     }
 
-    public void updateInfoDoctorByDoctor(DoctorRequest doctorRequest) {
-        try {
-            // Lấy bác sĩ hiện tại theo số điện thoại (phone)
-            Account account = (Account) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            Doctor updateDoctor = doctorRepository.findByAccountId(account.getId());
-            DoctorInfo updateDoctorInfo = doctorInfoRepository.findDoctorInfoByDoctorId(updateDoctor.getId());
-
-            // Kiểm tra nếu số điện thoại trong request khác với số hiện tại và đã tồn tại trong cơ sở dữ liệu
-            if (!doctorRequest.getPhone().equals(updateDoctor.getPhone()) && doctorRepository.existsByPhone(doctorRequest.getPhone())) {
-                throw new DuplicateEntity("Số điện thoại đã được sử dụng bởi cá nhân khác.");
-            }
-
-            // Cập nhật thông tin
-            updateDoctor.setFullName(doctorRequest.getFullName());
-            updateDoctor.setPhone(doctorRequest.getPhone()); // Cập nhật số điện thoại mới
-            updateDoctor.setExperience(doctorRequest.getExperience());
-            updateDoctorInfo.setDescription(doctorRequest.getDescription());
-            updateDoctorInfo.setQualification(doctorRequest.getQualification());
-            updateDoctorInfo.setSpecialty(doctorRequest.getSpecialty());
-
-            // Xử lý upload ảnh nếu có
-            if (doctorRequest.getImageUrl() != null && !doctorRequest.getImageUrl().isEmpty()) {
-                uploadImage(updateDoctor.getId(), doctorRequest.getImageUrl());
-            }
-
-            // Lưu thông tin cập nhật
-            doctorRepository.save(updateDoctor);
-            doctorInfoRepository.save(updateDoctorInfo);
-
-        } catch (DuplicateEntity e) {
-            throw e;
-        } catch (Exception e) {
-            throw new RuntimeException("Đã xảy ra lỗi trong quá trình cập nhật thông tin bác sĩ.");
-        }
-    }
 
 
     public void addDoctor(UpdateDoctor updateDoctor) {
