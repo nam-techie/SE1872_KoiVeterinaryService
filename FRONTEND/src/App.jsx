@@ -48,7 +48,7 @@ function App() {
 
                     {/* Trang không cho phép truy cập nếu đã đăng nhập (có token) */}
                     <Route path="/login" element={<RestrictedRoute><Login/></RestrictedRoute>}/>
-                    <Route path="/api/register" element={<RestrictedRoute><Register/></RestrictedRoute>}/>
+                    <Route path="/register" element={<RestrictedRoute><Register/></RestrictedRoute>}/>
 
                     Trang chỉ customer và admin truy cập được (doctor không truy cập được)
                     <Route path="/customer/booking-page" element={
