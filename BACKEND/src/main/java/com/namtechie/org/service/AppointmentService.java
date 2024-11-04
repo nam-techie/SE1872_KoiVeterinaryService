@@ -1013,7 +1013,6 @@ public class AppointmentService {
             Customers customers = app.getCustomers();
             Zone zone = app.getZone();
 
-            System.out.println(zone);
 
             List<AppointmentStatus> statuses = appointmentStatusRepository.findByAppointment(app);
 
