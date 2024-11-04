@@ -4,6 +4,7 @@ import com.namtechie.org.entity.Account;
 import com.namtechie.org.entity.Doctor;
 import com.namtechie.org.entity.ServiceType;
 import com.namtechie.org.exception.BadCredentialsException;
+import com.namtechie.org.exception.DuplicateEntity;
 import com.namtechie.org.exception.NotFoundException;
 import com.namtechie.org.model.UpdateDoctorLogin;
 import com.namtechie.org.model.request.*;
@@ -38,11 +39,27 @@ public class AuthenticationController {
     CustomerService customerService;
 
     @Autowired
-    private DoctorService doctorService;
+    DoctorService doctorService;
 
 
     @Autowired
     ServiceTypesService serviceTypesService;
+
+    @GetMapping("/changePassword")
+    public ResponseEntity<?> changePassword(ChangePasswordRequest changePasswordRequest) {
+        try {
+            authenticationService.changePassword(changePasswordRequest);
+            return ResponseEntity.ok("Mật khẩu đã được thay đổi thành công.");
+        } catch (BadCredentialsException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Mật khẩu cũ không đúng.");
+        } catch (DuplicateEntity e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Mật khẩu mới và xác nhận mật khẩu không trùng.");
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Mật khẩu mới không được trùng với mật khẩu cũ.");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Đã xảy ra lỗi trong quá trình thay đổi mật khẩu.");
+        }
+    }
 
 
     //API provide for CUSTOMER
@@ -53,7 +70,7 @@ public class AuthenticationController {
     }
 
     @GetMapping("/getAllDoctor")
-    public ResponseEntity<List<DoctorResponse>> getListAllDoctors() {
+    public ResponseEntity<List<DoctorResponse>> getListDoctors() {
         return ResponseEntity.ok(doctorService.getListAllDoctors());
     }
 

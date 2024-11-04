@@ -574,7 +574,7 @@ public class AppointmentService {
         appointmentStatusRepository.save(status);
     }
 
-    public void cancelAppointmentByDoctor(boolean status,  CancelReasonRequest cancelReasonRequest) {
+    public void cancelAppointmentByDoctor(boolean status, CancelReasonRequest cancelReasonRequest) {
         Account account = (Account) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Appointment appointment = appointmentRepository.findAppointmentById(cancelReasonRequest.getAppointmentId());
         appointment.setCancel(status);
@@ -962,11 +962,13 @@ public class AppointmentService {
 
             if (payment != null) {
                 List<PaymentDetail> paymentDetail = paymentDetailRepository.findByPaymentId(payment.getId());
+                long total = 0;
                 for (PaymentDetail detail : paymentDetail) {
                     if (detail.isStatus()) {
-                        appointmentDetail.setTotalAmount(detail.getPrice());
+                        total += detail.getPrice();
                     }
                 }
+                appointmentDetail.setTotalAmount(total);
             } else {
                 appointmentDetail.setTotalAmount(0);
             }
@@ -988,17 +990,22 @@ public class AppointmentService {
 
     public List<DashboardDetailAppointmentResponse> dashboardDetailAppointmentResponses() {
         List<DashboardDetailAppointmentResponse> responses = new ArrayList<>();
-        Pageable pageable = PageRequest.of(0, 9); // Bắt đầu từ trang 0 và giới hạn 7 bản ghi
+        Pageable pageable = PageRequest.of(0, 9); // Bắt đầu từ trang 0 và giới hạn 9 bản ghi
         List<Appointment> upcomingAppointments = appointmentRepository.findTop9RecentAppointments(pageable);
 
         for (Appointment app : upcomingAppointments) {
-            DashboardDetailAppointmentResponse response = new DashboardDetailAppointmentResponse(); // Tạo mới cho mỗi Appointment
+            DashboardDetailAppointmentResponse response = new DashboardDetailAppointmentResponse();
 
             AppointmentInfo appointmentInfo = appointmentInfoRepository.findByAppointmentId(app.getId());
             ServiceType serviceType = app.getServiceType();
             Doctor doctor = app.getDoctor();
             Customers customers = app.getCustomers();
             Zone zone = app.getZone();
+
+            // Kiểm tra null cho các đối tượng
+            if (appointmentInfo == null || serviceType == null || doctor == null || customers == null || zone == null) {
+                continue; // Bỏ qua vòng lặp này nếu bất kỳ đối tượng nào bị null
+            }
 
             List<AppointmentStatus> statuses = appointmentStatusRepository.findByAppointment(app);
 
@@ -1020,10 +1027,11 @@ public class AppointmentService {
             response.setCustomerName(customers.getFullName());
             response.setAddress((appointmentInfo.getAddress() != null ? appointmentInfo.getAddress() : "null") + ", " + (zone != null ? zone.getName() : "null"));
 
-            responses.add(response); // Thêm vào danh sách
+            responses.add(response);
         }
         return responses;
     }
+
 
     public DetailTopAppointment findTop3Variable() {
         DetailTopAppointment detail = new DetailTopAppointment();

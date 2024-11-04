@@ -388,7 +388,10 @@ const DashboardManage = () => {
                                     <div className="detail-row">
                                         <span className="label">Địa điểm:</span>
                                         <span className="value">
-                                            {appointment.address.includes('null') ? 'Trung tâm' : appointment.address}
+                                            {appointment.address ? 
+                                                (appointment.address.includes('null') ? 'Trung tâm' : appointment.address)
+                                                : 'Chưa cập nhật'
+                                            }
                                         </span>
                                     </div>
                                 </div>

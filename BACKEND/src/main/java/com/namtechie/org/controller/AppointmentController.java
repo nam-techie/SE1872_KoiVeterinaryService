@@ -36,14 +36,6 @@ public class AppointmentController {
     @Autowired
     ZoneService zoneService;
 
-
-
-    @Autowired
-    TokenService tokenService;
-
-    @Autowired
-    DoctorService doctorService;
-
     @Autowired
     AppointmentService appointmentService;
 

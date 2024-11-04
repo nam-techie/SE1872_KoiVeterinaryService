@@ -60,6 +60,34 @@ public class AuthenticationService implements UserDetailsService {
     @Autowired
     private CustomerRepository customerRepository;
 
+
+    public void changePassword(ChangePasswordRequest changePasswordRequest) {
+        Account account = (Account) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        // Kiểm tra mật khẩu cũ nhập vào có khớp với mật khẩu đã mã hóa
+        boolean isPasswordMatch = passwordEncoder.matches(changePasswordRequest.getOldPassword(), account.getPassword());
+        if (!isPasswordMatch) {
+            throw new BadCredentialsException("Mật khẩu xác nhận sai!!!");
+        }
+
+        // Kiểm tra mật khẩu mới và mật khẩu xác nhận có khớp nhau không
+        if (!changePasswordRequest.getNewPassword().equals(changePasswordRequest.getConfirmPassword())) {
+            throw new DuplicateEntity("Mật khẩu mới và xác nhận mật khẩu không trùng!!!");
+        }
+
+        // Kiểm tra mật khẩu mới không trùng với mật khẩu cũ
+        if (passwordEncoder.matches(changePasswordRequest.getNewPassword(), account.getPassword())) {
+            throw new IllegalArgumentException("Mật khẩu mới không được trùng với mật khẩu cũ!!!");
+        }
+
+        // Cập nhật và mã hóa mật khẩu mới
+        account.setPassword(passwordEncoder.encode(changePasswordRequest.getNewPassword()));
+
+        // Lưu thay đổi vào cơ sở dữ liệu
+        accountRepository.save(account);  // Đảm bảo `accountRepository` được inject vào service của bạn
+    }
+
+
     // xử lí logic, nghiệp vụ
     public AccountResponse register(RegisterRequest registerRequest) {
         // Kiểm tra confirmPassword trước khi tiếp tục
@@ -146,7 +174,7 @@ public class AuthenticationService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Account account =  accountRepository.findAccountByUsername(username);
+        Account account = accountRepository.findAccountByUsername(username);
         if (account == null) {
             throw new UsernameNotFoundException("Tài khoản không tồn tại: " + username);
         }
@@ -242,7 +270,6 @@ public class AuthenticationService implements UserDetailsService {
             account.setUsername(adminAccountRequest.getUsername());
             account.setPassword(passwordEncoder.encode("123456"));
             account.setRole(Role.valueOf(role).name());
-
 
 
             // Lưu tài khoản bác sĩ vào database
@@ -587,11 +614,6 @@ public class AuthenticationService implements UserDetailsService {
             throw new RuntimeException("Đã xảy ra lỗi trong quá trình cập nhật thông tin admin.");
         }
     }
-
-
-
-
-
 
 
 }

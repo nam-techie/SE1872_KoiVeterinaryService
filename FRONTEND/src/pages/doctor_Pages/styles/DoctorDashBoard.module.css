@@ -1,21 +1,149 @@
 .dashboard {
-  display: flex;
-  flex-direction: column;
   margin-left: 200px;
+  padding: 20px;
   min-height: 100vh;
   background-color: #f5f5f5;
-  padding: 20px;
-  gap: 30px;
 }
 
 .profileSection {
   width: 100%;
   max-width: 800px;
-  margin: 0 auto;
+  margin: 20px auto;
+  background: white;
+  border-radius: 15px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.profileHeader {
+  position: relative;
+  background: #EEEEEE;
+  padding: 30px;
+  text-align: center;
+  height: 200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  
+}
+
+.avatarContainer {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  margin-bottom: 15px;
+}
+
+.avatarCircle {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: #4CAF50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 2.5rem;
+  font-weight: bold;
+}
+
+.profileName {
+  color: #333;
+  font-size: 24px;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+.profileContent {
+  padding: 30px;
+}
+
+.infoGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.infoItem {
+  padding: 15px;
+  background: #f8f9fa;
+  border-radius: 10px;
+  border-left: 4px solid #ff6b4a;
+}
+
+.infoLabel {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 5px;
+}
+
+.infoValue {
+  font-size: 16px;
+  color: #333;
+  font-weight: 500;
+}
+
+.description {
+  background: #f8f9fa;
+  padding: 20px;
+  border-radius: 10px;
+  margin-top: 20px;
+}
+
+.descriptionTitle {
+  color: #ff6b4a;
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 15px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #ff6b4a;
+}
+
+.descriptionContent {
+  font-size: 16px;
+  line-height: 1.6;
+  color: #444;
+}
+
+.buttonGroup {
+  display: flex;
+  gap: 15px;
+  margin-top: 20px;
+  justify-content: center;
+}
+
+.editButton, .passwordButton {
+  padding: 10px 20px;
+  border-radius: 8px;
+  border: none;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.editButton {
+  background: #ff6b4a;
+  color: white;
+}
+
+.passwordButton {
+  background: #f8f9fa;
+  color: #333;
+  border: 1px solid #ddd;
+}
+
+.editButton:hover {
+  background: #ff8c6a;
+}
+
+.passwordButton:hover {
+  background: #eee;
 }
 
 .statsSection {
-  width: 100%;
+  margin-bottom: 30px;
 }
 
 .statsSection h2 {
@@ -25,66 +153,35 @@
   border-bottom: 2px solid #ff6b4a;
 }
 
-.profileCard {
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+
+.statsCard {
   background: white;
-  padding: 30px;
-  border-radius: 12px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
-  display: flex;
-  gap: 30px;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  text-align: center;
 }
 
-.avatar {
-  width: 150px;
-  height: 150px;
-  border-radius: 50%;
-  object-fit: cover;
+.statsIcon {
+  font-size: 2rem;
+  margin-bottom: 10px;
 }
 
-.profileInfo {
-  flex: 1;
+.statsNumber {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #2196F3;
 }
 
-.profileInfo h2 {
-  color: #333;
-  margin-bottom: 20px;
-  padding-bottom: 10px;
-  border-bottom: 2px solid #ff6b4a;
-}
-
-.profileInfo p {
-  margin: 8px 0;
-  color: #666;
-}
-
-.buttonGroup {
-  display: flex;
-  gap: 15px;
-  margin-top: 20px;
-}
-
-.buttonGroup button {
-  flex: 1;
-  padding: 12px 20px;
-  border: none;
-  border-radius: 5px;
-  color: white;
-  cursor: pointer;
-  transition: background-color 0.3s;
-  font-weight: 500;
-}
-
-.buttonGroup button:first-child {
-  background-color: #ff8400;
-}
-
-.buttonGroup button:last-child {
-  background-color: #28a745;
-}
-
-.buttonGroup button:hover {
-  opacity: 0.9;
-}
+.totalAppointments { color: #2196F3; }
+.cancelledAppointments { color: #f44336; }
+.doneAppointments { color: #4CAF50; }
+.waitAppointments { color: #FFC107; }
 
 .modal {
   position: fixed;
@@ -116,24 +213,25 @@
 }
 
 .formGroup {
-  margin-bottom: 20px;
-  width: 100%;
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
 }
 
 .formGroup label {
-  display: block;
-  margin-bottom: 8px;
-  color: #666;
-  font-weight: 500;
+  min-width: 180px;
+  text-align: right;
+  margin-top: 8px;
 }
 
 .formGroup input {
-  width: 100%;
-  padding: 12px;
+  flex: 1;
+  padding: 0.75rem;
   border: 1px solid #ddd;
-  border-radius: 5px;
+  border-radius: 4px;
   font-size: 1rem;
-  box-sizing: border-box;
+  max-width: 500px;
 }
 
 .formGroup input:focus {
@@ -173,45 +271,397 @@
   opacity: 0.9;
 }
 
-.statsGrid {
+.container {
   display: flex;
-  justify-content: space-between;
-  gap: 20px;
+  gap: 30px;
+  padding: 0 20px;
   margin-bottom: 30px;
 }
 
-.statsCard {
-  flex: 1;
+/* Thông tin bác sĩ bên trái */
+.doctorInfoTable {
+  flex: 0 0 60%;
   background: white;
-  border-radius: 12px;
-  padding: 24px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Phần feedback bên phải */
+.feedbackTable {
+  flex: 0 0 40%;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  height: 100%;
+  margin-top: 20px;
+  padding-bottom: 68px;
+}
+
+/* Style cho phần feedback */
+.feedbackSection {
+  padding: 0 20px 0 20px;
+  height: 100%;
+}
+
+.feedbackTitle {
+  color: #333;
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #ff6b4a;
+}
+
+.feedbackGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.feedbackCard {
+  background: #f8f9fa;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.ratingContainer {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.rating {
+  color: #ffc107;
+  font-size: 16px;
+  letter-spacing: 2px;
+}
+
+.ratingText {
+  color: #666;
+  font-weight: 500;
+}
+
+.comment {
+  color: #444;
+  font-size: 14px;
+  line-height: 1.5;
+  flex-grow: 1;
+  font-style: italic;
+}
+
+.feedbackInfo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: auto;
+  padding-top: 10px;
+  border-top: 1px solid #eee;
+}
+
+.customerName {
+  color: #333;
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.feedbackDate {
+  color: #888;
+  font-size: 12px;
+}
+
+/* Hiệu ứng hover */
+.feedbackCard:hover {
+  transform: none;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Custom scrollbar cho phần feedback */
+
+.editFormOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.editForm {
+  background: white;
+  padding: 2rem;
+  border-radius: 8px;
+  width: 100%;
+  max-width: 800px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.formGroup {
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.formGroup label {
+  min-width: 180px;
+  text-align: right;
+  margin-top: 8px;
+}
+
+.formGroup input {
+  flex: 1;
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 1rem;
+  max-width: 500px;
+}
+
+.avatarUpload {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  min-width: 200px;
+  gap: 1rem;
 }
 
-.statsIcon {
-  font-size: 2.5rem;
-  margin-bottom: 15px;
+.avatarPreview {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
 }
 
-.statsNumber {
-  font-size: 2.5rem;
+.fileInput {
+  width: auto !important;
+  max-width: 200px !important;
+  font-size: 0.9rem;
+  padding: 0.5rem !important;
+}
+
+.formActions {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+  margin-top: 2rem;
+  padding-right: 2rem;
+}
+
+.submitButton,
+.cancelButton {
+  padding: 0.75rem 1.5rem;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  min-width: 120px;
+}
+
+.submitButton {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.cancelButton {
+  background-color: #f44336;
+  color: white;
+}
+
+.submitButton:hover {
+  background-color: #45a049;
+}
+
+.cancelButton:hover {
+  background-color: #d32f2f;
+}
+
+.averageRating {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.stars {
+  color: #FFD700;
+  letter-spacing: 2px;
+}
+
+.ratingNumber {
   font-weight: bold;
-  color: #2196F3;
+  color: #666;
+}
+
+.profileActions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2rem;
+  justify-content: center;
+}
+
+.editButton,
+.passwordButton {
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.editButton {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+}
+
+.passwordButton {
+  background-color: #2196F3;
+  color: white;
+  border: none;
+}
+
+.editButton:hover {
+  background-color: #45a049;
+}
+
+.passwordButton:hover {
+  background-color: #1976D2;
+}
+
+.avatarCircle {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin-bottom: 1rem;
+}
+
+.profileHeader {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.averageRating {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.stars {
+  color: #FFD700;
+}
+
+.ratingNumber {
+  color: #666;
+}
+
+.errorMessage {
+  color: #ff4444;
   margin: 10px 0;
+  text-align: center;
+  font-size: 0.9rem;
 }
 
-.statsCard h3 {
-  font-size: 1.2rem;
-  color: #333;
-  margin-bottom: 10px;
+.editFormOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
 }
 
-.totalAppointments { color: #2196F3; }
-.cancelledAppointments { color: #f44336; }
-.doneAppointments { color: #4CAF50; }
-.waitAppointments { color: #FFC107; }
+.editForm {
+  background: white;
+  padding: 2rem;
+  border-radius: 8px;
+  width: 100%;
+  max-width: 500px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.formGroup {
+  margin-bottom: 1rem;
+}
+
+.formGroup label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+}
+
+.formGroup input {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.formActions {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+  margin-top: 1.5rem;
+}
+
+.submitButton,
+.cancelButton {
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+}
+
+.submitButton {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.cancelButton {
+  background-color: #f44336;
+  color: white;
+}
+
+/* Style riêng cho phần upload ảnh */
+.formGroup input[type="file"] {
+  max-width: none;
+  width: 500px;
+}
+
+/* Style cho textarea (phần mô tả) */
+.formGroup textarea {
+  flex: 1;
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 1rem;
+  min-height: 100px;
+  max-width: 500px;
+  resize: vertical;
+}
+
+/* Style cho error message */
+.errorMessage {
+  color: #ff4444;
+  margin: 10px 0;
+  text-align: center;
+  font-size: 0.9rem;
+}
+
+/* Style cho required fields */
+.formGroup input:required,
+.formGroup textarea:required {
+  border-left: 3px solid #ff6b4a;
+}
+
+

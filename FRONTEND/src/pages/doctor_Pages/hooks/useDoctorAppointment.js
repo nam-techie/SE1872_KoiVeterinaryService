@@ -13,6 +13,8 @@ const useDoctorAppointment = () => {
     });
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+    const [doctorInfo, setDoctorInfo] = useState(null);
+    const [feedbacks, setFeedbacks] = useState([]);
 
     const fetchStats = async () => {
         try {
@@ -144,9 +146,95 @@ const useDoctorAppointment = () => {
         }
     };
 
+    const fetchDoctorInfo = async () => {
+        try {
+            const response = await axiosInstance.get('/veterinary/getInfoCurrentDoctor');
+            if (response.data) {
+                setDoctorInfo(response.data.doctorInfo);
+                setFeedbacks(response.data.feedback.filter(fb => fb.username !== null));
+            }
+        } catch (err) {
+            console.error('Error fetching doctor info:', err);
+            message.error('Có lỗi xảy ra khi tải thông tin bác sĩ');
+        }
+    };
+
+    const updateDoctorInfo = async (formData) => {
+        try {
+            setLoading(true);
+            const formDataToSend = new FormData();
+            
+            console.log('Input formData:', formData);
+            
+            formDataToSend.append('fullName', formData.fullName);
+            formDataToSend.append('phone', formData.phone);
+            formDataToSend.append('experience', formData.experience);
+            formDataToSend.append('specialty', formData.specialty);
+            formDataToSend.append('qualification', formData.qualification);
+            formDataToSend.append('description', formData.description);
+            
+            if (formData.imageFile) {
+                formDataToSend.append('ImageUrl', formData.imageFile);
+            }
+
+            for (let pair of formDataToSend.entries()) {
+                console.log(pair[0] + ': ' + pair[1]);
+            }
+
+            const response = await axiosInstance.put(
+                '/veterinary/updateDoctorInfoByDoctor',
+                formDataToSend,
+                {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                    },
+                }
+            );
+
+            console.log('API Response:', response);
+
+            if (response.data) {
+                message.success('Cập nhật thông tin thành công');
+                await fetchDoctorInfo();
+                return true;
+            }
+        } catch (err) {
+            console.error('Chi tiết lỗi:', err.response?.data);
+            message.error('Có lỗi xảy ra khi cập nhật thông tin');
+            throw err;
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const changePassword = async (passwordData) => {
+        try {
+            setLoading(true);
+            const response = await axiosInstance.post('/veterinary/changePasswordDoctor', {
+                oldPassword: passwordData.oldPassword,
+                newPassword: passwordData.newPassword,
+                confirmPassword: passwordData.confirmPassword
+            });
+            
+            if (response.data) {
+                message.success('Đổi mật khẩu thành công');
+                return true;
+            }
+        } catch (err) {
+            if (err.response?.status === 400) {
+                throw new Error(err.response.data);
+            }
+            message.error('Có lỗi xảy ra khi đổi mật khẩu');
+            throw err;
+        } finally {
+            setLoading(false);
+        }
+    };
+
     // Initial fetch
     useEffect(() => {
         fetchAppointments();
+        fetchDoctorInfo();
     }, []);
 
     return {
@@ -158,7 +246,12 @@ const useDoctorAppointment = () => {
         confirmAppointment,
         startService,
         saveServiceRecord,
-        cancelAppointment
+        cancelAppointment,
+        doctorInfo,
+        feedbacks,
+        refreshDoctorInfo: fetchDoctorInfo,
+        updateDoctorInfo,
+        changePassword,
     };
 };
 

@@ -1,4 +1,5 @@
 export const login = async (username, password) => {
+    // eslint-disable-next-line no-useless-catch
     try {
         const response = await fetch('http://localhost:8080/api/login', {
             method: 'POST',

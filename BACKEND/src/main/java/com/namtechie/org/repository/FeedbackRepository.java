@@ -8,6 +8,9 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.awt.print.Pageable;
+import java.util.List;
+
 public interface FeedbackRepository extends JpaRepository<FeedBack, Long> {
     FeedBack findByAppointmentId(Long id);
 
@@ -21,7 +24,6 @@ public interface FeedbackRepository extends JpaRepository<FeedBack, Long> {
     @Query("UPDATE FeedBack f SET f.isDeleted = :isDeleted WHERE f.id = :id")
     void updateIsDeletedByFeedbackId(@Param("isDeleted") boolean isDeleted, @Param("id") Long id);
 
-    boolean existsByIsDeleted(Boolean isDeleted);
 
 
 }
