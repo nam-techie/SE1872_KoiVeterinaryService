@@ -2,7 +2,9 @@ package com.namtechie.org.model.request;
 
 import jakarta.validation.constraints.Pattern;
 import lombok.Data;
+import lombok.NonNull;
 
+@NonNull
 @Data
 public class CustomerInfoRequest {
 
@@ -13,4 +15,5 @@ public class CustomerInfoRequest {
     String phoneNumber;
 
     String address;
+    String email;
 }

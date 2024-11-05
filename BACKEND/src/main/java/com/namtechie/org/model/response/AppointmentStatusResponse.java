@@ -14,4 +14,5 @@ public class AppointmentStatusResponse {
     Time appointmentTime;
     String serviceType;
     String appointmentStatus;
+
 }

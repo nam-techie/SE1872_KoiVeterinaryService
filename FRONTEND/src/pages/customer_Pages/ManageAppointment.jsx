@@ -8,6 +8,55 @@ import LoadingCat from '../../components/LoadingCat.jsx';
 import Pagination from '../../components/Pagination';
 import FeedbackForm from '../../components/FeedbackForm';
 import { axiosInstance } from '../../service/apiRequest.js';
+import {
+    Button,
+    Card,
+    Typography,
+    Stepper,
+    Step,
+    StepLabel,
+    Grid,
+    Dialog,
+    DialogTitle,
+    DialogContent,
+    DialogActions,
+    Box,
+    Divider,
+} from "@mui/material";
+
+// Thêm hàm helper để format date và time
+const formatDateTime = (dateTimeStr) => {
+    if (!dateTimeStr) return '';
+    
+    try {
+        const date = new Date(dateTimeStr);
+        
+        // Format date: DD/MM/YYYY
+        const formattedDate = date.toLocaleDateString('vi-VN', {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric'
+        });
+        
+        // Format time: HH:MM
+        const formattedTime = date.toLocaleTimeString('vi-VN', {
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: false
+        });
+        
+        return {
+            date: formattedDate,
+            time: formattedTime
+        };
+    } catch (error) {
+        console.error('Error formatting date:', error);
+        return {
+            date: '',
+            time: ''
+        };
+    }
+};
 
 const ManageAppointment = () => {
     const { getAppointments, cancelAppointment, getPaymentUrl } = useManageCus();
@@ -26,6 +75,29 @@ const ManageAppointment = () => {
 
     const [showFeedbackForm, setShowFeedbackForm] = useState(false);
     const [selectedAppointmentId, setSelectedAppointmentId] = useState(null);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const steps = [
+        "Chờ xác nhận",
+        "Đã xác nhận",
+        "Chờ thanh toán",
+        "Thanh toán thành công",
+        "Đang thực hiện",
+        "Thực hiện xong",
+        "Chờ thanh toán phí phát sinh",
+        "Hoàn thành"
+    ];
+
+    const handleOpenModal = (appointmentId) => {
+        console.log('Modal opening with ID:', appointmentId);
+        setSelectedAppointmentId(appointmentId);
+        setIsModalOpen(true);
+    };
+
+    const handleCloseModal = () => {
+        setIsModalOpen(false);
+        setSelectedAppointmentId(null);
+    };
 
     const fetchAppointments = async () => {
         try {
@@ -135,7 +207,7 @@ const ManageAppointment = () => {
                 throw new Error('Không nhận được URL thanh toán');
             }
         } catch (error) {
-            alert('Có lỗi xảy ra khi tạo đường dẫn thanh toán: ' + error.message);
+            alert('Có lỗi xảy ra khi tạo đường d��n thanh toán: ' + error.message);
         }
     };
 
@@ -178,10 +250,10 @@ const ManageAppointment = () => {
                             <option value="Đang cung cấp dịch vụ">Đang cung cấp dịch vụ</option>
                             <option value="Thực hiện xong dịch vụ">Thực hiện xong dịch vụ</option>
                             <option value="Chờ thanh toán tiền dịch vụ">Chờ thanh toán tiền dịch vụ</option>
-                            <option value="Thanh toán tiền dịch vụ thành công">Thanh toán tiền dịch vụ thành công</option>
+                            <option value="Thanh toán tiền dịch vụ thành công">Thanh toán tiền dịch vụ thành cng</option>
                             <option value="Hoàn thành">Hoàn thành</option>
                             <option value="Đã đánh giá">Đã đánh giá</option>
-                            <option value="Đã hủy lịch">Đã hủy lịch</option>
+                            <option value="Đã hủy lịch">Đã h��y lịch</option>
                         </select>
                         
                         <select
@@ -221,13 +293,13 @@ const ManageAppointment = () => {
                                     <td>{appointment.appointmentDate}</td>
                                     <td>{appointment.serviceType}</td>
                                     <td>
-                                        <span className={`${styles.status} ${styles[appointment.appointmentStatus?.replace(/\s+/g, '')] || ''}`}>
+                                        <span className={`${styles.status} ${styles[`status${appointment.status}`]}`}>
                                             {appointment.appointmentStatus}
                                         </span>
                                     </td>
                                     <td>
                                         {(appointment.appointmentStatus === 'Chờ bác sĩ xác nhận' ||
-                                          appointment.appointmentStatus === 'Đã xác nhận' ||
+                                          appointment.appointmentStatus === 'Đã xác nh���n' ||
                                           appointment.appointmentStatus === 'Chờ thanh toán tiền dịch vụ' ||
                                           appointment.appointmentStatus === 'Thanh toán tiền dịch vụ thành công') && (
                                             <button 
@@ -257,7 +329,13 @@ const ManageAppointment = () => {
                                                 Đánh giá
                                             </button>
                                         )}
-                                        <button className={styles.detailButton}>
+                                        <button 
+                                            className={styles.detailButton}
+                                            onClick={() => {
+                                                console.log('Button clicked for ID:', appointment.appointmentId);
+                                                handleOpenModal(appointment.appointmentId);
+                                            }}
+                                        >
                                             Xem chi tiết
                                         </button>
                                     </td>
@@ -276,10 +354,22 @@ const ManageAppointment = () => {
                     />
                 </div>
             </div>
+
+            <Dialog 
+                open={isModalOpen} 
+                onClose={handleCloseModal}
+                maxWidth="xl"
+                fullWidth
+            >
+                <AppointmentModal
+                    appointmentID={selectedAppointmentId}
+                    open={isModalOpen}
+                    onClose={handleCloseModal}
+                />
+            </Dialog>
             <Footer />
 
             {showFeedbackForm && (
-                console.log('Rendering FeedbackForm:', { showFeedbackForm, selectedAppointmentId }),
                 <FeedbackForm
                     appointmentId={selectedAppointmentId}
                     onSubmit={handleFeedbackSubmit}
@@ -287,6 +377,313 @@ const ManageAppointment = () => {
                 />
             )}
         </>
+    );
+};
+
+const getStepStatus = (currentStatus, stepIndex) => {
+    // Mapping của status với index trong timeline
+    const statusMapping = {
+        "1": 1,  // Chờ xác nhận
+        "2": 2,  // Đã xác nhận
+        "3": 3,  // Chờ thanh toán
+        "4": 4,  // Thanh toán thành công
+        "5": 5,  // Đang thực hiện
+        "6": 6,  // Thực hiện xong
+        "7": 7,  // Chờ thanh toán phí phát sinh
+        "8": 8,  // Hoàn thành
+    };
+
+    const currentStepNumber = statusMapping[currentStatus] || 0;
+    const stepNumber = stepIndex + 1;
+
+    if (currentStepNumber > stepNumber) return 'completed';
+    if (currentStepNumber === stepNumber) return 'active';
+    return '';
+};
+
+const AppointmentModal = ({ appointmentID, open, onClose }) => {
+    const [appointmentDetails, setAppointmentDetails] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+    const { getAppointmentDetail } = useManageCus();
+
+    useEffect(() => {
+        const fetchAppointmentDetail = async () => {
+            if (appointmentID) {
+                try {
+                    setLoading(true);
+                    setError(null);
+                    const data = await getAppointmentDetail(appointmentID);
+                    setAppointmentDetails(data);
+                } catch (error) {
+                    console.error('Error fetching appointment detail:', error);
+                    setError(error.message);
+                } finally {
+                    setLoading(false);
+                }
+            }
+        };
+
+        fetchAppointmentDetail();
+    }, [appointmentID]);
+
+    if (loading) return <LoadingCat />;
+    if (error) return (
+        <div className="error-message">
+            <p>{error}</p>
+            <button onClick={onClose}>Đóng</button>
+        </div>
+    );
+    if (!appointmentDetails) return null;
+
+    return (
+        <div className="modal-overlay">
+            <div className="view-modal-content">
+                <div className="modal-header">
+                    <h2>Chi tiết lịch hẹn #{appointmentDetails.appointmentId}</h2>
+                    <button className="close-btn" onClick={onClose}>&times;</button>
+                </div>
+
+                {/* Timeline Component */}
+                <TimelineComponent currentStatus={appointmentDetails?.status} />
+                <div className="current-status">
+                    Trạng thái hiện tại:
+                    <span className={`status-text ${appointmentDetails?.status === "Đã hủy lịch" ? "cancelled" : ""}`}
+                        data-status={appointmentDetails?.status}>
+                        {appointmentDetails?.status || "Chưa cập nhật"}
+                    </span>
+                </div>
+
+                {/* Customer Information */}
+                <div className="info-section">
+                    <h3>Thông tin khách hàng</h3>
+                    <div className="info-grid customer-info">
+                        <div className="info-item">
+                            <label>Họ và tên:</label>
+                            <span>{appointmentDetails?.infoCusResponse?.fullName || "Chưa cập nhật"}</span>
+                        </div>
+                        <div className="info-item">
+                            <label>Địa chỉ:</label>
+                            <span>{appointmentDetails?.infoAppointmentResponse?.address || "Chưa cập nhật"}</span>
+                        </div>
+                        <div className="info-item">
+                            <label>Số điện thoại:</label>
+                            <span>{appointmentDetails?.infoCusResponse?.phone || "Chưa cập nhật"}</span>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Pet Information */}
+                <div className="info-section">
+                    <h3>Thông tin thú cưng</h3>
+                    <div className="info-grid pet-info">
+                        <div className="info-item">
+                            <label>Tên thú cưng:</label>
+                            <span>{appointmentDetails?.infoKoiResponse?.name || "Chưa cập nhật"}</span>
+                        </div>
+                        <div className="info-item">
+                            <label>Giống:</label>
+                            <span>{appointmentDetails?.infoKoiResponse?.breed || "Chưa cập nhật"}</span>
+                        </div>
+                        <div className="info-item">
+                            <label>Tuổi:</label>
+                            <span>{appointmentDetails?.infoKoiResponse?.age || "Chưa cập nhật"}</span>
+                        </div>
+                        <div className="info-item">
+                            <label>Màu sắc:</label>
+                            <span>{appointmentDetails?.infoKoiResponse?.color || "Chưa cập nhật"}</span>
+                        </div>
+                        <div className="info-item">
+                            <label>Cân nặng:</label>
+                            <span>{appointmentDetails?.infoKoiResponse?.weight || "Chưa cập nhật"}</span>
+                        </div>
+                        <div className="info-item">
+                            <label>Chẩn đoán:</label>
+                            <span>{appointmentDetails?.infoKoiResponse?.healthStatus || "Chưa cập nhật"}</span>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Appointment Information */}
+                <div className="info-section">
+                    <h3>Thông tin lịch hẹn</h3>
+                    <div className="info-grid appointment-info">
+                        <div className="info-item">
+                            <label>Ngày hẹn:</label>
+                            <span>{appointmentDetails?.infoAppointmentResponse?.appointmentDate || "Chưa cập nhật"}</span>
+                        </div>
+                        <div className="info-item">
+                            <label>Giờ hẹn:</label>
+                            <span>{appointmentDetails?.infoAppointmentResponse?.time || "Chưa cập nhật"}</span>
+                        </div>
+                        <div className="info-item">
+                            <label>Dịch vụ:</label>
+                            <span>{appointmentDetails?.infoAppointmentResponse?.serviceType || "Chưa cập nhật"}</span>
+                        </div>
+                        <div className="info-item">
+                            <label>Trạng thái:</label>
+                            <span>{appointmentDetails?.status || "Chưa cập nhật"}</span>
+                        </div>
+                        <div className="info-item">
+                            <label>Bác sĩ phụ trách:</label>
+                            <span>{appointmentDetails?.infoAppointmentResponse?.doctorName || "Chưa phân công"}</span>
+                        </div>
+                        <div className="info-item">
+                            <label>Phân công bác sĩ:</label>
+                            <span className={`assign-type ${appointmentDetails?.infoAppointmentResponse?.doctorAssigned ? "customer-choice" : "center-assign"}`}>
+                                {appointmentDetails?.infoAppointmentResponse?.doctorAssigned ? "Khách hàng chọn bác sĩ" : "Trung tâm điều phối bác sĩ"}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Payment Details */}
+                <div className="payment-details-section">
+                    <h3>Chi tiết thanh toán</h3>
+                    <div className="payment-info">
+                        <div className="payment-method">
+                            <span className="label">Phương thức thanh toán:</span>
+                            <span className="value">{appointmentDetails?.transactionMethod || "Chưa cập nhật"}</span>
+                        </div>
+                        <div className="payment-summary-boxes">
+                            <div className="summary-box paid">
+                                <span className="summary-label">Đã thanh toán</span>
+                                <span className="summary-value">{appointmentDetails?.donePayment?.toLocaleString()}đ</span>
+                            </div>
+                            <div className="summary-box unpaid">
+                                <span className="summary-label">Chưa thanh toán</span>
+                                <span className="summary-value">{appointmentDetails?.notDonePayment?.toLocaleString()}đ</span>
+                            </div>
+                            <div className="summary-box total">
+                                <span className="summary-label">Tổng tiền dịch vụ</span>
+                                <span className="summary-value">{appointmentDetails?.totalPayment?.toLocaleString()}đ</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Service Details Table */}
+                    {appointmentDetails?.infoServiceTypeResponse && (
+                        <div className="payment-table">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Mã dịch vụ</th>
+                                        <th>Tên dịch vụ</th>
+                                        <th>Đơn giá</th>
+                                        <th>Trạng thái</th>
+                                        <th>Thành tiền</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {appointmentDetails.infoServiceTypeResponse.map((service) => (
+                                        <tr key={service.serviceTypeId}>
+                                            <td>{service.serviceTypeId}</td>
+                                            <td>{service.serviceTypeName}</td>
+                                            <td>{service.serviceTypePrice?.toLocaleString()}đ</td>
+                                            <td>
+                                                <span className={`payment-status ${service.statusPayment ? "paid" : "unpaid"}`}>
+                                                    {service.statusPayment ? "Đã thanh toán" : "Chưa thanh toán"}
+                                                </span>
+                                            </td>
+                                            <td>{service.serviceTypePrice?.toLocaleString()}đ</td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+                    )}
+                </div>
+
+                {/* Customer Feedback */}
+                <div className="feedback-section">
+                    <h3>Phản hồi của khách hàng</h3>
+                    <div className="feedback-content">
+                        <div className="rating">
+                            <label>Đánh giá:</label>
+                            <div className="stars">
+                                {[...Array(appointmentDetails?.infoFeedbackResponse?.rate || 0)].map((_, index) => (
+                                    <i key={index} className="fas fa-star"></i>
+                                ))}
+                                {[...Array(5 - (appointmentDetails?.infoFeedbackResponse?.rate || 0))].map((_, index) => (
+                                    <i key={index} className="far fa-star"></i>
+                                ))}
+                                <span className="rating-number">({appointmentDetails?.infoFeedbackResponse?.rate}/5)</span>
+                            </div>
+                        </div>
+                        <div className="comment">
+                            <label>Nhận xét:</label>
+                            <p>{appointmentDetails?.infoFeedbackResponse?.feedback || "Chưa có nhận xét"}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+};
+
+const getStepNumber = (status) => {
+    const statusMap = {
+        "Chờ bác sĩ xác nhận": 1,
+        "Đã xác nhận": 2,
+        "Chờ thanh toán tiền dịch vụ": 3,
+        "Thanh toán tiền dịch vụ thành công": 4,
+        "Đang cung cấp dịch vụ": 5,
+        "Thực hiện xong dịch vụ": 6,
+        "Chờ thanh toán tổng tiền": 7,
+        "Hoàn thành": 8,
+        "Đã đánh giá": 9,
+    };
+    return statusMap[status] || 0;
+};
+
+const statusIcons = {
+    "Chờ bác sĩ xác nhận": "fa-clock",
+    "Đã xác nhận": "fa-check",
+    "Chờ thanh toán tiền dịch vụ": "fa-dollar-sign",
+    "Thanh toán tiền dịch vụ thành công": "fa-check-double",
+    "Đang cung cấp dịch vụ": "fa-user-md",
+    "Thực hiện xong dịch vụ": "fa-check-circle",
+    "Chờ thanh toán tổng tiền": "fa-dollar-sign",
+    "Hoàn thành": "fa-flag-checkered",
+    "Đã đánh giá": "fa-star",
+};
+
+const TimelineComponent = ({ currentStatus }) => {
+    const currentStep = getStepNumber(currentStatus);
+    const totalSteps = 9;
+    const progressWidth = `${(currentStep / totalSteps) * 100}%`;
+
+    return (
+        <div className="timeline-container" style={{ "--progress-width": progressWidth }}>
+            {[
+                "Chờ bác sĩ xác nhận",
+                "Đã xác nhận",
+                "Chờ thanh toán tiền dịch vụ",
+                "Thanh toán tiền dịch vụ thành công",
+                "Đang cung cấp dịch vụ",
+                "Thực hiện xong dịch vụ",
+                "Chờ thanh toán tổng tiền",
+                "Hoàn thành",
+                "Đã đánh giá",
+            ].map((status, index) => {
+                const stepNumber = getStepNumber(status);
+                const isCompleted = stepNumber <= currentStep;
+
+                return (
+                    <div key={index} className={`timeline-item ${isCompleted ? "completed" : ""}`}>
+                        <div className="timeline-dot"
+                            title={status}
+                            style={{
+                                borderColor: isCompleted ? "#22C55E" : "#dc3545",
+                                background: isCompleted ? "#22C55E" : "white",
+                            }}>
+                            <i className={`fas ${statusIcons[status]}`}
+                                style={{ color: isCompleted ? "white" : "#dc3545" }} />
+                        </div>
+                    </div>
+                );
+            })}
+        </div>
     );
 };
 

@@ -5,6 +5,8 @@ import { FaStar, FaStarHalfAlt } from 'react-icons/fa';
 import { AiOutlineStar } from 'react-icons/ai';
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import { getDoctorList, getDoctorDetail } from '../service/apiDoctor';
+import Footer from "../components/Footer.jsx";
+import ContactButton from "../components/ContactButton.jsx";
 
 function FindDoctor() {
     const [searchTerm, setSearchTerm] = useState('');
@@ -126,7 +128,7 @@ function FindDoctor() {
                             onClick={() => handlePageChange(currentPage - 1)}
                             disabled={currentPage === 1}
                         >
-                            <IoIosArrowBack />
+                            &lt;
                         </button>
                         <span className={styles.pageInfo}>
                             {currentPage}/{totalPages}
@@ -136,7 +138,7 @@ function FindDoctor() {
                             onClick={() => handlePageChange(currentPage + 1)}
                             disabled={currentPage === totalPages}
                         >
-                            <IoIosArrowForward />
+                            &gt;
                         </button>
                     </div>
                 )}
@@ -145,8 +147,10 @@ function FindDoctor() {
     };
 
     return (
+        <>
+        <CustomerNavBar/>
         <div>
-            <CustomerNavBar/>
+            
             <div className={styles.findDoctorContainer}>
                 <h1>Tìm Bác sĩ</h1>
                 <div className={styles.searchBarContainer}>
@@ -227,6 +231,9 @@ function FindDoctor() {
                 )}
             </div>
         </div>
+                    <ContactButton/>
+                    <Footer/>
+                    </>
     );
 }
 

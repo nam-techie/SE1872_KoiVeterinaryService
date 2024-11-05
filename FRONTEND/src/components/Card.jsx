@@ -2,16 +2,26 @@ import styles from "../styles/HomePage.module.css"
 
 
 // eslint-disable-next-line react/prop-types
-export function DoctorCard({ fullname, sex, phone, experience, profilePic }) {
+export const DoctorCard = ({ fullname, experience, profilePic, phone, rating }) => {
     return (
         <div className={styles.doctorCard}>
-            <img src={profilePic} alt={fullname} className={styles.doctorImage} />
-            <div className={styles.doctorInf}>
-                <h3 className={styles.doctorName}>{fullname}</h3>
-                <p className={styles.doctorDetail}><strong>Giới tính:</strong> {sex ? "Nam" : "Nữ"}</p>
-                <p className={styles.doctorDetail}><strong>Số điện thoại:</strong> {phone}</p>
-                <p className={styles.doctorDetail}><strong>Kinh nghiệm:</strong> {experience} năm</p>
+            <div className={styles.doctorImageContainer}>
+                <img 
+                    src={profilePic}
+                    alt={fullname}
+                    className={styles.doctorImage}
+                    onError={(e) => {
+                        e.target.onerror = null;
+                        e.target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(fullname)}&background=random`;
+                    }}
+                />
             </div>
+            <h3>{fullname}</h3>
+            <p>SĐT: {phone}</p>
+            <p>Kinh nghiệm: {experience} năm</p>
+            {rating && rating !== "NaN" && (
+                <p>Đánh giá: {rating} ⭐</p>
+            )}
         </div>
     );
-}
+};
