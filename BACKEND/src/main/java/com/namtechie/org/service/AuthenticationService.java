@@ -75,6 +75,11 @@ public class AuthenticationService implements UserDetailsService {
             throw new DuplicateEntity("Mật khẩu mới và xác nhận mật khẩu không trùng!!!");
         }
 
+        // In ra thông tin để kiểm tra
+        System.out.println("Mật khẩu cũ: " + account.getPassword());
+        System.out.println("Mật khẩu mới: " + changePasswordRequest.getNewPassword());
+        System.out.println("Mã hóa mật khẩu mới: " + passwordEncoder.encode(changePasswordRequest.getNewPassword()));
+
         // Kiểm tra mật khẩu mới không trùng với mật khẩu cũ
         if (passwordEncoder.matches(changePasswordRequest.getNewPassword(), account.getPassword())) {
             throw new IllegalArgumentException("Mật khẩu mới không được trùng với mật khẩu cũ!!!");
@@ -86,6 +91,7 @@ public class AuthenticationService implements UserDetailsService {
         // Lưu thay đổi vào cơ sở dữ liệu
         accountRepository.save(account);  // Đảm bảo `accountRepository` được inject vào service của bạn
     }
+
 
 
     // xử lí logic, nghiệp vụ
@@ -150,7 +156,7 @@ public class AuthenticationService implements UserDetailsService {
             // Kiểm tra tài khoản
             Account account = (Account) authentication.getPrincipal();
             if (account.isDeleted()) {
-                throw new NotFoundException("Tài khoản đã bị vô hiệu hóa!");
+                throw new NotFoundException("Tài khoản đã bị vô hiệu hóa! Nếu bạn nghĩ rằng đây là một lỗi, vui lòng liên hệ với bộ phận hỗ trợ.");
             }
 
             // Tạo token cho tài khoản
@@ -158,12 +164,9 @@ public class AuthenticationService implements UserDetailsService {
             accountResponse.setToken(tokenService.generateToken(account));
 
             return accountResponse;
-        } catch (NotFoundException e) {
-            // Nếu tài khoản bị vô hiệu hóa
-            throw new NotFoundException("Tài khoản đã bị vô hiệu hóa!");
-        } catch (BadCredentialsException e) {
+        }catch (BadCredentialsException e) {
             // Nếu thông tin tài khoản hoặc mật khẩu sai
-            throw new EntityNotFoundException("Tài khoản hoặc mật khẩu sai!");
+            throw new EntityNotFoundException("Tài khoản hoặc mật khẩu không chính xác. Vui lòng kiểm tra lại.");
         } catch (Exception e) {
             // Xử lý các lỗi khác
             e.printStackTrace();

@@ -22,31 +22,25 @@ export const useLogin = () => {
         try {
             // Gọi API đăng nhập thực sự
             const response = await login(username, password);  // Gọi API từ apiLogin.js
-            console.log('Đăng nhập thành công, dữ liệu trả về:', response);  // Hiển thị dữ liệu trả về từ server
+            console.log('Đăng nhập thành công:', response);  // Hiển thị dữ liệu trả về từ server
 
-            // Lưu token, username và role vào localStorage
+            // Lưu thông tin đăng nhập
             localStorage.setItem('authToken', response.token);
             localStorage.setItem('username', response.username);
-            localStorage.setItem('role', response.role); // Lưu role vào localStorage
+            localStorage.setItem('role', response.role);
 
-            // Chuyển hướng đến LoadingCat trước
+            // Chuyển hướng đến LoadingCat
             navigate('/loading');
 
-            // Điều hướng đến trang thành công sau 3 giây
             setTimeout(() => {
                 navigate('/homepage')
             }, 3000);
-            // Thời gian hiển thị LoadingCat
 
         } catch (error) {
-            // Kiểm tra nếu là lỗi 401 và có response body
-            if (error.response && error.response.status === 401) {
-                setError('Tài khoản hoặc mật khẩu sai!');
-            } else {
-                setError(error.message || 'Đăng nhập thất bại, hãy thử lại');
-            }
+            // Chỉ lấy message lỗi trực tiếp từ backend
+            setError(error.response.data);
         } finally {
-            setLoading(false);  // Tắt trạng thái loading
+            setLoading(false);
         }
     };
 

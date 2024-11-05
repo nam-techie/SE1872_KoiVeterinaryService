@@ -1,9 +1,12 @@
 package com.namtechie.org.controller;
 
 import com.namtechie.org.entity.*;
+import com.namtechie.org.exception.BadCredentialsException;
 import com.namtechie.org.exception.DoctorNotAvailableException;
+import com.namtechie.org.exception.DuplicateEntity;
 import com.namtechie.org.exception.InvalidPhoneNumberException;
 import com.namtechie.org.model.Schedule;
+import com.namtechie.org.model.request.ChangePasswordRequest;
 import com.namtechie.org.model.request.CustomerInfoRequest;
 import com.namtechie.org.model.request.FeedbackRequest;
 import com.namtechie.org.model.response.AppointmentResponse;
@@ -18,10 +21,13 @@ import com.namtechie.org.model.request.AppointmentRequest;
 import com.namtechie.org.service.AppointmentService;
 import com.namtechie.org.service.TokenService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Date;
@@ -43,16 +49,8 @@ public class AppointmentController {
     ScheduleService scheduleService;
 
     @Autowired
-    ZoneService zoneService;
-
-    @Autowired
     CustomerService customerService;
 
-    @Autowired
-    TokenService tokenService;
-
-    @Autowired
-    DoctorService doctorService;
 
     @Autowired
     AppointmentService appointmentService;
@@ -258,6 +256,34 @@ public class AppointmentController {
         } catch (Exception e) {
             // Bắt các lỗi chung khác
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Có lỗi xảy ra: " + e.getMessage());
+        }
+    }
+
+    @Autowired
+    AuthenticationService authenticationService;
+
+    @PostMapping("/changePasswordCustomer")
+    public ResponseEntity<String> changePasswordCustomer(@Valid @RequestBody ChangePasswordRequest changePasswordRequest, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            // Lấy thông báo lỗi từ `BindingResult`
+            StringBuilder errorMessage = new StringBuilder();
+            for (FieldError error : bindingResult.getFieldErrors()) {
+                errorMessage.append(error.getDefaultMessage());
+            }
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMessage.toString());
+        }
+
+        try {
+            authenticationService.changePassword(changePasswordRequest);
+            return ResponseEntity.ok("Mật khẩu đã được thay đổi thành công.");
+        } catch (BadCredentialsException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Mật khẩu cũ không đúng.");
+        } catch (DuplicateEntity e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Mật khẩu mới và xác nhận mật khẩu không trùng.");
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Mật khẩu mới không được trùng với mật khẩu cũ.");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Đã xảy ra lỗi trong quá trình thay đổi mật khẩu.");
         }
     }
 

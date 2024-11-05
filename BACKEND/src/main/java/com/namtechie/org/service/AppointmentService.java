@@ -242,7 +242,11 @@ public class AppointmentService {
             List<AppointmentStatus> list = new ArrayList<>();
             AppointmentStatus appointmentStatus = new AppointmentStatus();
             appointmentStatus.setAppointment(appointment);
-            appointmentStatus.setStatus("Chờ bác sĩ xác nhận");
+            if(appointmentRequest.getServiceTypeId() == 1){
+                appointmentStatus.setStatus("Đã xác nhận");
+            } else {
+                appointmentStatus.setStatus("Chờ bác sĩ xác nhận");
+            }
             appointmentStatus.setNotes("");
             list.add(appointmentStatus);
 
@@ -657,6 +661,9 @@ public class AppointmentService {
             appointmentResponses.add(appointmentResponse);
         }
 
+        // Đảo ngược danh sách appointmentResponses
+        Collections.reverse(appointmentResponses);
+
         return appointmentResponses;
     }
 
@@ -839,7 +846,7 @@ public class AppointmentService {
         if (infoCus != null) {
             infoCusResponse.setFullName(infoCus.getFullName());
             infoCusResponse.setAddress(infoCus.getAddress());
-            infoCusResponse.setPhone(infoCus.getPhone());
+            infoCusResponse.setPhone(appointment.getPhone());
         } else {
             infoCusResponse.setFullName(null);
         }

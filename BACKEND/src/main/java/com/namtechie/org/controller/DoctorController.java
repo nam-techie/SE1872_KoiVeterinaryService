@@ -18,6 +18,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -172,7 +174,16 @@ public class DoctorController {
     }
 
     @PostMapping("/changePasswordDoctor")
-    public ResponseEntity<String> changePasswordDoctor(@RequestBody ChangePasswordRequest changePasswordRequest) {
+    public ResponseEntity<String> changePasswordDoctor(@Valid @RequestBody ChangePasswordRequest changePasswordRequest, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            // Lấy thông báo lỗi từ `BindingResult`
+            StringBuilder errorMessage = new StringBuilder();
+            for (FieldError error : bindingResult.getFieldErrors()) {
+                errorMessage.append(error.getDefaultMessage());
+            }
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMessage.toString());
+        }
+
         try {
             authenticationService.changePassword(changePasswordRequest);
             return ResponseEntity.ok("Mật khẩu đã được thay đổi thành công.");
@@ -186,6 +197,5 @@ public class DoctorController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Đã xảy ra lỗi trong quá trình thay đổi mật khẩu.");
         }
     }
-
 
 }

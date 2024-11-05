@@ -107,9 +107,9 @@ public class PaymentService {
         String urlPayment = null;
 
         // Kiểm tra trạng thái để xác định URL thanh toán
-        if (latestStatus.getStatus().equals("Đã xác nhận")) { // .getStatus() để lấy tên trạng thái
+        if ((latestStatus.getStatus().equals("Đã xác nhận")) || (latestStatus.getStatus().equals("Chờ thanh toán tiền dịch vụ"))) { // .getStatus() để lấy tên trạng thái
             urlPayment = sendPaymentDeposit(appointmentId);
-        } else if (latestStatus.getStatus().equals("Thực hiện xong dịch vụ")) {
+        } else if ((latestStatus.getStatus().equals("Thực hiện xong dịch vụ")) || (latestStatus.getStatus().equals("Chờ thanh toán tổng tiền"))) {
             urlPayment = sendPaymentTotalUrlForCustomer(appointmentId);
         }
 
@@ -179,7 +179,7 @@ public class PaymentService {
         long depositPrice = serviceType.getBase_price();
 
         // Gọi hàm createUrl để tạo URL thanh toán và trả về chuỗi đó
-        String urlToPayment = createUrl(appointmentId, depositPrice, 1);
+        String urlToPayment = createUrl(appointmentId, depositPrice);
         AppointmentStatus appointmentStatus = new AppointmentStatus();
         appointmentStatus.setAppointment(appointment);
         appointmentStatus.setStatus("Chờ thanh toán tiền dịch vụ");
@@ -373,7 +373,7 @@ public class PaymentService {
         }
 
         // Gọi hàm createUrl để tạo URL thanh toán và trả về chuỗi đó
-        String urlToPayment = createUrl(appointmentId, totalPrice, 2);
+        String urlToPayment = createUrl(appointmentId, totalPrice);
         AppointmentStatus appointmentStatus = new AppointmentStatus();
         appointmentStatus.setAppointment(appointment);
         appointmentStatus.setStatus("Chờ thanh toán tổng tiền");
@@ -435,7 +435,7 @@ public class PaymentService {
 
 
     // Phương thức createUrl với tham số appointmentId
-    public String createUrl(Long appointmentId, long paymentToPayment, int part) throws Exception {
+    public String createUrl(Long appointmentId, long paymentToPayment) throws Exception {
         // Lấy thông tin cuộc hẹn từ AppointmentService
 //        Payment payment = paymentRepository.findByAppointmentId(appointmentId);
 //        if (payment == null) {
@@ -462,7 +462,7 @@ public class PaymentService {
         String tmnCode = "T0HQKZLG";
         String secretKey = "F0LQRHMUCEDG0543CTWHY1H2VD10MLFD";
         String vnpUrl = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
-        String returnUrl = "http://localhost:5741/customer/manage-appointment?orderID=" + appointment.getId() + "&random=" + randomString + "&part=" + part;
+        String returnUrl = "http://localhost:5741/customer/manage-appointment?orderID=" + appointment.getId() + "&random=" + randomString;
         String currCode = "VND";
 
         Map<String, String> vnpParams = new TreeMap<>();

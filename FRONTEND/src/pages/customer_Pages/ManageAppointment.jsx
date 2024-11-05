@@ -22,6 +22,8 @@ import {
     DialogActions,
     Box,
     Divider,
+    Snackbar,
+    Alert,
 } from "@mui/material";
 
 const appointmentDetails = {
@@ -131,8 +133,8 @@ const ManageAppointment = () => {
     const [error, setError] = useState(null);
     const [searchTerm, setSearchTerm] = useState('');
     const [dateSearch, setDateSearch] = useState('');
-    const [sortBy, setSortBy] = useState('appointmentDate');
-    const [sortOrder, setSortOrder] = useState('asc');
+    const [sortBy, setSortBy] = useState('id');
+    const [sortOrder, setSortOrder] = useState('desc');
     const [statusFilter, setStatusFilter] = useState('all');
     
     // Thêm state cho phân trang
@@ -142,6 +144,10 @@ const ManageAppointment = () => {
     const [showFeedbackForm, setShowFeedbackForm] = useState(false);
     const [selectedAppointmentId, setSelectedAppointmentId] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const [openSnackbar, setOpenSnackbar] = useState(false);
+    const [snackbarMessage, setSnackbarMessage] = useState('');
+    const [snackbarSeverity, setSnackbarSeverity] = useState('success');
 
     const steps = [
         "Chờ xác nhận",
@@ -211,7 +217,9 @@ const ManageAppointment = () => {
                             const response = await axiosInstance.post(`/customer/confirmPayment/${orderID}`);
                             
                             if (response.status === 200) {
-                                alert('Thanh toán thành công!');
+                                setSnackbarMessage('Thanh toán thành công!');
+                                setSnackbarSeverity('success');
+                                setOpenSnackbar(true);
                                 fetchAppointments();
                             }
                             
@@ -220,14 +228,17 @@ const ManageAppointment = () => {
                             
                         } catch (error) {
                             console.error('Lỗi xác nhận thanh toán:', error);
-                            alert('Có lỗi xảy ra khi xác nhận thanh toán');
+                            setSnackbarMessage('Có lỗi xảy ra khi xác nhận thanh toán');
+                            setSnackbarSeverity('error');
+                            setOpenSnackbar(true);
                         }
                     };
                     
                     confirmPayment();
                 } else if (transactionStatus !== "00") {
-                    alert('Thanh toán không thành công!');
-                    // Xóa các tham số khỏi URL
+                    setSnackbarMessage('Thanh toán không thành công!');
+                    setSnackbarSeverity('error');
+                    setOpenSnackbar(true);
                     window.history.replaceState({}, document.title, window.location.pathname);
                 }
             };
@@ -235,6 +246,13 @@ const ManageAppointment = () => {
             handleVNPayCallback();
         }
     }, []); // Chạy một lần khi component mount
+
+    const handleCloseSnackbar = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setOpenSnackbar(false);
+    };
 
     if (loading) return <LoadingCat />;
     if (error) return <div>Lỗi: {error}</div>;
@@ -264,6 +282,11 @@ const ManageAppointment = () => {
                 const statusA = a.appointmentStatus === 'Đã đánh giá' ? 1 : 0;
                 const statusB = b.appointmentStatus === 'Đã đánh giá' ? 1 : 0;
                 return sortOrder === 'asc' ? statusA - statusB : statusB - statusA;
+            }
+            if (sortBy === 'id') {
+                return sortOrder === 'asc' 
+                    ? a.appointmentId - b.appointmentId 
+                    : b.appointmentId - a.appointmentId;
             }
             return 0;
         });
@@ -381,8 +404,10 @@ const ManageAppointment = () => {
                                 setSortOrder(newSortOrder);
                             }}
                         >
-                            <option value="appointmentDate-asc">Sắp xếp theo ngày ↑</option>
+                            <option value="id-desc">ID lịch hẹn mới nhất</option>
+                            <option value="id-asc">ID lịch hẹn cũ nhất</option>
                             <option value="appointmentDate-desc">Sắp xếp theo ngày ↓</option>
+                            <option value="appointmentDate-asc">Sắp xếp theo ngày ↑</option>
                             <option value="status-asc">Chưa đánh giá trước</option>
                             <option value="status-desc">Đã đánh giá trước</option>
                         </select>
@@ -427,6 +452,8 @@ const ManageAppointment = () => {
                                             </button>
                                         )}
                                         {(appointment.appointmentStatus === 'Đã xác nhận' || 
+                                        appointment.appointmentStatus === 'Chờ thanh toán tiền dịch vụ' || 
+                                        appointment.appointmentStatus === 'Chờ thanh toán tổng tiền' ||
                                           appointment.appointmentStatus === 'Thực hiện xong dịch vụ') && (
                                             <button 
                                                 className={styles.paymentButton}
@@ -500,6 +527,21 @@ const ManageAppointment = () => {
                     onClose={() => setShowFeedbackForm(false)}
                 />
             )}
+
+            <Snackbar
+                open={openSnackbar}
+                autoHideDuration={3000}
+                onClose={handleCloseSnackbar}
+                anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+            >
+                <Alert 
+                    onClose={handleCloseSnackbar} 
+                    severity={snackbarSeverity}
+                    sx={{ width: '100%', fontSize: '1rem' }}
+                >
+                    {snackbarMessage}
+                </Alert>
+            </Snackbar>
         </>
     );
 };

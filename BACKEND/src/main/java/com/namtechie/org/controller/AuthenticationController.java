@@ -4,6 +4,7 @@ import com.namtechie.org.entity.Account;
 import com.namtechie.org.entity.Doctor;
 import com.namtechie.org.entity.ServiceType;
 import com.namtechie.org.exception.BadCredentialsException;
+import com.namtechie.org.exception.DataIntegrityViolationException;
 import com.namtechie.org.exception.DuplicateEntity;
 import com.namtechie.org.exception.NotFoundException;
 import com.namtechie.org.model.UpdateDoctorLogin;
@@ -22,6 +23,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -85,23 +88,47 @@ public class AuthenticationController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity register(@Valid @RequestBody RegisterRequest registerRequest) {
-        // nhờ thằng AuthenticationService => tạo dùm cái account
-        AccountResponse newAccount = authenticationService.register(registerRequest);
-        return ResponseEntity.ok(newAccount);
+    public ResponseEntity<String> register(@Valid @RequestBody RegisterRequest registerRequest, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            StringBuilder errors = new StringBuilder();
+            for (FieldError error : bindingResult.getFieldErrors()) {
+                errors.append(error.getDefaultMessage());
+            }
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors.toString());
+        }
+
+        try {
+            authenticationService.register(registerRequest);
+            return ResponseEntity.ok("Đăng ký thành công!");
+
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+
+        } catch (DuplicateEntity e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+
+        } catch (DataIntegrityViolationException e) {
+            // Xử lý lỗi cơ sở dữ liệu
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Đã xảy ra lỗi trong quá trình đăng ký, vui lòng thử lại sau.");
+
+        } catch (Exception e) {
+            // Xử lý các lỗi khác
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Đã xảy ra lỗi không xác định, vui lòng thử lại sau.");
+        }
     }
 
     @PostMapping("/login")
-    public ResponseEntity login(@Valid @RequestBody LoginRequest loginRequest) {
-        try{
-            // nhờ thằng AuthenticationService => tạo dùm cái account
+    public ResponseEntity login(@RequestBody LoginRequest loginRequest) {
+        try {
             AccountResponse newAccount = authenticationService.login(loginRequest);
             return ResponseEntity.ok(newAccount);
-        }catch (NotFoundException e){
+        } catch (NotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         } catch (EntityNotFoundException e) {
-            return  ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
-        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
+        } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Đã xảy ra lỗi trong quá trình đăng nhập, vui lòng thử lại sau.");
         }
     }
