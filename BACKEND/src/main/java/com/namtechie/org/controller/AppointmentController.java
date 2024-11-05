@@ -9,6 +9,7 @@ import com.namtechie.org.model.response.AppointmentResponse;
 import com.namtechie.org.model.response.AppointmentStatusResponse;
 import com.namtechie.org.repository.AppointmentRepository;
 import com.namtechie.org.repository.PaymentDetailRepository;
+import com.namtechie.org.repository.ZoneRepository;
 import com.namtechie.org.service.*;
 import com.namtechie.org.model.request.AppointmentRequest;
 import com.namtechie.org.service.AppointmentService;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.sql.Date;
 import java.sql.Time;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -35,7 +37,7 @@ public class AppointmentController {
     ScheduleService scheduleService;
 
     @Autowired
-    ZoneService zoneService;
+    ZoneRepository zoneRepository;
 
     @Autowired
     AppointmentService appointmentService;
@@ -115,7 +117,16 @@ public class AppointmentController {
     //Cái này còn hơi đắng đo mà chắc cần token mà
     @GetMapping(value = "/getAllZone", produces = "application/json")
     public List<Zone> getAllZone() {
-        return zoneService.findAll();
+        List<Zone> zoneList = new ArrayList<>();
+        List<Zone> allZones = zoneRepository.findAll();
+
+        // Lọc các zone có ID từ 2 đến 14
+        for (Zone zone : allZones) {
+            if (zone.getId() >= 2 && zone.getId() <= 14) {
+                zoneList.add(zone);
+            }
+        }
+        return zoneList;
     }
 
 
