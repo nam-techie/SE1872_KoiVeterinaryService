@@ -186,6 +186,56 @@ const ManageAppointment = () => {
         return () => clearInterval(interval);
     }, []);
 
+    useEffect(() => {
+        // Kiểm tra xem URL hiện tại có phải là callback từ VNPAY không
+        const isVNPayCallback = window.location.search.includes('vnp_TransactionStatus');
+        
+        if (isVNPayCallback) {
+            const handleVNPayCallback = () => {
+                const urlParams = new URLSearchParams(window.location.search);
+                
+                // Lấy các tham số cần thiết
+                const orderID = urlParams.get('orderID');
+                const transactionStatus = urlParams.get('vnp_TransactionStatus');
+                
+                console.log('VNPAY Callback Data:', {
+                    orderID,
+                    transactionStatus
+                });
+                
+                // Chỉ xử lý khi có orderID và transactionStatus là "00" (thanh toán thành công)
+                if (orderID && transactionStatus === "00") {
+                    // Gọi API xác nhận thanh toán
+                    const confirmPayment = async () => {
+                        try {
+                            const response = await axiosInstance.post(`/customer/confirmPayment/${orderID}`);
+                            
+                            if (response.status === 200) {
+                                alert('Thanh toán thành công!');
+                                fetchAppointments();
+                            }
+                            
+                            // Xóa các tham số khỏi URL
+                            window.history.replaceState({}, document.title, window.location.pathname);
+                            
+                        } catch (error) {
+                            console.error('Lỗi xác nhận thanh toán:', error);
+                            alert('Có lỗi xảy ra khi xác nhận thanh toán');
+                        }
+                    };
+                    
+                    confirmPayment();
+                } else if (transactionStatus !== "00") {
+                    alert('Thanh toán không thành công!');
+                    // Xóa các tham số khỏi URL
+                    window.history.replaceState({}, document.title, window.location.pathname);
+                }
+            };
+            
+            handleVNPayCallback();
+        }
+    }, []); // Chạy một lần khi component mount
+
     if (loading) return <LoadingCat />;
     if (error) return <div>Lỗi: {error}</div>;
 

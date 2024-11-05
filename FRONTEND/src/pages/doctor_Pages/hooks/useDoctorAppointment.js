@@ -64,7 +64,7 @@ const useDoctorAppointment = () => {
         try {
             setLoading(true);
             const response = await axiosInstance.get('/veterinary/getListAppointmentDoctor');
-            
+
             const transformedData = response.data.map(appointment => ({
                 id: appointment.appointmentId.toString(),
                 date: moment(appointment.appointmentDate).format('YYYY-MM-DD'),
@@ -75,7 +75,7 @@ const useDoctorAppointment = () => {
 
             setAppointments(transformedData);
             setError(null);
-            
+
             // Fetch stats after appointments
             await fetchStats();
         } catch (err) {
@@ -92,7 +92,7 @@ const useDoctorAppointment = () => {
             setLoading(true);
             const response = await axiosInstance.put(
                 `/veterinary/isDoctorConfirm/${appointmentId}`);
-            
+
             if (response.data) {
                 message.success('Xác nhận lịch hẹn thành công');
                 // Refresh the appointments list
@@ -114,7 +114,7 @@ const useDoctorAppointment = () => {
             const response = await axiosInstance.put(
                 `/veterinary/updateWorkingStatus/${appointmentId}`
             );
-            
+
             if (response.data) {
                 message.success('Đã tiếp nhận dịch vụ thành công');
                 // Refresh the appointments list
@@ -137,7 +137,7 @@ const useDoctorAppointment = () => {
                 `/veterinary/saveServiceTypeAdd/${appointmentId}`,
                 serviceData
             );
-            
+
             if (response.data) {
                 message.success('Đã lưu hồ sơ bệnh nhân thành công');
                 // Refresh the appointments list
@@ -163,7 +163,7 @@ const useDoctorAppointment = () => {
                     cancelReason: cancelReason
                 }
             );
-            
+
             if (response.data) {
                 message.success('Đã hủy lịch hẹn thành công');
                 await fetchAppointments();

@@ -65,8 +65,7 @@ public class AppointmentController {
 
     @Autowired
     PaymentDetailRepository paymentDetailRepository;
-    @Autowired
-    private ZoneRepository zoneRepository;
+
 
 
     @GetMapping("/listTrueStatus/{paymentId}")
@@ -243,6 +242,23 @@ public class AppointmentController {
     public ResponseEntity updateInfoCustomer(@RequestBody CustomerInfoRequest customerInfo) {
         CustomerInfoRequest newUpdate = customerService.updateCustomerInfo(customerInfo);
         return ResponseEntity.ok(newUpdate);
+    }
+
+    @PostMapping("/confirmPayment/{appointmentId}")
+    public ResponseEntity<String> confirmPayment(@PathVariable long appointmentId) {
+        try {
+            paymentService.acceptStatus(appointmentId);
+            return ResponseEntity.ok("Đã lưu thành công");
+        } catch (IllegalArgumentException e) {
+            // Bắt lỗi khi không tìm thấy cuộc hẹn hoặc trạng thái mới nhất
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        } catch (RuntimeException e) {
+            // Bắt các lỗi runtime khác và trả về lỗi server
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Có lỗi xảy ra khi xử lý thanh toán: " + e.getMessage());
+        } catch (Exception e) {
+            // Bắt các lỗi chung khác
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Có lỗi xảy ra: " + e.getMessage());
+        }
     }
 
 

@@ -171,8 +171,8 @@ public class DoctorController {
         }
     }
 
-    @GetMapping("/changePasswordDoctor")
-    public ResponseEntity<?> changePasswordDoctor(ChangePasswordRequest changePasswordRequest) {
+    @PostMapping("/changePasswordDoctor")
+    public ResponseEntity<String> changePasswordDoctor(@RequestBody ChangePasswordRequest changePasswordRequest) {
         try {
             authenticationService.changePassword(changePasswordRequest);
             return ResponseEntity.ok("Mật khẩu đã được thay đổi thành công.");

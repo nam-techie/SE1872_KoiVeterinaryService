@@ -633,8 +633,7 @@ public class DoctorService {
         CountAppointmentDoctorRequest response = new CountAppointmentDoctorRequest();
 
         long countTotal = appointmentRepository.countTotalAppointmentsByDoctor(doctor.getId());
-        long countCancel = appointmentRepository.countCancelledAppointmentsByDoctor(doctor.getId());
-
+        long countCancel = 0;
         long countDone = 0;
         long countWait = 0;
 
@@ -642,17 +641,42 @@ public class DoctorService {
         for (Appointment appointment : appointments) {
             List<AppointmentStatus> statuses = appointmentStatusRepository.findByAppointment(appointment);
 
-            // Tìm trạng thái có createDate lớn nhất (mới nhất)
+            // Tìm trạng thái mới nhất của cuộc hẹn
             AppointmentStatus latestStatus = null;
             for (AppointmentStatus status : statuses) {
                 if (latestStatus == null || status.getCreate_date().toLocalDateTime().isAfter(latestStatus.getCreate_date().toLocalDateTime())) {
                     latestStatus = status;
                 }
             }
-            if ("Thực hiện xong dịch vụ".equals(latestStatus.getStatus())) {
-                countDone++;
-            } else if ("Chờ bác sĩ xác nhận".equals(latestStatus.getStatus())) {
-                countWait++;
+
+            // Xác định hành động dựa trên trạng thái cuối cùng
+            if (latestStatus != null) {
+                String finalStatus = latestStatus.getStatus();
+
+                switch (finalStatus) {
+                    case "Hoàn thành":
+                        countDone++;
+                        break;
+                    case "Chờ bác sĩ xác nhận":
+                        countWait++;
+                        break;
+                    case "Đã hủy lịch":
+                        // Chỉ đếm "Đã hủy lịch" nếu không có trạng thái "Đang cung cấp dịch vụ" hoặc "Thực hiện xong dịch vụ" trong các trạng thái trước đó
+                        boolean canCancel = true;
+                        for (AppointmentStatus status : statuses) {
+                            if ("Đang cung cấp dịch vụ".equals(status.getStatus()) || "Thực hiện xong dịch vụ".equals(status.getStatus())) {
+                                canCancel = false;
+                                break;
+                            }
+                        }
+                        if (canCancel) {
+                            countCancel++;
+                        }
+                        break;
+                    default:
+                        // Không làm gì nếu trạng thái không nằm trong các trường hợp trên
+                        break;
+                }
             }
         }
 

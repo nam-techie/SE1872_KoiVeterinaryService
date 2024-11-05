@@ -352,8 +352,10 @@ const DoctorDashBoard = () => {
           </div>
           <h2 className={styles.profileName}>{doctorInfo.fullName}</h2>
           <div className={styles.averageRating}>
-            <span className={styles.stars}>{'⭐'.repeat(Math.floor(doctorInfo.rate))}</span>
-            <span className={styles.ratingNumber}>({doctorInfo.rate.toFixed(1)})</span>
+            <span className={styles.stars}>{'⭐'.repeat(Math.floor(doctorInfo.rate || 0))}</span>
+            <span className={styles.ratingNumber}>
+              {doctorInfo.rate ? `(${Number(doctorInfo.rate).toFixed(1)})` : '(Chưa có đánh giá)'}
+            </span>
           </div>
         </div>
         
@@ -361,28 +363,28 @@ const DoctorDashBoard = () => {
           <div className={styles.infoGrid}>
             <div className={styles.infoItem}>
               <div className={styles.infoLabel}>Số điện thoại</div>
-              <div className={styles.infoValue}>{doctorInfo.phone}</div>
+              <div className={styles.infoValue}>{doctorInfo.phone || 'Chưa cập nhật'}</div>
             </div>
             
             <div className={styles.infoItem}>
               <div className={styles.infoLabel}>Chuyên môn</div>
-              <div className={styles.infoValue}>{doctorInfo.specialty}</div>
+              <div className={styles.infoValue}>{doctorInfo.specialty || 'Chưa cập nhật'}</div>
             </div>
             
             <div className={styles.infoItem}>
               <div className={styles.infoLabel}>Kinh nghiệm</div>
-              <div className={styles.infoValue}>{doctorInfo.experience} năm</div>
+              <div className={styles.infoValue}>{doctorInfo.experience ? `${doctorInfo.experience} năm` : 'Chưa cập nhật'}</div>
             </div>
             
             <div className={styles.infoItem}>
               <div className={styles.infoLabel}>Bằng cấp</div>
-              <div className={styles.infoValue}>{doctorInfo.qualification}</div>
+              <div className={styles.infoValue}>{doctorInfo.qualification || 'Chưa cập nhật'}</div>
             </div>
           </div>
 
           <div className={styles.description}>
             <h3 className={styles.descriptionTitle}>Mô tả</h3>
-            <p className={styles.descriptionContent}>{doctorInfo.description}</p>
+            <p className={styles.descriptionContent}>{doctorInfo.description || 'Chưa cập nhật mô tả'}</p>
           </div>
 
           {/* Thêm phần nút điều khiển */}
