@@ -1,7 +1,8 @@
 package com.namtechie.org.config;
 
 import com.cloudinary.Cloudinary;
-import org.springframework.beans.factory.annotation.Value;
+import com.google.api.client.util.Value;
+import io.github.cdimascio.dotenv.Dotenv;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -10,22 +11,26 @@ import java.util.Map;
 
 @Configuration
 public class CloudinaryConfig {
-
-    @Value("${CLOUDINARY_CLOUD_NAME}")
+    @Value("${cloudinary.cloud-name}")
     private String cloudName;
 
-    @Value("${CLOUDINARY_API_KEY}")
+    @Value("${cloudinary.api-key}")
     private String apiKey;
 
-    @Value("${CLOUDINARY_API_SECRET}")
+    @Value("${cloudinary.api-secret}")
     private String apiSecret;
+
+    private Cloudinary cloudinary;
+
 
     @Bean
     public Cloudinary cloudinary() {
-        Map<String, String> config = new HashMap<>();
-        config.put("cloud_name", cloudName);
-        config.put("api_key", apiKey);
-        config.put("api_secret", apiSecret);
+        Dotenv dotenv = Dotenv.load();
+
+        final Map<String, String> config = new HashMap<>();
+        config.put("cloud_name", dotenv.get("CLOUDINARY_CLOUD_NAME"));
+        config.put("api_key", dotenv.get("CLOUDINARY_API_KEY"));
+        config.put("api_secret", dotenv.get("CLOUDINARY_API_SECRET"));
         return new Cloudinary(config);
     }
 }

@@ -1013,10 +1013,6 @@ public class AppointmentService {
             Customers customers = app.getCustomers();
             Zone zone = app.getZone();
 
-            // Kiểm tra null cho các đối tượng
-            if (appointmentInfo == null || serviceType == null || doctor == null || customers == null || zone == null) {
-                continue; // Bỏ qua vòng lặp này nếu bất kỳ đối tượng nào bị null
-            }
 
             List<AppointmentStatus> statuses = appointmentStatusRepository.findByAppointment(app);
 

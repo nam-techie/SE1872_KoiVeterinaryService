@@ -9,6 +9,7 @@ import com.namtechie.org.model.response.AppointmentResponse;
 import com.namtechie.org.model.response.AppointmentStatusResponse;
 import com.namtechie.org.repository.AppointmentRepository;
 import com.namtechie.org.repository.PaymentDetailRepository;
+import com.namtechie.org.repository.ZoneRepository;
 import com.namtechie.org.service.*;
 import com.namtechie.org.model.request.AppointmentRequest;
 import com.namtechie.org.service.AppointmentService;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.sql.Date;
 import java.sql.Time;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -48,12 +50,14 @@ public class AppointmentController {
 
     @Autowired
     PaymentDetailRepository paymentDetailRepository;
+    @Autowired
+    private ZoneRepository zoneRepository;
 
 
     @GetMapping("/listTrueStatus/{paymentId}")
     public ResponseEntity<List<PaymentDetail>> listFalseStatus(@PathVariable long paymentId) {
         List<PaymentDetail> paymentDetails = paymentDetailRepository.findListByPaymentIdAndStatus(paymentId, true);
-        return  ResponseEntity.ok(paymentDetails);
+        return ResponseEntity.ok(paymentDetails);
     }
 
     @GetMapping("/listAppointmentDetail/{id}")
@@ -96,17 +100,17 @@ public class AppointmentController {
         return ResponseEntity.ok(scheduleService.findFreeScheduleOfSession());
     }
 
-    @PostMapping(value = "/createAppointment", produces = "application/json" )
+    @PostMapping(value = "/createAppointment", produces = "application/json")
     public ResponseEntity<?> createAppointment(@RequestBody AppointmentRequest appointmentRequest) {
         try {
             Appointment appointment = appointmentService.createAppointment(appointmentRequest);
             return ResponseEntity.ok(appointment);
         } catch (DoctorNotAvailableException | InvalidPhoneNumberException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                               .body(e.getMessage());
-        }  catch (Exception e) {
+                    .body(e.getMessage());
+        } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                               .body("Hết giờ làm việc của bác sĩ");
+                    .body("Hết giờ làm việc của bác sĩ");
         }
     }
 
@@ -115,10 +119,17 @@ public class AppointmentController {
     //Cái này còn hơi đắng đo mà chắc cần token mà
     @GetMapping(value = "/getAllZone", produces = "application/json")
     public List<Zone> getAllZone() {
-        return zoneService.findAll();
+        List<Zone> zoneList = new ArrayList<>();
+        List<Zone> allZones = zoneRepository.findAll();
+
+        // Lọc các zone có ID từ 2 đến 14
+        for (Zone zone : allZones) {
+            if (zone.getId() >= 2 && zone.getId() <= 14) {
+                zoneList.add(zone);
+            }
+        }
+        return zoneList;
     }
-
-
 
 
     //Nằm dỡ ní ơi
@@ -137,8 +148,6 @@ public class AppointmentController {
     }
 
 
-
-
 //
 //    @GetMapping("/getAppointmentIdForUser/{accountId}")
 //    @PreAuthorize("hasAuthority('CUSTOMER')")
@@ -148,13 +157,11 @@ public class AppointmentController {
 //    }
 
 
-
     @PutMapping("/cancelAppointmentByCustomer/{appointmentId}")
     public ResponseEntity cancelAppointmentByCustomer(@PathVariable long appointmentId) {
         appointmentService.cancelAppointmentByCustomer(appointmentId);
         return ResponseEntity.ok("Đã hủy thành công");
     }
-
 
 
 //    @GetMapping("/countAppointment/{id}")
@@ -187,8 +194,8 @@ public class AppointmentController {
     FeedbackService feedbackService;
 
     @PostMapping("/createFeedback/{appointmentId}")
-    public ResponseEntity createFeedback(@PathVariable long appointmentId,@RequestBody FeedbackRequest feedBack) {
-        FeedBack feedBack1 = feedbackService.createFeedbackService(appointmentId,feedBack);
+    public ResponseEntity createFeedback(@PathVariable long appointmentId, @RequestBody FeedbackRequest feedBack) {
+        FeedBack feedBack1 = feedbackService.createFeedbackService(appointmentId, feedBack);
         return ResponseEntity.ok(feedBack1);
     }
 
