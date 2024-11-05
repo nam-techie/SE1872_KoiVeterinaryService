@@ -24,72 +24,6 @@ import {
     Divider,
 } from "@mui/material";
 
-const appointmentDetails = {
-    id: "5",
-    bookingDate: "2024-11-01",
-    bookingTime: "17:53",
-    customerName: "cus001",
-    phone: "0901544718",
-    address: "D1HCH FPT",
-    consultationDetails: {
-        service: "Khảo sát hồ cá tại nhà",
-        issue: "Kiểm tra định kỳ",
-        consultationDate: "2024-11-05",
-        consultationTime: "07:00",
-        doctor: "Trần Minh Tâm",
-        location: "D1HCH FPT",
-    },
-    status: "7", // Hoàn thành
-    totalCost: 6050000,
-    petInfo: {
-        petName: "cc",
-        species: "Cá Koi",
-        breed: "cc",
-        age: "4",
-        color: "ff",
-        weight: "44",
-        healthStatus: "dfdf"
-    },
-    services: [
-        { name: "Khảo sát hồ cá tại nhà", unitPrice: 1000000, totalPrice: 1000000 },
-        { name: "Tiền phí di chuyển", unitPrice: 150000, totalPrice: 150000 },
-        { name: "Kiểm tra và vệ sinh hồ", unitPrice: 700000, totalPrice: 700000 },
-        { name: "Cung cấp thức ăn dinh dưỡng", unitPrice: 400000, totalPrice: 400000 },
-        { name: "Xử lý nước hồ", unitPrice: 600000, totalPrice: 600000 },
-        { name: "Chăm sóc cá stress", unitPrice: 1200000, totalPrice: 1200000 },
-        { name: "Tư vấn thiết kế hồ", unitPrice: 2000000, totalPrice: 2000000 }
-    ],
-    paymentInfo: {
-        donePayment: 6050000,
-        notDonePayment: 0,
-        totalPayment: 6050000,
-        transactionMethod: "VNPAY"
-    },
-    feedback: {
-        rate: 0,
-        feedback: null
-    }
-};
-
-const treatmentCosts = {
-    items: [
-        { name: "Dịch vụ 1", unitPrice: 3000000, totalPrice: 3000000 },
-        { name: "Dịch vụ 2", unitPrice: 3000000, totalPrice: 6000000 },
-        { name: "Dịch vụ 3", unitPrice: 3000000, totalPrice: 3000000 },
-    ],
-    subTotal: 12000000,
-    tax: 860000,
-    grandTotal: 12860000,
-};
-
-const medicalRecord = {
-    petName: "Max",
-    species: "Dog",
-    breed: "Golden Retriever",
-    diagnosis: "Đang chờ",
-    note: "Annual checkup and vaccinations",
-};
-
 // Thêm hàm helper để format date và time
 const formatDateTime = (dateTimeStr) => {
     if (!dateTimeStr) return '';
@@ -273,7 +207,7 @@ const ManageAppointment = () => {
                 throw new Error('Không nhận được URL thanh toán');
             }
         } catch (error) {
-            alert('Có lỗi xảy ra khi tạo đường dẫn thanh toán: ' + error.message);
+            alert('Có lỗi xảy ra khi tạo đường d��n thanh toán: ' + error.message);
         }
     };
 
@@ -319,7 +253,7 @@ const ManageAppointment = () => {
                             <option value="Thanh toán tiền dịch vụ thành công">Thanh toán tiền dịch vụ thành cng</option>
                             <option value="Hoàn thành">Hoàn thành</option>
                             <option value="Đã đánh giá">Đã đánh giá</option>
-                            <option value="Đã hủy lịch">Đã hủy lịch</option>
+                            <option value="Đã hủy lịch">Đã h��y lịch</option>
                         </select>
                         
                         <select
@@ -365,7 +299,7 @@ const ManageAppointment = () => {
                                     </td>
                                     <td>
                                         {(appointment.appointmentStatus === 'Chờ bác sĩ xác nhận' ||
-                                          appointment.appointmentStatus === 'Đã xác nhận' ||
+                                          appointment.appointmentStatus === 'Đã xác nh���n' ||
                                           appointment.appointmentStatus === 'Chờ thanh toán tiền dịch vụ' ||
                                           appointment.appointmentStatus === 'Thanh toán tiền dịch vụ thành công') && (
                                             <button 
@@ -426,17 +360,9 @@ const ManageAppointment = () => {
                 onClose={handleCloseModal}
                 maxWidth="xl"
                 fullWidth
-                sx={{
-                    '& .MuiDialog-paper': {
-                        overflowX: 'hidden',
-                        maxWidth: '90vw',
-                        margin: '16px'
-                    }
-                }}
             >
                 <AppointmentModal
                     appointmentID={selectedAppointmentId}
-                    steps={steps}
                     open={isModalOpen}
                     onClose={handleCloseModal}
                 />
@@ -475,9 +401,10 @@ const getStepStatus = (currentStatus, stepIndex) => {
     return '';
 };
 
-const AppointmentModal = ({ appointmentID, steps, open, onClose }) => {
-    const [appointmentData, setAppointmentData] = useState(null);
+const AppointmentModal = ({ appointmentID, open, onClose }) => {
+    const [appointmentDetails, setAppointmentDetails] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
     const { getAppointmentDetail } = useManageCus();
 
     useEffect(() => {
@@ -485,10 +412,12 @@ const AppointmentModal = ({ appointmentID, steps, open, onClose }) => {
             if (appointmentID) {
                 try {
                     setLoading(true);
+                    setError(null);
                     const data = await getAppointmentDetail(appointmentID);
-                    setAppointmentData(data);
+                    setAppointmentDetails(data);
                 } catch (error) {
                     console.error('Error fetching appointment detail:', error);
+                    setError(error.message);
                 } finally {
                     setLoading(false);
                 }
@@ -499,158 +428,262 @@ const AppointmentModal = ({ appointmentID, steps, open, onClose }) => {
     }, [appointmentID]);
 
     if (loading) return <LoadingCat />;
-    if (!appointmentData) return null;
+    if (error) return (
+        <div className="error-message">
+            <p>{error}</p>
+            <button onClick={onClose}>Đóng</button>
+        </div>
+    );
+    if (!appointmentDetails) return null;
 
     return (
-        <>
-            <DialogTitle sx={{ 
-                borderBottom: '1px solid #e0e0e0',
-                bgcolor: '#f5f5f5',
-                fontWeight: 'bold'
-            }}>
-                Mã Lịch Hẹn: {appointmentData.appointmentId}
-            </DialogTitle>
-            <DialogContent sx={{ p: 3 }}>
-                {/* Stepper */}
-                <Box sx={{ mb: 4 }}>
-                    <div className={styles.statusTimeline}>
-                        {steps.map((label, index) => {
-                            const stepStatus = getStepStatus(Number(appointmentData.status), index);
-                            return (
-                                <div 
-                                    key={label} 
-                                    className={`${styles.statusStep} ${styles[stepStatus]}`}
-                                >
-                                    <div className={styles.statusDot}></div>
-                                    <span className={styles.statusLabel}>{label}</span>
-                                </div>
-                            );
-                        })}
+        <div className="modal-overlay">
+            <div className="view-modal-content">
+                <div className="modal-header">
+                    <h2>Chi tiết lịch hẹn #{appointmentDetails.appointmentId}</h2>
+                    <button className="close-btn" onClick={onClose}>&times;</button>
+                </div>
+
+                {/* Timeline Component */}
+                <TimelineComponent currentStatus={appointmentDetails?.status} />
+                <div className="current-status">
+                    Trạng thái hiện tại:
+                    <span className={`status-text ${appointmentDetails?.status === "Đã hủy lịch" ? "cancelled" : ""}`}
+                        data-status={appointmentDetails?.status}>
+                        {appointmentDetails?.status || "Chưa cập nhật"}
+                    </span>
+                </div>
+
+                {/* Customer Information */}
+                <div className="info-section">
+                    <h3>Thông tin khách hàng</h3>
+                    <div className="info-grid customer-info">
+                        <div className="info-item">
+                            <label>Họ và tên:</label>
+                            <span>{appointmentDetails?.infoCusResponse?.fullName || "Chưa cập nhật"}</span>
+                        </div>
+                        <div className="info-item">
+                            <label>Địa chỉ:</label>
+                            <span>{appointmentDetails?.infoAppointmentResponse?.address || "Chưa cập nhật"}</span>
+                        </div>
+                        <div className="info-item">
+                            <label>Số điện thoại:</label>
+                            <span>{appointmentDetails?.infoCusResponse?.phone || "Chưa cập nhật"}</span>
+                        </div>
                     </div>
-                </Box>
+                </div>
 
-                {/* Thông tin cơ bản */}
-                <Card sx={{ mb: 3, p: 2, boxShadow: 1 }}>
-                    <Grid container spacing={2}>
-                        <Grid item xs={6}>
-                            <Typography variant="body1" sx={{ mb: 1 }}>
-                                <strong>Ngày đặt:</strong> {formatDateTime(appointmentData.infoAppointmentResponse?.appointmentTime).date}
-                            </Typography>
-                        </Grid>
-                        <Grid item xs={6}>
-                            <Typography variant="body1" sx={{ mb: 1 }}>
-                                <strong>Họ tên KH:</strong> {appointmentData.infoCusResponse?.fullName}
-                            </Typography>
-                            <Typography variant="body1" sx={{ mb: 1 }}>
-                                <strong>SĐT:</strong> {appointmentData.infoCusResponse?.phone}
-                            </Typography>
-                        </Grid>
-                    </Grid>
-                </Card>
+                {/* Pet Information */}
+                <div className="info-section">
+                    <h3>Thông tin thú cưng</h3>
+                    <div className="info-grid pet-info">
+                        <div className="info-item">
+                            <label>Tên thú cưng:</label>
+                            <span>{appointmentDetails?.infoKoiResponse?.name || "Chưa cập nhật"}</span>
+                        </div>
+                        <div className="info-item">
+                            <label>Giống:</label>
+                            <span>{appointmentDetails?.infoKoiResponse?.breed || "Chưa cập nhật"}</span>
+                        </div>
+                        <div className="info-item">
+                            <label>Tuổi:</label>
+                            <span>{appointmentDetails?.infoKoiResponse?.age || "Chưa cập nhật"}</span>
+                        </div>
+                        <div className="info-item">
+                            <label>Màu sắc:</label>
+                            <span>{appointmentDetails?.infoKoiResponse?.color || "Chưa cập nhật"}</span>
+                        </div>
+                        <div className="info-item">
+                            <label>Cân nặng:</label>
+                            <span>{appointmentDetails?.infoKoiResponse?.weight || "Chưa cập nhật"}</span>
+                        </div>
+                        <div className="info-item">
+                            <label>Chẩn đoán:</label>
+                            <span>{appointmentDetails?.infoKoiResponse?.healthStatus || "Chưa cập nhật"}</span>
+                        </div>
+                    </div>
+                </div>
 
-                {/* Chi tiết lịch hẹn */}
-                <Card sx={{ mb: 3, p: 2, boxShadow: 1 }}>
-                    <Typography variant="h6" sx={{ mb: 2, color: '#1976d2' }}>
-                        Chi tiết lịch hẹn
-                    </Typography>
-                    <Grid container spacing={2}>
-                        <Grid item xs={6}>
-                            <Typography variant="body1" sx={{ mb: 1 }}>
-                                <strong>Dịch vụ:</strong> {appointmentData.infoAppointmentResponse?.serviceType}
-                            </Typography>
-                            <Typography variant="body1" sx={{ mb: 1 }}>
-                                <strong>Địa chỉ:</strong> {appointmentData.infoAppointmentResponse?.address}
-                            </Typography>
-                        </Grid>
-                        <Grid item xs={6}>
-                            <Typography variant="body1" sx={{ mb: 1 }}>
-                                <strong>Ngày khám:</strong> {appointmentData.infoAppointmentResponse?.appointmentDate}
-                            </Typography>
-                            <Typography variant="body1" sx={{ mb: 1 }}>
-                                <strong>Giờ khám:</strong> {appointmentData.infoAppointmentResponse?.time}
-                            </Typography>
-                            <Typography variant="body1" sx={{ mb: 1 }}>
-                                <strong>Bác sĩ:</strong> {appointmentData.infoAppointmentResponse?.doctorName}
-                            </Typography>
-                        </Grid>
-                    </Grid>
-                </Card>
+                {/* Appointment Information */}
+                <div className="info-section">
+                    <h3>Thông tin lịch hẹn</h3>
+                    <div className="info-grid appointment-info">
+                        <div className="info-item">
+                            <label>Ngày hẹn:</label>
+                            <span>{appointmentDetails?.infoAppointmentResponse?.appointmentDate || "Chưa cập nhật"}</span>
+                        </div>
+                        <div className="info-item">
+                            <label>Giờ hẹn:</label>
+                            <span>{appointmentDetails?.infoAppointmentResponse?.time || "Chưa cập nhật"}</span>
+                        </div>
+                        <div className="info-item">
+                            <label>Dịch vụ:</label>
+                            <span>{appointmentDetails?.infoAppointmentResponse?.serviceType || "Chưa cập nhật"}</span>
+                        </div>
+                        <div className="info-item">
+                            <label>Trạng thái:</label>
+                            <span>{appointmentDetails?.status || "Chưa cập nhật"}</span>
+                        </div>
+                        <div className="info-item">
+                            <label>Bác sĩ phụ trách:</label>
+                            <span>{appointmentDetails?.infoAppointmentResponse?.doctorName || "Chưa phân công"}</span>
+                        </div>
+                        <div className="info-item">
+                            <label>Phân công bác sĩ:</label>
+                            <span className={`assign-type ${appointmentDetails?.infoAppointmentResponse?.doctorAssigned ? "customer-choice" : "center-assign"}`}>
+                                {appointmentDetails?.infoAppointmentResponse?.doctorAssigned ? "Khách hàng chọn bác sĩ" : "Trung tâm điều phối bác sĩ"}
+                            </span>
+                        </div>
+                    </div>
+                </div>
 
-                {/* Thông tin dịch vụ và thanh toán */}
-                <Card sx={{ mb: 3, p: 2, boxShadow: 1 }}>
-                    <Typography variant="h6" sx={{ mb: 2, color: '#1976d2' }}>
-                        Chi phí dịch vụ
-                    </Typography>
-                    {appointmentData.infoServiceTypeResponse?.map((service, index) => (
-                        <Box 
-                            key={index}
-                            sx={{ 
-                                display: 'flex', 
-                                justifyContent: 'space-between',
-                                mb: 1,
-                                p: 1,
-                                '&:nth-of-type(odd)': { bgcolor: '#f5f5f5' }
-                            }}
-                        >
-                            <Typography>{service.serviceTypeName}</Typography>
-                            <Typography>{service.serviceTypePrice.toLocaleString('vi-VN')}đ</Typography>
-                        </Box>
-                    ))}
-                    <Divider sx={{ my: 2 }} />
-                    <Box sx={{ 
-                        display: 'flex', 
-                        justifyContent: 'space-between',
-                        p: 1,
-                        bgcolor: '#e3f2fd'
-                    }}>
-                        <Typography variant="h6">Tổng cộng:</Typography>
-                        <Typography variant="h6" color="primary">
-                            {appointmentData.totalPayment?.toLocaleString('vi-VN')}đ
-                        </Typography>
-                    </Box>
-                </Card>
+                {/* Payment Details */}
+                <div className="payment-details-section">
+                    <h3>Chi tiết thanh toán</h3>
+                    <div className="payment-info">
+                        <div className="payment-method">
+                            <span className="label">Phương thức thanh toán:</span>
+                            <span className="value">{appointmentDetails?.transactionMethod || "Chưa cập nhật"}</span>
+                        </div>
+                        <div className="payment-summary-boxes">
+                            <div className="summary-box paid">
+                                <span className="summary-label">Đã thanh toán</span>
+                                <span className="summary-value">{appointmentDetails?.donePayment?.toLocaleString()}đ</span>
+                            </div>
+                            <div className="summary-box unpaid">
+                                <span className="summary-label">Chưa thanh toán</span>
+                                <span className="summary-value">{appointmentDetails?.notDonePayment?.toLocaleString()}đ</span>
+                            </div>
+                            <div className="summary-box total">
+                                <span className="summary-label">Tổng tiền dịch vụ</span>
+                                <span className="summary-value">{appointmentDetails?.totalPayment?.toLocaleString()}đ</span>
+                            </div>
+                        </div>
+                    </div>
 
-                {/* Thông tin thú cưng */}
-                <Card sx={{ p: 2, boxShadow: 1 }}>
-                    <Typography variant="h6" sx={{ mb: 2, color: '#1976d2' }}>
-                        Thông tin thú cưng
-                    </Typography>
-                    <Grid container spacing={2}>
-                        <Grid item xs={6}>
-                            <Typography sx={{ mb: 1 }}>
-                                <strong>Tên thú cưng:</strong> {appointmentData.infoKoiResponse?.name}
-                            </Typography>
-                            <Typography sx={{ mb: 1 }}>
-                                <strong>Giống:</strong> {appointmentData.infoKoiResponse?.breed}
-                            </Typography>
-                            <Typography sx={{ mb: 1 }}>
-                                <strong>Tuổi:</strong> {appointmentData.infoKoiResponse?.age}
-                            </Typography>
-                        </Grid>
-                        <Grid item xs={6}>
-                            <Typography sx={{ mb: 1 }}>
-                                <strong>Màu sắc:</strong> {appointmentData.infoKoiResponse?.color}
-                            </Typography>
-                            <Typography sx={{ mb: 1 }}>
-                                <strong>Cân nặng:</strong> {appointmentData.infoKoiResponse?.weight}
-                            </Typography>
-                            <Typography sx={{ mb: 1 }}>
-                                <strong>Tình trạng sức khỏe:</strong> {appointmentData.infoKoiResponse?.healthStatus}
-                            </Typography>
-                        </Grid>
-                    </Grid>
-                </Card>
-            </DialogContent>
-            <DialogActions sx={{ p: 2, borderTop: '1px solid #e0e0e0' }}>
-                <Button 
-                    onClick={onClose} 
-                    variant="contained"
-                    sx={{ minWidth: 100 }}
-                >
-                    Đóng
-                </Button>
-            </DialogActions>
-        </>
+                    {/* Service Details Table */}
+                    {appointmentDetails?.infoServiceTypeResponse && (
+                        <div className="payment-table">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Mã dịch vụ</th>
+                                        <th>Tên dịch vụ</th>
+                                        <th>Đơn giá</th>
+                                        <th>Trạng thái</th>
+                                        <th>Thành tiền</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {appointmentDetails.infoServiceTypeResponse.map((service) => (
+                                        <tr key={service.serviceTypeId}>
+                                            <td>{service.serviceTypeId}</td>
+                                            <td>{service.serviceTypeName}</td>
+                                            <td>{service.serviceTypePrice?.toLocaleString()}đ</td>
+                                            <td>
+                                                <span className={`payment-status ${service.statusPayment ? "paid" : "unpaid"}`}>
+                                                    {service.statusPayment ? "Đã thanh toán" : "Chưa thanh toán"}
+                                                </span>
+                                            </td>
+                                            <td>{service.serviceTypePrice?.toLocaleString()}đ</td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+                    )}
+                </div>
+
+                {/* Customer Feedback */}
+                <div className="feedback-section">
+                    <h3>Phản hồi của khách hàng</h3>
+                    <div className="feedback-content">
+                        <div className="rating">
+                            <label>Đánh giá:</label>
+                            <div className="stars">
+                                {[...Array(appointmentDetails?.infoFeedbackResponse?.rate || 0)].map((_, index) => (
+                                    <i key={index} className="fas fa-star"></i>
+                                ))}
+                                {[...Array(5 - (appointmentDetails?.infoFeedbackResponse?.rate || 0))].map((_, index) => (
+                                    <i key={index} className="far fa-star"></i>
+                                ))}
+                                <span className="rating-number">({appointmentDetails?.infoFeedbackResponse?.rate}/5)</span>
+                            </div>
+                        </div>
+                        <div className="comment">
+                            <label>Nhận xét:</label>
+                            <p>{appointmentDetails?.infoFeedbackResponse?.feedback || "Chưa có nhận xét"}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+};
+
+const getStepNumber = (status) => {
+    const statusMap = {
+        "Chờ bác sĩ xác nhận": 1,
+        "Đã xác nhận": 2,
+        "Chờ thanh toán tiền dịch vụ": 3,
+        "Thanh toán tiền dịch vụ thành công": 4,
+        "Đang cung cấp dịch vụ": 5,
+        "Thực hiện xong dịch vụ": 6,
+        "Chờ thanh toán tổng tiền": 7,
+        "Hoàn thành": 8,
+        "Đã đánh giá": 9,
+    };
+    return statusMap[status] || 0;
+};
+
+const statusIcons = {
+    "Chờ bác sĩ xác nhận": "fa-clock",
+    "Đã xác nhận": "fa-check",
+    "Chờ thanh toán tiền dịch vụ": "fa-dollar-sign",
+    "Thanh toán tiền dịch vụ thành công": "fa-check-double",
+    "Đang cung cấp dịch vụ": "fa-user-md",
+    "Thực hiện xong dịch vụ": "fa-check-circle",
+    "Chờ thanh toán tổng tiền": "fa-dollar-sign",
+    "Hoàn thành": "fa-flag-checkered",
+    "Đã đánh giá": "fa-star",
+};
+
+const TimelineComponent = ({ currentStatus }) => {
+    const currentStep = getStepNumber(currentStatus);
+    const totalSteps = 9;
+    const progressWidth = `${(currentStep / totalSteps) * 100}%`;
+
+    return (
+        <div className="timeline-container" style={{ "--progress-width": progressWidth }}>
+            {[
+                "Chờ bác sĩ xác nhận",
+                "Đã xác nhận",
+                "Chờ thanh toán tiền dịch vụ",
+                "Thanh toán tiền dịch vụ thành công",
+                "Đang cung cấp dịch vụ",
+                "Thực hiện xong dịch vụ",
+                "Chờ thanh toán tổng tiền",
+                "Hoàn thành",
+                "Đã đánh giá",
+            ].map((status, index) => {
+                const stepNumber = getStepNumber(status);
+                const isCompleted = stepNumber <= currentStep;
+
+                return (
+                    <div key={index} className={`timeline-item ${isCompleted ? "completed" : ""}`}>
+                        <div className="timeline-dot"
+                            title={status}
+                            style={{
+                                borderColor: isCompleted ? "#22C55E" : "#dc3545",
+                                background: isCompleted ? "#22C55E" : "white",
+                            }}>
+                            <i className={`fas ${statusIcons[status]}`}
+                                style={{ color: isCompleted ? "white" : "#dc3545" }} />
+                        </div>
+                    </div>
+                );
+            })}
+        </div>
     );
 };
 

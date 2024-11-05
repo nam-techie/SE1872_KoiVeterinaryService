@@ -21,6 +21,7 @@ import java.sql.Date;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -423,6 +424,8 @@ public class DoctorService {
             }
             appointmentResponses.add(appointmentStatusResponse);
         }
+        // Đảo ngược danh sách appointmentResponses
+        Collections.reverse(appointmentResponses);
         return appointmentResponses;
     }
 

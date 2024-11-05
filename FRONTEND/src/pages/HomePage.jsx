@@ -198,20 +198,19 @@ function HomePage() {
                     {doctorLoading && <p>Đang tải danh sách bác sĩ...</p>}
                     {doctorError && <p>{doctorError}</p>}
                     <Slider {...settings2}>
-                        {doctors && Array.isArray(doctors) && doctors.map((doctor) => (
-                            <div key={doctor.id}>
+                        {doctors && Array.isArray(doctors) && doctors.map((doctorData) => (
+                            <div key={doctorData.doctor.id}>
                                 <DoctorCard
-                                    fullname={doctor.fullname}
-                                    sex={doctor.sex}
-                                    phone={doctor.phone}
-                                    experience={doctor.experience}
-                                    profilePic={doctor.image_url}
+                                    fullname={doctorData.doctor.fullName}
+                                    experience={doctorData.doctor.experience}
+                                    profilePic={doctorData.doctor.imageUrl}
+                                    phone={doctorData.doctor.phone}
                                 />
-
                             </div>
                         ))}
                     </Slider>
-                </div>
+                </div> 
+
                 <div className={styles.homePageFourth}>
                     <h1>Một số hình ảnh tại trung tâm</h1>
                     <div className={styles.orangeLine}></div>
