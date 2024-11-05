@@ -334,6 +334,8 @@ public class AppointmentService {
     }
 
 
+
+
     /**
      * Hàm bổ trợ để chọn bác sĩ có ít lịch hẹn nhất từ danh sách bác sĩ rảnh.
      */
