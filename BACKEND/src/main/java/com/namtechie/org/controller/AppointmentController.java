@@ -4,9 +4,12 @@ import com.namtechie.org.entity.*;
 import com.namtechie.org.exception.DoctorNotAvailableException;
 import com.namtechie.org.exception.InvalidPhoneNumberException;
 import com.namtechie.org.model.Schedule;
+import com.namtechie.org.model.request.CustomerInfoRequest;
 import com.namtechie.org.model.request.FeedbackRequest;
 import com.namtechie.org.model.response.AppointmentResponse;
 import com.namtechie.org.model.response.AppointmentStatusResponse;
+import com.namtechie.org.model.response.InfoCustomerResponse;
+import com.namtechie.org.model.response.InfoResponse;
 import com.namtechie.org.repository.AppointmentRepository;
 import com.namtechie.org.repository.PaymentDetailRepository;
 import com.namtechie.org.repository.ZoneRepository;
@@ -34,10 +37,22 @@ import java.util.Map;
 public class AppointmentController {
 
     @Autowired
+    ZoneRepository zoneRepository;
+
+    @Autowired
     ScheduleService scheduleService;
 
     @Autowired
     ZoneService zoneService;
+
+    @Autowired
+    CustomerService customerService;
+
+    @Autowired
+    TokenService tokenService;
+
+    @Autowired
+    DoctorService doctorService;
 
     @Autowired
     AppointmentService appointmentService;
@@ -132,6 +147,8 @@ public class AppointmentController {
     }
 
 
+
+
     //Nằm dỡ ní ơi
 
 
@@ -148,6 +165,8 @@ public class AppointmentController {
     }
 
 
+
+
 //
 //    @GetMapping("/getAppointmentIdForUser/{accountId}")
 //    @PreAuthorize("hasAuthority('CUSTOMER')")
@@ -157,11 +176,13 @@ public class AppointmentController {
 //    }
 
 
+
     @PutMapping("/cancelAppointmentByCustomer/{appointmentId}")
     public ResponseEntity cancelAppointmentByCustomer(@PathVariable long appointmentId) {
         appointmentService.cancelAppointmentByCustomer(appointmentId);
         return ResponseEntity.ok("Đã hủy thành công");
     }
+
 
 
 //    @GetMapping("/countAppointment/{id}")
@@ -197,6 +218,31 @@ public class AppointmentController {
     public ResponseEntity createFeedback(@PathVariable long appointmentId, @RequestBody FeedbackRequest feedBack) {
         FeedBack feedBack1 = feedbackService.createFeedbackService(appointmentId, feedBack);
         return ResponseEntity.ok(feedBack1);
+    }
+
+    @GetMapping("/getFullInfoCustomer/{appointmentId}")
+    public ResponseEntity<?> getFullInfoCustomer(@PathVariable long appointmentId){
+        try {
+            InfoResponse infoResponse = appointmentService.getFullInfoAppointment(appointmentId);
+            return ResponseEntity.ok(infoResponse);
+        } catch (Exception e) {
+            // Log lỗi
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Có lỗi xảy ra khi lấy thông tin: " + e.getMessage());
+        }
+    }
+
+    @GetMapping("/getInfoCustomer")
+    public ResponseEntity<InfoCustomerResponse> getInfoCustomer() {
+        InfoCustomerResponse customerInfo = customerService.getInfoCustomer();
+        return ResponseEntity.ok(customerInfo);
+    }
+
+    @PutMapping("/updateInfoCustomer")
+    public ResponseEntity updateInfoCustomer(@RequestBody CustomerInfoRequest customerInfo) {
+        CustomerInfoRequest newUpdate = customerService.updateCustomerInfo(customerInfo);
+        return ResponseEntity.ok(newUpdate);
     }
 
 

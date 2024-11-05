@@ -177,17 +177,6 @@ public class AuthenticationController {
 //    }
 
 
-    @GetMapping("/getInfoCustomer")
-    public ResponseEntity<InfoCustomerResponse> getInfoCustomer() {
-        InfoCustomerResponse customerInfo = customerService.getInfoCustomer();
-        return ResponseEntity.ok(customerInfo);
-    }
-
-    @PutMapping("/updateInfoCustomer")
-    public ResponseEntity updateInfoCustomer(@ModelAttribute CustomerInfoRequest customerInfo) {
-        CustomerInfoRequest newUpdate = customerService.updateCustomerInfo(customerInfo);
-        return ResponseEntity.ok(newUpdate);
-    }
 
 
 

@@ -70,7 +70,7 @@ function AboutMe() {
                 </div>
 
                 <div className={styles.aboutMeSecond}>
-                    <h1> Phải Là Koi Cung Vì</h1>
+                    <h1> Hãy chọn KoiKung vì</h1>
                     <div className={styles.aboutMeCardContent}>
                         <div className={styles.aboutmeCard}>
                             <h3 className={styles.aboutmeCardTitle}>Chăm sóc cá nhân hóa</h3>
@@ -92,9 +92,9 @@ function AboutMe() {
                             </p>
                         </div>
                         <div className={styles.aboutmeCard}>
-                            <h3 className={styles.aboutmeCardTitle}>Chăm sóc cá nhân hóa</h3>
+                            <h3 className={styles.aboutmeCardTitle}>Sát cánh mọi lúc, mọi nơi</h3>
                             <p className={styles.aboutmeCardText}>
-                                T Không chỉ cung cấp dịch vụ chăm sóc tại trung tâm, KoiKung còn chú trọng đến việc tư
+                                Không chỉ cung cấp dịch vụ chăm sóc tại trung tâm, KoiKung còn chú trọng đến việc tư
                                 vấn
                                 chuyên sâu và hỗ trợ khách hàng mọi lúc, mọi nơi. Chúng tôi đồng hành cùng bạn trong
                                 hành

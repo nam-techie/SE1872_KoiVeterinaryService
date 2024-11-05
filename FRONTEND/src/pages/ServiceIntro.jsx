@@ -56,7 +56,7 @@ function ServiceIntro() {
                     <Slider {...sliderSettings}>
                         <div className={styles.serviceIntroSecondCard}>
                             <BsFillTelephoneInboundFill size={35} color="orange" />
-                            <h4>Dịch Vụ Tư Vấn Trực Tuyến</h4>
+                            <h4>Tư Vấn Trực Tuyến</h4>
                             <a href="/customer/booking-page" className={styles.scheduleButton}>
                                 Đặt lịch ngay
                             </a>
@@ -64,7 +64,7 @@ function ServiceIntro() {
 
                         <div className={styles.serviceIntroSecondCard}>
                             <TbStethoscope size={35} color="orange" />
-                            <h4>Dịch Vụ Điều Trị Bệnh Tại Nhà</h4>
+                            <h4>Điều Trị Bệnh Tại Nhà</h4>
                             <a href="/customer/booking-page" className={styles.scheduleButton}>
                                 Đặt lịch ngay
                             </a>
@@ -72,7 +72,7 @@ function ServiceIntro() {
 
                         <div className={styles.serviceIntroSecondCard}>
                             <FaBriefcaseMedical size={35} color="orange" />
-                            <h4>Tìm Bác Sĩ</h4>
+                            <h4>Khảo Sát Hồ Cá</h4>
                             <a href="/customer/booking-page" className={styles.scheduleButton}>
                                 Đặt lịch ngay
                             </a>
@@ -80,7 +80,7 @@ function ServiceIntro() {
 
                         <div className={styles.serviceIntroSecondCard}>
                             <FaHospital size={35} color="orange" />
-                            <h4>Điều Trị Tại Trung Tâm</h4>
+                            <h4>Điều Trị Bệnh Tại Trung Tâm</h4>
                             <a href="/customer/booking-page" className={styles.scheduleButton}>
                                 Đặt lịch ngay
                             </a>

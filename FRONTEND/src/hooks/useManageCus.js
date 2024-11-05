@@ -58,11 +58,24 @@ const useManageCus = () => {
         }
     };
 
+    const getAppointmentDetail = async (appointmentId) => {
+        try {
+            const response = await axiosInstance.get(
+                `/customer/getFullInfoCustomer/${appointmentId}`
+            );
+            return response.data;
+        } catch (err) {
+            console.error('Error fetching appointment detail:', err);
+            throw new Error('Có lỗi xảy ra khi tải chi tiết lịch hẹn');
+        }
+    };
+
     return {
         getAppointments,
         cancelAppointment,
         getPaymentUrl,
         submitFeedback,
+        getAppointmentDetail,
     };
 };
 

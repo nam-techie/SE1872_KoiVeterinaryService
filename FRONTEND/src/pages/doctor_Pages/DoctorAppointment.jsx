@@ -89,7 +89,8 @@ function DoctorAppointment() {
         confirmAppointment,
         startService,
         saveServiceRecord,
-        cancelAppointment 
+        cancelAppointment,
+        fetchAppointmentDetail
     } = useDoctorAppointment();
     const [searchText, setSearchText] = useState('');
     const [selectedDate, setSelectedDate] = useState(null);
@@ -105,6 +106,7 @@ function DoctorAppointment() {
     const [currentAppointment, setCurrentAppointment] = useState(null);
     const [isCancelModalVisible, setIsCancelModalVisible] = useState(false);
     const [cancelForm] = Form.useForm();
+    const [appointmentDetail, setAppointmentDetail] = useState(null);
 
     // Thêm các hàm xử lý trạng thái
     const handleConfirm = async (record) => {
@@ -150,9 +152,14 @@ function DoctorAppointment() {
 
     // Render actions based on status
     const renderActions = (status, record) => {
-        const handleViewDetail = () => {
-            setSelectedAppointment(record);
-            setIsModalVisible(true);
+        const handleViewDetail = async () => {
+            try {
+                const detail = await fetchAppointmentDetail(record.id);
+                setSelectedAppointment(detail);
+                setIsModalVisible(true);
+            } catch (error) {
+                console.error('Error fetching appointment detail:', error);
+            }
         };
 
         switch (status) {
@@ -598,7 +605,11 @@ function DoctorAppointment() {
                                 <span>{selectedAppointment?.appointmentInfo?.status}</span>
                             </div>
                             <div>
-                                <span style={{ color: '#666', marginRight: 8 }}>Bác sĩ phụ trách:</span>
+                                <span style={{ color: '#666', marginRight: 8 }}>Mô tả:</span>
+                                <span>{selectedAppointment?.appointmentInfo?.description}</span>
+                            </div>
+                            <div>
+                                <span style={{ color: '#666', marginRight: 8 }}>Phân bổ:</span>
                                 <span>{selectedAppointment?.appointmentInfo?.doctor}</span>
                             </div>
                         </div>
