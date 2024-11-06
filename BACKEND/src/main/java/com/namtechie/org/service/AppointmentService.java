@@ -598,7 +598,7 @@ public class AppointmentService {
         AppointmentStatus appointmentStatus = new AppointmentStatus();
         appointmentStatus.setAppointment(appointment);
         appointmentStatus.setStatus("Đã hủy lịch");
-        appointmentStatus.setNotes("Bác sĩ "+ doctor.getFullName() + " hủy vì lí do: " + cancelReasonRequest.getCancelReason());
+        appointmentStatus.setNotes("Bác sĩ " + doctor.getFullName() + " hủy vì lí do: " + cancelReasonRequest.getCancelReason());
         appointmentStatusRepository.save(appointmentStatus);
     }
 
@@ -846,8 +846,7 @@ public class AppointmentService {
         }
         if (latestStatus != null &&
                 (latestStatus.getStatus().equals("Đã xác nhận") ||
-                        (latestStatus.getStatus().equals("Chờ thanh toán tiền dịch vụ") ||
-                                (latestStatus.getStatus().equals("Chờ thanh toán tổng tiền"))))) {
+                        (latestStatus.getStatus().equals("Chờ thanh toán tiền dịch vụ")))) {
 
             LocalDateTime createDatePlusOneMinutes = latestStatus.getCreate_date().toLocalDateTime().plusMinutes(15);
             LocalDateTime currentDateTime = LocalDateTime.now();
@@ -864,10 +863,10 @@ public class AppointmentService {
             }
         } else if (latestStatus != null &&
                 (latestStatus.getStatus().equals("Chờ bác sĩ xác nhận"))) {
-            LocalDateTime createDatePlusOneMinutes = latestStatus.getCreate_date().toLocalDateTime().plusHours(3);
+            LocalDateTime createDatePlusOneMinutes = latestStatus.getCreate_date().toLocalDateTime().plusHours(12);
             LocalDateTime currentDateTime = LocalDateTime.now();
 
-            // So sánh thời gian hiện tại với createDate + 3 hours
+            // So sánh thời gian hiện tại với createDate + 12 hours
             if (currentDateTime.isAfter(createDatePlusOneMinutes)) {
                 // Tạo và lưu trạng thái mới "Đã hủy lịch"
                 AppointmentStatus status = new AppointmentStatus();

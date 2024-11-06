@@ -33,6 +33,7 @@ const AppointmentDashboard = () => {
   const [loadingDetails, setLoadingDetails] = useState(false);
   const [detailsError, setDetailsError] = useState(null);
   const [cancelNotes, setCancelNotes] = useState("");
+  const [autoRefreshInterval, setAutoRefreshInterval] = useState(null);
 
   // Thêm hàm fetchAppointments riêng
   const fetchAppointments = async () => {
@@ -55,8 +56,32 @@ const AppointmentDashboard = () => {
       fetchAppointments();
     }, 10000);
 
+    setAutoRefreshInterval(interval);
+
     return () => clearInterval(interval);
   }, []);
+
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        if (autoRefreshInterval) {
+          clearInterval(autoRefreshInterval);
+        }
+      } else {
+        fetchAppointments();
+        const newInterval = setInterval(() => {
+          fetchAppointments();
+        }, 10000);
+        setAutoRefreshInterval(newInterval);
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
+  }, [autoRefreshInterval]);
 
   // Thay đổi cách hiển thị loading
 
@@ -997,7 +1022,7 @@ function getStatusIndex(currentStatus) {
 // Thêm icons cho mỗi trạng thái
 const statusIcons = {
   "Chờ bác sĩ xác nhận": "fa-clock",
-  "Đã x��c nhận": "fa-check",
+  "Đã xác nhận": "fa-check",
   "Chờ thanh toán tiền dịch vụ": "fa-dollar-sign",
   "Thanh toán tiền dịch vụ thành công": "fa-check-double",
   "Đang cung cấp dịch vụ": "fa-user-md",
