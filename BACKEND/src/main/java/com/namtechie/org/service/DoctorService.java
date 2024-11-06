@@ -480,7 +480,7 @@ public class DoctorService {
         doctorAppointmentResponse.setDescription(appointmentInfo.getDescriptions());
         doctorAppointmentResponse.setCreatedDate(appointmentInfo.getCreatedDate());
         doctorAppointmentResponse.setAddressDetails(appointmentInfo.getAddress());
-        doctorAppointmentResponse.setPhoneNumber(customers.getPhone());
+        doctorAppointmentResponse.setPhoneNumber(appointment.getPhone());
 
         if (appointment.isDoctorAssigned()) {
             doctorAppointmentResponse.setIsSelectDoctor("Khách hàng chọn bác sĩ");

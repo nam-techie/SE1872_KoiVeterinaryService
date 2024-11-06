@@ -242,7 +242,12 @@ public class AppointmentService {
             List<AppointmentStatus> list = new ArrayList<>();
             AppointmentStatus appointmentStatus = new AppointmentStatus();
             appointmentStatus.setAppointment(appointment);
-            appointmentStatus.setStatus("Chờ bác sĩ xác nhận");
+            if(appointmentRequest.getServiceTypeId() == 1){
+                appointmentStatus.setStatus("Đã xác nhận");
+
+            }else{
+                appointmentStatus.setStatus("Chờ bác sĩ xác nhận");
+            }
             appointmentStatus.setNotes("");
             list.add(appointmentStatus);
 
