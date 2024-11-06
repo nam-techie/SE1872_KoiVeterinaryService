@@ -575,7 +575,7 @@ public class AppointmentService {
         }
     }
 
-    public void cancelAppointmentByCustomer(CancelRequest cancelRequest, String who) {
+    public void cancelAppointmentByCustomer(CancelRequest cancelRequest) {
         Account account = (Account) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Appointment appointment = appointmentRepository.findAppointmentById(cancelRequest.getAppointmentId());
         appointment.setCancel(true);
@@ -584,7 +584,7 @@ public class AppointmentService {
         AppointmentStatus status = new AppointmentStatus();
         status.setAppointment(appointment);
         status.setStatus("Đã hủy lịch");
-        status.setNotes("(" + who + ")" + cancelRequest.getNotes());
+        status.setNotes(cancelRequest.getNotes());
         appointmentStatusRepository.save(status);
     }
 

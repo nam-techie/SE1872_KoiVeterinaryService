@@ -46,7 +46,7 @@ export const useLogin = () => {
 
     const handleGoogleLogin = () => {
         // Chuyển hướng người dùng tới backend để bắt đầu quá trình đăng nhập Google
-        window.location.href = 'http://localhost:8080/oauth2/authorization/google';
+        window.location.href = 'https://se1872koiveterinaryservice-production-deb1.up.railway.app/oauth2/authorization/google';
     };
 
     return {

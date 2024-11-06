@@ -183,7 +183,7 @@ public class AppointmentController {
 
     @PutMapping("/cancelAppointmentByCustomer")
     public ResponseEntity cancelAppointmentByCustomer(@RequestBody CancelRequest cancelRequest) {
-        appointmentService.cancelAppointmentByCustomer(cancelRequest, "Khách hàng");
+        appointmentService.cancelAppointmentByCustomer(cancelRequest);
         return ResponseEntity.ok("Đã hủy thành công");
     }
 
