@@ -72,9 +72,9 @@ function Footer() {
             <div className={styles.socialMedia}>
                 <a href="https://www.facebook.com/nhatan200804" className={styles.socialIcon}><i className="fab fa-facebook-f"></i></a>
                 <a href="https://www.facebook.com/nhatan200804" className={styles.socialIcon}><i className="fab fa-youtube"></i></a>
-                <a href="https://www.facebook.com/nhatan200804" className={styles.socialIcon}><i className="fab fa-instagram"></i></a>
-                <a href="https://www.facebook.com/nhatan200804" className={styles.socialIcon}><i className="fab fa-tiktok"></i></a>
-                <a href="https://www.facebook.com/nhatan200804" className={styles.socialIcon}><i className="fab fa-threads"></i></a>
+                <a href="https://www.instagram.com/nhatan_2008/" className={styles.socialIcon}><i className="fab fa-instagram"></i></a>
+                <a href="https://www.tiktok.com/@na.2k4" className={styles.socialIcon}><i className="fab fa-tiktok"></i></a>
+                <a href="https://www.threads.net/@nhatan_2008" className={styles.socialIcon}><i className="fab fa-threads"></i></a>
                 <a href="https://www.facebook.com/nhatan200804" className={styles.socialIcon}><i className="fab fa-telegram"></i></a>
             </div>
 
