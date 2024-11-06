@@ -1,4 +1,5 @@
 import styles from '../styles/BookingPage.module.css';
+import { useState } from 'react';
 
 /* eslint-disable react/prop-types */
 export function ServiceTypeSelector({ serviceType, setServiceType, service }) {
@@ -207,6 +208,8 @@ export const ConfirmationModal = ({
                                       doctorMap
                                   }) => {
 
+    const [isSubmitting, setIsSubmitting] = useState(false);
+
     const getNameById = (id, array) => {
         // Xử lý trường hợp đặc biệt cho bác sĩ
         if (id === 'dr0') return 'Không';
@@ -226,6 +229,20 @@ export const ConfirmationModal = ({
     const serviceTypeName = getNameById(serviceType, serviceTypeMap);
     const districtName = getNameById(selectedDistrict, districtsMap);
     const doctorName = selectedDoctor === 'dr0' ? 'Không' : getNameById(selectedDoctor, doctorMap);
+
+    const handleSubmitWithTimeout = () => {
+        if (isSubmitting) return; // Ngăn không cho click nhiều lần
+        
+        setIsSubmitting(true);
+        
+        // Gọi handleFinalSubmit
+        handleFinalSubmit();
+        
+        // Set timeout 5s để enable lại button
+        setTimeout(() => {
+            setIsSubmitting(false);
+        }, 5000);
+    };
 
     return (
         <>
@@ -280,10 +297,20 @@ export const ConfirmationModal = ({
                 )}
 
                 <div className={styles.confirmationButtons}>
-                    {/* Nút Xác nhận để gửi thông tin */}
-                    <button onClick={handleFinalSubmit} className={styles.confirmBtn}>Xác nhận và gửi</button>
-                    {/* Nút Chỉnh sửa để quay lại */}
-                    <button onClick={() => setShowConfirm(false)} className={styles.editBtn}>Chỉnh sửa</button>
+                    <button 
+                        onClick={handleSubmitWithTimeout} 
+                        className={styles.confirmBtn}
+                        disabled={isSubmitting} // Button sẽ bị disable khi isSubmitting = true
+                    >
+                        {isSubmitting ? 'Đang xử lý...' : 'Xác nhận và gửi'}
+                    </button>
+                    <button 
+                        onClick={() => setShowConfirm(false)} 
+                        className={styles.editBtn}
+                        disabled={isSubmitting}
+                    >
+                        Chỉnh sửa
+                    </button>
                 </div>
             </div>
         </>
