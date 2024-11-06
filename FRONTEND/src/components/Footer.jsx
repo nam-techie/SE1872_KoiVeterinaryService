@@ -23,13 +23,13 @@ function Footer() {
                 <div className={styles.footerSection}>
                     <h3 className={styles.footerSectionTitle}>Dịch vụ</h3>
                     <ul className={styles.footerList}>
-                        <li className={styles.footerListItem}><a href="/customer/booking-page" className={styles.footerLink}>Tư vấn trực
+                        <li className={styles.footerListItem}><a href="/service" className={styles.footerLink}>Tư vấn trực
                             tuyến</a></li>
-                        <li className={styles.footerListItem}><a href="/customer/booking-page" className={styles.footerLink}>Khảo sát tại
+                        <li className={styles.footerListItem}><a href="/service" className={styles.footerLink}>Khảo sát tại
                             nhà</a></li>
-                        <li className={styles.footerListItem}><a href="/customer/booking-page" className={styles.footerLink}>Đặt lịch tại
+                        <li className={styles.footerListItem}><a href="/service" className={styles.footerLink}>Đặt lịch tại
                             trung tâm</a></li>
-                        <li className={styles.footerListItem}><a href="/customer/booking-page" className={styles.footerLink}>Y tế tại nhà</a>
+                        <li className={styles.footerListItem}><a href="/service" className={styles.footerLink}>Y tế tại nhà</a>
                         </li>
                     </ul>
                 </div>

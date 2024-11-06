@@ -49,8 +49,16 @@ public class AppointmentController {
     ScheduleService scheduleService;
 
     @Autowired
+    ZoneService zoneService;
+
+    @Autowired
     CustomerService customerService;
 
+    @Autowired
+    TokenService tokenService;
+
+    @Autowired
+    DoctorService doctorService;
 
     @Autowired
     AppointmentService appointmentService;
@@ -63,7 +71,6 @@ public class AppointmentController {
 
     @Autowired
     PaymentDetailRepository paymentDetailRepository;
-
 
     @GetMapping("/listTrueStatus/{paymentId}")
     public ResponseEntity<List<PaymentDetail>> listFalseStatus(@PathVariable long paymentId) {
@@ -111,7 +118,7 @@ public class AppointmentController {
         return ResponseEntity.ok(scheduleService.findFreeScheduleOfSession());
     }
 
-    @PostMapping(value = "/createAppointment", produces = "application/json")
+    @PostMapping(value = "/createAppointment", produces = "application/json" )
     public ResponseEntity<?> createAppointment(@RequestBody AppointmentRequest appointmentRequest) {
         try {
             Appointment appointment = appointmentService.createAppointment(appointmentRequest);
@@ -143,6 +150,8 @@ public class AppointmentController {
     }
 
 
+
+
     //Nằm dỡ ní ơi
 
 
@@ -159,6 +168,8 @@ public class AppointmentController {
     }
 
 
+
+
 //
 //    @GetMapping("/getAppointmentIdForUser/{accountId}")
 //    @PreAuthorize("hasAuthority('CUSTOMER')")
@@ -168,11 +179,13 @@ public class AppointmentController {
 //    }
 
 
+
     @PutMapping("/cancelAppointmentByCustomer/{appointmentId}")
     public ResponseEntity cancelAppointmentByCustomer(@PathVariable long appointmentId) {
         appointmentService.cancelAppointmentByCustomer(appointmentId);
         return ResponseEntity.ok("Đã hủy thành công");
     }
+
 
 
 //    @GetMapping("/countAppointment/{id}")

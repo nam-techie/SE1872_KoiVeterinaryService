@@ -3,6 +3,7 @@ import styles from '../../styles/CustomerProfile.module.css';
 import {CustomerNavBar} from "../../components/Navbar.jsx";
 import Footer from "../../components/Footer.jsx";
 import { useCustomerInfo } from '../../hooks/useCustomerInfo';
+import useManageCus from '../../hooks/useManageCus';
 
 const CustomerProfile = () => {
     const { user, loading, error, updateCustomerInfo } = useCustomerInfo();
@@ -15,10 +16,11 @@ const CustomerProfile = () => {
         email: ''
     });
     const [passwordData, setPasswordData] = useState({
-        currentPassword: '',
+        oldPassword: '',
         newPassword: '',
         confirmPassword: ''
     });
+    const { changePassword } = useManageCus();
 
     // Cập nhật formData khi user data được load
     useEffect(() => {
@@ -77,20 +79,30 @@ const CustomerProfile = () => {
         }
     };
 
-    const handlePasswordSubmit = (e) => {
+    const handlePasswordSubmit = async (e) => {
         e.preventDefault();
-        if (passwordData.newPassword !== passwordData.confirmPassword) {
-            alert('Mật khẩu mới và xác nhận mật khẩu không khớp!');
-            return;
+        // if (passwordData.newPassword !== passwordData.confirmPassword) {
+        //     alert('Mật khẩu mới và xác nhận mật khẩu không khớp!');
+        //     return;
+        // }
+        
+        try {
+            await changePassword({
+                oldPassword: passwordData.oldPassword,
+                newPassword: passwordData.newPassword,
+                confirmPassword: passwordData.confirmPassword
+            });
+            
+            alert('Đổi mật khẩu thành công!');
+            setPasswordData({
+                oldPassword: '',
+                newPassword: '',
+                confirmPassword: ''
+            });
+            setShowPasswordForm(false);
+        } catch (error) {
+            alert(error.message);
         }
-        // Giả lập API call
-        console.log('Yêu cầu đổi mật khẩu:', passwordData);
-        setPasswordData({
-            currentPassword: '',
-            newPassword: '',
-            confirmPassword: ''
-        });
-        setShowPasswordForm(false);
     };
 
     if (loading) return <div>Đang tải...</div>;
@@ -192,8 +204,8 @@ const CustomerProfile = () => {
                                     <label>Mật khẩu hiện tại:</label>
                                     <input
                                         type="password"
-                                        name="currentPassword"
-                                        value={passwordData.currentPassword}
+                                        name="oldPassword"
+                                        value={passwordData.oldPassword}
                                         onChange={handlePasswordChange}
                                         required
                                     />

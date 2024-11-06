@@ -14,4 +14,3 @@ public class ChangePasswordRequest {
 
     private String confirmPassword;
 }
-

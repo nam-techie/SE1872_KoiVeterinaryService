@@ -156,7 +156,7 @@ public class AuthenticationService implements UserDetailsService {
             // Kiểm tra tài khoản
             Account account = (Account) authentication.getPrincipal();
             if (account.isDeleted()) {
-                throw new NotFoundException("Tài khoản đã bị vô hiệu hóa! Nếu bạn nghĩ rằng đây là một lỗi, vui lòng liên hệ với bộ phận hỗ trợ.");
+                throw new NotFoundException("Tài khoản đã bị vô hiệu hóa!");
             }
 
             // Tạo token cho tài khoản
@@ -164,9 +164,12 @@ public class AuthenticationService implements UserDetailsService {
             accountResponse.setToken(tokenService.generateToken(account));
 
             return accountResponse;
-        }catch (BadCredentialsException e) {
+        } catch (NotFoundException e) {
+            // Nếu tài khoản bị vô hiệu hóa
+            throw new NotFoundException("Tài khoản đã bị vô hiệu hóa!");
+        } catch (BadCredentialsException e) {
             // Nếu thông tin tài khoản hoặc mật khẩu sai
-            throw new EntityNotFoundException("Tài khoản hoặc mật khẩu không chính xác. Vui lòng kiểm tra lại.");
+            throw new EntityNotFoundException("Tài khoản hoặc mật khẩu sai!");
         } catch (Exception e) {
             // Xử lý các lỗi khác
             e.printStackTrace();
@@ -177,7 +180,7 @@ public class AuthenticationService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Account account = accountRepository.findAccountByUsername(username);
+        Account account =  accountRepository.findAccountByUsername(username);
         if (account == null) {
             throw new UsernameNotFoundException("Tài khoản không tồn tại: " + username);
         }
@@ -273,6 +276,7 @@ public class AuthenticationService implements UserDetailsService {
             account.setUsername(adminAccountRequest.getUsername());
             account.setPassword(passwordEncoder.encode("123456"));
             account.setRole(Role.valueOf(role).name());
+
 
 
             // Lưu tài khoản bác sĩ vào database
@@ -617,6 +621,11 @@ public class AuthenticationService implements UserDetailsService {
             throw new RuntimeException("Đã xảy ra lỗi trong quá trình cập nhật thông tin admin.");
         }
     }
+
+
+
+
+
 
 
 }

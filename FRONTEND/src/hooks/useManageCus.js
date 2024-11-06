@@ -63,10 +63,35 @@ const useManageCus = () => {
             const response = await axiosInstance.get(
                 `/customer/getFullInfoCustomer/${appointmentId}`
             );
-            return response.data;
+            
+            if (response.data) {
+                console.log('Appointment detail:', response.data);
+                return response.data;
+            } else {
+                throw new Error('Không có dữ liệu chi tiết lịch hẹn');
+            }
         } catch (err) {
             console.error('Error fetching appointment detail:', err);
-            throw new Error('Có lỗi xảy ra khi tải chi tiết lịch hẹn');
+            if (err.response) {
+                throw new Error(err.response.data || 'Có lỗi xảy ra khi tải chi tiết lịch hẹn');
+            } else {
+                throw new Error('Không thể kết nối đến server');
+            }
+        }
+    };
+
+    const changePassword = async (passwordData) => {
+        try {
+            const response = await axiosInstance.post(
+                '/customer/changePasswordCustomer',
+                passwordData
+            );
+            return response.data;
+        } catch (err) {
+            if (err.response) {
+                throw new Error(err.response.data || 'Có lỗi xảy ra khi đổi mật khẩu');
+            }
+            throw new Error('Không thể kết nối đến server');
         }
     };
 
@@ -76,6 +101,7 @@ const useManageCus = () => {
         getPaymentUrl,
         submitFeedback,
         getAppointmentDetail,
+        changePassword,
     };
 };
 
