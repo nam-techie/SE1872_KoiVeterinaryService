@@ -1,14 +1,15 @@
 // eslint-disable-next-line no-unused-vars
 import React, { useState, useEffect } from 'react';
-import { FaSearch, FaSort, FaUserMd } from 'react-icons/fa';
+import { FaSearch, FaSort, FaUserMd, FaCalendarPlus } from 'react-icons/fa';
 import './styles/DoctorDashboard.css';
 import {useDoctorInfo} from "./hooks/useDoctorInfo.js";
 import DoctorDetailInfo from "./DoctorDetailInfo.jsx"; // Đảm bảo import này tồn tại
 import LoadingCat from '../../components/LoadingCat.jsx';
 import Pagination from '../../components/Pagination.jsx';
+import { toast } from 'react-toastify';
 
 const DoctorDashboard = ({ onViewDetails, onAddDoctor }) => {
-    const { doctors, loading, error, fetchAllDoctors } = useDoctorInfo();
+    const { doctors, loading, error, fetchAllDoctors, createDoctorSchedule } = useDoctorInfo();
     const [searchTerm, setSearchTerm] = useState('');
     const [sortBy, setSortBy] = useState('fullName');
     const [sortOrder, setSortOrder] = useState('asc');
@@ -31,6 +32,15 @@ const DoctorDashboard = ({ onViewDetails, onAddDoctor }) => {
 
     const handleViewDetails = (doctorId) => {
         onViewDetails(doctorId);
+    };
+
+    const handleSchedule = async (doctorId) => {
+        try {
+            const result = await createDoctorSchedule(doctorId);
+            toast.success(result); // Hiển thị thông báo thành công
+        } catch (error) {
+            toast.error(error.message); // Hiển thị thông báo lỗi
+        }
     };
 
     if (loading) return <LoadingCat />;
@@ -115,6 +125,7 @@ const DoctorDashboard = ({ onViewDetails, onAddDoctor }) => {
                 <table>
                     <thead>
                         <tr>
+                            <th>ID</th>
                             <th onClick={() => handleSort('fullName')}>Tên đầy đủ</th>
                             <th onClick={() => handleSort('phone')}>Số điện thoại</th>
                             <th onClick={() => handleSort('experience')}>Kinh nghiệm (năm)</th>
@@ -125,6 +136,7 @@ const DoctorDashboard = ({ onViewDetails, onAddDoctor }) => {
                     <tbody>
                         {currentDoctors.map((doctor) => (
                             <tr key={doctor.id}>
+                                <td>{doctor.id}</td>
                                 <td>{doctor.fullName || 'Dữ liệu rỗng'}</td>
                                 <td>{doctor.phone}</td>
                                 <td>{doctor.experience || 0}</td>
@@ -135,6 +147,9 @@ const DoctorDashboard = ({ onViewDetails, onAddDoctor }) => {
                                     <div className="action-buttons">
                                         <button className="edit-btn" onClick={() => handleViewDetails(doctor.id)}>
                                             <FaSearch /> Chi tiết
+                                        </button>
+                                        <button className="schedule-btn" onClick={() => handleSchedule(doctor.id)}>
+                                            <FaCalendarPlus /> Tạo lịch
                                         </button>
                                     </div>
                                 </td>

@@ -20,6 +20,8 @@ import Dashboard from "./pages/admin_Pages/Dashboard.jsx";
 import ManageAppointment from "./pages/customer_Pages/ManageAppointment.jsx";
 import DoctorWorkSchedule from "./pages/doctor_Pages/DoctorWorkSchedule.jsx";
 import CustomerProfile from "./pages/customer_Pages/CustomerProfile.jsx";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
 
@@ -104,7 +106,18 @@ function App() {
                     {/*<Route path="*" element={<NotFoundPage />} />*/}
                 </Routes>
             </Router>
-
+            <ToastContainer
+                position="top-right"
+                autoClose={3000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="light"
+            />
         </>
     )
 }

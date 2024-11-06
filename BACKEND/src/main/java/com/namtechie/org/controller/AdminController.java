@@ -357,6 +357,22 @@ public class AdminController {
         return ResponseEntity.ok(detail);
     }
 
+    @Autowired
+    ScheduleService scheduleService;
+
+    @PostMapping("/createDoctorSchedule/{doctorId}")
+    public ResponseEntity<String> createDoctorSchedule(@PathVariable long doctorId) {
+        try {
+            scheduleService.setDoctorDefaultSchedule(doctorId);
+            return ResponseEntity.ok("Lịch làm việc đã được tạo thành công cho bác sĩ với ID: " + doctorId);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500).body("Đã xảy ra lỗi trong quá trình tạo lịch làm việc cho bác sĩ.");
+        }
+    }
+
 
 
 
