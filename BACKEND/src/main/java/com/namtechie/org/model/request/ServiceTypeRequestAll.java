@@ -1,8 +1,10 @@
 package com.namtechie.org.model.request;
 
 import lombok.Data;
+import lombok.NonNull;
 
 @Data
+@NonNull
 public class ServiceTypeRequestAll {
     private String name;
 
@@ -21,5 +23,6 @@ public class ServiceTypeRequestAll {
     boolean serviceTypeId7;
     boolean serviceTypeId8;
     boolean serviceTypeId9;
+    String notes;
 
 }

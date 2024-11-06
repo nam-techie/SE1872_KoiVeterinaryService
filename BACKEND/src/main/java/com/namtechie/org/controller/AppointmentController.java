@@ -6,9 +6,7 @@ import com.namtechie.org.exception.DoctorNotAvailableException;
 import com.namtechie.org.exception.DuplicateEntity;
 import com.namtechie.org.exception.InvalidPhoneNumberException;
 import com.namtechie.org.model.Schedule;
-import com.namtechie.org.model.request.ChangePasswordRequest;
-import com.namtechie.org.model.request.CustomerInfoRequest;
-import com.namtechie.org.model.request.FeedbackRequest;
+import com.namtechie.org.model.request.*;
 import com.namtechie.org.model.response.AppointmentResponse;
 import com.namtechie.org.model.response.AppointmentStatusResponse;
 import com.namtechie.org.model.response.InfoCustomerResponse;
@@ -17,7 +15,6 @@ import com.namtechie.org.repository.AppointmentRepository;
 import com.namtechie.org.repository.PaymentDetailRepository;
 import com.namtechie.org.repository.ZoneRepository;
 import com.namtechie.org.service.*;
-import com.namtechie.org.model.request.AppointmentRequest;
 import com.namtechie.org.service.AppointmentService;
 import com.namtechie.org.service.TokenService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -180,9 +177,9 @@ public class AppointmentController {
 
 
 
-    @PutMapping("/cancelAppointmentByCustomer/{appointmentId}")
-    public ResponseEntity cancelAppointmentByCustomer(@PathVariable long appointmentId) {
-        appointmentService.cancelAppointmentByCustomer(appointmentId);
+    @PutMapping("/cancelAppointmentByCustomer")
+    public ResponseEntity cancelAppointmentByCustomer(@RequestBody CancelRequest cancelRequest) {
+        appointmentService.cancelAppointmentByCustomer(cancelRequest, "Khách hàng");
         return ResponseEntity.ok("Đã hủy thành công");
     }
 

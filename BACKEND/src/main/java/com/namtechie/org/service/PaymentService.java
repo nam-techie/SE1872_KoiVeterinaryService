@@ -160,7 +160,6 @@ public class PaymentService {
     }
 
 
-
     // của customer thuc hien
     public String sendPaymentDeposit(long appointmentId) throws Exception {
         // Lấy thông tin cuộc hẹn từ AppointmentService
@@ -262,26 +261,53 @@ public class PaymentService {
             throw new IllegalArgumentException("Không tìm thấy đơn hàng khám bệnh với ID: " + appointmentId);
         }
 
-        MedicalRecorded medicalRecorded = new MedicalRecorded();
-        medicalRecorded.setAppointment(appointment); // Liên kết với đơn hàng (appointment)
-        medicalRecorded.setName(serviceTypeRequestAll.getName());
-        medicalRecorded.setBreed(serviceTypeRequestAll.getBreed());
-        medicalRecorded.setAge(serviceTypeRequestAll.getAge());
-        medicalRecorded.setColor(serviceTypeRequestAll.getColor());
-        medicalRecorded.setWeight(serviceTypeRequestAll.getWeight());
-        medicalRecorded.setHealthStatus(serviceTypeRequestAll.getHealthStatus());
+        AppointmentStatus doneWorking = new AppointmentStatus();
+        long totalPrice = 0;
 
-        medicalRecordedRepository.save(medicalRecorded); // Lưu từng loại cá koi
+        // Lấy loại dịch vụ từ cuộc hẹn
+        ServiceType serviceType = appointment.getServiceType();
+        if (serviceType == null) {
+            throw new IllegalArgumentException("Không tìm thấy loại dịch vụ cho cuộc hẹn với ID: " + appointmentId);
+        }
+
+        if(serviceType.getId() == 1) {
+            doneWorking.setAppointment(appointment);
+            doneWorking.setStatus("Hoàn thành");
+            doneWorking.setNotes(serviceTypeRequestAll.getNotes());
+        } else if(serviceType.getId() == 2) {
+            doneWorking.setAppointment(appointment);
+            doneWorking.setStatus("Thực hiện xong dịch vụ");
+            doneWorking.setNotes(serviceTypeRequestAll.getNotes());
+        } else{
+            MedicalRecorded medicalRecorded = new MedicalRecorded();
+            medicalRecorded.setAppointment(appointment); // Liên kết với đơn hàng (appointment)
+            medicalRecorded.setName(serviceTypeRequestAll.getName());
+            medicalRecorded.setBreed(serviceTypeRequestAll.getBreed());
+            medicalRecorded.setAge(serviceTypeRequestAll.getAge());
+            medicalRecorded.setColor(serviceTypeRequestAll.getColor());
+            medicalRecorded.setWeight(serviceTypeRequestAll.getWeight());
+            medicalRecorded.setHealthStatus(serviceTypeRequestAll.getHealthStatus());
+
+            medicalRecordedRepository.save(medicalRecorded); // Lưu từng loại cá koi
 
 
-        // Cập nhật lại danh sách MedicalRecorded cho Appointment
-        appointment.setMedicalRecorded(medicalRecorded);
-        appointmentRepository.save(appointment);
+            // Cập nhật lại danh sách MedicalRecorded cho Appointment
+            appointment.setMedicalRecorded(medicalRecorded);
+            appointmentRepository.save(appointment);
+
+
+            doneWorking.setAppointment(appointment);
+            doneWorking.setStatus("Thực hiện xong dịch vụ");
+            doneWorking.setNotes(serviceTypeRequestAll.getNotes());
+        }
+
+
+
 
         generatePaymentZone(appointmentId);
 
 
-        long totalPrice = 0;
+
         totalPrice += appointment.getZone().getFee();
         if (serviceTypeRequestAll.isServiceTypeId5() == true) {
             totalPrice += serviceTypeRepository.findById(5).getBase_price();
@@ -309,11 +335,6 @@ public class PaymentService {
             throw new IllegalArgumentException("Không tìm thấy thông tin cuộc hẹn với ID: " + appointmentId);
         }
 
-        // Lấy loại dịch vụ từ cuộc hẹn
-        ServiceType serviceType = appointment.getServiceType();
-        if (serviceType == null) {
-            throw new IllegalArgumentException("Không tìm thấy loại dịch vụ cho cuộc hẹn với ID: " + appointmentId);
-        }
 
 //        // Gọi hàm createUrl để tạo URL thanh toán và trả về chuỗi đó
 //        String urlToPayment = createUrl(appointmentId, totalPrice);
@@ -334,11 +355,6 @@ public class PaymentService {
             paymentRepository.save(paymentTotal);  // Lưu Payment mới
         }
 
-        AppointmentStatus doneWorking = new AppointmentStatus();
-
-        doneWorking.setAppointment(appointment);
-        doneWorking.setStatus("Thực hiện xong dịch vụ");
-        doneWorking.setNotes(serviceTypeRequestAll.getHealthStatus());
 
 //        appointmentStatusRepository.save(appointmentStatus);
         appointmentStatusRepository.save(doneWorking);

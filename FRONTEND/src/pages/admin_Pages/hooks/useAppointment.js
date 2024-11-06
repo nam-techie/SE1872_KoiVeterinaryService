@@ -21,9 +21,14 @@ const useAppointment = () => {
         }
     };
 
-    const cancelAppointment = async (appointmentId) => {
+    const cancelAppointment = async (appointmentId, { notes }) => {
         try {
-            await axiosInstance.put(`/admin/cancelAppointmentByAdmin/${appointmentId}`);
+            const cancelRequest = {
+                appointmentId: appointmentId,
+                notes: notes
+            };
+            
+            await axiosInstance.put(`/admin/cancelAppointmentByAdmin/${appointmentId}`, cancelRequest);
             // Cập nhật lại danh sách sau khi hủy thành công
             await fetchAppointments();
             return true;

@@ -18,5 +18,7 @@ public class InfoResponse {
     long notDonePayment;
     long totalPayment;
     String transactionMethod;
+    String notes;
+    String cancelNotes;
     InfoFeedbackResponse infoFeedbackResponse;
 }
