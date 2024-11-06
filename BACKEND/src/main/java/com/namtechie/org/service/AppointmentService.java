@@ -242,7 +242,7 @@ public class AppointmentService {
             List<AppointmentStatus> list = new ArrayList<>();
             AppointmentStatus appointmentStatus = new AppointmentStatus();
             appointmentStatus.setAppointment(appointment);
-            if(appointmentRequest.getServiceTypeId() == 1){
+            if (appointmentRequest.getServiceTypeId() == 1) {
                 appointmentStatus.setStatus("Đã xác nhận");
             } else {
                 appointmentStatus.setStatus("Chờ bác sĩ xác nhận");
@@ -252,9 +252,9 @@ public class AppointmentService {
 
 
             appointment.setAppointmentStatus(list);
-
+            appointmentRepository.save(appointment);
             // Step 6: Lưu Appointment vào cơ sở dữ liệu
-            return appointmentRepository.save(appointment);
+            return appointment;
         } catch (DoctorNotAvailableException e) {
             throw new DoctorNotAvailableException(e.getMessage());
         } catch (NullPointerException e) {
@@ -539,7 +539,6 @@ public class AppointmentService {
 
     public AppointmentStatus confirmDoctorAppointment(long appointmentId) {
         try {
-            AppointmentStatus updateAppointmentStatus = appointmentStatusRepository.findByAppointmentId(appointmentId);
             Appointment appointment = appointmentRepository.findAppointmentById(appointmentId);
 
 
@@ -559,10 +558,8 @@ public class AppointmentService {
             paymentDepositResponse.setAppointmentId(appointmentId);
             paymentDepositResponse.setDepositPrice(depositPrice);
 
-            Payment paymentTotal = paymentRepository.findByAppointmentId(appointmentId);
-
             // Nếu chưa có, tạo bản ghi mới
-            paymentTotal = new Payment();
+            Payment paymentTotal = new Payment();
             paymentTotal.setAppointment(appointment);
             paymentTotal.setTotalFee(serviceType.getBase_price());
             paymentRepository.save(paymentTotal);  // Lưu Payment mới

@@ -65,7 +65,6 @@ public class AppointmentController {
     PaymentDetailRepository paymentDetailRepository;
 
 
-
     @GetMapping("/listTrueStatus/{paymentId}")
     public ResponseEntity<List<PaymentDetail>> listFalseStatus(@PathVariable long paymentId) {
         List<PaymentDetail> paymentDetails = paymentDetailRepository.findListByPaymentIdAndStatus(paymentId, true);
@@ -144,8 +143,6 @@ public class AppointmentController {
     }
 
 
-
-
     //Nằm dỡ ní ơi
 
 
@@ -162,8 +159,6 @@ public class AppointmentController {
     }
 
 
-
-
 //
 //    @GetMapping("/getAppointmentIdForUser/{accountId}")
 //    @PreAuthorize("hasAuthority('CUSTOMER')")
@@ -173,13 +168,11 @@ public class AppointmentController {
 //    }
 
 
-
     @PutMapping("/cancelAppointmentByCustomer/{appointmentId}")
     public ResponseEntity cancelAppointmentByCustomer(@PathVariable long appointmentId) {
         appointmentService.cancelAppointmentByCustomer(appointmentId);
         return ResponseEntity.ok("Đã hủy thành công");
     }
-
 
 
 //    @GetMapping("/countAppointment/{id}")
@@ -199,6 +192,11 @@ public class AppointmentController {
     @PostMapping("/sendUrlPayment/{appointmentId}")
     public ResponseEntity<String> createPaymentTotalUrl(@PathVariable long appointmentId) {
         try {
+            Appointment appointment = appointmentRepository.findAppointmentById(appointmentId);
+            ServiceType type = appointment.getServiceType();
+            if (type.getId() == 1) {
+                AppointmentStatus appointmentStatus = appointmentService.confirmDoctorAppointment(appointmentId);
+            }
             String paymentUrl = paymentService.returnUrlPayment(appointmentId);
             return ResponseEntity.ok(paymentUrl);
         } catch (IllegalArgumentException e) {
@@ -218,7 +216,7 @@ public class AppointmentController {
     }
 
     @GetMapping("/getFullInfoCustomer/{appointmentId}")
-    public ResponseEntity<?> getFullInfoCustomer(@PathVariable long appointmentId){
+    public ResponseEntity<?> getFullInfoCustomer(@PathVariable long appointmentId) {
         try {
             InfoResponse infoResponse = appointmentService.getFullInfoAppointment(appointmentId);
             return ResponseEntity.ok(infoResponse);
