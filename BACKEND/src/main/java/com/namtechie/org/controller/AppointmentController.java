@@ -3,8 +3,8 @@ package com.namtechie.org.controller;
 import com.namtechie.org.entity.*;
 import com.namtechie.org.exception.BadCredentialsException;
 import com.namtechie.org.exception.DoctorNotAvailableException;
-import com.namtechie.org.exception.DuplicateEntity;
 import com.namtechie.org.exception.InvalidPhoneNumberException;
+import com.namtechie.org.exception.DuplicateEntity;
 import com.namtechie.org.model.Schedule;
 import com.namtechie.org.model.request.*;
 import com.namtechie.org.model.response.AppointmentResponse;
@@ -69,6 +69,10 @@ public class AppointmentController {
     @Autowired
     PaymentDetailRepository paymentDetailRepository;
 
+    @Autowired
+    AuthenticationService authenticationService;
+
+
     @GetMapping("/listTrueStatus/{paymentId}")
     public ResponseEntity<List<PaymentDetail>> listFalseStatus(@PathVariable long paymentId) {
         List<PaymentDetail> paymentDetails = paymentDetailRepository.findListByPaymentIdAndStatus(paymentId, true);
@@ -130,8 +134,8 @@ public class AppointmentController {
     }
 
 
-    //Tạm thời bỏ lấy Zone ở đây.
-    //Cái này còn hơi đắng đo mà chắc cần token mà
+
+
     @GetMapping(value = "/getAllZone", produces = "application/json")
     public List<Zone> getAllZone() {
         List<Zone> zoneList = new ArrayList<>();

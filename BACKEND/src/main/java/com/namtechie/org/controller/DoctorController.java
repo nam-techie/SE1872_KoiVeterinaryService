@@ -8,7 +8,10 @@ import com.namtechie.org.exception.DuplicateEntity;
 import com.namtechie.org.model.request.*;
 import com.namtechie.org.model.response.*;
 import com.namtechie.org.repository.DoctorRepository;
-import com.namtechie.org.service.*;
+import com.namtechie.org.service.AppointmentService;
+import com.namtechie.org.service.AuthenticationService;
+import com.namtechie.org.service.DoctorService;
+import com.namtechie.org.service.PaymentService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -194,7 +197,6 @@ public class DoctorController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Đã xảy ra lỗi trong quá trình thay đổi mật khẩu.");
         }
     }
-
 
 
 }

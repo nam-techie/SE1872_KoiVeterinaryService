@@ -7,10 +7,8 @@ import lombok.NoArgsConstructor;
 import java.util.List;
 
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
+
 public class DoctorInfoResponse {
-    long doctorId;
     String fullName;
     String phone;
     Integer experience;

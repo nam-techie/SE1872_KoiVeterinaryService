@@ -937,10 +937,8 @@ public class AppointmentService {
                 infoResponse.setCancelNotes(null);
             }
 
-
             // Set Info Status
             infoResponse.setStatus(latestStatus.getStatus());
-
 
             Doctor doctor = appointment.getDoctor();
 
@@ -1067,18 +1065,17 @@ public class AppointmentService {
         dashboardTotalRequest.setAppointments(appointmentDetails);
         dashboardTotalRequest.setTotalCustomers(countCustomer);
         dashboardTotalRequest.setTotalAppointments(countAppointment);
-
         return dashboardTotalRequest;
     }
 
 
     public List<DashboardDetailAppointmentResponse> dashboardDetailAppointmentResponses() {
         List<DashboardDetailAppointmentResponse> responses = new ArrayList<>();
-        Pageable pageable = PageRequest.of(0, 9); // Bắt đầu từ trang 0 và giới hạn 9 bản ghi
+        Pageable pageable = PageRequest.of(0, 9); // Bắt đầu từ trang 0 và giới hạn 7 bản ghi
         List<Appointment> upcomingAppointments = appointmentRepository.findTop9RecentAppointments(pageable);
 
         for (Appointment app : upcomingAppointments) {
-            DashboardDetailAppointmentResponse response = new DashboardDetailAppointmentResponse();
+            DashboardDetailAppointmentResponse response = new DashboardDetailAppointmentResponse(); // Tạo mới cho mỗi Appointment
 
             AppointmentInfo appointmentInfo = appointmentInfoRepository.findByAppointmentId(app.getId());
             ServiceType serviceType = app.getServiceType();
@@ -1107,7 +1104,7 @@ public class AppointmentService {
             response.setCustomerName(customers.getFullName());
             response.setAddress((appointmentInfo.getAddress() != null ? appointmentInfo.getAddress() : "null") + ", " + (zone != null ? zone.getName() : "null"));
 
-            responses.add(response);
+            responses.add(response); // Thêm vào danh sách
         }
         return responses;
     }

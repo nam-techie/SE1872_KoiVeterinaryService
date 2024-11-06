@@ -60,7 +60,6 @@ public class AuthenticationService implements UserDetailsService {
     @Autowired
     private CustomerRepository customerRepository;
 
-
     public void changePassword(ChangePasswordRequest changePasswordRequest) {
         Account account = (Account) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
@@ -91,8 +90,6 @@ public class AuthenticationService implements UserDetailsService {
         // Lưu thay đổi vào cơ sở dữ liệu
         accountRepository.save(account);  // Đảm bảo `accountRepository` được inject vào service của bạn
     }
-
-
 
     // xử lí logic, nghiệp vụ
     public AccountResponse register(RegisterRequest registerRequest) {
