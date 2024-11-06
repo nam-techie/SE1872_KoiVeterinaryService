@@ -12,7 +12,7 @@ export const login = async (username, password) => {
         // Kiểm tra content-type của response
         const contentType = response.headers.get('content-type');
         let data;
-        
+
         if (contentType && contentType.includes('application/json')) {
             data = await response.json();
         } else {

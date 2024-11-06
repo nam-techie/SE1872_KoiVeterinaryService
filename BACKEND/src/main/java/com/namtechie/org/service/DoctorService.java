@@ -129,6 +129,38 @@ public class DoctorService {
         return doctors;
     }
 
+    public DoctorInfoAndFeedbackResponse getResponseInfoAndFeedback() {
+        DoctorInfoAndFeedbackResponse response = new DoctorInfoAndFeedbackResponse();
+        Account account = (Account) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        response.setDoctorInfo(getInfoCurrentDoctor(account));
+        response.setFeedback(feedbackService.listTop4FeedbackOfDoctor(account));
+        return response;
+    }
+
+    public DoctorInfoResponse getInfoCurrentDoctor(Account account) {
+        Doctor doctor = doctorRepository.findByAccountId(account.getId());
+        DoctorInfoResponse doctorInfoResponse = new DoctorInfoResponse();
+        doctorInfoResponse.setDoctorId(doctor.getId());
+        doctorInfoResponse.setFullName(doctor.getFullName());
+        doctorInfoResponse.setPhone(doctor.getPhone());
+        doctorInfoResponse.setExperience(doctor.getExperience());
+        doctorInfoResponse.setImageUrl(doctor.getImageUrl());
+
+        DoctorInfo doctorInfo = doctorInfoRepository.findDoctorInfoByDoctorId(doctor.getId());
+        doctorInfoResponse.setDescription(doctorInfo.getDescription());
+        doctorInfoResponse.setQualification(doctorInfo.getQualification());
+        doctorInfoResponse.setSpecialty(doctorInfo.getSpecialty());
+        List<DoctorResponse> doctors = getListAllDoctors();
+        for (DoctorResponse doctorResponse : doctors) {
+            Doctor docCompare = doctorResponse.getDoctor();
+            if (docCompare.equals(doctor)) {
+                doctorInfoResponse.setRate(doctorResponse.getRateAverage());
+            }
+        }
+
+        return doctorInfoResponse;
+    }
+
 
 
     public DoctorInfoResponse getAllInfoDoctor(long doctorId) {
@@ -204,6 +236,42 @@ public class DoctorService {
                 uploadImage(updateDoctor.getId(), doctorRequest.getImageUrl());
             }
 
+
+            // Lưu thông tin cập nhật
+            doctorRepository.save(updateDoctor);
+            doctorInfoRepository.save(updateDoctorInfo);
+
+        } catch (DuplicateEntity e) {
+            throw e;
+        } catch (Exception e) {
+            throw new RuntimeException("Đã xảy ra lỗi trong quá trình cập nhật thông tin bác sĩ.");
+        }
+    }
+
+    public void updateInfoDoctorByDoctor(DoctorRequest doctorRequest) {
+        try {
+            // Lấy bác sĩ hiện tại theo số điện thoại (phone)
+            Account account = (Account) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            Doctor updateDoctor = doctorRepository.findByAccountId(account.getId());
+            DoctorInfo updateDoctorInfo = doctorInfoRepository.findDoctorInfoByDoctorId(updateDoctor.getId());
+
+            // Kiểm tra nếu số điện thoại trong request khác với số hiện tại và đã tồn tại trong cơ sở dữ liệu
+            if (!doctorRequest.getPhone().equals(updateDoctor.getPhone()) && doctorRepository.existsByPhone(doctorRequest.getPhone())) {
+                throw new DuplicateEntity("Số điện thoại đã được sử dụng bởi cá nhân khác.");
+            }
+
+            // Cập nhật thông tin
+            updateDoctor.setFullName(doctorRequest.getFullName());
+            updateDoctor.setPhone(doctorRequest.getPhone()); // Cập nhật số điện thoại mới
+            updateDoctor.setExperience(doctorRequest.getExperience());
+            updateDoctorInfo.setDescription(doctorRequest.getDescription());
+            updateDoctorInfo.setQualification(doctorRequest.getQualification());
+            updateDoctorInfo.setSpecialty(doctorRequest.getSpecialty());
+
+            // Xử lý upload ảnh nếu có
+            if (doctorRequest.getImageUrl() != null && !doctorRequest.getImageUrl().isEmpty()) {
+                uploadImage(updateDoctor.getId(), doctorRequest.getImageUrl());
+            }
 
             // Lưu thông tin cập nhật
             doctorRepository.save(updateDoctor);
@@ -571,8 +639,7 @@ public class DoctorService {
         CountAppointmentDoctorRequest response = new CountAppointmentDoctorRequest();
 
         long countTotal = appointmentRepository.countTotalAppointmentsByDoctor(doctor.getId());
-        long countCancel = appointmentRepository.countCancelledAppointmentsByDoctor(doctor.getId());
-
+        long countCancel = 0;
         long countDone = 0;
         long countWait = 0;
 
@@ -580,17 +647,42 @@ public class DoctorService {
         for (Appointment appointment : appointments) {
             List<AppointmentStatus> statuses = appointmentStatusRepository.findByAppointment(appointment);
 
-            // Tìm trạng thái có createDate lớn nhất (mới nhất)
+            // Tìm trạng thái mới nhất của cuộc hẹn
             AppointmentStatus latestStatus = null;
             for (AppointmentStatus status : statuses) {
                 if (latestStatus == null || status.getCreate_date().toLocalDateTime().isAfter(latestStatus.getCreate_date().toLocalDateTime())) {
                     latestStatus = status;
                 }
             }
-            if ("Thực hiện xong dịch vụ".equals(latestStatus.getStatus())) {
-                countDone++;
-            } else if ("Chờ bác sĩ xác nhận".equals(latestStatus.getStatus())) {
-                countWait++;
+
+            // Xác định hành động dựa trên trạng thái cuối cùng
+            if (latestStatus != null) {
+                String finalStatus = latestStatus.getStatus();
+
+                switch (finalStatus) {
+                    case "Hoàn thành":
+                        countDone++;
+                        break;
+                    case "Chờ bác sĩ xác nhận":
+                        countWait++;
+                        break;
+                    case "Đã hủy lịch":
+                        // Chỉ đếm "Đã hủy lịch" nếu không có trạng thái "Đang cung cấp dịch vụ" hoặc "Thực hiện xong dịch vụ" trong các trạng thái trước đó
+                        boolean canCancel = true;
+                        for (AppointmentStatus status : statuses) {
+                            if ("Đang cung cấp dịch vụ".equals(status.getStatus()) || "Thực hiện xong dịch vụ".equals(status.getStatus())) {
+                                canCancel = false;
+                                break;
+                            }
+                        }
+                        if (canCancel) {
+                            countCancel++;
+                        }
+                        break;
+                    default:
+                        // Không làm gì nếu trạng thái không nằm trong các trường hợp trên
+                        break;
+                }
             }
         }
 

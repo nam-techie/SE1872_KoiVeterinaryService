@@ -32,6 +32,8 @@ const AppointmentDashboard = () => {
   const [appointmentDetails, setAppointmentDetails] = useState(null);
   const [loadingDetails, setLoadingDetails] = useState(false);
   const [detailsError, setDetailsError] = useState(null);
+  const [cancelNotes, setCancelNotes] = useState("");
+  const [autoRefreshInterval, setAutoRefreshInterval] = useState(null);
 
   // Thêm hàm fetchAppointments riêng
   const fetchAppointments = async () => {
@@ -52,13 +54,37 @@ const AppointmentDashboard = () => {
 
     const interval = setInterval(() => {
       fetchAppointments();
-    }, 5000);
+    }, 10000);
+
+    setAutoRefreshInterval(interval);
 
     return () => clearInterval(interval);
   }, []);
 
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        if (autoRefreshInterval) {
+          clearInterval(autoRefreshInterval);
+        }
+      } else {
+        fetchAppointments();
+        const newInterval = setInterval(() => {
+          fetchAppointments();
+        }, 10000);
+        setAutoRefreshInterval(newInterval);
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
+  }, [autoRefreshInterval]);
+
   // Thay đổi cách hiển thị loading
-  
+
   if (error) return <div>{error}</div>;
 
   const statusOptions = [
@@ -306,12 +332,18 @@ const AppointmentDashboard = () => {
 
   // Cập nhật hàm handleConfirmDelete
   const handleConfirmDelete = async () => {
+    if (!cancelNotes.trim()) {
+      setCancelError("Vui lòng nhập lý do hủy lịch");
+      return;
+    }
+
     try {
-      await cancelAppointment(selectedAppointment.id);
+      await cancelAppointment(selectedAppointment.id, { notes: cancelNotes.trim() });
       setShowDeleteModal(false);
       setSelectedAppointment(null);
+      setCancelNotes("");
+      setCancelError("");
       setSuccessMessage("Đã hủy lịch hẹn thành công!");
-      // Tự động ẩn thông báo sau 3 giây
       setTimeout(() => {
         setSuccessMessage(null);
       }, 3000);
@@ -377,7 +409,10 @@ const AppointmentDashboard = () => {
 
   // Thêm hàm kiểm tra trạng thái cho phép thanh toán
   const canConfirmPayment = (status) => {
-    return status === "Chờ thanh toán tiền dịch vụ" || status === "Chờ thanh toán tổng tiền";
+    return (
+      status === "Chờ thanh toán tiền dịch vụ" ||
+      status === "Chờ thanh toán tổng tiền"
+    );
   };
 
   return (
@@ -497,7 +532,8 @@ const AppointmentDashboard = () => {
                         className="action-btn payment"
                         onClick={() => handleShowPaymentModal(appointment)}
                       >
-                        <i className="fas fa-money-bill"></i> Xác nhận thanh toán
+                        <i className="fas fa-money-bill"></i> Xác nhận thanh
+                        toán
                       </button>
                     )}
                     {canCancel(appointment.appointmentStatus) && (
@@ -512,6 +548,14 @@ const AppointmentDashboard = () => {
                 </td>
               </tr>
             ))}
+            {currentTableData.length === 0 && !loading && (
+              <tr>
+                <td colSpan="6" className="no-data">
+                  <i className="fas fa-inbox"></i>
+                  <p>Không có lịch hẹn nào</p>
+                </td>
+              </tr>
+            )}
           </tbody>
         </table>
 
@@ -546,19 +590,38 @@ const AppointmentDashboard = () => {
         <div className="modal-overlay">
           <div className="modal-content">
             <h3>Xác nhận hủy lịch hẹn</h3>
-            {cancelError && <p className="error-message">{cancelError}</p>}
             <p>
-              Bạn có chắc chắn muốn hủy lịch hẹn ca khách hàng{" "}
+              Bạn có chắc chắn muốn hủy lịch hẹn của khách hàng{" "}
               <strong>{selectedAppointment?.fullNameCustomer}</strong> không?
             </p>
+            
+            <div className="cancel-form">
+              <div className="form-group">
+                <label htmlFor="cancelNotes">Lý do hủy lịch:</label>
+                <textarea
+                  id="cancelNotes"
+                  value={cancelNotes}
+                  onChange={(e) => setCancelNotes(e.target.value)}
+                  placeholder="Vui lòng nhập lý do hủy lịch..."
+                  rows={4}
+                  className={cancelError ? "error" : ""}
+                />
+                {cancelError && <p className="error-message">{cancelError}</p>}
+              </div>
+            </div>
+
             <p className="warning-text">
-              Lưu ý: Khi đã hủy thì không thể khôi phục lại trạng thái của lịch
-              hẹn!
+              Lưu ý: Khi đã hủy thì không thể khôi phục lại trạng thái của lịch hẹn!
             </p>
+            
             <div className="modal-buttons">
               <button
                 className="modal-btn cancel"
-                onClick={() => setShowDeleteModal(false)}
+                onClick={() => {
+                  setShowDeleteModal(false);
+                  setCancelNotes("");
+                  setCancelError("");
+                }}
               >
                 Quay lại
               </button>
@@ -630,55 +693,6 @@ const AppointmentDashboard = () => {
               </div>
             </div>
 
-            {/* Thông tin thú cưng */}
-            <div className="info-section">
-              <h3>Thông tin thú cưng</h3>
-              <div className="info-grid pet-info">
-                <div className="info-item">
-                  <label>Tên thú cưng:</label>
-                  <span>
-                    {appointmentDetails?.infoKoiResponse?.name ||
-                      "Chưa cập nhật"}
-                  </span>
-                </div>
-                <div className="info-item">
-                  <label>Giống:</label>
-                  <span>
-                    {appointmentDetails?.infoKoiResponse?.breed ||
-                      "Chưa cập nhật"}
-                  </span>
-                </div>
-                <div className="info-item">
-                  <label>Tuổi:</label>
-                  <span>
-                    {appointmentDetails?.infoKoiResponse?.age ||
-                      "Chưa cập nhật"}
-                  </span>
-                </div>
-                <div className="info-item">
-                  <label>Màu sắc:</label>
-                  <span>
-                    {appointmentDetails?.infoKoiResponse?.color ||
-                      "Chưa cập nhật"}
-                  </span>
-                </div>
-                <div className="info-item">
-                  <label>Cân nặng:</label>
-                  <span>
-                    {appointmentDetails?.infoKoiResponse?.weight ||
-                      "Chưa cập nhật"}
-                  </span>
-                </div>
-                <div className="info-item">
-                  <label>Tình trạng sức khỏe:</label>
-                  <span>
-                    {appointmentDetails?.infoKoiResponse?.healthStatus ||
-                      "Chưa cập nhật"}
-                  </span>
-                </div>
-              </div>
-            </div>
-
             {/* Thông tin lịch hẹn */}
             <div className="info-section">
               <h3>Thông tin lịch hẹn</h3>
@@ -732,14 +746,86 @@ const AppointmentDashboard = () => {
                         : "center-assign"
                     }`}
                   >
-                    {appointmentDetails?.infoAppointmentResponse
-                      ?.doctorAssigned
+                    {appointmentDetails?.infoAppointmentResponse?.doctorAssigned
                       ? "Khách hàng chọn bác sĩ"
                       : "Trung tâm điều phối bác sĩ"}
                   </span>
                 </div>
               </div>
             </div>
+
+            {/* Thông tin thú cưng hoặc lưu ý của bác sĩ hoặc lý do hủy tùy theo trạng thái */}
+            {appointmentDetails?.status === "Đã hủy lịch" ? (
+              // Hiển thị lý do hủy lịch
+              <div className="info-section cancel-note-section">
+                <h3>Lý do hủy lịch</h3>
+                <div className="info-grid">
+                  <div className="info-item full-width">
+                    <label>Ghi chú:</label>
+                    <div className="cancel-note-content">
+                      {appointmentDetails?.cancelNotes || "Không có ghi chú"}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ) : appointmentDetails?.infoAppointmentResponse?.serviceType === "Tư vấn trực tuyến" ||
+              appointmentDetails?.infoAppointmentResponse?.serviceType === "Khảo sát hồ cá tại nhà" ? (
+              // Hiển thị lưu ý của bác sĩ cho dịch vụ tư vấn và khảo sát
+              <div className="info-section">
+                <h3>Lưu ý của bác sĩ</h3>
+                <div className="info-grid doctor-note">
+                  <div className="info-item full-width">
+                    <label>Ghi chú và lưu ý:</label>
+                    <span className="doctor-note-content">
+                      {appointmentDetails?.notes || "Bác sĩ chưa có ghi chú cho ca này"}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            ) : (
+              // Hiển thị thông tin thú cưng cho các dịch vụ khác
+              <div className="info-section">
+                <h3>Thông tin thú cưng</h3>
+                <div className="info-grid pet-info">
+                  <div className="info-item">
+                    <label>Tên thú cưng:</label>
+                    <span>
+                      {appointmentDetails?.infoKoiResponse?.name || "Chưa cập nhật"}
+                    </span>
+                  </div>
+                  <div className="info-item">
+                    <label>Giống:</label>
+                    <span>
+                      {appointmentDetails?.infoKoiResponse?.breed || "Chưa cập nhật"}
+                    </span>
+                  </div>
+                  <div className="info-item">
+                    <label>Tuổi:</label>
+                    <span>
+                      {appointmentDetails?.infoKoiResponse?.age || "Chưa cập nhật"}
+                    </span>
+                  </div>
+                  <div className="info-item">
+                    <label>Màu sắc:</label>
+                    <span>
+                      {appointmentDetails?.infoKoiResponse?.color || "Chưa cập nhật"}
+                    </span>
+                  </div>
+                  <div className="info-item">
+                    <label>Cân nặng:</label>
+                    <span>
+                      {appointmentDetails?.infoKoiResponse?.weight || "Chưa cập nhật"}
+                    </span>
+                  </div>
+                  <div className="info-item">
+                    <label>Tình trạng sức khỏe:</label>
+                    <span>
+                      {appointmentDetails?.infoKoiResponse?.healthStatus || "Chưa cập nhật"}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            )}
 
             {/* Chi tiết thanh toán */}
             <div className="payment-details-section">
@@ -821,16 +907,21 @@ const AppointmentDashboard = () => {
                 <div className="rating">
                   <label>Đánh giá:</label>
                   <div className="stars">
-                    {[...Array(appointmentDetails?.infoFeedbackResponse?.rate || 0)].map(
-                      (_, index) => (
-                        <i key={index} className="fas fa-star"></i>
-                      )
-                    )}
-                    {[...Array(5 - (appointmentDetails?.infoFeedbackResponse?.rate || 0))].map(
-                      (_, index) => (
-                        <i key={index} className="far fa-star"></i>
-                      )
-                    )}
+                    {[
+                      ...Array(
+                        appointmentDetails?.infoFeedbackResponse?.rate || 0
+                      ),
+                    ].map((_, index) => (
+                      <i key={index} className="fas fa-star"></i>
+                    ))}
+                    {[
+                      ...Array(
+                        5 -
+                          (appointmentDetails?.infoFeedbackResponse?.rate || 0)
+                      ),
+                    ].map((_, index) => (
+                      <i key={index} className="far fa-star"></i>
+                    ))}
                     <span className="rating-number">
                       ({appointmentDetails?.infoFeedbackResponse?.rate}/5)
                     </span>
@@ -838,7 +929,10 @@ const AppointmentDashboard = () => {
                 </div>
                 <div className="comment">
                   <label>Nhận xét:</label>
-                  <p>{appointmentDetails?.infoFeedbackResponse?.feedback || "Chưa có nhận xét"}</p>
+                  <p>
+                    {appointmentDetails?.infoFeedbackResponse?.feedback ||
+                      "Chưa có nhận xét"}
+                  </p>
                 </div>
               </div>
             </div>
@@ -877,6 +971,14 @@ const AppointmentDashboard = () => {
               </button>
             </div>
           </div>
+        </div>
+      )}
+
+      {error && (
+        <div className="error-message">
+          <i className="fas fa-exclamation-circle"></i>
+          <p>{error}</p>
+          <button onClick={fetchAppointments}>Thử lại</button>
         </div>
       )}
     </div>

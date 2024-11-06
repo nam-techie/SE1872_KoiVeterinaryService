@@ -1,4 +1,3 @@
-import { useState, useEffect } from 'react';
 import { axiosInstance } from '../service/apiRequest';
 
 const useManageCus = () => {
@@ -21,15 +20,18 @@ const useManageCus = () => {
         }
     };
 
-    const cancelAppointment = async (appointmentId) => {
+    const cancelAppointment = async (appointmentId, data) => {
         try {
             const response = await axiosInstance.put(
-                `/customer/cancelAppointmentByCustomer/${appointmentId}`
+                `/customer/cancelAppointmentByCustomer`,
+                {
+                    appointmentId: appointmentId,
+                    notes: data.notes
+                }
             );
             return response.data;
-        } catch (err) {
-            console.error('Error canceling appointment:', err);
-            throw new Error('Có lỗi xảy ra khi hủy lịch hẹn');
+        } catch (error) {
+            throw new Error(error.response?.data?.message || 'Có lỗi xảy ra khi hủy lịch hẹn');
         }
     };
 

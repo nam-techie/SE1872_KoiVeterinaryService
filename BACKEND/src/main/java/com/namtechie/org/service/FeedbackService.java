@@ -76,6 +76,40 @@ public class FeedbackService {
         }
     }
 
+    public List<FeedbackResponse> listTop4FeedbackOfDoctor(Account account) {
+        List<FeedbackResponse> responses = new ArrayList<>();
+        Doctor doctor = doctorRepository.findByAccountId(account.getId());
+
+        // Lấy tất cả các phản hồi của các cuộc hẹn thuộc về bác sĩ
+        List<Appointment> appointments = appointmentRepository.findByDoctorId(doctor.getId());
+        for (Appointment appointment : appointments) {
+            FeedBack feedback = appointment.getFeedBack();
+            if (feedback != null) { // Chỉ thêm nếu feedback tồn tại
+                FeedbackResponse feedbackResponse = new FeedbackResponse();
+                Customers cus = appointment.getCustomers();
+                feedbackResponse.setUsername(cus.getFullName());
+                feedbackResponse.setRating(feedback.getRating());
+                feedbackResponse.setComment(feedback.getComment());
+                feedbackResponse.setCreated_date(feedback.getCreated_date());
+
+                responses.add(feedbackResponse);
+            }
+        }
+
+        // Sắp xếp danh sách phản hồi theo created_date giảm dần
+        responses.sort((f1, f2) -> f2.getCreated_date().compareTo(f1.getCreated_date()));
+
+        // Lấy 4 phản hồi mới nhất
+        List<FeedbackResponse> top4Responses = responses.stream().limit(4).collect(Collectors.toList());
+
+        // Nếu không đủ 4 phản hồi, thêm các phản hồi trống
+        while (top4Responses.size() < 4) {
+            top4Responses.add(new FeedbackResponse()); // Thêm phản hồi trống
+        }
+
+        return top4Responses;
+    }
+
 
 
 }

@@ -4,6 +4,7 @@ import com.namtechie.org.entity.Appointment;
 import com.namtechie.org.entity.Doctor;
 import com.namtechie.org.model.Schedule;
 import com.namtechie.org.entity.DoctorsSchedules;
+import com.namtechie.org.repository.DoctorRepository;
 import com.namtechie.org.repository.DoctorsSchedulesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,6 +28,9 @@ public class ScheduleService {
     AppointmentService appointmentService;
 
     private static final Time NOON = Time.valueOf("12:00:00");
+
+    @Autowired
+    private DoctorRepository doctorRepository;
 
     public List<DoctorsSchedules> findDoctorsSchedulesByDoctorIdAndWorkDay(Long doctorId, String workDay) {
         return doctorsSchedulesRepository.findDoctorsSchedulesByDoctorIdAndWorkDay(doctorId, workDay);
@@ -182,7 +186,7 @@ public class ScheduleService {
         int count = 0;
 
         while (count < 7) {
-            if(!isBooking){
+            if (!isBooking) {
                 today = today.plusDays(1);
             }
             DayOfWeek dayOfWeek = today.getDayOfWeek();
@@ -193,7 +197,7 @@ public class ScheduleService {
                 sevendayschedules.put(Date.valueOf(today), schedules);
                 count++;
             }
-            if(isBooking){
+            if (isBooking) {
                 today = today.plusDays(1);
             }
         }
@@ -201,6 +205,45 @@ public class ScheduleService {
 
 
     }
+
+    public void setDoctorDefaultSchedule(long doctorId) {
+        Doctor doctor = doctorRepository.findDoctorById(doctorId);
+
+        // Kiểm tra xem đã có lịch làm việc chưa
+        Map<String, List<Schedule>> existingSchedules = findFreeScheduleByDoctorId(doctorId, false);
+
+        // Nếu đã có lịch (mảng không rỗng), thông báo là đã có lịch làm việc
+        boolean hasExistingSchedules = existingSchedules.values().stream().anyMatch(list -> !list.isEmpty());
+        if (hasExistingSchedules) {
+            throw new IllegalArgumentException("Bác sĩ với ID " + doctorId + " đã có lịch làm việc.");
+        }
+
+        List<String> workDays = Arrays.asList("Monday", "Tuesday", "Wednesday", "Thursday", "Friday");
+        List<DoctorsSchedules> schedules = new ArrayList<>();
+
+        // Tạo lịch sáng và chiều cho mỗi ngày làm việc
+        for (String day : workDays) {
+            // Lịch sáng (7:00 - 11:00)
+            DoctorsSchedules morningSchedule = new DoctorsSchedules();
+            morningSchedule.setDoctor(doctor);
+            morningSchedule.setWorkDay(day);
+            morningSchedule.setStartTime(Time.valueOf("07:00:00"));
+            morningSchedule.setEndTime(Time.valueOf("11:00:00"));
+            schedules.add(morningSchedule);
+
+            // Lịch chiều (13:00 - 17:00)
+            DoctorsSchedules afternoonSchedule = new DoctorsSchedules();
+            afternoonSchedule.setDoctor(doctor);
+            afternoonSchedule.setWorkDay(day);
+            afternoonSchedule.setStartTime(Time.valueOf("13:00:00"));
+            afternoonSchedule.setEndTime(Time.valueOf("17:00:00"));
+            schedules.add(afternoonSchedule);
+        }
+
+        // Lưu tất cả các lịch mới vào cơ sở dữ liệu
+        doctorsSchedulesRepository.saveAll(schedules);
+    }
+
 
 
 }

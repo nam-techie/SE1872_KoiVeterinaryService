@@ -78,7 +78,7 @@ public class SecurityConfig {
                                 .authenticated()
                 )
                 .oauth2Login(oauth2 -> oauth2
-                        .loginPage("https://se-1872-koi-veterinary-service-74rpx9exp-nams-projects-507a019c.vercel.app/login")  // Trang login trên frontend
+                        .loginPage("https://se-1872-koi-veterinary-service.vercel.app/login")  // Trang login trên frontend
                         .userInfoEndpoint(userInfo -> userInfo.userService(oauth2UserService()))  // Lấy thông tin người dùng từ Google
                         .successHandler(authenticationSuccessHandler())  // Sử dụng successHandler để trả về token
                 )

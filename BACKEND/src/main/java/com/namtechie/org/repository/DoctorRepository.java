@@ -14,13 +14,15 @@ public interface DoctorRepository extends JpaRepository<Doctor, Long> {
 
     boolean existsByAccountId(Long accountId);
 
-    Doctor findDoctorById(Long id);
+    Doctor findDoctorById(long id);
 
     Doctor findDoctorByPhone(String phone);
 
     boolean existsByPhone(String phone);
 
     Doctor findByAppointmentId(Long appointmentId);
+
+    Doctor findById(long id);
 
 
 

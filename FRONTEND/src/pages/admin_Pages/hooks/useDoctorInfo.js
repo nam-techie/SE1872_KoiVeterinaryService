@@ -79,6 +79,15 @@ export const useDoctorInfo = () => {
         }
     };
 
+    const createDoctorSchedule = async (doctorId) => {
+        try {
+            const response = await axiosInstance.post(`/admin/createDoctorSchedule/${doctorId}`);
+            return response.data;
+        } catch (error) {
+            throw new Error(error.response?.data || 'Đã xảy ra lỗi trong quá trình tạo lịch làm việc cho bác sĩ.');
+        }
+    };
+
     return {
         doctors,
         loading,
@@ -87,6 +96,7 @@ export const useDoctorInfo = () => {
         deleteDoctor,
         updateDoctorInfo,
         getDoctorDetail,
-        addDoctor
+        addDoctor,
+        createDoctorSchedule
     };
 };

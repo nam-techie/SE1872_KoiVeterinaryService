@@ -107,6 +107,8 @@ function DoctorAppointment() {
     const [isCancelModalVisible, setIsCancelModalVisible] = useState(false);
     const [cancelForm] = Form.useForm();
     const [appointmentDetail, setAppointmentDetail] = useState(null);
+    const [isCompletionNoteModalVisible, setIsCompletionNoteModalVisible] = useState(false);
+    const [completionNoteForm] = Form.useForm();
 
     // Thêm các hàm xử lý trạng thái
     const handleConfirm = async (record) => {
@@ -147,7 +149,11 @@ function DoctorAppointment() {
 
     const handleComplete = (record) => {
         setCurrentAppointment(record);
-        setIsServiceFormVisible(true);
+        if (record.service === "Điều trị bệnh tại nhà" || record.service === "Điều trị bệnh tại trung tâm") {
+            setIsServiceFormVisible(true);
+        } else {
+            setIsCompletionNoteModalVisible(true);
+        }
     };
 
     // Render actions based on status
@@ -160,6 +166,37 @@ function DoctorAppointment() {
             } catch (error) {
                 console.error('Error fetching appointment detail:', error);
             }
+        };
+
+        // Thêm điều kiện kiểm tra loại dịch vụ cho hồ sơ bệnh án
+        const showMedicalRecord = () => {
+            return ["Điều trị bệnh tại nhà", "Điều trị bệnh tại trung tâm", "Khảo sát hồ cá tại nhà"].includes(record.service);
+        };
+
+        // Thêm điều kiện kiểm tra loại dịch vụ
+        const renderCompletionButton = () => {
+            if (record.service === "Điều trị bệnh tại nhà" || record.service === "Điều trị bệnh tại trung tâm") {
+                return (
+                    <Button 
+                        type="primary"
+                        className={styles.completed}
+                        onClick={() => handleComplete(record)}
+                    >
+                        Hoàn thành
+                    </Button>
+                );
+            } else if (record.service === "Khảo sát hồ cá tại nhà" || record.service === "Tư vấn trực tuyến") {
+                return (
+                    <Button 
+                        type="primary"
+                        className={styles.completed}
+                        onClick={() => handleComplete(record)}
+                    >
+                        Hoàn tất
+                    </Button>
+                );
+            }
+            return null;
         };
 
         switch (status) {
@@ -199,25 +236,21 @@ function DoctorAppointment() {
                 return (
                     <>
                         <Button type="primary" onClick={handleViewDetail}>Xem chi tiết</Button>
-                        <Button 
-                            type="primary"
-                            className={styles.completed}
-                            onClick={() => handleComplete(record)}
-                        >
-                            Hoàn thành
-                        </Button>
+                        {renderCompletionButton()}
                     </>
                 );
             case 'Hoàn thành':
                 return (
                     <>
                         <Button type="primary" onClick={handleViewDetail}>Xem chi tiết</Button>
-                        <Button 
-                            type="primary"
-                            onClick={() => handleViewMedicalRecord(record)}
-                        >
-                            Hồ sơ bệnh án
-                        </Button>
+                        {showMedicalRecord() && (
+                            <Button 
+                                type="primary"
+                                onClick={() => handleViewMedicalRecord(record)}
+                            >
+                                Hồ sơ bệnh án
+                            </Button>
+                        )}
                     </>
                 );
             case 'Đã xác nhận':
@@ -320,7 +353,8 @@ function DoctorAppointment() {
                 serviceTypeId6: values.serviceTypeId6 || false,
                 serviceTypeId7: values.serviceTypeId7 || false,
                 serviceTypeId8: values.serviceTypeId8 || false,
-                serviceTypeId9: values.serviceTypeId9 || false
+                serviceTypeId9: values.serviceTypeId9 || false,
+                notes: values.notes
             };
 
             await saveServiceRecord(currentAppointment.id, serviceData);
@@ -333,6 +367,35 @@ function DoctorAppointment() {
             console.error('Error saving service record:', error);
             message.destroy();
             message.error('Có lỗi xảy ra khi lưu hồ sơ bệnh nhân');
+        }
+    };
+
+    // Thêm hàm xử lý cho form hoàn tất
+    const handleCompletionNote = async (values) => {
+        try {
+            const serviceData = {
+                name: null,
+                breed: null,
+                age: 0,
+                color: null,
+                weight: 0,
+                healthStatus: null,
+                serviceTypeId5: false,
+                serviceTypeId6: false,
+                serviceTypeId7: false,
+                serviceTypeId8: false,
+                serviceTypeId9: false,
+                notes: values.notes
+            };
+
+            await saveServiceRecord(currentAppointment.id, serviceData);
+            setIsCompletionNoteModalVisible(false);
+            completionNoteForm.resetFields();
+            message.success('Đã lưu thông tin thành công');
+            await refreshAppointments();
+        } catch (error) {
+            console.error('Error saving completion note:', error);
+            message.error('Có lỗi xảy ra khi lưu thông tin');
         }
     };
 
@@ -400,6 +463,17 @@ function DoctorAppointment() {
                     <TextArea rows={4} />
                 </Form.Item>
 
+                <Form.Item
+                    name="notes"
+                    label="Ghi chú và lưu ý của bác sĩ"
+                    rules={[{ required: true, message: 'Vui lòng nhập ghi chú và lưu ý!' }]}
+                >
+                    <TextArea 
+                        rows={4}
+                        placeholder="Nhập ghi chú và lưu ý cho khách hàng..."
+                    />
+                </Form.Item>
+
                 <Divider>Dịch vụ bổ sung</Divider>
 
                 <Form.Item name="serviceTypeId5" valuePropName="checked">
@@ -425,6 +499,52 @@ function DoctorAppointment() {
                 <Form.Item>
                     <Button type="primary" htmlType="submit" loading={loading}>
                         Hoàn thành
+                    </Button>
+                </Form.Item>
+            </Form>
+        </Modal>
+    );
+
+    // Thêm Modal form cho hoàn tất
+    const CompletionNoteModal = () => (
+        <Modal
+            title="Hoàn tất dịch vụ"
+            open={isCompletionNoteModalVisible}
+            onCancel={() => {
+                setIsCompletionNoteModalVisible(false);
+                completionNoteForm.resetFields();
+            }}
+            footer={null}
+            width={600}
+        >
+            <Form
+                form={completionNoteForm}
+                layout="vertical"
+                onFinish={handleCompletionNote}
+            >
+                <Form.Item
+                    name="notes"
+                    label="Ghi chú"
+                    rules={[{ required: true, message: 'Vui lòng nhập ghi chú' }]}
+                >
+                    <TextArea 
+                        rows={4}
+                        placeholder="Nhập ghi chú về buổi khám/tư vấn..."
+                    />
+                </Form.Item>
+
+                <Form.Item className={styles.modalFooter}>
+                    <Button 
+                        onClick={() => {
+                            setIsCompletionNoteModalVisible(false);
+                            completionNoteForm.resetFields();
+                        }}
+                        style={{ marginRight: 8 }}
+                    >
+                        Quay lại
+                    </Button>
+                    <Button type="primary" htmlType="submit">
+                        Hoàn tất
                     </Button>
                 </Form.Item>
             </Form>
@@ -503,8 +623,8 @@ function DoctorAppointment() {
                         value={statusFilter}
                     >
                         <Select.Option value="all">Tất cả trạng thái</Select.Option>
-                        <Select.Option value="Chờ bác sĩ xác nhận">Chờ bác sĩ xác nhận</Select.Option>
-                        <Select.Option value="Đã xác nhận">Đã xác nhận</Select.Option>
+                        <Select.Option value="Chờ bác sĩ xác nhận">Ch bác sĩ xác nhn</Select.Option>
+                        <Select.Option value="��ã xác nhận">Đã xác nhận</Select.Option>
                         <Select.Option value="Thanh toán tiền dịch vụ thành công">Thanh toán tiền dịch vụ thành công</Select.Option>
                         <Select.Option value="Đang thực hiện dịch vụ">Đang thực hiện dịch vụ</Select.Option>
                         <Select.Option value="Hoàn thành">Hoàn thành</Select.Option>
@@ -765,6 +885,7 @@ function DoctorAppointment() {
                     </div>
                 </Modal>
                 <ServiceRecordForm />
+                <CompletionNoteModal />
                 <CancelConfirmModal />
             </div>
         </>

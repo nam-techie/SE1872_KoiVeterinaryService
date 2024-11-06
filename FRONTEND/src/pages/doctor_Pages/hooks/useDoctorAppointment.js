@@ -6,7 +6,7 @@ import moment from 'moment';
 const fetchAppointmentDetail = async (appointmentId) => {
     try {
         const response = await axiosInstance.get(`/veterinary/getListAppointmentDoctor/${appointmentId}`);
-
+        
         // Transform data to match the component's expected format
         const transformedData = {
             id: response.data.id,
@@ -278,13 +278,13 @@ const useDoctorAppointment = () => {
         confirmAppointment,
         startService,
         saveServiceRecord,
-        cancelAppointment,
-        fetchAppointmentDetail,
         doctorInfo,
         feedbacks,
         refreshDoctorInfo: fetchDoctorInfo,
         updateDoctorInfo,
         changePassword,
+        cancelAppointment,
+        fetchAppointmentDetail,
     };
 };
 

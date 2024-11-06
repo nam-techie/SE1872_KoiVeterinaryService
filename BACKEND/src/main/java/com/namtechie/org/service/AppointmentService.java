@@ -18,11 +18,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import javax.print.Doc;
 import java.sql.Date;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.*;
 
@@ -242,10 +244,9 @@ public class AppointmentService {
             List<AppointmentStatus> list = new ArrayList<>();
             AppointmentStatus appointmentStatus = new AppointmentStatus();
             appointmentStatus.setAppointment(appointment);
-            if(appointmentRequest.getServiceTypeId() == 1){
+            if (appointmentRequest.getServiceTypeId() == 1) {
                 appointmentStatus.setStatus("Đã xác nhận");
-
-            }else{
+            } else {
                 appointmentStatus.setStatus("Chờ bác sĩ xác nhận");
             }
             appointmentStatus.setNotes("");
@@ -253,9 +254,9 @@ public class AppointmentService {
 
 
             appointment.setAppointmentStatus(list);
-
+            appointmentRepository.save(appointment);
             // Step 6: Lưu Appointment vào cơ sở dữ liệu
-            return appointmentRepository.save(appointment);
+            return appointment;
         } catch (DoctorNotAvailableException e) {
             throw new DoctorNotAvailableException(e.getMessage());
         } catch (NullPointerException e) {
@@ -337,8 +338,6 @@ public class AppointmentService {
             throw new DoctorNotAvailableException("Không tìm thấy bác sĩ rảnh cho khung giờ này.");
         }
     }
-
-
 
 
     /**
@@ -542,7 +541,6 @@ public class AppointmentService {
 
     public AppointmentStatus confirmDoctorAppointment(long appointmentId) {
         try {
-            AppointmentStatus updateAppointmentStatus = appointmentStatusRepository.findByAppointmentId(appointmentId);
             Appointment appointment = appointmentRepository.findAppointmentById(appointmentId);
 
 
@@ -562,10 +560,8 @@ public class AppointmentService {
             paymentDepositResponse.setAppointmentId(appointmentId);
             paymentDepositResponse.setDepositPrice(depositPrice);
 
-            Payment paymentTotal = paymentRepository.findByAppointmentId(appointmentId);
-
             // Nếu chưa có, tạo bản ghi mới
-            paymentTotal = new Payment();
+            Payment paymentTotal = new Payment();
             paymentTotal.setAppointment(appointment);
             paymentTotal.setTotalFee(serviceType.getBase_price());
             paymentRepository.save(paymentTotal);  // Lưu Payment mới
@@ -579,21 +575,22 @@ public class AppointmentService {
         }
     }
 
-    public void cancelAppointmentByCustomer(long appointmentId) {
+    public void cancelAppointmentByCustomer(CancelRequest cancelRequest, String who) {
         Account account = (Account) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Appointment appointment = appointmentRepository.findAppointmentById(appointmentId);
+        Appointment appointment = appointmentRepository.findAppointmentById(cancelRequest.getAppointmentId());
         appointment.setCancel(true);
         appointmentRepository.save(appointment);
 
         AppointmentStatus status = new AppointmentStatus();
         status.setAppointment(appointment);
         status.setStatus("Đã hủy lịch");
-        status.setNotes(account.getUsername() + " hủy");
+        status.setNotes("(" + who + ")" + cancelRequest.getNotes());
         appointmentStatusRepository.save(status);
     }
 
     public void cancelAppointmentByDoctor(boolean status, CancelReasonRequest cancelReasonRequest) {
         Account account = (Account) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Doctor doctor = doctorRepository.findByAccountId(account.getId());
         Appointment appointment = appointmentRepository.findAppointmentById(cancelReasonRequest.getAppointmentId());
         appointment.setCancel(status);
         appointmentRepository.save(appointment);
@@ -601,7 +598,7 @@ public class AppointmentService {
         AppointmentStatus appointmentStatus = new AppointmentStatus();
         appointmentStatus.setAppointment(appointment);
         appointmentStatus.setStatus("Đã hủy lịch");
-        appointmentStatus.setNotes(account.getUsername() + " hủy");
+        appointmentStatus.setNotes("Bác sĩ " + doctor.getFullName() + " hủy vì lí do: " + cancelReasonRequest.getCancelReason());
         appointmentStatusRepository.save(appointmentStatus);
     }
 
@@ -663,6 +660,9 @@ public class AppointmentService {
             // Thêm vào danh sách kết quả
             appointmentResponses.add(appointmentResponse);
         }
+
+        // Đảo ngược danh sách appointmentResponses
+        Collections.reverse(appointmentResponses);
 
         return appointmentResponses;
     }
@@ -833,6 +833,52 @@ public class AppointmentService {
         return appointmentResponse;
     }
 
+    public AppointmentStatus getNewStatus(Appointment appointment) {
+        // Lấy tất cả các trạng thái của appointment
+        List<AppointmentStatus> statuses = appointmentStatusRepository.findByAppointment(appointment);
+
+        // Tìm trạng thái có createDate lớn nhất (mới nhất)
+        AppointmentStatus latestStatus = null;
+        for (AppointmentStatus status : statuses) {
+            if (latestStatus == null || status.getCreate_date().toLocalDateTime().isAfter(latestStatus.getCreate_date().toLocalDateTime())) {
+                latestStatus = status;
+            }
+        }
+        if (latestStatus != null &&
+                (latestStatus.getStatus().equals("Đã xác nhận") ||
+                        (latestStatus.getStatus().equals("Chờ thanh toán tiền dịch vụ")))) {
+
+            LocalDateTime createDatePlusOneMinutes = latestStatus.getCreate_date().toLocalDateTime().plusMinutes(15);
+            LocalDateTime currentDateTime = LocalDateTime.now();
+
+            // So sánh thời gian hiện tại với createDate + 15p
+            if (currentDateTime.isAfter(createDatePlusOneMinutes)) {
+                // Tạo và lưu trạng thái mới "Đã hủy lịch"
+                AppointmentStatus status = new AppointmentStatus();
+                status.setAppointment(appointment);
+                status.setStatus("Đã hủy lịch");
+                status.setNotes("Lịch đặt bị hủy vì quá thời hạn thanh toán tiền cho trung tâm!");
+                appointmentStatusRepository.save(status);
+
+            }
+        } else if (latestStatus != null &&
+                (latestStatus.getStatus().equals("Chờ bác sĩ xác nhận"))) {
+            LocalDateTime createDatePlusOneMinutes = latestStatus.getCreate_date().toLocalDateTime().plusHours(12);
+            LocalDateTime currentDateTime = LocalDateTime.now();
+
+            // So sánh thời gian hiện tại với createDate + 12 hours
+            if (currentDateTime.isAfter(createDatePlusOneMinutes)) {
+                // Tạo và lưu trạng thái mới "Đã hủy lịch"
+                AppointmentStatus status = new AppointmentStatus();
+                status.setAppointment(appointment);
+                status.setStatus("Đã hủy lịch");
+                status.setNotes("Lịch đặt bị hủy vì bác sĩ xác nhận quá thời gian cho phép!");
+                appointmentStatusRepository.save(status);
+            }
+        }
+        return latestStatus;
+    }
+
 
     public InfoResponse getFullInfoAppointment(long appointmentId) {
         InfoResponse infoResponse = new InfoResponse();
@@ -848,7 +894,7 @@ public class AppointmentService {
         if (infoCus != null) {
             infoCusResponse.setFullName(infoCus.getFullName());
             infoCusResponse.setAddress(infoCus.getAddress());
-            infoCusResponse.setPhone(infoCus.getPhone());
+            infoCusResponse.setPhone(appointment.getPhone());
         } else {
             infoCusResponse.setFullName(null);
         }
@@ -884,14 +930,11 @@ public class AppointmentService {
             infoAppointmentResponse.setAddress(appointmentInfo.getAddress());
 
             // Lấy tất cả các trạng thái của appointment
-            List<AppointmentStatus> statuses = appointmentStatusRepository.findByAppointment(appointment);
-
-            // Tìm trạng thái có createDate lớn nhất (mới nhất)
-            AppointmentStatus latestStatus = null;
-            for (AppointmentStatus status : statuses) {
-                if (latestStatus == null || status.getCreate_date().toLocalDateTime().isAfter(latestStatus.getCreate_date().toLocalDateTime())) {
-                    latestStatus = status;
-                }
+            AppointmentStatus latestStatus = getNewStatus(appointment);
+            if (latestStatus.getStatus().equals("Đã hủy lịch")) {
+                infoResponse.setCancelNotes(latestStatus.getNotes());
+            } else {
+                infoResponse.setCancelNotes(null);
             }
 
             // Set Info Status
@@ -946,6 +989,24 @@ public class AppointmentService {
         }
 
         infoResponse.setInfoServiceTypeResponse(infoServiceTypeResponses);
+
+        // notes
+        ServiceType serviceType = appointment.getServiceType();
+        List<AppointmentStatus> statuses = appointmentStatusRepository.findByAppointment(appointment);
+        for (AppointmentStatus status : statuses) {
+            if (serviceType.getId() == 1) {
+                if (status.getStatus().equals("Hoàn thành")) {
+                    infoResponse.setNotes(status.getNotes());
+                }
+            } else if (serviceType.getId() == 2) {
+                if (status.getStatus().equals("Thực hiện xong dịch vụ")) {
+                    infoResponse.setNotes(status.getNotes());
+                }
+            } else {
+                infoResponse.setNotes(null);
+            }
+
+        }
 
 
         // Set Info Feedback Response
@@ -1021,6 +1082,7 @@ public class AppointmentService {
             Doctor doctor = app.getDoctor();
             Customers customers = app.getCustomers();
             Zone zone = app.getZone();
+
 
             List<AppointmentStatus> statuses = appointmentStatusRepository.findByAppointment(app);
 

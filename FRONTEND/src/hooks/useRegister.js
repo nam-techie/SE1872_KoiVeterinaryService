@@ -45,25 +45,10 @@ export const useRegister = () => {
     // Hàm kiểm tra form và xử lý submit
     const handleFormSubmit = async (e) => {
         e.preventDefault();
-        let hasError = false;
-
-        // Kiểm tra độ dài username
-        if (username.length < 6) {
-            setUsernameError('Tên đăng ký phải có ít nhất 6 ký tự');
-            hasError = true;
-        }
-
-        // Kiểm tra độ dài password
-        if (password.length < 6) {
-            setPasswordError('Mật khẩu phải có ít nhất 6 ký tự');
-            hasError = true;
-        }
-
-        // Kiểm tra nếu có lỗi, ngừng thực hiện
-        if (hasError) return;
-
+        
+        // Chỉ validate mật khẩu trùng khớp ở frontend
         if (password !== confirmPassword) {
-            setError('Mật khẩu  không trùng khớp.');
+            setError('Mật khẩu không trùng khớp.');
             return;
         }
 
@@ -75,10 +60,14 @@ export const useRegister = () => {
             console.log('Đăng ký thành công:', response);
             window.location.href = '/login';
         } catch (error) {
-            // Hiển thị thông báo lỗi trực tiếp từ backend
-            setError(error.message || 'Đăng ký thất bại. Vui lòng thử lại.');
+            // Lấy message lỗi trực tiếp từ response của backend
+            if (error.response && error.response.data) {
+                setError(error.response.data);
+            } else {
+                setError('Đã xảy ra lỗi, vui lòng thử lại.');
+            }
         } finally {
-            setLoading(false);  // Tắt trạng thái loading
+            setLoading(false);
         }
     };
 

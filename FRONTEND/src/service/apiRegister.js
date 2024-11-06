@@ -1,30 +1,18 @@
-
 import { axiosInstance } from './apiRequest';
 
 
 export const register = async (username, email, password, confirmPassword) => {
+    // eslint-disable-next-line no-useless-catch
     try {
-        const response = await axiosInstance.post('/register', { // Sử dụng đường dẫn proxy
+        const response = await axiosInstance.post('/register', {
             username,
             email,
             password,
             confirmPassword
         });
-        return response.data; // Trả về dữ liệu response
+        return response.data;
     } catch (error) {
-        if (error.response) {
-            const {message, errors} = error.response.data; // Lấy message và errors từ backend
-            let errorMessage = message;
-
-            // Nếu có danh sách lỗi chi tiết (errors), nối thêm thông tin
-            if (errors && errors.length > 0) {
-                errorMessage += ": " + errors.join(", ");
-            }
-            throw new Error(errorMessage);
-        } else if (error.request) {
-            throw new Error('Không thể kết nối đến server. Vui lòng thử lại sau.');
-        } else {
-            throw new Error('Đã xảy ra lỗi. Vui lòng thử lại.');
-        }
+        // Ném lỗi để component xử lý
+        throw error;
     }
 };

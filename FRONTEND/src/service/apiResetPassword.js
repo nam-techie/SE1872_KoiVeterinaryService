@@ -8,7 +8,6 @@ export const validateOtp = (email, otp) => {
     return axios.post('https://se1872koiveterinaryservice-production-deb1.up.railway.app/api/validate-otp', null, {
         params: {email, otp}
     });
-
 };
 
 export const resetPassword = (data) => {

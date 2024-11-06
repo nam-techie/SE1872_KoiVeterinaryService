@@ -6,9 +6,7 @@ import com.namtechie.org.exception.DoctorNotAvailableException;
 import com.namtechie.org.exception.InvalidPhoneNumberException;
 import com.namtechie.org.exception.DuplicateEntity;
 import com.namtechie.org.model.Schedule;
-import com.namtechie.org.model.request.ChangePasswordRequest;
-import com.namtechie.org.model.request.CustomerInfoRequest;
-import com.namtechie.org.model.request.FeedbackRequest;
+import com.namtechie.org.model.request.*;
 import com.namtechie.org.model.response.AppointmentResponse;
 import com.namtechie.org.model.response.AppointmentStatusResponse;
 import com.namtechie.org.model.response.InfoCustomerResponse;
@@ -17,7 +15,6 @@ import com.namtechie.org.repository.AppointmentRepository;
 import com.namtechie.org.repository.PaymentDetailRepository;
 import com.namtechie.org.repository.ZoneRepository;
 import com.namtechie.org.service.*;
-import com.namtechie.org.model.request.AppointmentRequest;
 import com.namtechie.org.service.AppointmentService;
 import com.namtechie.org.service.TokenService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -79,7 +76,7 @@ public class AppointmentController {
     @GetMapping("/listTrueStatus/{paymentId}")
     public ResponseEntity<List<PaymentDetail>> listFalseStatus(@PathVariable long paymentId) {
         List<PaymentDetail> paymentDetails = paymentDetailRepository.findListByPaymentIdAndStatus(paymentId, true);
-        return  ResponseEntity.ok(paymentDetails);
+        return ResponseEntity.ok(paymentDetails);
     }
 
     @GetMapping("/listAppointmentDetail/{id}")
@@ -129,10 +126,10 @@ public class AppointmentController {
             return ResponseEntity.ok(appointment);
         } catch (DoctorNotAvailableException | InvalidPhoneNumberException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                               .body(e.getMessage());
-        }  catch (Exception e) {
+                    .body(e.getMessage());
+        } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                               .body("Hết giờ làm việc của bác sĩ");
+                    .body("Hết giờ làm việc của bác sĩ");
         }
     }
 
@@ -184,9 +181,9 @@ public class AppointmentController {
 
 
 
-    @PutMapping("/cancelAppointmentByCustomer/{appointmentId}")
-    public ResponseEntity cancelAppointmentByCustomer(@PathVariable long appointmentId) {
-        appointmentService.cancelAppointmentByCustomer(appointmentId);
+    @PutMapping("/cancelAppointmentByCustomer")
+    public ResponseEntity cancelAppointmentByCustomer(@RequestBody CancelRequest cancelRequest) {
+        appointmentService.cancelAppointmentByCustomer(cancelRequest, "Khách hàng");
         return ResponseEntity.ok("Đã hủy thành công");
     }
 
@@ -209,6 +206,11 @@ public class AppointmentController {
     @PostMapping("/sendUrlPayment/{appointmentId}")
     public ResponseEntity<String> createPaymentTotalUrl(@PathVariable long appointmentId) {
         try {
+            Appointment appointment = appointmentRepository.findAppointmentById(appointmentId);
+            ServiceType type = appointment.getServiceType();
+            if (type.getId() == 1) {
+                AppointmentStatus appointmentStatus = appointmentService.confirmDoctorAppointment(appointmentId);
+            }
             String paymentUrl = paymentService.returnUrlPayment(appointmentId);
             return ResponseEntity.ok(paymentUrl);
         } catch (IllegalArgumentException e) {
@@ -222,13 +224,13 @@ public class AppointmentController {
     FeedbackService feedbackService;
 
     @PostMapping("/createFeedback/{appointmentId}")
-    public ResponseEntity createFeedback(@PathVariable long appointmentId,@RequestBody FeedbackRequest feedBack) {
-        FeedBack feedBack1 = feedbackService.createFeedbackService(appointmentId,feedBack);
+    public ResponseEntity createFeedback(@PathVariable long appointmentId, @RequestBody FeedbackRequest feedBack) {
+        FeedBack feedBack1 = feedbackService.createFeedbackService(appointmentId, feedBack);
         return ResponseEntity.ok(feedBack1);
     }
 
     @GetMapping("/getFullInfoCustomer/{appointmentId}")
-    public ResponseEntity<?> getFullInfoCustomer(@PathVariable long appointmentId){
+    public ResponseEntity<?> getFullInfoCustomer(@PathVariable long appointmentId) {
         try {
             InfoResponse infoResponse = appointmentService.getFullInfoAppointment(appointmentId);
             return ResponseEntity.ok(infoResponse);
@@ -251,6 +253,24 @@ public class AppointmentController {
         CustomerInfoRequest newUpdate = customerService.updateCustomerInfo(customerInfo);
         return ResponseEntity.ok(newUpdate);
     }
+
+    @PostMapping("/confirmPayment/{appointmentId}")
+    public ResponseEntity<String> confirmPayment(@PathVariable long appointmentId) {
+        try {
+            paymentService.acceptStatus(appointmentId);
+            return ResponseEntity.ok("Đã lưu thành công");
+        } catch (IllegalArgumentException e) {
+            // Bắt lỗi khi không tìm thấy cuộc hẹn hoặc trạng thái mới nhất
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        } catch (RuntimeException e) {
+            // Bắt các lỗi runtime khác và trả về lỗi server
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Có lỗi xảy ra khi xử lý thanh toán: " + e.getMessage());
+        } catch (Exception e) {
+            // Bắt các lỗi chung khác
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Có lỗi xảy ra: " + e.getMessage());
+        }
+    }
+
 
     @PostMapping("/changePasswordCustomer")
     public ResponseEntity<String> changePasswordCustomer(@Valid @RequestBody ChangePasswordRequest changePasswordRequest, BindingResult bindingResult) {
