@@ -2,6 +2,7 @@ import { axiosInstance } from './apiRequest';
 
 
 export const register = async (username, email, password, confirmPassword) => {
+    // eslint-disable-next-line no-useless-catch
     try {
         const response = await axiosInstance.post('/register', {
             username,

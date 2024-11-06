@@ -271,8 +271,6 @@ public class AppointmentController {
         }
     }
 
-    @Autowired
-    AuthenticationService authenticationService;
 
     @PostMapping("/changePasswordCustomer")
     public ResponseEntity<String> changePasswordCustomer(@Valid @RequestBody ChangePasswordRequest changePasswordRequest, BindingResult bindingResult) {

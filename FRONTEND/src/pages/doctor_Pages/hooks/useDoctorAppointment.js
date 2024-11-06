@@ -278,7 +278,6 @@ const useDoctorAppointment = () => {
         confirmAppointment,
         startService,
         saveServiceRecord,
-        cancelAppointment,
         doctorInfo,
         feedbacks,
         refreshDoctorInfo: fetchDoctorInfo,
