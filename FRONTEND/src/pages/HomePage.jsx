@@ -209,7 +209,8 @@ function HomePage() {
                             </div>
                         ))}
                     </Slider>
-                </div> 
+                </div>
+
 
                 <div className={styles.homePageFourth}>
                     <h1>Một số hình ảnh tại trung tâm</h1>
