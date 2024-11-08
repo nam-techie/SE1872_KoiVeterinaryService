@@ -204,7 +204,7 @@ function HomePage() {
                                     fullname={doctorData.doctor.fullName}
                                     experience={doctorData.doctor.experience}
                                     profilePic={doctorData.doctor.imageUrl}
-                                    phone={doctorData.doctor.phone}
+                                    qualification={doctorData.qualification}
                                 />
                             </div>
                         ))}
