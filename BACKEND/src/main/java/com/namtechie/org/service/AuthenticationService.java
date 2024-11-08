@@ -120,12 +120,12 @@ public class AuthenticationService implements UserDetailsService {
 
             // Lưu tài khoản vào database
             Account newAccount = accountRepository.save(account);
-//            // Gửi email thông báo đăng kí thành công
-//            EmailDetail emailDetail = new EmailDetail();
-//            emailDetail.setReceiver(newAccount);
-//            emailDetail.setSubject("Welcome to KoiKung Center!");
-//            emailDetail.setLink("https://www.google.com/");
-//            emailService.sendEmail(emailDetail);
+            // Gửi email thông báo đăng kí thành công
+            EmailDetail emailDetail = new EmailDetail();
+            emailDetail.setReceiver(newAccount);
+            emailDetail.setSubject("Welcome to KoiKung Center!");
+            emailDetail.setLink("https://se-1872-koi-veterinary-service.vercel.app");
+            emailService.sendEmail(emailDetail);
 
             //Sau khi lưu xong thì tạo luôn bảng Customers tương ứng!
             Customers customer = new Customers();
