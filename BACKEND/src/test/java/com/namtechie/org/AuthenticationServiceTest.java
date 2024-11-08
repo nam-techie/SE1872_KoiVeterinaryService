@@ -28,7 +28,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-@SpringBootTest
+
 public class AuthenticationServiceTest {
 
     @Mock
@@ -64,12 +64,14 @@ public class AuthenticationServiceTest {
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.initMocks(this);
+
+        // Thiết lập RegisterRequest cho đầu vào của test
         registerRequest = new RegisterRequest();
-        registerRequest.setUsername("testUser");
-        registerRequest.setEmail("test@example.com");
+        registerRequest.setUsername("winn200804");
         registerRequest.setPassword("password123");
         registerRequest.setConfirmPassword("password123");
 
+        // Thiết lập Account và AccountResponse cho giá trị mong đợi
         account = new Account();
         account.setUsername(registerRequest.getUsername());
         account.setEmail(registerRequest.getEmail());
@@ -81,24 +83,35 @@ public class AuthenticationServiceTest {
 
 
 
-//    // Happy Case - Đăng ký thành công
-//    @Test
-//    public void register_Successful() {
-//        // Mock hành vi của modelMapper để trả về một đối tượng Account hợp lệ và accountResponse
-//        when(modelMapper.map(registerRequest, Account.class)).thenReturn(account);
-//        when(modelMapper.map(account, AccountResponse.class)).thenReturn(accountResponse);
-//
-//        when(accountRepository.existsByEmail(registerRequest.getEmail())).thenReturn(false);
-//        when(accountRepository.existsByUsername(registerRequest.getUsername())).thenReturn(false);
-//        when(passwordEncoder.encode(registerRequest.getPassword())).thenReturn("encodedPassword");
-//        when(accountRepository.save(any(Account.class))).thenReturn(account);
-//
-//        AccountResponse response = authenticationService.register(registerRequest);
-//
-//        assertNotNull(response);
-//        assertEquals(registerRequest.getUsername(), response.getUsername());
-//        assertEquals(registerRequest.getEmail(), response.getEmail());
-//    }
+    // Happy Case - Đăng ký thành công
+    @Test
+    public void register_Successful() {
+        // Mock hành vi của modelMapper để trả về một đối tượng Account hợp lệ và accountResponse
+        when(modelMapper.map(registerRequest, Account.class)).thenReturn(account);
+        when(modelMapper.map(account, AccountResponse.class)).thenReturn(accountResponse);
+
+        // Thiết lập mock cho các kiểm tra và hành vi khác
+        when(accountRepository.existsByEmail(registerRequest.getEmail())).thenReturn(false);
+        when(accountRepository.existsByUsername(registerRequest.getUsername())).thenReturn(false);
+        when(passwordEncoder.encode(registerRequest.getPassword())).thenReturn("encodedPassword");
+        when(accountRepository.save(any(Account.class))).thenReturn(account);
+
+        // Tạo đối tượng customer liên kết với account để lưu vào repository
+        Customers savedCustomer = new Customers();
+        savedCustomer.setFullName(registerRequest.getUsername());
+        savedCustomer.setAccount(account);
+        when(customerRepository.save(any(Customers.class))).thenReturn(savedCustomer);
+
+        // Gọi phương thức register để lấy kết quả
+        AccountResponse response = authenticationService.register(registerRequest);
+
+        // Kiểm tra kết quả trả về
+        assertNotNull(response, "Response không được null");
+        assertEquals(registerRequest.getUsername(), response.getUsername(), "Username không khớp");
+        assertEquals(registerRequest.getEmail(), response.getEmail(), "Email không khớp");
+    }
+
+
 
 
 
@@ -119,7 +132,7 @@ public class AuthenticationServiceTest {
     public void setUpData() {
         MockitoAnnotations.initMocks(this);
         loginRequest = new LoginRequest();
-        loginRequest.setUsername("testUser");
+        loginRequest.setUsername("winn200804");
         loginRequest.setPassword("password123");
 
         account = new Account();

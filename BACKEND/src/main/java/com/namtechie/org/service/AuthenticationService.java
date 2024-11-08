@@ -618,11 +618,4 @@ public class AuthenticationService implements UserDetailsService {
             throw new RuntimeException("Đã xảy ra lỗi trong quá trình cập nhật thông tin admin.");
         }
     }
-
-
-
-
-
-
-
 }

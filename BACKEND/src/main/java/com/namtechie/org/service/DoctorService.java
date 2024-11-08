@@ -693,6 +693,4 @@ public class DoctorService {
 
         return response;
     }
-
-
 }
