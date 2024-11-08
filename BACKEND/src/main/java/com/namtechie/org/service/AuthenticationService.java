@@ -279,10 +279,13 @@ public class AuthenticationService implements UserDetailsService {
             // Lưu tài khoản bác sĩ vào database
             accountRepository.save(account);
 
-            Customers customer = new Customers();
-            customer.setAccount(account);
-            customer.setFullName(adminAccountRequest.getUsername());
-            customerRepository.save(customer);
+            if(Role.valueOf(role).name().equals("CUSTOMER")){
+                Customers customer = new Customers();
+                customer.setAccount(account);
+                customer.setFullName(adminAccountRequest.getUsername());
+                customerRepository.save(customer);
+            }
+
 
             // Gửi email thông báo đăng kí thành công
 //            EmailDetail emailDetail = new EmailDetail();
@@ -381,7 +384,7 @@ public class AuthenticationService implements UserDetailsService {
         EmailResetPass emailResetPass = new EmailResetPass();
         emailResetPass.setReceiver(account);
         emailResetPass.setSubject("Thay đổi mật khẩu");
-        emailResetPass.setLink("http://localhost:5741/verify-otp?email=" + forgotPasswordRequest.getEmail());
+        emailResetPass.setLink("https://se-1872-koi-veterinary-service.vercel.app/verify-otp?email=" + forgotPasswordRequest.getEmail());
         emailResetPass.setOtp(otp);
         emailService.resetPassword(emailResetPass);
 
@@ -520,6 +523,12 @@ public class AuthenticationService implements UserDetailsService {
             account.setPassword(passwordEncoder.encode(email));  // Mã hóa email thành mật khẩu
             account.setRole(Role.CUSTOMER.name());  // Đặt role mặc định là CUSTOMER
             accountRepository.save(account);
+
+            Customers customers = new Customers();
+            customers.setAccount(account);
+            customers.setFullName(name);
+            customerRepository.save(customers);
+
         }
 
         // Nếu tài khoản đã tồn tại thì bỏ qua việc cập nhật và tạo mới
