@@ -193,8 +193,8 @@ function FindDoctor() {
                                 />
                             </div>
                             <h3 className={styles.doctorName}>{doctorData.doctor.fullName}</h3>
-                            <p className={styles.doctorPhone}>Bằng cấp: {doctorData.qualification}</p>
                             <p className={styles.doctorExperience}>Kinh nghiệm: {doctorData.doctor.experience} năm</p>
+                            <p className={styles.doctorPhone}>Bằng cấp: {doctorData.qualification}</p>
                             <div className={styles.doctorRating}>
                                 {renderStars(doctorData.rateAverage)}
                             </div>
