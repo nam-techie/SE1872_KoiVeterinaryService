@@ -1,21 +1,33 @@
 import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styles from '../styles/GoogleLoginSuccess.module.css';
 
 const GoogleLoginSuccess = () => {
-    useEffect(() => {
-        const queryParams = new URLSearchParams(window.location.search);
-        const token = queryParams.get('token');
-        const username = queryParams.get('username');
-        const role = queryParams.get('role');
+    const navigate = useNavigate();
 
+    useEffect(() => {
+        // Lấy thông tin từ URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const token = urlParams.get('token');
+        const username = urlParams.get('username');
+        const role = urlParams.get('role');
+
+        // Kiểm tra xem có đủ thông tin không
         if (token && username && role) {
-            localStorage.setItem('token', token);
+            // Lưu thông tin vào localStorage
+            localStorage.setItem('authToken', token);
             localStorage.setItem('username', username);
             localStorage.setItem('role', role);
-            // Chuyển hướng người dùng đến trang chính của ứng dụng
-            window.location.href = "/homepage";
+
+            // Chuyển hướng về trang chủ sau 1 giây
+            setTimeout(() => {
+                navigate('/homepage');
+            }, 1000);
+        } else {
+            // Nếu thiếu thông tin, chuyển về trang login
+            navigate('/login');
         }
-    }, []);
+    }, [navigate]);
 
     return (
         <div className={styles.googleLoginSuccessContainer}>
