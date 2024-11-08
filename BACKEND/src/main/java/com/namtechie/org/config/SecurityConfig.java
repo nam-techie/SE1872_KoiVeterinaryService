@@ -103,7 +103,7 @@ public class SecurityConfig {
             // Mã hóa các thông tin để gửi qua URL
             String encodedToken = URLEncoder.encode(accountResponse.getToken(), "UTF-8");
             String encodedUsername = URLEncoder.encode(accountResponse.getUsername(), "UTF-8");
-            String redirectUrl = "https://se-1872-koi-veterinary-service.vercel.app/login/success?token=" + encodedToken + "&username=" + encodedUsername;
+            String redirectUrl = "https://se-1872-koi-veterinary-service.vercel.app";
             response.sendRedirect(redirectUrl);
 
         };
