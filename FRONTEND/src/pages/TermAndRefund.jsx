@@ -196,7 +196,7 @@ function TermAndRefund() {
           <p>Các trường hợp sẽ bị hủy lịch:</p>
           <ul>
             <li>
-              Hủy lịch khi khách hàng không thanh tóa trong vòng 15p trở lại khi
+              Hủy lịch khi khách hàng không thanh toán trong vòng 15p trở lại khi
               tạo đơn thanh toán.
             </li>
             <li>

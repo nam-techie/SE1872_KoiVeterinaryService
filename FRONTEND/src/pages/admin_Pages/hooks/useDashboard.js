@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { axiosInstance } from '../../../service/apiRequest';
 
+
 // Interface cho kiểu dữ liệu trả về từ API
 const useDashboard = () => {
     const [dashboardData, setDashboardData] = useState({
@@ -17,6 +18,7 @@ const useDashboard = () => {
         totalCustomers: 0,
         totalAppointments: 0
     });
+
 
     // Mock data cho hoạt động gần đây
     const recentActivities = [
@@ -52,6 +54,7 @@ const useDashboard = () => {
         }
     ];
 
+
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [dateRange, setDateRange] = useState({
@@ -60,7 +63,9 @@ const useDashboard = () => {
     });
     const [timeFilter, setTimeFilter] = useState('month');
 
+
     const [upcomingAppointments, setUpcomingAppointments] = useState([]);
+
 
     const [topStats, setTopStats] = useState({
         topCustomers: [],
@@ -68,10 +73,12 @@ const useDashboard = () => {
         topDoctors: []
     });
 
+
     const handleTimeFilterChange = useCallback((filterType) => {
         setTimeFilter(filterType);
         const now = new Date();
         let startDate, endDate;
+
 
         switch (filterType) {
             case 'week':
@@ -94,8 +101,10 @@ const useDashboard = () => {
                 endDate = null;
         }
 
+
         setDateRange({ startDate, endDate });
     }, []);
+
 
     // Hàm gọi API thật
     const fetchDashboardData = useCallback(async () => {
@@ -103,22 +112,24 @@ const useDashboard = () => {
             setLoading(true);
             const response = await axiosInstance.get('/admin/listDashboardTotalRequest');
             console.log('API Response:', response.data);
-            
+
             setDashboardData({
                 appointments: response.data.appointments || [],
                 totalCustomers: response.data.totalCustomers,
                 totalAppointments: response.data.totalAppointments
             });
 
+
             // Xử lý dữ liệu cho các biểu đồ
             const monthData = processMonthlyData(response.data.appointments || []);
             const weekData = processWeeklyData(response.data.appointments || []);
             const yearData = processYearlyData(response.data.appointments || []);
 
+
             setMonthlyData(monthData);
             setWeeklyData(weekData);
             setYearlyData(yearData);
-            
+
             setError(null);
         } catch (err) {
             console.error('API Error:', err);
@@ -128,28 +139,32 @@ const useDashboard = () => {
         }
     }, []);
 
+
     // Tính toán thống kê từ API thật
     const calculateStats = useCallback(() => {
         const filteredAppointments = dashboardData.appointments.filter(apt => {
             if (apt.cancel) return false;
 
+
             const aptDate = new Date(apt.orderTime);
             if (dateRange.startDate && dateRange.endDate) {
-                return aptDate >= new Date(dateRange.startDate) && 
-                       aptDate <= new Date(dateRange.endDate);
+                return aptDate >= new Date(dateRange.startDate) &&
+                    aptDate <= new Date(dateRange.endDate);
             }
             return true;
         });
+
 
         // Đm số khách hàng unique trong kỳ
         const uniqueCustomers = new Set(
             filteredAppointments.map(apt => apt.customerId)
         ).size;
 
+
         return {
             periodOrders: filteredAppointments.length || 0,
             periodRevenue: filteredAppointments.reduce(
-                (sum, apt) => sum + (apt.totalAmount || 0), 
+                (sum, apt) => sum + (apt.totalAmount || 0),
                 0
             ),
             periodCustomers: uniqueCustomers || 0,
@@ -157,20 +172,24 @@ const useDashboard = () => {
         };
     }, [dashboardData, dateRange]);
 
+
     // Gọi API khi component mount
     useEffect(() => {
         fetchDashboardData();
     }, [fetchDashboardData]);
+
 
     // Hàm cập nhật dateRange
     const updateDateRange = (startDate, endDate) => {
         setDateRange({ startDate, endDate });
     };
 
+
     // Thêm log để kiểm tra state sau khi cập nhật
     useEffect(() => {
         console.log('Dashboard Data Updated:', dashboardData);
     }, [dashboardData]);
+
 
     const fetchUpcomingAppointments = useCallback(async () => {
         try {
@@ -183,9 +202,11 @@ const useDashboard = () => {
         }
     }, []);
 
+
     useEffect(() => {
         fetchUpcomingAppointments();
     }, [fetchUpcomingAppointments]);
+
 
     const fetchTopStats = useCallback(async () => {
         try {
@@ -196,9 +217,11 @@ const useDashboard = () => {
         }
     }, []);
 
+
     useEffect(() => {
         fetchTopStats();
     }, [fetchTopStats]);
+
 
     return {
         dashboardStats,
@@ -216,6 +239,7 @@ const useDashboard = () => {
     };
 };
 
+
 const processMonthlyData = (appointments) => {
     // Lọc chỉ lấy dữ liệu của năm 2023
     const appointmentsIn2023 = appointments.filter(apt => {
@@ -223,11 +247,14 @@ const processMonthlyData = (appointments) => {
         return date.getFullYear() === 2023;
     });
 
+
     const monthlyStats = new Map();
+
 
     appointmentsIn2023.forEach(apt => {
         const date = new Date(apt.orderTime);
-        const monthKey = `T${date.getMonth() + 1}`; 
+        const monthKey = `T${date.getMonth() + 1}`;
+
 
         if (!monthlyStats.has(monthKey)) {
             monthlyStats.set(monthKey, {
@@ -237,12 +264,14 @@ const processMonthlyData = (appointments) => {
             });
         }
 
+
         const stats = monthlyStats.get(monthKey);
         if (!apt.cancel) {
             stats.revenue += apt.totalAmount || 0;
             stats.orders += 1;
         }
     });
+
 
     return Array.from(monthlyStats.values())
         .sort((a, b) => {
@@ -252,10 +281,11 @@ const processMonthlyData = (appointments) => {
         });
 };
 
+
 const processWeeklyData = (appointments) => {
     const last7Days = [];
     const today = new Date();
-    
+
     // Tạo mảng 7 ngày gần nhất
     for (let i = 6; i >= 0; i--) {
         const date = new Date(today);
@@ -268,14 +298,16 @@ const processWeeklyData = (appointments) => {
         });
     }
 
+
     // Lọc và tính toán dữ liệu cho 7 ngày
     appointments.forEach(apt => {
         const aptDate = new Date(apt.orderTime);
-        const dayIndex = last7Days.findIndex(day => 
+        const dayIndex = last7Days.findIndex(day =>
             day.date.getDate() === aptDate.getDate() &&
             day.date.getMonth() === aptDate.getMonth() &&
             day.date.getFullYear() === aptDate.getFullYear()
         );
+
 
         if (dayIndex !== -1 && !apt.cancel) {
             last7Days[dayIndex].revenue += apt.totalAmount || 0;
@@ -283,17 +315,19 @@ const processWeeklyData = (appointments) => {
         }
     });
 
+
     return last7Days;
 };
+
 
 // Thêm hàm xử lý dữ liệu theo năm
 const processYearlyData = (appointments) => {
     // Lấy năm hiện tại
     const currentYear = new Date().getFullYear();
-    
+
     // Tạo mảng 3 năm gần nhất
     const yearlyStats = new Map();
-    
+
     // Khởi tạo dữ liệu cho 3 năm
     for(let i = 0; i < 3; i++) {
         const year = currentYear - i;
@@ -304,17 +338,19 @@ const processYearlyData = (appointments) => {
         });
     }
 
+
     // Lọc và tính toán dữ liệu
     appointments.forEach(apt => {
         const date = new Date(apt.orderTime);
         const year = date.getFullYear();
-        
+
         if (yearlyStats.has(year.toString()) && !apt.cancel) {
             const stats = yearlyStats.get(year.toString());
             stats.revenue += apt.totalAmount || 0;
             stats.orders += 1;
         }
     });
+
 
     // Chuyển đổi Map thành mảng và sắp xếp theo năm giảm dần
     return Array.from(yearlyStats.values())
@@ -325,5 +361,10 @@ const processYearlyData = (appointments) => {
         });
 };
 
+
 export default useDashboard;
+
+
+
+
 
