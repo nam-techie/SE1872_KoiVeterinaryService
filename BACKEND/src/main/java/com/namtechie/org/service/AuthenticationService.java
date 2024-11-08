@@ -538,10 +538,13 @@ public class AuthenticationService implements UserDetailsService {
 
         // Trả về thông tin người dùng, role và token
         AccountResponse response = new AccountResponse();
-        response.setUsername(account.getUsername());
-        response.setEmail(account.getEmail());
-        response.setRole(account.getRole());  // Trả về role của người dùng
-        response.setToken(token);  // Trả về token
+        if(!account.isDeleted()){
+            response.setUsername(account.getUsername());
+            response.setEmail(account.getEmail());
+            response.setRole(account.getRole());  // Trả về role của người dùng
+            response.setToken(token);  // Trả về token
+        }
+
 
         return response;
     }
