@@ -283,3 +283,43 @@
         grid-template-columns: 1fr;
     }
 }
+
+.doctorSlideCard {
+    margin: 10px;
+    padding: 20px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    height: 380px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.doctorImage {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 15px;
+}
+
+.doctorName {
+    font-size: 1.1rem;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.doctorExperience {
+    font-size: 0.9rem;
+    color: #666;
+    margin: 8px 0;
+}
+
+.doctorQualification {
+    font-size: 0.9rem;
+    color: #666;
+    line-height: 1.4;
+    padding: 0 10px;
+}
