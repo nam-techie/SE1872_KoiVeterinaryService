@@ -15,6 +15,7 @@ import lombok.NonNull;
 public class DoctorResponse {
     Doctor doctor;
     double rateAverage;
+    String qualification;
 
 
 }

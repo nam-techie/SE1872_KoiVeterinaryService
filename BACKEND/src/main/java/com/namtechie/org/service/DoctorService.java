@@ -98,8 +98,11 @@ public class DoctorService {
                 rateAverage = 0;
             }
 
+            DoctorInfo doctorInfo = doctorInfoRepository.findDoctorInfoByDoctorId(d.getId());
+
             doctorResponse.setDoctor(d);
             doctorResponse.setRateAverage(rateAverage);
+            doctorResponse.setQualification(doctorInfo.getQualification());
             doctorResponses.add(doctorResponse);
         }
         return doctorResponses;
