@@ -13,6 +13,8 @@ public class ThymeleafConfig {
         templateResolver.setPrefix("templates/");
         templateResolver.setSuffix(".html");
         templateResolver.setTemplateMode("HTML");
+        templateResolver.setCharacterEncoding("UTF-8");
+
         return templateResolver;
     }
 
