@@ -41,7 +41,7 @@ function App() {
                     <Route path="/homepage" element={<PublicRoute><HomePage/></PublicRoute>}/>
                     <Route path="/service" element={<PublicRoute><ServiceIntro/></PublicRoute>}/>
                     <Route path="/aboutme" element={<PublicRoute><AboutMe/></PublicRoute>}/>
-                    <Route path="/success" element={<PublicRoute><GoogleLoginSuccess/></PublicRoute>}/>
+                    <Route path="/login/success" element={<PublicRoute><GoogleLoginSuccess/></PublicRoute>}/>
                     <Route path="/loading" element={<PublicRoute><LoadingCat/></PublicRoute>}/>
                     <Route path="/faqs" element={<PublicRoute><FAQPage/></PublicRoute>}/>
                     <Route path="/terms" element={<PublicRoute><TermAndRefund/></PublicRoute>}/>
