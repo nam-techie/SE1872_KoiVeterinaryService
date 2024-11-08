@@ -8,14 +8,17 @@ import { FaCalendarAlt, FaUserMd, FaFilter } from 'react-icons/fa';
 import './styles/ManageDoctorWork.css';
 import useDoctorWork from './hooks/useDoctorWork';
 
+
 moment.locale('vi');
 const localizer = momentLocalizer(moment);
+
 
 const ManageDoctorWork = () => {
     const { appointments, loading, error } = useDoctorWork();
     const [selectedDoctor, setSelectedDoctor] = useState(null);
     const [selectedStatus, setSelectedStatus] = useState(null);
     const [view, setView] = useState('month');
+
 
     // Thêm option "Tất cả bác sĩ" vào đầu danh sách
     const doctorOptions = [
@@ -25,6 +28,7 @@ const ManageDoctorWork = () => {
             label: name
         }))
     ];
+
 
     // Data cho trạng thái
     const statusOptions = [
@@ -36,6 +40,7 @@ const ManageDoctorWork = () => {
         { value: 'Đã hủy lịch', label: 'Đã hủy' }
     ];
 
+
     const filteredEvents = appointments.filter(appointment => {
         if (selectedDoctor && selectedDoctor.value !== 'all' && appointment.doctorName !== selectedDoctor.value) {
             return false;
@@ -46,8 +51,10 @@ const ManageDoctorWork = () => {
         return true;
     });
 
+
     if (loading) return <div>Đang tải...</div>;
     if (error) return <div>Lỗi: {error}</div>;
+
 
     const eventStyleGetter = (event) => {
         let style = {
@@ -58,6 +65,7 @@ const ManageDoctorWork = () => {
             border: 'none',
             display: 'block'
         };
+
 
         // Đặt màu sắc dựa trên trạng thái
         switch (event.status) {
@@ -80,19 +88,23 @@ const ManageDoctorWork = () => {
                 break;
         }
 
+
         return { style };
     };
+
 
     const handleSelectEvent = (event) => {
         // Xử lý khi click vào một sự kiện
         console.log('Selected event:', event);
     };
 
+
     return (
         <div className="manage-doctor-work">
             <div className="header">
                 <h1><FaCalendarAlt /> Quản Lý Lịch Làm Việc Bác Sĩ</h1>
             </div>
+
 
             <div className="filters">
                 <div className="filter-item">
@@ -108,6 +120,7 @@ const ManageDoctorWork = () => {
                     />
                 </div>
 
+
                 <div className="filter-item">
                     <FaFilter className="filter-icon" />
                     <Select
@@ -119,20 +132,21 @@ const ManageDoctorWork = () => {
                     />
                 </div>
 
+
                 <div className="view-controls">
-                    <button 
+                    <button
                         className={`view-btn ${view === 'month' ? 'active' : ''}`}
                         onClick={() => setView('month')}
                     >
                         Tháng
                     </button>
-                    <button 
+                    <button
                         className={`view-btn ${view === 'week' ? 'active' : ''}`}
                         onClick={() => setView('week')}
                     >
                         Tuần
                     </button>
-                    <button 
+                    <button
                         className={`view-btn ${view === 'day' ? 'active' : ''}`}
                         onClick={() => setView('day')}
                     >
@@ -140,6 +154,7 @@ const ManageDoctorWork = () => {
                     </button>
                 </div>
             </div>
+
 
             <div className="calendar-container">
                 <Calendar
@@ -173,4 +188,7 @@ const ManageDoctorWork = () => {
     );
 };
 
-export default ManageDoctorWork; 
+
+export default ManageDoctorWork;
+
+
