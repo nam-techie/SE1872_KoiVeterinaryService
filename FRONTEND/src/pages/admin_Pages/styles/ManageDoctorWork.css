@@ -1,0 +1,177 @@
+.manage-doctor-work {
+    padding: 20px;
+    background-color: #f8f9fa;
+    height: 100vh;
+    margin-left: 20px;
+    overflow-y: auto;
+}
+
+.header {
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #ff7043;
+}
+
+.header h1 {
+    color: #333;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 24px;
+    margin: 0;
+}
+
+.filters {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 15px;
+    flex-wrap: wrap;
+    align-items: center;
+    background-color: white;
+    padding: 12px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.filter-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: 1;
+    min-width: 200px;
+}
+
+.filter-icon {
+    color: #ff7043;
+    font-size: 20px;
+}
+
+.select-filter {
+    flex: 1;
+}
+
+.view-controls {
+    display: flex;
+    gap: 10px;
+}
+
+.view-btn {
+    padding: 8px 16px;
+    border: 1px solid #ff7043;
+    background-color: white;
+    color: #ff7043;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.view-btn:hover {
+    background-color: #ff7043;
+    color: white;
+}
+
+.view-btn.active {
+    background-color: #ff7043;
+    color: white;
+}
+
+.calendar-container {
+    background-color: white;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    height: calc(100vh - 200px);
+}
+
+/* Custom styles for react-big-calendar */
+.rbc-calendar {
+    font-family: 'Roboto', sans-serif;
+    height: 100% !important;
+}
+
+.rbc-header {
+    padding: 8px;
+    background-color: #ff7043;
+    color: white;
+}
+
+.rbc-event {
+    padding: 4px;
+    font-size: 13px;
+    border-radius: 4px;
+    white-space: pre-line;
+    overflow: hidden;
+}
+
+.rbc-event.status-pending {
+    background-color: #ffc107;
+}
+
+.rbc-event.status-confirmed {
+    background-color: #007bff;
+}
+
+.rbc-event.status-in-progress {
+    background-color: #17a2b8;
+}
+
+.rbc-event.status-completed {
+    background-color: #28a745;
+}
+
+.rbc-event.status-cancelled {
+    background-color: #dc3545;
+}
+
+.rbc-today {
+    background-color: #fff3e0;
+}
+
+.rbc-toolbar {
+    margin-bottom: 10px;
+    padding: 8px;
+    background-color: #f8f9fa;
+    border-radius: 4px;
+}
+
+.rbc-toolbar button {
+    padding: 6px 12px;
+    font-size: 14px;
+    color: #ff7043;
+    border: 1px solid #ff7043;
+}
+
+.rbc-toolbar button:hover {
+    background-color: #ff7043;
+    color: white;
+}
+
+.rbc-toolbar button.rbc-active {
+    background-color: #ff7043;
+    color: white;
+}
+
+/* Responsive styles */
+@media (max-width: 1200px) {
+    .filters {
+        flex-wrap: wrap;
+    }
+    
+    .filter-item {
+        min-width: 180px;
+    }
+}
+
+@media (max-width: 768px) {
+    .manage-doctor-work {
+        padding: 15px;
+    }
+
+    .header h1 {
+        font-size: 20px;
+    }
+
+    .filter-item {
+        min-width: 100%;
+    }
+} 

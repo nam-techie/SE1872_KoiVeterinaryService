@@ -206,6 +206,49 @@
 }
 
 
+/* Thêm styles mới cho bảng giá di chuyển */
+.transportPriceGrid {
+    width: 80%;
+    margin: 40px auto;
+}
+
+.transportTable {
+    width: 100%;
+    border-collapse: collapse;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.transportTable td {
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    text-align: left;
+    background-color: #fff;
+    width: 16.66%; /* Chia đều cho 6 cột */
+}
+
+.transportTable tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.transportTable tr:hover {
+    background-color: #f0f0f0;
+}
+
+/* Style cho các ô chứa tên quận */
+.transportTable td:nth-child(odd) {
+    font-weight: 600;
+    background-color: #f8f8f8;
+}
+
+/* Style cho các ô chứa giá */
+.transportTable td:nth-child(even) {
+    color: #e67e22;
+    font-weight: 500;
+}
+
+
 
 
 

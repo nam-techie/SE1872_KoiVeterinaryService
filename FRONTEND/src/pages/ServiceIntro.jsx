@@ -14,7 +14,7 @@ import ContactButton from "../components/ContactButton.jsx";
 import { useService } from "../hooks/useService.js";
 
 function ServiceIntro() {
-    const { services } = useService();
+    const { services, supportServices, zonePrices } = useService();
 
     const sliderSettings = {
         dots: true,
@@ -137,34 +137,84 @@ function ServiceIntro() {
                     </div>
                 </div>
 
-                {/* Bảng Giá Dịch Vụ */}
+                {/* Bảng Giá Dịch Vụ Chính */}
                 <div className={styles.serviceIntroFourth}>
-                    <h1>Bảng Giá Dịch Vụ</h1>
+                    <h1>Bảng Giá Dịch Vụ Chính</h1>
                     <div className={styles.orangeLine}></div>
 
-                    {/* Kiểm tra nếu có dịch vụ */}
-                    {services.length > 0 ? (
-                        <table className={styles.serviceTable}>
-                            <thead>
+                    <table className={styles.serviceTable}>
+                        <thead>
                             <tr>
                                 <th>Tên Dịch Vụ</th>
                                 <th>Giá Cả (VND)</th>
                                 <th>Mô Tả</th>
                             </tr>
-                            </thead>
-                            <tbody>
-                            {services.map((service) => (
-                                <tr key={service.id}>
+                        </thead>
+                        <tbody>
+                            {services.map((service, index) => (
+                                <tr key={index}>
                                     <td>{service.name}</td>
                                     <td>{service.base_price.toLocaleString()}</td>
                                     <td>{service.description}</td>
                                 </tr>
                             ))}
-                            </tbody>
-                        </table>
-                    ) : (
-                        <p>Không có dịch vụ nào để hiển thị.</p>
-                    )}
+                        </tbody>
+                    </table>
+                </div>
+
+                {/* Bảng Giá Dịch Vụ Kèm Thêm */}
+                <div className={styles.serviceIntroFourth}>
+                    <h1>Bảng Giá Dịch Vụ Kèm Thêm</h1>
+                    <div className={styles.orangeLine}></div>
+
+                    <table className={styles.serviceTable}>
+                        <thead>
+                            <tr>
+                                <th>Tên Dịch Vụ</th>
+                                <th>Giá Cả (VND)</th>
+                                <th>Mô Tả</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {supportServices.map((service, index) => (
+                                <tr key={index}>
+                                    <td>{service.name}</td>
+                                    <td>{service.base_price.toLocaleString()}</td>
+                                    <td>{service.description}</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+
+                {/* Bảng Giá Di Chuyển */}
+                <div className={styles.serviceIntroFourth}>
+                    <h1>Bảng Giá Di Chuyển</h1>
+                    <div className={styles.orangeLine}></div>
+
+                    <div className={styles.transportPriceGrid}>
+                        <div className={styles.gridLeft}>
+                            <table className={styles.transportTable}>
+                                <tbody>
+                                    {zonePrices.reduce((rows, zone, index) => {
+                                        if (index % 3 === 0) {
+                                            rows.push(
+                                                <tr key={index}>
+                                                    <td>{zonePrices[index]?.name}</td>
+                                                    <td>{zonePrices[index]?.fee.toLocaleString()}</td>
+                                                    <td>{zonePrices[index + 1]?.name}</td>
+                                                    <td>{zonePrices[index + 1]?.fee.toLocaleString()}</td>
+                                                    <td>{zonePrices[index + 2]?.name}</td>
+                                                    <td>{zonePrices[index + 2]?.fee.toLocaleString()}</td>
+                                                </tr>
+                                            );
+                                        }
+                                        return rows;
+                                    }, [])}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
             </div>
 

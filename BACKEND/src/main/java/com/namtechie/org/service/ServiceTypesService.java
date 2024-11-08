@@ -31,6 +31,17 @@ public class ServiceTypesService {
         return serviceTypes;
     }
 
+    public List<ServiceType> findSupportService(){
+        List<ServiceType> serviceTypes = new ArrayList<ServiceType>();
+        for(int i = 4; i < 10; i++){
+            ServiceType service = serviceTypeRepository.findById(i);
+            serviceTypes.add(service);
+        }
+        return serviceTypes;
+    }
+
+
+
     public void deleteService(long serviceId) {
         // Kiểm tra xem tài khoản có tồn tại hay không trước khi xóa
         if (serviceTypeRepository.existsById(serviceId)) {

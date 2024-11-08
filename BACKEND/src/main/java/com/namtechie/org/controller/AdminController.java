@@ -373,6 +373,12 @@ public class AdminController {
         }
     }
 
+    @GetMapping("/manageDoctorWork")
+    public ResponseEntity<List<DoctorWorkAllResponse>> manageDoctorWork(){
+        List<DoctorWorkAllResponse> responses = appointmentService.getDoctorWorkAll();
+        return ResponseEntity.ok(responses);
+    }
+
 
 
 

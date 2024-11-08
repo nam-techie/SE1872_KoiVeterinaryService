@@ -1063,8 +1063,8 @@ public class AppointmentService {
         }
         long countCustomer = 0;
         List<Account> account = accountRepository.findAll();
-        for(Account acc: account){
-            if(acc.getRole().equals("CUSTOMER")){
+        for (Account acc : account) {
+            if (acc.getRole().equals("CUSTOMER")) {
                 countCustomer++;
             }
         }
@@ -1179,6 +1179,63 @@ public class AppointmentService {
         detail.setTopDoctors(topDoctorInfos);
         detail.setTopServices(topServiceInfos);
         return detail;
+    }
+
+    public List<DoctorWorkAllResponse> getDoctorWorkAll() {
+        List<DoctorWorkAllResponse> responses = new ArrayList<>();
+        List<Appointment> appointments = appointmentRepository.findAll();
+
+        for (Appointment appointment : appointments) {
+            DoctorWorkAllResponse response = new DoctorWorkAllResponse();
+            Doctor doctor = appointment.getDoctor();
+            response.setDoctorWorkName(doctor.getFullName());
+
+            AppointmentInfo appointmentInfo = appointmentInfoRepository.findByAppointmentId(appointment.getId());
+
+
+            // Lấy thời gian và ngày đặt hẹn
+            Time bookingTime = appointmentInfo.getAppointmentBookingTime();
+            Date bookingDate = appointmentInfo.getAppointmentBookingDate();
+
+            // Lấy loại dịch vụ
+            ServiceType serviceType = serviceTypeRepository.findByAppointmentId(appointment.getId());
+            response.setServiceType(serviceType.getName());
+
+            // Xác định thời gian kết thúc dựa trên loại dịch vụ
+            if (serviceType.getId() == 1 || serviceType.getId() == 3) {
+                response.setAppointmentDate(bookingDate);
+                response.setAppointmentTimeStart(bookingTime);
+
+                // Thời gian kết thúc sau 1 tiếng
+                Time endTime = new Time(bookingTime.getTime() + 3600000); // 1 giờ = 3600000 ms
+                response.setAppointmentTimeEnd(endTime);
+
+            } else if (serviceType.getId() == 2 || serviceType.getId() == 4) {
+                response.setAppointmentDate(bookingDate);
+                response.setAppointmentTimeStart(bookingTime);
+
+                // Thời gian kết thúc sau 4 tiếng
+                Time endTime = new Time(bookingTime.getTime() + 4 * 3600000); // 4 giờ = 4 * 3600000 ms
+                response.setAppointmentTimeEnd(endTime);
+            }
+
+            // Lấy tất cả các trạng thái của cuộc hẹn
+            List<AppointmentStatus> statuses = appointmentStatusRepository.findByAppointment(appointment);
+
+            // Tìm trạng thái có createDate lớn nhất (mới nhất)
+            AppointmentStatus latestStatus = null;
+            for (AppointmentStatus status : statuses) {
+                if (latestStatus == null || status.getCreate_date().toLocalDateTime().isAfter(latestStatus.getCreate_date().toLocalDateTime())) {
+                    latestStatus = status;
+                }
+            }
+
+            // Set trạng thái mới nhất vào DoctorWorkResponse
+            response.setAppointmentStatus(latestStatus.getStatus());
+            responses.add(response);
+        }
+        return responses;
+
     }
 
 

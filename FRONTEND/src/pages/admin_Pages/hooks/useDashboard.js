@@ -241,44 +241,39 @@ const useDashboard = () => {
 
 
 const processMonthlyData = (appointments) => {
-    // Lọc chỉ lấy dữ liệu của năm 2023
-    const appointmentsIn2023 = appointments.filter(apt => {
+    // Lấy năm hiện tại
+    const currentYear = new Date().getFullYear();
+    
+    // Lọc chỉ lấy dữ liệu của năm hiện tại
+    const appointmentsInCurrentYear = appointments.filter(apt => {
         const date = new Date(apt.orderTime);
-        return date.getFullYear() === 2023;
+        return date.getFullYear() === currentYear;
     });
 
-
+    // Khởi tạo dữ liệu cho 12 tháng
     const monthlyStats = new Map();
+    for (let i = 1; i <= 12; i++) {
+        monthlyStats.set(`T${i}`, {
+            name: `T${i}`,
+            revenue: 0,
+            orders: 0
+        });
+    }
 
-
-    appointmentsIn2023.forEach(apt => {
-        const date = new Date(apt.orderTime);
-        const monthKey = `T${date.getMonth() + 1}`;
-
-
-        if (!monthlyStats.has(monthKey)) {
-            monthlyStats.set(monthKey, {
-                name: monthKey,
-                revenue: 0,
-                orders: 0
-            });
-        }
-
-
-        const stats = monthlyStats.get(monthKey);
-        if (!apt.cancel) {
+    // Tính toán dữ liệu cho từng tháng
+    appointmentsInCurrentYear.forEach(apt => {
+        if (!apt.cancel) { // Chỉ tính các lịch hẹn không bị hủy
+            const date = new Date(apt.orderTime);
+            const monthKey = `T${date.getMonth() + 1}`;
+            const stats = monthlyStats.get(monthKey);
+            
             stats.revenue += apt.totalAmount || 0;
             stats.orders += 1;
         }
     });
 
-
-    return Array.from(monthlyStats.values())
-        .sort((a, b) => {
-            const monthA = parseInt(a.name.substring(1));
-            const monthB = parseInt(b.name.substring(1));
-            return monthA - monthB;
-        });
+    // Chuyển đổi Map thành mảng và sắp xếp theo thứ tự tháng
+    return Array.from(monthlyStats.values());
 };
 
 

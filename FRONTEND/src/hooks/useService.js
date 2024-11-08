@@ -1,17 +1,25 @@
 import {useState, useEffect} from "react";
-import {getServiceList,getDistrictList} from "../service/apiService.js";
+import {getServiceList,getDistrictList, getSupportServiceList, getZonePriceList} from "../service/apiService.js";
 import {getDoctorList} from "../service/apiDoctor.js";
 
 export const useService = () =>{
     const [services, setServices] = useState([]);
+    const [supportServices, setSupportServices] = useState([]);
+    const [zonePrices, setZonePrices] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        const getService = async () => {
+        const fetchData = async () => {
             try {
-                const data = await getServiceList();
-                setServices(data);
+                const [mainServices, supportData, zoneData] = await Promise.all([
+                    getServiceList(),
+                    getSupportServiceList(),
+                    getZonePriceList()
+                ]);
+                setServices(mainServices);
+                setSupportServices(supportData);
+                setZonePrices(zoneData);
             } catch (err) {
                 setError(err.message);
             } finally {
@@ -19,10 +27,10 @@ export const useService = () =>{
             }
         };
 
-        getService();
+        fetchData();
     }, []);
 
-    return { services, loading, error };
+    return { services, supportServices, zonePrices, loading, error };
 }
 
 export const useDistrictList = () => {
@@ -76,3 +84,37 @@ export function useDoctorList() {
 
     return { doctors, doctorLoading, doctorError };
 }
+
+export const usePriceTables = () => {
+    const [mainServices, setMainServices] = useState([]);
+    const [supportServices, setSupportServices] = useState([]);
+    const [zonePrices, setZonePrices] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+    useEffect(() => {
+        const fetchPrices = async () => {
+            try {
+                setLoading(true);
+                // Dùng getServiceList cho dịch vụ chính vì nó đã có sẵn
+                const [mainData, supportData, zoneData] = await Promise.all([
+                    getServiceList(),
+                    getSupportServiceList(),
+                    getZonePriceList()
+                ]);
+                setMainServices(mainData);
+                setSupportServices(supportData);
+                setZonePrices(zoneData);
+            } catch (err) {
+                setError(err.message);
+                console.error('Error fetching price data:', err);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchPrices();
+    }, []);
+
+    return { mainServices, supportServices, zonePrices, loading, error };
+};

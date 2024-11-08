@@ -202,9 +202,9 @@ function HomePage() {
                             <div key={doctorData.doctor.id}>
                                 <DoctorCard
                                     fullname={doctorData.doctor.fullName}
+                                    qualification={doctorData.qualification}
                                     experience={doctorData.doctor.experience}
                                     profilePic={doctorData.doctor.imageUrl}
-                                    phone={doctorData.doctor.phone}
                                 />
                             </div>
                         ))}

@@ -3,6 +3,7 @@ package com.namtechie.org.controller;
 import com.namtechie.org.entity.Account;
 import com.namtechie.org.entity.Doctor;
 import com.namtechie.org.entity.ServiceType;
+import com.namtechie.org.entity.Zone;
 import com.namtechie.org.exception.BadCredentialsException;
 import com.namtechie.org.exception.DataIntegrityViolationException;
 import com.namtechie.org.exception.DuplicateEntity;
@@ -12,6 +13,7 @@ import com.namtechie.org.model.request.*;
 import com.namtechie.org.model.response.*;
 import com.namtechie.org.repository.DoctorRepository;
 import com.namtechie.org.repository.ServiceTypeRepository;
+import com.namtechie.org.repository.ZoneRepository;
 import com.namtechie.org.service.AuthenticationService;
 import com.namtechie.org.service.CustomerService;
 import com.namtechie.org.service.DoctorService;
@@ -27,6 +29,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -47,6 +50,8 @@ public class AuthenticationController {
 
     @Autowired
     ServiceTypesService serviceTypesService;
+    @Autowired
+    private ZoneRepository zoneRepository;
 
     @GetMapping("/changePassword")
     public ResponseEntity<?> changePassword(ChangePasswordRequest changePasswordRequest) {
@@ -73,10 +78,21 @@ public class AuthenticationController {
         return serviceTypesService.findService();
     }
 
+    @GetMapping(value = "/getAllSupportServiceType", produces = "application/json")
+    public List<ServiceType> getAllSupportServiceType() {
+        return serviceTypesService.findSupportService();
+    }
+
+    @GetMapping(value = "/getAllZonePrice", produces = "application/json")
+    public List<Zone> getAllZone() {
+        return zoneRepository.findAll();
+    }
+
     @GetMapping("/getAllDoctor")
     public ResponseEntity<List<DoctorResponse>> getListAllDoctors() {
         return ResponseEntity.ok(doctorService.getListAllDoctors());
     }
+
 
     @GetMapping("/getInfoDoctor")
     public List<Doctor> getInfoDoctor() {
