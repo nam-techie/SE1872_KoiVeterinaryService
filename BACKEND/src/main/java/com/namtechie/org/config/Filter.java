@@ -63,6 +63,8 @@ public class Filter extends OncePerRequestFilter {
 
     );
 
+
+
     public boolean checkIsPublicAPI(String uri) {
         // uri: /api/register
         // nếu gặp những api trong list ở trên => cho phép truy cập luôn => true
