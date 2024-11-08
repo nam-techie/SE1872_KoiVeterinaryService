@@ -542,11 +542,12 @@ public class AuthenticationService implements UserDetailsService {
             response.setUsername(account.getUsername());
             response.setEmail(account.getEmail());
             response.setRole(account.getRole());  // Trả về role của người dùng
-            response.setToken(token);  // Trả về token
+            response.setToken(token);// Trả về token
+            return  response;
         }
 
 
-        return response;
+        return null;
     }
 
     public AdminInfoRequest updateAdminInfo(AdminInfoRequest adminInfoRequest) {
