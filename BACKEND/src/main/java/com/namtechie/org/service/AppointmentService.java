@@ -66,6 +66,8 @@ public class AppointmentService {
     private CustomerRepository customerRepository;
     @Autowired
     private FeedbackRepository feedbackRepository;
+    @Autowired
+    private AccountRepository accountRepository;
 
 
     public List<Doctor> findAllDoctor() {
@@ -1059,7 +1061,14 @@ public class AppointmentService {
             appointmentDetail.setCancel(app.isCancel());
             appointmentDetails.add(appointmentDetail);
         }
-        long countCustomer = customersRepository.count();
+        long countCustomer = 0;
+        List<Account> account = accountRepository.findAll();
+        for(Account acc: account){
+            if(acc.getRole().equals("CUSTOMER")){
+                countCustomer++;
+            }
+        }
+
         long countAppointment = appointmentRepository.count();
 
         dashboardTotalRequest.setAppointments(appointmentDetails);

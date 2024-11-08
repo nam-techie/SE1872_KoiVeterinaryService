@@ -122,12 +122,13 @@
 }
 
 .serviceTable {
-    width: 80%; /* Đặt bảng rộng 80% */
-    margin: 40px auto; /* Căn giữa bảng và thêm khoảng cách phía trên và dưới */
-    border-collapse: collapse; /* Gộp các viền của bảng */
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Bóng đổ cho bảng */
-    border-radius: 10px; /* Bo tròn góc của bảng */
-    overflow: hidden; /* Để đảm bảo viền bo tròn không bị che bởi các hàng hoặc ô */
+    width: 80%;
+    margin: 40px auto;
+    border-collapse: collapse;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    overflow: hidden;
+    table-layout: fixed;
 }
 
 .serviceTable th, .serviceTable td {
@@ -153,5 +154,27 @@
 
 .serviceTable tr:hover {
     background-color: #f0f0f0; /* Màu nền khi hover */
+}
+
+.serviceTable th:first-child,
+.serviceTable td:first-child {
+    width: 20%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.serviceTable th:nth-child(2),
+.serviceTable td:nth-child(2) {
+    width: 15%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.serviceTable th:last-child,
+.serviceTable td:last-child {
+    width: 65%;
+    white-space: normal;
 }
 

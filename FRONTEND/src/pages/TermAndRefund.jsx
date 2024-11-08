@@ -75,14 +75,13 @@ function TermAndRefund() {
           </p>
 
           <p>
-            <h3>1.5 Quy định bảo mật</h3>
-            - Chính sách giao dịch thanh toán bằng thẻ quốc tế và thẻ nội địa
-            (internet banking) đảm bảo tuân thủ các tiêu chuẩn bảo mật của các
-            Đối Tác Cổng Thanh Toán gồm: Thông tin tài chính của Khách hàng sẽ
-            được bảo vệ trong suốt quá trình giao dịch bằng giao thức SSL
-            256-bit (Secure Sockets Layer). Mật khẩu sử dụng một lần (OTP) được
-            gửi qua Mail để đảm bảo việc truy cập tài khoản được xác thực.{" "}
-            <br />
+            <h3>1.5 Quy định bảo mật</h3>- Chính sách giao dịch thanh toán bằng
+            thẻ quốc tế và thẻ nội địa (internet banking) đảm bảo tuân thủ các
+            tiêu chuẩn bảo mật của các Đối Tác Cổng Thanh Toán gồm: Thông tin
+            tài chính của Khách hàng sẽ được bảo vệ trong suốt quá trình giao
+            dịch bằng giao thức SSL 256-bit (Secure Sockets Layer). Mật khẩu sử
+            dụng một lần (OTP) được gửi qua Mail để đảm bảo việc truy cập tài
+            khoản được xác thực. <br />
             <br />
             - Các nguyên tắc và quy định bảo mật thông tin trong ngành tài chính
             ngân hàng theo quy định của Ngân hàng nhà nước Việt Nam.
@@ -131,6 +130,18 @@ function TermAndRefund() {
             hoặc qua hotline chính thức. Lịch hẹn sẽ được xác nhận trong vòng 24
             giờ kể từ khi tiếp nhận yêu cầu và chỉ được xác nhận hoàn tất sau
             khi thanh toán trực tuyến được thực hiện thành công.
+          </p>
+          <p>
+            Lưu ý: dịch vụ kèm thêm của trung tâm chúng tôi chỉ áp dụng khi quý
+            khách lựa chọn dịch vụ điều trị và chẩn đoán bệnh cho cá Koi. Các
+            dịch vụ kèm thêm này sẽ được phân tích và đưa ra yêu cầu, đề nghị
+            phù hợp từ các chuyên gia, bác sĩ của trung tâm một cách đúng đắn
+            nhất. Nếu khách hàng vẫn muốn lựa chọn dịch vụ thêm cho thú cưng của
+            mình thì bên trung tâm vẫn sẽ cung cấp cấp dịch vụ một cách đầy đủ
+            nhưng sẽ yêu cầu khách hàng cam kết chịu trách nhiệm nếu có vấn đề
+            gì xảy ra khi sử dụng dịch vụ kèm thêm này khi không có sự tư vấn đề
+            từ các chuyên gia, bác sĩ. Chúng tôi sẽ hỗ trợ và chịu mọi chi phí
+            nếu lỗi lầm hay sai sót xảy ra đến từ phía của Koi Kung.
           </p>
         </div>
 

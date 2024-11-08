@@ -278,7 +278,9 @@ public class AuthenticationService implements UserDetailsService {
 
             // Lưu tài khoản bác sĩ vào database
             accountRepository.save(account);
+            if(Role.valueOf(role).name().equals("CUSTOMER")){
 
+            }
             Customers customer = new Customers();
             customer.setAccount(account);
             customer.setFullName(adminAccountRequest.getUsername());
