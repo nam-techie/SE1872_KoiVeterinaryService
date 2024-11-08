@@ -478,7 +478,7 @@ public class PaymentService {
         String tmnCode = "T0HQKZLG";
         String secretKey = "F0LQRHMUCEDG0543CTWHY1H2VD10MLFD";
         String vnpUrl = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
-        String returnUrl = "http://localhost:5741/customer/manage-appointment?orderID=" + appointment.getId() + "&random=" + randomString;
+        String returnUrl = "https://se-1872-koi-veterinary-service.vercel.app/customer/manage-appointment?orderID=" + appointment.getId() + "&random=" + randomString;
         String currCode = "VND";
 
         Map<String, String> vnpParams = new TreeMap<>();
@@ -547,7 +547,7 @@ public class PaymentService {
         String tmnCode = "T0HQKZLG";
         String secretKey = "F0LQRHMUCEDG0543CTWHY1H2VD10MLFD";
         String vnpUrl = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
-        String returnUrl = "http://localhost:5741/customer/manage-appointment?orderID=" + payment.getId();
+        String returnUrl = "https://se-1872-koi-veterinary-service.vercel.app/customer/manage-appointment?orderID=" + payment.getId();
         String currCode = "VND";
 
         Map<String, String> vnpParams = new TreeMap<>();
