@@ -100,13 +100,21 @@ public class SecurityConfig {
             // Gọi service để xử lý logic đăng nhập và tạo token
             AccountResponse accountResponse = authenticationService.loginByGoogle(email, name);
 
+            if (accountResponse == null) {
+                // Nếu tài khoản bị vô hiệu hóa, chuyển hướng với thông báo lỗi
+                String redirectUrl = "https://se-1872-koi-veterinary-service.vercel.app/login/success?error=disabled";
+                response.sendRedirect(redirectUrl);
+                return;
+            }
+
             // Mã hóa các thông tin để gửi qua URL
             String encodedToken = URLEncoder.encode(accountResponse.getToken(), "UTF-8");
             String encodedUsername = URLEncoder.encode(accountResponse.getUsername(), "UTF-8");
             String role = URLEncoder.encode(accountResponse.getRole(), "UTF-8");
-            String redirectUrl = "https://se-1872-koi-veterinary-service.vercel.app/login/success?token=" + encodedToken + "&username=" + encodedUsername + "&role=" + role;
-            response.sendRedirect(redirectUrl);
 
+            String redirectUrl = "https://se-1872-koi-veterinary-service.vercel.app/login/success?token=" +
+                    encodedToken + "&username=" + encodedUsername + "&role=" + role;
+            response.sendRedirect(redirectUrl);
         };
     }
 
