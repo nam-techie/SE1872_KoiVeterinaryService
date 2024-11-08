@@ -12,7 +12,7 @@ function Footer() {
                         <li className={styles.footerListItem}><a href="/aboutme" className={styles.footerLink}>Giới thiệu</a>
                         </li>
                         <li className={styles.footerListItem}><a href="/doctor-list" className={styles.footerLink}>Bác sĩ</a></li>
-                        <li className={styles.footerListItem}><a href="/service" className={styles.footerLink}>Điều khoản Dịch
+                        <li className={styles.footerListItem}><a href="/terms" className={styles.footerLink}>Điều khoản Dịch
                             vụ</a></li>
                         <li className={styles.footerListItem}><a href="/faqs" className={styles.footerLink}>Câu hỏi thường
                             gặp</a></li>

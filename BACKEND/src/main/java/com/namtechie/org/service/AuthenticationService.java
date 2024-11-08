@@ -120,12 +120,12 @@ public class AuthenticationService implements UserDetailsService {
 
             // Lưu tài khoản vào database
             Account newAccount = accountRepository.save(account);
-//            // Gửi email thông báo đăng kí thành công
-//            EmailDetail emailDetail = new EmailDetail();
-//            emailDetail.setReceiver(newAccount);
-//            emailDetail.setSubject("Welcome to KoiKung Center!");
-//            emailDetail.setLink("https://www.google.com/");
-//            emailService.sendEmail(emailDetail);
+            // Gửi email thông báo đăng kí thành công
+            EmailDetail emailDetail = new EmailDetail();
+            emailDetail.setReceiver(newAccount);
+            emailDetail.setSubject("Welcome to KoiKung Center!");
+            emailDetail.setLink("https://se-1872-koi-veterinary-service.vercel.app");
+            emailService.sendEmail(emailDetail);
 
             //Sau khi lưu xong thì tạo luôn bảng Customers tương ứng!
             Customers customer = new Customers();
@@ -278,13 +278,14 @@ public class AuthenticationService implements UserDetailsService {
 
             // Lưu tài khoản bác sĩ vào database
             accountRepository.save(account);
-            if(Role.valueOf(role).name().equals("CUSTOMER")){
 
+            if(Role.valueOf(role).name().equals("CUSTOMER")){
+                Customers customer = new Customers();
+                customer.setAccount(account);
+                customer.setFullName(adminAccountRequest.getUsername());
+                customerRepository.save(customer);
             }
-            Customers customer = new Customers();
-            customer.setAccount(account);
-            customer.setFullName(adminAccountRequest.getUsername());
-            customerRepository.save(customer);
+
 
             // Gửi email thông báo đăng kí thành công
 //            EmailDetail emailDetail = new EmailDetail();
@@ -383,7 +384,7 @@ public class AuthenticationService implements UserDetailsService {
         EmailResetPass emailResetPass = new EmailResetPass();
         emailResetPass.setReceiver(account);
         emailResetPass.setSubject("Thay đổi mật khẩu");
-        emailResetPass.setLink("http://localhost:5741/verify-otp?email=" + forgotPasswordRequest.getEmail());
+        emailResetPass.setLink("https://se-1872-koi-veterinary-service.vercel.app/verify-otp?email=" + forgotPasswordRequest.getEmail());
         emailResetPass.setOtp(otp);
         emailService.resetPassword(emailResetPass);
 
@@ -522,6 +523,12 @@ public class AuthenticationService implements UserDetailsService {
             account.setPassword(passwordEncoder.encode(email));  // Mã hóa email thành mật khẩu
             account.setRole(Role.CUSTOMER.name());  // Đặt role mặc định là CUSTOMER
             accountRepository.save(account);
+
+            Customers customers = new Customers();
+            customers.setAccount(account);
+            customers.setFullName(name);
+            customerRepository.save(customers);
+
         }
 
         // Nếu tài khoản đã tồn tại thì bỏ qua việc cập nhật và tạo mới
@@ -531,12 +538,16 @@ public class AuthenticationService implements UserDetailsService {
 
         // Trả về thông tin người dùng, role và token
         AccountResponse response = new AccountResponse();
-        response.setUsername(account.getUsername());
-        response.setEmail(account.getEmail());
-        response.setRole(account.getRole());  // Trả về role của người dùng
-        response.setToken(token);  // Trả về token
+        if(!account.isDeleted()){
+            response.setUsername(account.getUsername());
+            response.setEmail(account.getEmail());
+            response.setRole(account.getRole());  // Trả về role của người dùng
+            response.setToken(token);// Trả về token
+            return  response;
+        }
 
-        return response;
+
+        return null;
     }
 
     public AdminInfoRequest updateAdminInfo(AdminInfoRequest adminInfoRequest) {
@@ -620,11 +631,4 @@ public class AuthenticationService implements UserDetailsService {
             throw new RuntimeException("Đã xảy ra lỗi trong quá trình cập nhật thông tin admin.");
         }
     }
-
-
-
-
-
-
-
 }

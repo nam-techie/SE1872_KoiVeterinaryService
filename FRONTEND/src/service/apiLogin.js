@@ -1,7 +1,7 @@
 import { axiosInstance } from './apiRequest';
 
+
 export const login = async (username, password) => {
-    // eslint-disable-next-line no-useless-catch
     try {
         const response = await axiosInstance.post('/login', {
             username,
@@ -12,3 +12,6 @@ export const login = async (username, password) => {
         throw error;
     }
 };
+
+
+

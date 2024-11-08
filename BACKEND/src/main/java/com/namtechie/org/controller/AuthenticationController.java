@@ -48,6 +48,22 @@ public class AuthenticationController {
     @Autowired
     ServiceTypesService serviceTypesService;
 
+    @GetMapping("/changePassword")
+    public ResponseEntity<?> changePassword(ChangePasswordRequest changePasswordRequest) {
+        try {
+            authenticationService.changePassword(changePasswordRequest);
+            return ResponseEntity.ok("Mật khẩu đã được thay đổi thành công.");
+        } catch (BadCredentialsException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Mật khẩu cũ không đúng.");
+        } catch (DuplicateEntity e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Mật khẩu mới và xác nhận mật khẩu không trùng.");
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Mật khẩu mới không được trùng với mật khẩu cũ.");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Đã xảy ra lỗi trong quá trình thay đổi mật khẩu.");
+        }
+    }
+
 
 
     //API provide for CUSTOMER

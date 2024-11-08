@@ -20,7 +20,7 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.ResponseEntity;
 
-@SpringBootTest
+
 public class AppointmentServiceTest {
 
     @Mock

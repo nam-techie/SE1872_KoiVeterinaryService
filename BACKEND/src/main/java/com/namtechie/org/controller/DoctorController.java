@@ -96,7 +96,7 @@ public class DoctorController {
 
     @PutMapping("/cancelAppointmentByDoctor")
     public ResponseEntity cancelAppointmentByDoctor(@RequestBody CancelRequest cancelRequest) {
-        appointmentService.cancelAppointmentByCustomer(cancelRequest, "Bác sĩ");
+        appointmentService.cancelAppointmentByCustomer(cancelRequest);
         return ResponseEntity.ok("Đã hủy thành công");
     }
 

@@ -279,7 +279,7 @@ public class AdminController {
 
     @PutMapping("/cancelAppointmentByAdmin/{appointmentId}")
     public ResponseEntity cancelAppointmentByAdmin(@RequestBody CancelRequest cancelRequest) {
-        appointmentService.cancelAppointmentByCustomer(cancelRequest, "Quản lí trung tâm");
+        appointmentService.cancelAppointmentByCustomer(cancelRequest);
         return ResponseEntity.ok("Đã hủy thành công");
     }
 

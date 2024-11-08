@@ -193,7 +193,7 @@ function FindDoctor() {
                                 />
                             </div>
                             <h3 className={styles.doctorName}>{doctorData.doctor.fullName}</h3>
-                            <p className={styles.doctorPhone}>SĐT: {doctorData.doctor.phone}</p>
+                            <p className={styles.doctorPhone}>Bằng cấp: {doctorData.qualification}</p>
                             <p className={styles.doctorExperience}>Kinh nghiệm: {doctorData.doctor.experience} năm</p>
                             <div className={styles.doctorRating}>
                                 {renderStars(doctorData.rateAverage)}
@@ -212,7 +212,6 @@ function FindDoctor() {
                     <div className={styles.modal}>
                         <div className={styles.modalContent}>
                             <h2>{doctorDetail.doctorInfo.fullName}</h2>
-                            <p><strong>Số điện thoại:</strong> {doctorDetail.doctorInfo.phone}</p>
                             <p><strong>Kinh nghiệm:</strong> {doctorDetail.doctorInfo.experience} năm</p>
                             <p><strong>Chuyên khoa:</strong> {doctorDetail.doctorInfo.specialty}</p>
                             <p><strong>Mô tả:</strong> {doctorDetail.doctorInfo.description}</p>

@@ -8,6 +8,7 @@
     position: relative;
 }
 
+
 .breadCrumb {
     display: flex;
     align-items: center;
@@ -15,15 +16,18 @@
     margin-bottom: 20px; /* Khoảng cách giữa breadcrumb và tiêu đề */
 }
 
+
 .breadCrumb a {
     margin-right: 5px;
     text-decoration: underline;
     color: purple;
 }
 
+
 .breadCrumb span {
     color: darkorange;
 }
+
 
 .orangeLine {
     width: 40%;
@@ -33,21 +37,26 @@
     margin-bottom: 30px;
 }
 
+
 .serviceIntroFist {
     display: flex;
     flex-direction: column;
 
+
     text-align: left;
 }
+
 
 .serviceIntroFist h1 {
     font-size: 28px;
     color: black;
 }
 
+
 .serviceIntroSecond {
     margin-top: 30px;
 }
+
 
 .serviceIntroSecondCard {
     display: flex;
@@ -62,12 +71,14 @@
     margin: 5px auto; /* Cân giữa thẻ và thêm khoảng cách đều giữa các thẻ */
 }
 
+
 .serviceIntroSecondCard h4 {
     margin-top: 10px; /* Giảm khoảng cách giữa icon và title */
     margin-bottom: 10px;
     font-size: 16px; /* Kích thước chữ */
     font-weight: bold;
 }
+
 
 .scheduleButton {
     padding: 8px 16px; /* Kích thước nút */
@@ -82,17 +93,21 @@
     display: inline-block; /* Để a hoạt động như button */
 }
 
+
 .scheduleButton:hover {
     background-color: white;
     color: orange; /* Đổi chữ thành cam */
     border: 2px solid orange; /* Đổi viền thành cam */
 }
 
+
 /* New CSS for detailed service section */
+
 
 .serviceIntroThird {
     margin-top: 50px;
 }
+
 
 .serviceDetailsGrid {
     display: grid;
@@ -100,6 +115,7 @@
     gap: 20px;
     margin-top: 30px;
 }
+
 
 .serviceCard {
     background-color: #fff;
@@ -109,17 +125,20 @@
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
 }
 
+
 .serviceCard h3 {
     margin-top: 10px;
     color: orange;
     font-size: 20px;
 }
 
+
 .serviceCard p {
     margin-top: 10px;
     color: #333;
     font-size: 16px;
 }
+
 
 .serviceTable {
     width: 80%;
@@ -131,11 +150,13 @@
     table-layout: fixed;
 }
 
+
 .serviceTable th, .serviceTable td {
     padding: 12px 15px;
     border: 1px solid #ddd;
     text-align: left;
 }
+
 
 .serviceTable th {
     background-color: #f0a500;
@@ -144,17 +165,21 @@
     font-weight: 600;
 }
 
+
 .serviceTable td {
     background-color: #fff;
 }
+
 
 .serviceTable tr:nth-child(even) {
     background-color: #f2f2f2;
 }
 
+
 .serviceTable tr:hover {
     background-color: #f0f0f0; /* Màu nền khi hover */
 }
+
 
 .serviceTable th:first-child,
 .serviceTable td:first-child {
@@ -164,6 +189,7 @@
     text-overflow: ellipsis;
 }
 
+
 .serviceTable th:nth-child(2),
 .serviceTable td:nth-child(2) {
     width: 15%;
@@ -172,9 +198,16 @@
     text-overflow: ellipsis;
 }
 
+
 .serviceTable th:last-child,
 .serviceTable td:last-child {
     width: 65%;
     white-space: normal;
 }
+
+
+
+
+
+
 

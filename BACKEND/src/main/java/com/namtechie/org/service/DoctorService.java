@@ -97,11 +97,12 @@ public class DoctorService {
             } else {
                 rateAverage = 0;
             }
-            DoctorInfo info = doctorInfoRepository.findDoctorInfoByDoctorId(d.getId());
+
+            DoctorInfo doctorInfo = doctorInfoRepository.findDoctorInfoByDoctorId(d.getId());
 
             doctorResponse.setDoctor(d);
             doctorResponse.setRateAverage(rateAverage);
-            doctorResponse.setQualification(info.getQualification());
+            doctorResponse.setQualification(doctorInfo.getQualification());
             doctorResponses.add(doctorResponse);
         }
         return doctorResponses;
@@ -695,6 +696,4 @@ public class DoctorService {
 
         return response;
     }
-
-
 }

@@ -1,16 +1,31 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import styles from '../styles/GoogleLoginSuccess.module.css';
 
 const GoogleLoginSuccess = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        // Lấy thông tin từ URL
         const urlParams = new URLSearchParams(window.location.search);
+        const error = urlParams.get('error');
         const token = urlParams.get('token');
         const username = urlParams.get('username');
         const role = urlParams.get('role');
+
+        // Kiểm tra nếu có lỗi tài khoản bị vô hiệu hóa
+        if (error === 'disabled') {
+            toast.error('Tài khoản của bạn đã bị vô hiệu hóa. Vui lòng liên hệ admin để được hỗ trợ.', {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+            });
+            navigate('/login');
+            return;
+        }
 
         // Kiểm tra xem có đủ thông tin không
         if (token && username && role) {
