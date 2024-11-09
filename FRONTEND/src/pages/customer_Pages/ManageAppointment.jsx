@@ -255,7 +255,22 @@ const ManageAppointment = () => {
   const currentAppointments = filteredAndSortedAppointments.slice(
     (currentPage - 1) * appointmentsPerPage,
     currentPage * appointmentsPerPage
-  );
+  ).map(appointment => ({
+    ...appointment,
+    appointmentTime: (() => {
+      // Kết hợp với ngày hiện tại để tạo đối tượng Date hợp lệ
+      const today = new Date();
+      const dateString = `${today.toISOString().split('T')[0]}T${appointment.appointmentTime}`;
+      const date = new Date(dateString);
+      
+      return new Intl.DateTimeFormat('vi-VN', { 
+        timeZone: 'Asia/Ho_Chi_Minh', 
+        hour: 'numeric', 
+        minute: 'numeric', 
+        second: 'numeric' 
+      }).format(date);
+    })()
+  }));
 
   // Xử lý thay đổi trang
   const handlePageChange = (pageNumber) => {
