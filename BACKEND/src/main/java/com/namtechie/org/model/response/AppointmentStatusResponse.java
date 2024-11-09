@@ -15,5 +15,4 @@ public class AppointmentStatusResponse {
     String serviceType;
     String appointmentStatus;
 
-
 }
