@@ -461,7 +461,7 @@ public class DoctorService {
             // Tách Date và Time từ CreatedDate (Timestamp)
             Timestamp createdDate = appointmentInfo.getCreatedDate();
             appointmentStatusResponse.setAppointmentDate(new Date(createdDate.getTime())); // Chuyển Timestamp thành Date
-            appointmentStatusResponse.setAppointmentTime(new Time(createdDate.getTime())); // Chuyển Timestamp thành Time
+            appointmentStatusResponse.setAppointmentTime(createdDate);
 
 
             ServiceType serviceType = serviceTypeRepository.findByAppointmentId(appointment.getId());
