@@ -696,7 +696,7 @@ function DoctorAppointment() {
                         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
                             <div>
                                 <span style={{ color: '#666', marginRight: 8 }}>Ngày tạo:</span>
-                                <span>{moment(selectedAppointment?.appointmentInfo?.createdDate).utcOffset('-07:00').format('DD/MM/YYYY HH:mm:ss')}</span>
+                                <span>{moment(selectedAppointment?.appointmentInfo?.createdDate).utcOffset('+00:00').format('DD/MM/YYYY HH:mm:ss')}</span>
                             </div>
                             <div>
                                 <span style={{ color: '#666', marginRight: 8 }}>Dịch vụ:</span>
