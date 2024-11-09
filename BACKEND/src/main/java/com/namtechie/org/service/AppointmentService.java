@@ -688,6 +688,7 @@ public class AppointmentService {
             appointmentStatusResponse.setAppointmentTime(new Time(createdDate.getTime())); // Chuyển Timestamp thành Time
 
 
+
             ServiceType serviceType = serviceTypeRepository.findByAppointmentId(appointment.getId());
             appointmentStatusResponse.setServiceType(serviceType.getName());
 
