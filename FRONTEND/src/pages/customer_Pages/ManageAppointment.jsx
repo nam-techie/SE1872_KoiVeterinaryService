@@ -420,8 +420,8 @@ const ManageAppointment = () => {
               {currentAppointments.map((appointment) => (
                 <tr key={appointment.appointmentId}>
                   <td>{appointment.appointmentId}</td>
-                  <td>{(appointment.appointmentTime).format('HH:mm:ss')}</td>
-                  <td>{(appointment.appointmentDate).format('DD/MM/YYYY')}</td>
+                  <td>{appointment.appointmentTime}</td>
+                  <td>{appointment.appointmentDate}</td>
                   <td>{appointment.serviceType}</td>
                   <td>
                     <span
