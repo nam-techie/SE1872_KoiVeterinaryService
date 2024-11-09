@@ -1,4 +1,5 @@
 import { axiosInstance } from '../service/apiRequest';
+import moment from 'moment';
 
 const useManageCus = () => {
     const getAppointments = async () => {
@@ -7,13 +8,16 @@ const useManageCus = () => {
                 `/customer/listAppointmentUser`
             );
 
-            console.log('Response from API:', response.data);
+            const transformedData = response.data.map(appointment => ({
+                appointmentId: appointment.appointmentId,
+                appointmentDate: moment(appointment.appointmentDate).format('DD/MM/YYYY'),
+                time: appointment.timestamp,
+                serviceType: appointment.serviceType,
+                appointmentStatus: appointment.appointmentStatus,
+                ...appointment
+            }));
 
-            if (response.data) {
-                return response.data;
-            } else {
-                throw new Error('Không có dữ liệu trả về');
-            }
+            return transformedData;
         } catch (err) {
             console.error('Error fetching appointments:', err);
             throw new Error('Có lỗi xảy ra khi tải dữ liệu');
