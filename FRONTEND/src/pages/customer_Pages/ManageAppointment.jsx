@@ -421,8 +421,8 @@ const ManageAppointment = () => {
               {currentAppointments.map((appointment) => (
                 <tr key={appointment.appointmentId}>
                   <td>{appointment.appointmentId}</td>
-                  <td>{moment(appointment.appointmentTime).utcOffset('+07:00').format('HH:mm:ss')}</td>
-                  <td>{moment(appointment.appointmentDate).format('DD/MM/YYYY')}</td>
+                  <td>{appointment.appointmentTime ? moment(appointment.appointmentTime, 'HH:mm:ss').format('HH:mm:ss') : ''}</td>
+                  <td>{appointment.appointmentDate ? moment(appointment.appointmentDate).format('DD/MM/YYYY') : ''}</td>
                   <td>{appointment.serviceType}</td>
                   <td>
                     <span

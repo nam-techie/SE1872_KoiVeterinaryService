@@ -631,8 +631,24 @@ function DoctorAppointment() {
                     loading={loading}
                     columns={[
                         { title: 'ID lịch hẹn', dataIndex: 'id', key: 'id' },
-                        { title: 'Thời gian', dataIndex: 'time', key: 'time', render: (time) => moment(time).utcOffset('+07:00').format('HH:mm:ss') },
-                        { title: 'Ngày', dataIndex: 'date', key: 'date', render: (date) => moment(date).format('DD/MM/YYYY') },
+                        { 
+                            title: 'Thời gian', 
+                            dataIndex: 'time', 
+                            key: 'time', 
+                            render: (time) => {
+                                const validTime = moment(time, 'HH:mm:ss').utcOffset('+07:00');
+                                return validTime.isValid() ? validTime.format('HH:mm:ss') : time;
+                            }
+                        },
+                        { 
+                            title: 'Ngày', 
+                            dataIndex: 'date', 
+                            key: 'date', 
+                            render: (date) => {
+                                const validDate = moment(date);
+                                return validDate.isValid() ? validDate.format('DD/MM/YYYY') : date;
+                            }
+                        },
                         { title: 'Dịch vụ', dataIndex: 'service', key: 'service' },
                         { title: 'Trạng thái', 
                           dataIndex: 'status', 
