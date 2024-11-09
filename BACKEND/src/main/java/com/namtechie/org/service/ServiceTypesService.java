@@ -33,9 +33,18 @@ public class ServiceTypesService {
 
     public List<ServiceType> findSupportService(){
         List<ServiceType> serviceTypes = new ArrayList<ServiceType>();
-        for(int i = 4; i < 10; i++){
-            ServiceType service = serviceTypeRepository.findById(i);
-            serviceTypes.add(service);
+//        for(int i = 4; i < 10; i++){
+//            ServiceType service = serviceTypeRepository.findById(i);
+//            serviceTypes.add(service);
+//        }
+
+        List<ServiceType> serviceType = serviceTypeRepository.findAll();
+        for(ServiceType service : serviceType){
+            if(service.getId() > 4){
+                if(!service.isDeleted()){
+                    serviceTypes.add(service);
+                }
+            }
         }
         return serviceTypes;
     }
