@@ -238,10 +238,10 @@ export const ConfirmationModal = ({
         // Gọi handleFinalSubmit
         handleFinalSubmit();
         
-        // Set timeout 5s để enable lại button
+        // Set timeout 10s để enable lại button
         setTimeout(() => {
             setIsSubmitting(false);
-        }, 5000);
+        }, 10000);
     };
 
     return (
