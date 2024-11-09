@@ -1,4 +1,5 @@
 import { axiosInstance } from '../service/apiRequest';
+import moment from 'moment';
 
 const useManageCus = () => {
     const getAppointments = async () => {
@@ -10,7 +11,15 @@ const useManageCus = () => {
             console.log('Response from API:', response.data);
 
             if (response.data) {
-                return response.data;
+                const adjustedData = response.data.map(appointment => ({
+                    ...appointment,
+                    appointmentTime: appointment.appointmentTime ? 
+                        moment(appointment.appointmentTime, 'HH:mm:ss')
+                            .subtract(7, 'hours')
+                            .format('HH:mm') 
+                        : ''
+                }));
+                return adjustedData;
             } else {
                 throw new Error('Không có dữ liệu trả về');
             }

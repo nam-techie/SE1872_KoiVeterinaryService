@@ -69,7 +69,7 @@ const useDoctorAppointment = () => {
             const transformedData = response.data.map(appointment => ({
                 id: appointment.appointmentId.toString(),
                 date: moment(appointment.appointmentDate).format('YYYY-MM-DD'),
-                time: moment(appointment.appointmentTime, 'HH:mm:ss').format('HH:mm:ss'),
+                time: moment(appointment.appointmentTime, 'HH:mm:ss').utcOffset('-07:00').format('HH:mm:ss'),
                 service: appointment.serviceType,
                 status: appointment.appointmentStatus,
             }));

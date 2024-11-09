@@ -20,7 +20,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.sql.Date;
 import java.sql.Time;
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -461,18 +460,8 @@ public class DoctorService {
 
             // Tách Date và Time từ CreatedDate (Timestamp)
             Timestamp createdDate = appointmentInfo.getCreatedDate();
-
-            // Chuyển Timestamp sang LocalDateTime
-            LocalDateTime localDateTime = createdDate.toLocalDateTime();
-
-            // Trừ 7 tiếng
-            LocalDateTime adjustedDateTime = localDateTime.minusHours(7);
-            LocalDateTime adjustedDate = localDateTime.minusDays(1);
-            // Chuyển lại thành Time
-            Date appoinmentDate = Date.valueOf(adjustedDate.toLocalDate());
-            Time appointmentTime = Time.valueOf(adjustedDateTime.toLocalTime());
-            appointmentStatusResponse.setAppointmentDate(appoinmentDate);
-            appointmentStatusResponse.setAppointmentTime(appointmentTime);
+            appointmentStatusResponse.setAppointmentDate(new Date(createdDate.getTime())); // Chuyển Timestamp thành Date
+            appointmentStatusResponse.setAppointmentTime(new Time(createdDate.getTime())); // Chuyển Timestamp thành Time
 
 
             ServiceType serviceType = serviceTypeRepository.findByAppointmentId(appointment.getId());
@@ -560,10 +549,7 @@ public class DoctorService {
         }
 
         doctorAppointmentResponse.setDescription(appointmentInfo.getDescriptions());
-        // Trừ 7 tiếng trực tiếp vào Timestamp bằng milliseconds
-        Timestamp adjustedTimestamp = new Timestamp(appointmentInfo.getCreatedDate().getTime() - (7 * 60 * 60 * 1000));
-        // Gán lại vào createdDate của doctorAppointmentResponse
-        doctorAppointmentResponse.setCreatedDate(adjustedTimestamp);
+        doctorAppointmentResponse.setCreatedDate(appointmentInfo.getCreatedDate());
         doctorAppointmentResponse.setAddressDetails(appointmentInfo.getAddress());
         doctorAppointmentResponse.setPhoneNumber(appointment.getPhone());
 
