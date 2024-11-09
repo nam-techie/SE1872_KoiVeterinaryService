@@ -631,15 +631,7 @@ function DoctorAppointment() {
                     loading={loading}
                     columns={[
                         { title: 'ID lịch hẹn', dataIndex: 'id', key: 'id' },
-                        { title: 'Thời gian', dataIndex: 'time', key: 'time' , render: (value) => {
-                                const date = new Date(value);
-
-                                const hours = date.getUTCHours();
-                                const minutes = date.getUTCMinutes();
-                                const second = date.getSeconds();
-
-                                return `${hours}:${minutes}:${second}`;
-                            },},
+                        { title: 'Thời gian', dataIndex: 'time', key: 'time'},
                         { title: 'Ngày', dataIndex: 'date', key: 'date' },
                         { title: 'Dịch vụ', dataIndex: 'service', key: 'service' },
                         { title: 'Trạng thái', 
