@@ -1000,14 +1000,11 @@ public class AppointmentService {
                 if (status.getStatus().equals("Hoàn thành")) {
                     infoResponse.setNotes(status.getNotes());
                 }
-            } else if (serviceType.getId() == 2) {
+            } else if (serviceType.getId() == 2 || serviceType.getId() == 3 || serviceType.getId() == 4) {
                 if (status.getStatus().equals("Thực hiện xong dịch vụ")) {
                     infoResponse.setNotes(status.getNotes());
                 }
-            } else {
-                infoResponse.setNotes(null);
             }
-
         }
 
 

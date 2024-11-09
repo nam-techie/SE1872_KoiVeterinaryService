@@ -754,36 +754,22 @@ const AppointmentDashboard = () => {
               </div>
             </div>
 
-            {/* Thông tin thú cưng hoặc lưu ý của bác sĩ hoặc lý do hủy tùy theo trạng thái */}
-            {appointmentDetails?.status === "Đã hủy lịch" ? (
-              // Hiển thị lý do hủy lịch
-              <div className="info-section cancel-note-section">
-                <h3>Lý do hủy lịch</h3>
-                <div className="info-grid">
-                  <div className="info-item full-width">
-                    <label>Ghi chú:</label>
-                    <div className="cancel-note-content">
-                      {appointmentDetails?.cancelNotes || "Không có ghi chú"}
-                    </div>
-                  </div>
+            {/* Lưu ý của bác sĩ - hiển thị cho mọi dịch vụ */}
+            <div className="info-section">
+              <h3>Lưu ý của bác sĩ</h3>
+              <div className="info-grid doctor-note">
+                <div className="info-item full-width">
+                  <label>Ghi chú và lưu ý:</label>
+                  <span className="doctor-note-content">
+                    {appointmentDetails?.notes || "Bác sĩ chưa có ghi chú cho ca này"}
+                  </span>
                 </div>
               </div>
-            ) : appointmentDetails?.infoAppointmentResponse?.serviceType === "Tư vấn trực tuyến" ||
-              appointmentDetails?.infoAppointmentResponse?.serviceType === "Khảo sát hồ cá tại nhà" ? (
-              // Hiển thị lưu ý của bác sĩ cho dịch vụ tư vấn và khảo sát
-              <div className="info-section">
-                <h3>Lưu ý của bác sĩ</h3>
-                <div className="info-grid doctor-note">
-                  <div className="info-item full-width">
-                    <label>Ghi chú và lưu ý:</label>
-                    <span className="doctor-note-content">
-                      {appointmentDetails?.notes || "Bác sĩ chưa có ghi chú cho ca này"}
-                    </span>
-                  </div>
-                </div>
-              </div>
-            ) : (
-              // Hiển thị thông tin thú cưng cho các dịch vụ khác
+            </div>
+
+            {/* Thông tin thú cưng - chỉ hiển thị cho dịch vụ điều trị */}
+            {(appointmentDetails?.infoAppointmentResponse?.serviceType === "Điều trị bệnh tại trung tâm" || 
+              appointmentDetails?.infoAppointmentResponse?.serviceType === "Điều trị bệnh tại nhà") && (
               <div className="info-section">
                 <h3>Thông tin thú cưng</h3>
                 <div className="info-grid pet-info">

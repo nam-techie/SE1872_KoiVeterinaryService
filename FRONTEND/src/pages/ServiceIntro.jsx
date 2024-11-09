@@ -201,11 +201,11 @@ function ServiceIntro() {
                                             rows.push(
                                                 <tr key={index}>
                                                     <td>{zonePrices[index]?.name}</td>
-                                                    <td>{zonePrices[index]?.fee.toLocaleString()}</td>
+                                                    <td>{zonePrices[index]?.fee.toLocaleString()} VND</td>
                                                     <td>{zonePrices[index + 1]?.name}</td>
-                                                    <td>{zonePrices[index + 1]?.fee.toLocaleString()}</td>
+                                                    <td>{zonePrices[index + 1]?.fee.toLocaleString()} VND</td>
                                                     <td>{zonePrices[index + 2]?.name}</td>
-                                                    <td>{zonePrices[index + 2]?.fee.toLocaleString()}</td>
+                                                    <td>{zonePrices[index + 2]?.fee.toLocaleString()} VND</td>
                                                 </tr>
                                             );
                                         }
