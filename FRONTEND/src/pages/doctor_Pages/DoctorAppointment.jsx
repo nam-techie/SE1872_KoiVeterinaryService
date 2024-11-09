@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import moment from 'moment';
+import 'moment-timezone';
+moment.tz.setDefault('Asia/Ho_Chi_Minh');
 import { Button, Modal, Form, Input, List, Table, DatePicker, Select, Divider, Checkbox, message } from 'antd';
 import TextArea from 'antd/lib/input/TextArea';
 import styles from '../../styles/DoctorAppointment.module.css';
@@ -42,7 +44,10 @@ const AppointmentDetailModal = ({ visible, onClose, appointmentData }) => {
                         <div className={styles.infoItem}>
                             <span className={styles.label}>Ngày tạo:</span>
                             <span className={styles.value}>
-                                {moment(appointmentData?.appointmentInfo.createdDate).format('DD/MM/YYYY HH:mm:ss')}
+                                {appointmentData?.appointmentInfo.createdDate ? 
+                                    moment(appointmentData.appointmentInfo.createdDate)
+                                        .format('DD/MM/YYYY HH:mm:ss')
+                                    : ''}
                             </span>
                         </div>
                         <div className={styles.infoItem}>
@@ -52,12 +57,20 @@ const AppointmentDetailModal = ({ visible, onClose, appointmentData }) => {
                         <div className={styles.infoItem}>
                             <span className={styles.label}>Ngày hẹn:</span>
                             <span className={styles.value}>
-                                {moment(appointmentData?.appointmentInfo.appointmentDate).format('DD/MM/YYYY')}
+                                {appointmentData?.appointmentInfo.appointmentDate ? 
+                                    moment(appointmentData.appointmentInfo.appointmentDate)
+                                        .format('DD/MM/YYYY')
+                                    : ''}
                             </span>
                         </div>
                         <div className={styles.infoItem}>
                             <span className={styles.label}>Giờ hẹn:</span>
-                            <span className={styles.value}>{appointmentData?.appointmentInfo.appointmentTime}</span>
+                            <span className={styles.value}>
+                                {appointmentData?.appointmentInfo.appointmentTime ? 
+                                    moment(appointmentData.appointmentInfo.appointmentTime, 'HH:mm:ss')
+                                        .format('HH:mm:ss')
+                                    : ''}
+                            </span>
                         </div>
                         <div className={styles.infoItem}>
                             <span className={styles.label}>Địa chỉ:</span>

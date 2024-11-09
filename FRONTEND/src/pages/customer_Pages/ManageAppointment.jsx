@@ -27,6 +27,9 @@ import {
 } from "@mui/material";
 import moment from "moment";
 
+// Thêm vào đầu file
+moment.tz.setDefault('Asia/Ho_Chi_Minh');
+
 // Thêm hàm helper để format date và time
 const formatDateTime = (dateTimeStr) => {
   if (!dateTimeStr) return "";
@@ -421,8 +424,18 @@ const ManageAppointment = () => {
               {currentAppointments.map((appointment) => (
                 <tr key={appointment.appointmentId}>
                   <td>{appointment.appointmentId}</td>
-                  <td>{appointment.appointmentTime ? moment(appointment.appointmentTime, 'HH:mm:ss').format('HH:mm:ss') : ''}</td>
-                  <td>{appointment.appointmentDate ? moment(appointment.appointmentDate).format('DD/MM/YYYY') : ''}</td>
+                  <td>
+                    {appointment.appointmentTime ? 
+                      moment(appointment.appointmentTime, 'HH:mm:ss')
+                        .format('HH:mm:ss') 
+                      : ''}
+                  </td>
+                  <td>
+                    {appointment.appointmentDate ? 
+                      moment(appointment.appointmentDate)
+                        .format('DD/MM/YYYY') 
+                      : ''}
+                  </td>
                   <td>{appointment.serviceType}</td>
                   <td>
                     <span
