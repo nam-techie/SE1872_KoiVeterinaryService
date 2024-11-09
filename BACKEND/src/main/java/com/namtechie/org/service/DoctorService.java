@@ -560,7 +560,10 @@ public class DoctorService {
         }
 
         doctorAppointmentResponse.setDescription(appointmentInfo.getDescriptions());
-        doctorAppointmentResponse.setCreatedDate(appointmentInfo.getCreatedDate());
+        // Trừ 7 tiếng trực tiếp vào Timestamp bằng milliseconds
+        Timestamp adjustedTimestamp = new Timestamp(appointmentInfo.getCreatedDate().getTime() - (7 * 60 * 60 * 1000));
+        // Gán lại vào createdDate của doctorAppointmentResponse
+        doctorAppointmentResponse.setCreatedDate(adjustedTimestamp);
         doctorAppointmentResponse.setAddressDetails(appointmentInfo.getAddress());
         doctorAppointmentResponse.setPhoneNumber(appointment.getPhone());
 
