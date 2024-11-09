@@ -6,7 +6,7 @@ import moment from 'moment';
 const fetchAppointmentDetail = async (appointmentId) => {
     try {
         const response = await axiosInstance.get(`/veterinary/getListAppointmentDoctor/${appointmentId}`);
-        console.log(response);
+        
         // Transform data to match the component's expected format
         const transformedData = {
             id: response.data.id,
@@ -26,7 +26,7 @@ const fetchAppointmentDetail = async (appointmentId) => {
                 description: response.data.description
             }
         };
-        console.log(transformedData);
+
         return transformedData;
     } catch (err) {
         console.error('Error fetching appointment detail:', err);
@@ -65,15 +65,15 @@ const useDoctorAppointment = () => {
         try {
             setLoading(true);
             const response = await axiosInstance.get('/veterinary/getListAppointmentDoctor');
-            console.log('Response from API:', response.data);
+            
             const transformedData = response.data.map(appointment => ({
                 id: appointment.appointmentId.toString(),
                 date: moment(appointment.appointmentDate).format('YYYY-MM-DD'),
-                time: moment(appointment.appointmentTime, 'HH:mm:ss').utcOffset('-07:00').format('HH:mm:ss'),
+                time: moment(appointment.appointmentTime, 'HH:mm:ss').format('HH:mm:ss'),
                 service: appointment.serviceType,
                 status: appointment.appointmentStatus,
             }));
-            console.log('Transformed data:', transformedData);
+
             setAppointments(transformedData);
             setError(null);
             

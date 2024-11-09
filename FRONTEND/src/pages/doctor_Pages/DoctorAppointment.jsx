@@ -631,7 +631,7 @@ function DoctorAppointment() {
                     loading={loading}
                     columns={[
                         { title: 'ID lịch hẹn', dataIndex: 'id', key: 'id' },
-                        { title: 'Thời gian', dataIndex: 'time', key: 'time'},
+                        { title: 'Thời gian', dataIndex: 'time', key: 'time' },
                         { title: 'Ngày', dataIndex: 'date', key: 'date' },
                         { title: 'Dịch vụ', dataIndex: 'service', key: 'service' },
                         { title: 'Trạng thái', 
@@ -696,7 +696,7 @@ function DoctorAppointment() {
                         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
                             <div>
                                 <span style={{ color: '#666', marginRight: 8 }}>Ngày tạo:</span>
-                                <span>{moment(selectedAppointment?.appointmentInfo?.createdDate).utcOffset('-07:00').format('DD/MM/YYYY HH:mm:ss')}</span>
+                                <span>{moment(selectedAppointment?.appointmentInfo?.createdDate).format('DD/MM/YYYY HH:mm:ss')}</span>
                             </div>
                             <div>
                                 <span style={{ color: '#666', marginRight: 8 }}>Dịch vụ:</span>
