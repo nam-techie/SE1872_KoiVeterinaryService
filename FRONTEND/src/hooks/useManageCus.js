@@ -7,13 +7,25 @@ const useManageCus = () => {
                 `/customer/listAppointmentUser`
             );
 
-            console.log('Response from API:', response.data);
+            const transformedData = response.data.map(appointment => {
+                const time = appointment.timestamp ? 
+                    new Date(appointment.timestamp)
+                        .toLocaleTimeString('vi-VN', {
+                            hour: '2-digit',
+                            minute: '2-digit',
+                            second: '2-digit',
+                            hour12: false,
+                            timeZone: 'Asia/Ho_Chi_Minh'
+                        })
+                    : '';
 
-            if (response.data) {
-                return response.data;
-            } else {
-                throw new Error('Không có dữ liệu trả về');
-            }
+                return {
+                    ...appointment,
+                    time: time
+                };
+            });
+
+            return transformedData;
         } catch (err) {
             console.error('Error fetching appointments:', err);
             throw new Error('Có lỗi xảy ra khi tải dữ liệu');
