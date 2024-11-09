@@ -260,7 +260,7 @@ const ManageAppointment = () => {
     appointmentTime: (() => {
       // Kết hợp với ngày hiện tại để tạo đối tượng Date hợp lệ
       const today = new Date();
-      const dateString = `${today.toISOString().split('T')[0]}T${appointment.appointmentTime}`;
+      const dateString = `${today.toISOString().split('T')[0]}T${appointment.timestamp}`;
       const date = new Date(dateString);
       
       return new Intl.DateTimeFormat('vi-VN', { 
@@ -435,7 +435,21 @@ const ManageAppointment = () => {
               {currentAppointments.map((appointment) => (
                 <tr key={appointment.appointmentId}>
                   <td>{appointment.appointmentId}</td>
-                  <td>{appointment.appointmentTime}</td>
+                  <td>
+                    {(() => {
+                      // Kết hợp với ngày hiện tại để tạo đối tượng Date hợp lệ
+                      const today = new Date();
+                      const dateString = `${today.toISOString().split('T')[0]}T${appointment.timestamp}`;
+                      const date = new Date(dateString);
+                      
+                      return new Intl.DateTimeFormat('vi-VN', { 
+                        timeZone: 'Asia/Ho_Chi_Minh', 
+                        hour: 'numeric', 
+                        minute: 'numeric', 
+                        second: 'numeric' 
+                      }).format(date);
+                    })()}
+                  </td>
                   <td>{appointment.appointmentDate}</td>
                   <td>{appointment.serviceType}</td>
                   <td>
@@ -1008,7 +1022,7 @@ const TimelineComponent = ({ currentStatus }) => {
       {[
         "Chờ bác sĩ xác nhận",
         "Đã xác nhận",
-        "Chờ thanh toán tiền dịch vụ",
+        "Chờ thanh toán ti���n dịch vụ",
         "Thanh toán tiền dịch vụ thành công",
         "Đang cung cấp dịch vụ",
         "Thực hiện xong dịch vụ",

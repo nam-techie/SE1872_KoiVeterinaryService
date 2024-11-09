@@ -7,23 +7,9 @@ const useManageCus = () => {
                 `/customer/listAppointmentUser`
             );
 
-            const transformedData = response.data.map(appointment => {
-                const time = appointment.timestamp ? 
-                    new Date(appointment.timestamp)
-                        .toLocaleTimeString('vi-VN', {
-                            hour: '2-digit',
-                            minute: '2-digit',
-                            second: '2-digit',
-                            hour12: false,
-                            timeZone: 'Asia/Ho_Chi_Minh'
-                        })
-                    : '';
-
-                return {
-                    ...appointment,
-                    time: time
-                };
-            });
+            const transformedData = response.data.map(appointment => ({
+                ...appointment,
+            }));
 
             return transformedData;
         } catch (err) {
