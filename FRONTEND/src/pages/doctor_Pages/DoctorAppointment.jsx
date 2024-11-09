@@ -636,11 +636,6 @@ function DoctorAppointment() {
                             dataIndex: 'time', 
                             key: 'time', 
                             render: (time) => {
-                                // Kết hợp với ngày hiện tại để tạo đối tượng Date hợp lệ
-                                const today = new Date();
-                                const dateString = `${today.toISOString().split('T')[0]}T${time}`;
-                                const date = new Date(dateString);
-                                
                                 return (
                                     <span>
                                         {new Intl.DateTimeFormat('vi-VN', { 
@@ -648,7 +643,7 @@ function DoctorAppointment() {
                                             hour: 'numeric', 
                                             minute: 'numeric', 
                                             second: 'numeric' 
-                                        }).format(date)}
+                                        }).format(new Date(time))}
                                     </span>
                                 );
                             } 

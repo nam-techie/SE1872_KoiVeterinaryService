@@ -1,4 +1,5 @@
 import { axiosInstance } from '../service/apiRequest';
+import moment from 'moment';
 
 const useManageCus = () => {
     const getAppointments = async () => {
@@ -8,7 +9,12 @@ const useManageCus = () => {
             );
 
             const transformedData = response.data.map(appointment => ({
-                ...appointment,
+                appointmentId: appointment.appointmentId,
+                appointmentDate: moment(appointment.appointmentDate).format('DD/MM/YYYY'),
+                time: appointment.timestamp,
+                serviceType: appointment.serviceType,
+                appointmentStatus: appointment.appointmentStatus,
+                ...appointment
             }));
 
             return transformedData;

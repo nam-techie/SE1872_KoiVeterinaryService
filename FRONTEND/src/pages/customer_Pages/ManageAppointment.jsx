@@ -436,19 +436,12 @@ const ManageAppointment = () => {
                 <tr key={appointment.appointmentId}>
                   <td>{appointment.appointmentId}</td>
                   <td>
-                    {(() => {
-                      // Kết hợp với ngày hiện tại để tạo đối tượng Date hợp lệ
-                      const today = new Date();
-                      const dateString = `${today.toISOString().split('T')[0]}T${appointment.timestamp}`;
-                      const date = new Date(dateString);
-                      
-                      return new Intl.DateTimeFormat('vi-VN', { 
-                        timeZone: 'Asia/Ho_Chi_Minh', 
-                        hour: 'numeric', 
-                        minute: 'numeric', 
-                        second: 'numeric' 
-                      }).format(date);
-                    })()}
+                    {new Intl.DateTimeFormat('vi-VN', { 
+                      timeZone: 'Asia/Ho_Chi_Minh', 
+                      hour: 'numeric', 
+                      minute: 'numeric', 
+                      second: 'numeric' 
+                    }).format(new Date(appointment.time))}
                   </td>
                   <td>{appointment.appointmentDate}</td>
                   <td>{appointment.serviceType}</td>
@@ -815,7 +808,7 @@ const AppointmentModal = ({ appointmentID, open, onClose }) => {
 
         {/* Thông tin thú cưng hoặc lưu ý của bác sĩ */}
         {appointmentDetails?.status !== "Đã hủy lịch" && (
-            appointmentDetails?.infoAppointmentResponse?.serviceType !== "Tư vấn trực tuyến" &&
+            appointmentDetails?.infoAppointmentResponse?.serviceType !== "T�� vấn trực tuyến" &&
             appointmentDetails?.infoAppointmentResponse?.serviceType !== "Khảo sát hồ cá tại nhà" ? (
                 <div className="info-section">
                     <h3>Thông tin thú cưng</h3>
@@ -1022,7 +1015,7 @@ const TimelineComponent = ({ currentStatus }) => {
       {[
         "Chờ bác sĩ xác nhận",
         "Đã xác nhận",
-        "Chờ thanh toán ti���n dịch vụ",
+        "Chờ thanh toán tiền dịch vụ",
         "Thanh toán tiền dịch vụ thành công",
         "Đang cung cấp dịch vụ",
         "Thực hiện xong dịch vụ",
