@@ -20,6 +20,9 @@ import org.springframework.web.multipart.MultipartFile;
 import java.sql.Date;
 import java.sql.Time;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -460,6 +463,11 @@ public class DoctorService {
 
             // Tách Date và Time từ CreatedDate (Timestamp)
             Timestamp createdDate = appointmentInfo.getCreatedDate();
+            if (createdDate != null) {
+                LocalDateTime localDateTime = createdDate.toLocalDateTime();
+                ZonedDateTime vietnamTime = localDateTime.atZone(ZoneId.of("UTC")).withZoneSameInstant(ZoneId.of("Asia/Ho_Chi_Minh"));
+                createdDate = Timestamp.valueOf(vietnamTime.toLocalDateTime());
+            }
             appointmentStatusResponse.setAppointmentDate(new Date(createdDate.getTime())); // Chuyển Timestamp thành Date
             appointmentStatusResponse.setAppointmentTime(new Time(createdDate.getTime())); // Chuyển Timestamp thành Time
 

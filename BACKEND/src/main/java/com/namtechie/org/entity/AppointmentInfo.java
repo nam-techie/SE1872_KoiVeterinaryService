@@ -42,7 +42,7 @@ public class AppointmentInfo {
     @Column(columnDefinition = "TEXT")
     private String descriptions;
 
-
+// dùng để set up TimeZone Việt Nam khi deploy từ server Mỹ
     @PostLoad
     @PostPersist
     public void adjustCreatedDate() {

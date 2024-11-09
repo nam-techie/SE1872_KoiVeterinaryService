@@ -22,10 +22,7 @@ import javax.print.Doc;
 import java.sql.Date;
 import java.sql.Time;
 import java.sql.Timestamp;
-import java.time.DayOfWeek;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
+import java.time.*;
 import java.util.*;
 
 @Service
@@ -684,6 +681,11 @@ public class AppointmentService {
 
             // Tách Date và Time từ CreatedDate (Timestamp)
             Timestamp createdDate = appointmentInfo.getCreatedDate();
+            if (createdDate != null) {
+                LocalDateTime localDateTime = createdDate.toLocalDateTime();
+                ZonedDateTime vietnamTime = localDateTime.atZone(ZoneId.of("UTC")).withZoneSameInstant(ZoneId.of("Asia/Ho_Chi_Minh"));
+                createdDate = Timestamp.valueOf(vietnamTime.toLocalDateTime());
+            }
             appointmentStatusResponse.setAppointmentDate(new Date(createdDate.getTime())); // Chuyển Timestamp thành Date
             appointmentStatusResponse.setAppointmentTime(new Time(createdDate.getTime())); // Chuyển Timestamp thành Time
 
