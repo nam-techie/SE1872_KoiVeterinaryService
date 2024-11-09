@@ -696,7 +696,7 @@ function DoctorAppointment() {
                         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
                             <div>
                                 <span style={{ color: '#666', marginRight: 8 }}>Ngày tạo:</span>
-                                <span>{moment(selectedAppointment?.appointmentInfo?.createdDate).format('DD/MM/YYYY HH:mm:ss')}</span>
+                                <span>{(selectedAppointment?.appointmentInfo?.createdDate).format('DD/MM/YYYY HH:mm:ss')}</span>
                             </div>
                             <div>
                                 <span style={{ color: '#666', marginRight: 8 }}>Dịch vụ:</span>
@@ -704,7 +704,7 @@ function DoctorAppointment() {
                             </div>
                             <div>
                                 <span style={{ color: '#666', marginRight: 8 }}>Ngày hẹn:</span>
-                                <span>{moment(selectedAppointment?.appointmentInfo?.appointmentDate).format('DD/MM/YYYY')}</span>
+                                <span>{(selectedAppointment?.appointmentInfo?.appointmentDate).format('DD/MM/YYYY')}</span>
                             </div>
                             <div>
                                 <span style={{ color: '#666', marginRight: 8 }}>Giờ hẹn:</span>
