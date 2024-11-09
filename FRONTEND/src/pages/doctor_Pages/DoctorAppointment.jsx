@@ -631,24 +631,7 @@ function DoctorAppointment() {
                     loading={loading}
                     columns={[
                         { title: 'ID lịch hẹn', dataIndex: 'id', key: 'id' },
-                        { title: 'Thời gian', dataIndex: 'time', key: 'time',
-                            render: (value) => {
-                                const date = new Date(value); // Parse the database datetime string
-
-                                return (
-                                    <p>
-                                        {new Intl.DateTimeFormat('vi-VN', {
-                                            timeZone: 'Asia/Ho_Chi_Minh',
-                                            year: 'numeric',
-                                            month: 'long',
-                                            day: 'numeric',
-                                            hour: 'numeric',
-                                            minute: 'numeric',
-                                            second: 'numeric'
-                                        }).format(date)}
-                                    </p>
-                                );
-                            }     },
+                        { title: 'Thời gian', dataIndex: 'time', key: 'time' },
                         { title: 'Ngày', dataIndex: 'date', key: 'date' },
                         { title: 'Dịch vụ', dataIndex: 'service', key: 'service' },
                         { title: 'Trạng thái', 
