@@ -65,7 +65,7 @@ const useDoctorAppointment = () => {
         try {
             setLoading(true);
             const response = await axiosInstance.get('/veterinary/getListAppointmentDoctor');
-            
+            console.log('Response from API:', response.data);
             const transformedData = response.data.map(appointment => ({
                 id: appointment.appointmentId.toString(),
                 date: moment(appointment.appointmentDate).format('YYYY-MM-DD'),
