@@ -11,7 +11,7 @@ import java.util.Date;
 public class AppointmentStatusResponse {
     long appointmentId;
     Date appointmentDate;
-    Time appointmentTime;
+    Timestamp appointmentTime;
     String serviceType;
     String appointmentStatus;
 
