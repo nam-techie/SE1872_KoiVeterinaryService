@@ -255,22 +255,7 @@ const ManageAppointment = () => {
   const currentAppointments = filteredAndSortedAppointments.slice(
     (currentPage - 1) * appointmentsPerPage,
     currentPage * appointmentsPerPage
-  ).map(appointment => ({
-    ...appointment,
-    appointmentTime: (() => {
-      // Kết hợp với ngày hiện tại để tạo đối tượng Date hợp lệ
-      const today = new Date();
-      const dateString = `${today.toISOString().split('T')[0]}T${appointment.timestamp}`;
-      const date = new Date(dateString);
-      
-      return new Intl.DateTimeFormat('vi-VN', { 
-        timeZone: 'Asia/Ho_Chi_Minh', 
-        hour: 'numeric', 
-        minute: 'numeric', 
-        second: 'numeric' 
-      }).format(date);
-    })()
-  }));
+  );
 
   // Xử lý thay đổi trang
   const handlePageChange = (pageNumber) => {
@@ -435,14 +420,7 @@ const ManageAppointment = () => {
               {currentAppointments.map((appointment) => (
                 <tr key={appointment.appointmentId}>
                   <td>{appointment.appointmentId}</td>
-                  <td>
-                    {new Intl.DateTimeFormat('vi-VN', { 
-                      timeZone: 'Asia/Ho_Chi_Minh', 
-                      hour: 'numeric', 
-                      minute: 'numeric', 
-                      second: 'numeric' 
-                    }).format(new Date(appointment.time))}
-                  </td>
+                  <td>{appointment.appointmentTime}</td>
                   <td>{appointment.appointmentDate}</td>
                   <td>{appointment.serviceType}</td>
                   <td>
@@ -808,7 +786,7 @@ const AppointmentModal = ({ appointmentID, open, onClose }) => {
 
         {/* Thông tin thú cưng hoặc lưu ý của bác sĩ */}
         {appointmentDetails?.status !== "Đã hủy lịch" && (
-            appointmentDetails?.infoAppointmentResponse?.serviceType !== "T�� vấn trực tuyến" &&
+            appointmentDetails?.infoAppointmentResponse?.serviceType !== "Tư vấn trực tuyến" &&
             appointmentDetails?.infoAppointmentResponse?.serviceType !== "Khảo sát hồ cá tại nhà" ? (
                 <div className="info-section">
                     <h3>Thông tin thú cưng</h3>

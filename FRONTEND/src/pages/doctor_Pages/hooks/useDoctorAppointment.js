@@ -69,7 +69,7 @@ const useDoctorAppointment = () => {
             const transformedData = response.data.map(appointment => ({
                 id: appointment.appointmentId.toString(),
                 date: moment(appointment.appointmentDate).format('YYYY-MM-DD'),
-                time: appointment.timestamp,
+                time: moment(appointment.appointmentTime, 'HH:mm:ss').format('HH:mm:ss'),
                 service: appointment.serviceType,
                 status: appointment.appointmentStatus,
             }));
@@ -77,6 +77,7 @@ const useDoctorAppointment = () => {
             setAppointments(transformedData);
             setError(null);
             
+            // Fetch stats after appointments
             await fetchStats();
         } catch (err) {
             setError('Không thể tải danh sách lịch hẹn');
