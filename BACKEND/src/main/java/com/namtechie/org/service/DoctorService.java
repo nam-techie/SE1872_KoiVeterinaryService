@@ -461,15 +461,17 @@ public class DoctorService {
 
             // Tách Date và Time từ CreatedDate (Timestamp)
             Timestamp createdDate = appointmentInfo.getCreatedDate();
-            appointmentStatusResponse.setAppointmentDate(new Date(createdDate.getTime())); // Chuyển Timestamp thành Date
+
             // Chuyển Timestamp sang LocalDateTime
             LocalDateTime localDateTime = createdDate.toLocalDateTime();
 
-// Trừ 7 tiếng
+            // Trừ 7 tiếng
             LocalDateTime adjustedDateTime = localDateTime.minusHours(7);
-
-// Chuyển lại thành Time
+            LocalDateTime adjustedDate = localDateTime.minusDays(1);
+            // Chuyển lại thành Time
+            Date appoinmentDate = Date.valueOf(adjustedDate.toLocalDate());
             Time appointmentTime = Time.valueOf(adjustedDateTime.toLocalTime());
+            appointmentStatusResponse.setAppointmentDate(appoinmentDate);
             appointmentStatusResponse.setAppointmentTime(appointmentTime);
 
 
