@@ -25,6 +25,7 @@ import {
   Snackbar,
   Alert,
 } from "@mui/material";
+import moment from "moment";
 
 // Thêm hàm helper để format date và time
 const formatDateTime = (dateTimeStr) => {
@@ -420,8 +421,8 @@ const ManageAppointment = () => {
               {currentAppointments.map((appointment) => (
                 <tr key={appointment.appointmentId}>
                   <td>{appointment.appointmentId}</td>
-                  <td>{appointment.appointmentTime}</td>
-                  <td>{appointment.appointmentDate}</td>
+                  <td>{moment(appointment.appointmentTime).utcOffset('+07:00').format('HH:mm:ss')}</td>
+                  <td>{moment(appointment.appointmentDate).format('DD/MM/YYYY')}</td>
                   <td>{appointment.serviceType}</td>
                   <td>
                     <span

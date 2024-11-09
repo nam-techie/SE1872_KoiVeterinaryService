@@ -631,8 +631,8 @@ function DoctorAppointment() {
                     loading={loading}
                     columns={[
                         { title: 'ID lịch hẹn', dataIndex: 'id', key: 'id' },
-                        { title: 'Thời gian', dataIndex: 'time', key: 'time' },
-                        { title: 'Ngày', dataIndex: 'date', key: 'date' },
+                        { title: 'Thời gian', dataIndex: 'time', key: 'time', render: (time) => moment(time).utcOffset('+07:00').format('HH:mm:ss') },
+                        { title: 'Ngày', dataIndex: 'date', key: 'date', render: (date) => moment(date).format('DD/MM/YYYY') },
                         { title: 'Dịch vụ', dataIndex: 'service', key: 'service' },
                         { title: 'Trạng thái', 
                           dataIndex: 'status', 
@@ -696,7 +696,7 @@ function DoctorAppointment() {
                         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
                             <div>
                                 <span style={{ color: '#666', marginRight: 8 }}>Ngày tạo:</span>
-                                <span>{(selectedAppointment?.appointmentInfo?.createdDate).format('DD/MM/YYYY HH:mm:ss')}</span>
+                                <span>{moment(selectedAppointment?.appointmentInfo?.createdDate).format('DD/MM/YYYY HH:mm:ss')}</span>
                             </div>
                             <div>
                                 <span style={{ color: '#666', marginRight: 8 }}>Dịch vụ:</span>
@@ -704,7 +704,7 @@ function DoctorAppointment() {
                             </div>
                             <div>
                                 <span style={{ color: '#666', marginRight: 8 }}>Ngày hẹn:</span>
-                                <span>{(selectedAppointment?.appointmentInfo?.appointmentDate).format('DD/MM/YYYY')}</span>
+                                <span>{moment(selectedAppointment?.appointmentInfo?.appointmentDate).format('DD/MM/YYYY')}</span>
                             </div>
                             <div>
                                 <span style={{ color: '#666', marginRight: 8 }}>Giờ hẹn:</span>
