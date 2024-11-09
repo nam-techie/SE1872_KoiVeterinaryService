@@ -73,7 +73,7 @@ const useDoctorAppointment = () => {
                 service: appointment.serviceType,
                 status: appointment.appointmentStatus,
             }));
-
+            console.log('Transformed data:', transformedData);
             setAppointments(transformedData);
             setError(null);
             
