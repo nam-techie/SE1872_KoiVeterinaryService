@@ -1,7 +1,5 @@
 import { useState } from 'react';
 import moment from 'moment';
-import 'moment-timezone';
-moment.tz.setDefault('Asia/Ho_Chi_Minh');
 import { Button, Modal, Form, Input, List, Table, DatePicker, Select, Divider, Checkbox, message } from 'antd';
 import TextArea from 'antd/lib/input/TextArea';
 import styles from '../../styles/DoctorAppointment.module.css';
@@ -44,10 +42,7 @@ const AppointmentDetailModal = ({ visible, onClose, appointmentData }) => {
                         <div className={styles.infoItem}>
                             <span className={styles.label}>Ngày tạo:</span>
                             <span className={styles.value}>
-                                {appointmentData?.appointmentInfo.createdDate ? 
-                                    moment(appointmentData.appointmentInfo.createdDate)
-                                        .format('DD/MM/YYYY HH:mm:ss')
-                                    : ''}
+                                {moment(appointmentData?.appointmentInfo.createdDate).format('DD/MM/YYYY HH:mm:ss')}
                             </span>
                         </div>
                         <div className={styles.infoItem}>
@@ -57,20 +52,12 @@ const AppointmentDetailModal = ({ visible, onClose, appointmentData }) => {
                         <div className={styles.infoItem}>
                             <span className={styles.label}>Ngày hẹn:</span>
                             <span className={styles.value}>
-                                {appointmentData?.appointmentInfo.appointmentDate ? 
-                                    moment(appointmentData.appointmentInfo.appointmentDate)
-                                        .format('DD/MM/YYYY')
-                                    : ''}
+                                {moment(appointmentData?.appointmentInfo.appointmentDate).format('DD/MM/YYYY')}
                             </span>
                         </div>
                         <div className={styles.infoItem}>
                             <span className={styles.label}>Giờ hẹn:</span>
-                            <span className={styles.value}>
-                                {appointmentData?.appointmentInfo.appointmentTime ? 
-                                    moment(appointmentData.appointmentInfo.appointmentTime, 'HH:mm:ss')
-                                        .format('HH:mm:ss')
-                                    : ''}
-                            </span>
+                            <span className={styles.value}>{appointmentData?.appointmentInfo.appointmentTime}</span>
                         </div>
                         <div className={styles.infoItem}>
                             <span className={styles.label}>Địa chỉ:</span>
@@ -644,24 +631,8 @@ function DoctorAppointment() {
                     loading={loading}
                     columns={[
                         { title: 'ID lịch hẹn', dataIndex: 'id', key: 'id' },
-                        { 
-                            title: 'Thời gian', 
-                            dataIndex: 'time', 
-                            key: 'time', 
-                            render: (time) => {
-                                const validTime = moment(time, 'HH:mm:ss').utcOffset('+07:00');
-                                return validTime.isValid() ? validTime.format('HH:mm:ss') : time;
-                            }
-                        },
-                        { 
-                            title: 'Ngày', 
-                            dataIndex: 'date', 
-                            key: 'date', 
-                            render: (date) => {
-                                const validDate = moment(date);
-                                return validDate.isValid() ? validDate.format('DD/MM/YYYY') : date;
-                            }
-                        },
+                        { title: 'Thời gian', dataIndex: 'time', key: 'time' },
+                        { title: 'Ngày', dataIndex: 'date', key: 'date' },
                         { title: 'Dịch vụ', dataIndex: 'service', key: 'service' },
                         { title: 'Trạng thái', 
                           dataIndex: 'status', 
