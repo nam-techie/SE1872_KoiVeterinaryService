@@ -400,110 +400,104 @@ function DoctorAppointment() {
     };
 
     // Modal form để nhập thông tin dịch vụ
-    const ServiceRecordForm = () => (
-        <Modal
-            title="Hoàn thành dịch vụ"
-            open={isServiceFormVisible}
-            onCancel={() => {
-                setIsServiceFormVisible(false);
-                form.resetFields();
-            }}
-            footer={null}
-        >
-            <Form
-                form={form}
-                layout="vertical"
-                onFinish={handleServiceFormSubmit}
+    const ServiceRecordForm = () => {
+        const { supportServices } = useDoctorAppointment();
+
+        return (
+            <Modal
+                title="Hoàn thành dịch vụ"
+                open={isServiceFormVisible}
+                onCancel={() => {
+                    setIsServiceFormVisible(false);
+                    form.resetFields();
+                }}
+                footer={null}
             >
-                <Form.Item
-                    name="name"
-                    label="Tên cá"
-                    rules={[{ required: true, message: 'Vui lòng nhập tên cá!' }]}
+                <Form
+                    form={form}
+                    layout="vertical"
+                    onFinish={handleServiceFormSubmit}
                 >
-                    <Input />
-                </Form.Item>
+                    <Form.Item
+                        name="name"
+                        label="Tên cá"
+                        rules={[{ required: true, message: 'Vui lòng nhập tên cá!' }]}
+                    >
+                        <Input />
+                    </Form.Item>
 
-                <Form.Item
-                    name="breed"
-                    label="Giống"
-                    rules={[{ required: true, message: 'Vui lòng nhập giống cá!' }]}
-                >
-                    <Input />
-                </Form.Item>
+                    <Form.Item
+                        name="breed"
+                        label="Giống"
+                        rules={[{ required: true, message: 'Vui lòng nhập giống cá!' }]}
+                    >
+                        <Input />
+                    </Form.Item>
 
-                <Form.Item
-                    name="age"
-                    label="Tuổi"
-                    rules={[{ required: true, message: 'Vui lòng nhập tuổi cá!' }]}
-                >
-                    <Input type="number" />
-                </Form.Item>
+                    <Form.Item
+                        name="age"
+                        label="Tuổi"
+                        rules={[{ required: true, message: 'Vui lòng nhập tuổi cá!' }]}
+                    >
+                        <Input type="number" />
+                    </Form.Item>
 
-                <Form.Item
-                    name="color"
-                    label="Màu sắc"
-                    rules={[{ required: true, message: 'Vui lòng nhập màu sắc!' }]}
-                >
-                    <Input />
-                </Form.Item>
+                    <Form.Item
+                        name="color"
+                        label="Màu sắc"
+                        rules={[{ required: true, message: 'Vui lòng nhập màu sắc!' }]}
+                    >
+                        <Input />
+                    </Form.Item>
 
-                <Form.Item
-                    name="weight"
-                    label="Cân nặng"
-                    rules={[{ required: true, message: 'Vui lòng nhập cân nặng!' }]}
-                >
-                    <Input type="number" />
-                </Form.Item>
+                    <Form.Item
+                        name="weight"
+                        label="Cân nặng"
+                        rules={[{ required: true, message: 'Vui lòng nhập cân nặng!' }]}
+                    >
+                        <Input type="number" />
+                    </Form.Item>
 
-                <Form.Item
-                    name="healthStatus"
-                    label="Tình trạng sức khỏe"
-                    rules={[{ required: true, message: 'Vui lòng nhập tình trạng sức khỏe!' }]}
-                >
-                    <TextArea rows={4} />
-                </Form.Item>
+                    <Form.Item
+                        name="healthStatus"
+                        label="Tình trạng sức khỏe"
+                        rules={[{ required: true, message: 'Vui lòng nhập tình trạng sức khỏe!' }]}
+                    >
+                        <TextArea rows={4} />
+                    </Form.Item>
 
-                <Form.Item
-                    name="notes"
-                    label="Ghi chú và lưu ý của bác sĩ"
-                    rules={[{ required: true, message: 'Vui lòng nhập ghi chú và lưu ý!' }]}
-                >
-                    <TextArea 
-                        rows={4}
-                        placeholder="Nhập ghi chú và lưu ý cho khách hàng..."
-                    />
-                </Form.Item>
+                    <Form.Item
+                        name="notes"
+                        label="Ghi chú và lưu ý của bác sĩ"
+                        rules={[{ required: true, message: 'Vui lòng nhập ghi chú và lưu ý!' }]}
+                    >
+                        <TextArea 
+                            rows={4}
+                            placeholder="Nhập ghi chú và lưu ý cho khách hàng..."
+                        />
+                    </Form.Item>
 
-                <Divider>Dịch vụ bổ sung</Divider>
+                    <Divider>Dịch vụ bổ sung</Divider>
 
-                <Form.Item name="serviceTypeId5" valuePropName="checked">
-                    <Checkbox>Kiểm tra và vệ sinh hồ</Checkbox>
-                </Form.Item>
+                    {supportServices.map((service) => (
+                        <Form.Item 
+                            key={service.id}
+                            name={`serviceTypeId${service.id}`} 
+                            valuePropName="checked"
+                        >
+                            <Checkbox>{service.name}</Checkbox>
+                        </Form.Item>
+                    ))}
 
-                <Form.Item name="serviceTypeId6" valuePropName="checked">
-                    <Checkbox>Cung cấp thức ăn dinh dưỡng</Checkbox>
-                </Form.Item>
-
-                <Form.Item name="serviceTypeId7" valuePropName="checked">
-                    <Checkbox>Xử lí nước hồ</Checkbox>
-                </Form.Item>
-
-                <Form.Item name="serviceTypeId8" valuePropName="checked">
-                    <Checkbox>Chăm sóc cá Stress</Checkbox>
-                </Form.Item>
-
-                <Form.Item name="serviceTypeId9" valuePropName="checked">
-                    <Checkbox>Tư vấn thiết kế hồ</Checkbox>
-                </Form.Item>
-
-                <Form.Item>
-                    <Button type="primary" htmlType="submit" loading={loading}>
-                        Hoàn thành
-                    </Button>
-                </Form.Item>
-            </Form>
-        </Modal>
-    );
+                    <Form.Item>
+                        <Button type="primary" htmlType="submit" loading={loading}>
+                            Hoàn thành
+                        </Button>
+                    </Form.Item>
+                </Form>
+            </Modal>
+        );
+    };
 
     // Thêm Modal form cho hoàn tất
     const CompletionNoteModal = () => (
@@ -624,7 +618,7 @@ function DoctorAppointment() {
                     >
                         <Select.Option value="all">Tất cả trạng thái</Select.Option>
                         <Select.Option value="Chờ bác sĩ xác nhận">Ch bác sĩ xác nhn</Select.Option>
-                        <Select.Option value="��ã xác nhận">Đã xác nhận</Select.Option>
+                        <Select.Option value="Đã xác nhận">Đã xác nhận</Select.Option>
                         <Select.Option value="Thanh toán tiền dịch vụ thành công">Thanh toán tiền dịch vụ thành công</Select.Option>
                         <Select.Option value="Đang thực hiện dịch vụ">Đang thực hiện dịch vụ</Select.Option>
                         <Select.Option value="Hoàn thành">Hoàn thành</Select.Option>

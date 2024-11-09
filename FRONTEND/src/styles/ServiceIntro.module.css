@@ -183,10 +183,12 @@
 
 .serviceTable th:first-child,
 .serviceTable td:first-child {
-    width: 20%;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    width: 25%;
+    white-space: normal;
+    overflow: visible;
+    text-overflow: initial;
+    word-wrap: break-word;
+    min-width: 200px;
 }
 
 
@@ -194,15 +196,23 @@
 .serviceTable td:nth-child(2) {
     width: 15%;
     white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    text-align: right;
+    padding-right: 20px;
 }
 
 
 .serviceTable th:last-child,
 .serviceTable td:last-child {
-    width: 65%;
+    width: 60%;
     white-space: normal;
+    word-wrap: break-word;
+}
+
+
+.serviceTable td {
+    padding: 15px;
+    line-height: 1.4;
+    vertical-align: top;
 }
 
 

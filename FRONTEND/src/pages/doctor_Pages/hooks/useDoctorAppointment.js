@@ -47,6 +47,7 @@ const useDoctorAppointment = () => {
     const [error, setError] = useState(null);
     const [doctorInfo, setDoctorInfo] = useState(null);
     const [feedbacks, setFeedbacks] = useState([]);
+    const [supportServices, setSupportServices] = useState([]);
 
     const fetchStats = async () => {
         try {
@@ -263,10 +264,23 @@ const useDoctorAppointment = () => {
         }
     };
 
+    const fetchSupportServices = async () => {
+        try {
+            const response = await axiosInstance.get('/getAllSupportServiceType');
+            if (response.data) {
+                setSupportServices(response.data);
+            }
+        } catch (err) {
+            console.error('Error fetching support services:', err);
+            message.error('Có lỗi xảy ra khi tải danh sách dịch vụ bổ sung');
+        }
+    };
+
     // Initial fetch
     useEffect(() => {
         fetchAppointments();
         fetchDoctorInfo();
+        fetchSupportServices();
     }, []);
 
     return {
@@ -285,6 +299,7 @@ const useDoctorAppointment = () => {
         changePassword,
         cancelAppointment,
         fetchAppointmentDetail,
+        supportServices,
     };
 };
 
