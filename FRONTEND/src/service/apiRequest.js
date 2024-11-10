@@ -11,12 +11,9 @@ axiosInstance.interceptors.request.use(
         // Nếu URL không kết thúc bằng '.json', thêm token vào headers
         if (!config.url.endsWith('.json')) {
             const token = localStorage.getItem('authToken');
-            // console.log("Token from localStorage:", token);  // Kiểm tra token
-
             // Nếu token tồn tại, thêm vào header
             if (token) {
                 config.headers.Authorization = `Bearer ${token}`;
-                // console.log("Authorization Header Set:", config.headers.Authorization);  // Kiểm tra header Authorization
             }
         }
         return config;  // Trả về config đã cập nhật để tiếp tục request

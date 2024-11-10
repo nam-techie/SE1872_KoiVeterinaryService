@@ -197,7 +197,6 @@ const useDoctorAppointment = () => {
             setLoading(true);
             const formDataToSend = new FormData();
 
-            console.log('Input formData:', formData);
 
             formDataToSend.append('fullName', formData.fullName);
             formDataToSend.append('phone', formData.phone);
@@ -224,7 +223,6 @@ const useDoctorAppointment = () => {
                 }
             );
 
-            console.log('API Response:', response);
 
             if (response.data) {
                 message.success('Cập nhật thông tin thành công');

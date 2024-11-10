@@ -7,7 +7,6 @@ const useManageCus = () => {
                 `/customer/listAppointmentUser`
             );
 
-            console.log('Response from API:', response.data);
 
             if (response.data) {
                 return response.data;
@@ -67,7 +66,6 @@ const useManageCus = () => {
             );
             
             if (response.data) {
-                console.log('Appointment detail:', response.data);
                 return response.data;
             } else {
                 throw new Error('Không có dữ liệu chi tiết lịch hẹn');

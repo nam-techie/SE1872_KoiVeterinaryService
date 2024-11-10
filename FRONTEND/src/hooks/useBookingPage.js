@@ -138,7 +138,7 @@ export function useBookingPage() {
             bookingTime: serviceType === '1' ? currentTime : selectedTime
         };
 
-        console.log(bookingData);
+
         try {
             const response = await postBookingData(bookingData);
             if (response.status === 200 || response.status === 201) {

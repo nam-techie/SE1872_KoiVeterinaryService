@@ -46,7 +46,6 @@ export const useAdminInfo = () => {
                 }
             });
             await fetchAdminInfo();  // Refresh admin data after update
-            console.log(response);
             return response.data;
         } catch (error) {
             console.error('Lỗi khi cập nhật thông tin admin:', error);

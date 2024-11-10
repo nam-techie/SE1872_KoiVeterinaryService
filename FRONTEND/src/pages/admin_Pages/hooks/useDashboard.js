@@ -111,7 +111,6 @@ const useDashboard = () => {
         try {
             setLoading(true);
             const response = await axiosInstance.get('/admin/listDashboardTotalRequest');
-            console.log('API Response:', response.data);
 
             setDashboardData({
                 appointments: response.data.appointments || [],

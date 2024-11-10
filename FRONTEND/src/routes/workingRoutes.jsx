@@ -1,86 +1,97 @@
 import { Navigate } from 'react-router-dom';
-import PropTypes from 'prop-types'; // Import PropTypes
+import PropTypes from 'prop-types';
+import jwt_decode from 'jwt-decode';
+
+// Hàm helper để lấy role từ token
+const getRoleFromToken = () => {
+  const token = localStorage.getItem('authToken');
+  if (!token) return null;
+  
+  try {
+    const decoded = jwt_decode(token);
+    return decoded.role;
+  } catch (error) {
+    return null;
+  }
+};
 
 // PublicRoute: Không cho phép bác sĩ truy cập trang công khai
 export const PublicRoute = ({ children }) => {
-    const role = localStorage.getItem('role')?.trim();  // Lưu vai trò của người dùng và loại bỏ khoảng trắng
+    const tokenRole = getRoleFromToken();
 
-    // Nếu vai trò là doctor hoặc admin, điều hướng đến trang dashboard của họ
-    if (role === 'VETERINARY') {
+    if (tokenRole === 'VETERINARY') {
         return <Navigate to="/doctor/dashboard" />;
     }
-    if (role === 'ADMIN') {
+    if (tokenRole === 'ADMIN') {
         return <Navigate to="/admin" />;
     }
 
-    // Nếu không phải doctor hoặc admin, cho phép truy cập trang công khai
     return children;
-};
-
-// Xác định kiểu của prop "children" cho PublicRoute
-PublicRoute.propTypes = {
-    children: PropTypes.node.isRequired,
 };
 
 // RestrictedRoute: Chỉ cho phép truy cập nếu chưa có token
 export const RestrictedRoute = ({ children }) => {
-    const token = localStorage.getItem('authToken'); // Lấy token từ localStorage
-    const role = localStorage.getItem('role'); // Lấy role từ localStorage
+    const token = localStorage.getItem('authToken');
+    const tokenRole = getRoleFromToken();
 
-    // Nếu đã có token và role là DOCTOR, điều hướng về dashboard của doctor
-    if (token && role === 'VETERINARY') {
+    if (token && tokenRole === 'VETERINARY') {
         return <Navigate to="/doctor/doctor-dashboard" />;
     }
 
-    // Nếu đã có token và role là ADMIN, điều hướng về dashboard của admin
-    if (token && role === 'ADMIN') {
+    if (token && tokenRole === 'CUSTOMER') {
+        return <Navigate to="/homepage" />;
+    } 
+    
+    if (token && tokenRole === 'ADMIN') {
         return <Navigate to="/admin" />;
     }
 
-    // Nếu không có token, cho phép truy cập trang Restricted
     return children;
-};
-
-// Xác định kiểu của prop "children" cho RestrictedRoute
-RestrictedRoute.propTypes = {
-    children: PropTypes.node.isRequired,
 };
 
 // PrivateRoute: Yêu cầu token để truy cập
 export const PrivateRoute = ({ children }) => {
     const token = localStorage.getItem('authToken');
-
-    // Nếu không có token, điều hướng về trang đăng nhập
     return token ? children : <Navigate to="/login" />;
-};
-
-// Xác định kiểu của prop "children" cho PrivateRoute
-PrivateRoute.propTypes = {
-    children: PropTypes.node.isRequired,
 };
 
 // RoleBasedRoute: Yêu cầu token và vai trò phù hợp để truy cập
 export const RoleBasedRoute = ({ children, allowedRoles }) => {
     const token = localStorage.getItem('authToken');
-    const userRole = localStorage.getItem('role')?.trim();  // Lấy vai trò của người dùng và loại bỏ khoảng trắng
+    const tokenRole = getRoleFromToken();
 
-    // Nếu không có token hoặc vai trò không hợp lệ
-    if (!token || !allowedRoles.includes(userRole)) {
-        // Điều hướng khác nhau dựa trên vai trò người dùng
-        if (userRole === 'VETERINARY') {
+    if (!token) {
+        return <Navigate to="/login" />;
+    }
+
+    if (!allowedRoles.includes(tokenRole)) {
+        if (tokenRole === 'VETERINARY') {
             return <Navigate to="/doctor/doctor-dashboard" />;
-        } else if (userRole === 'ADMIN') {
+        } else if (tokenRole === 'ADMIN') {
             return <Navigate to="/admin" />;
+        } else if (tokenRole === 'CUSTOMER') {
+            return <Navigate to="/homepage" />;
         } else {
             return <Navigate to="/login" />;
         }
     }
 
-    // Nếu người dùng có vai trò hợp lệ, trả về component con (children)
     return children;
 };
 
-// Xác định kiểu của prop "children" và "allowedRoles" cho RoleBasedRoute
+// PropTypes definitions
+PublicRoute.propTypes = {
+    children: PropTypes.node.isRequired,
+};
+
+RestrictedRoute.propTypes = {
+    children: PropTypes.node.isRequired,
+};
+
+PrivateRoute.propTypes = {
+    children: PropTypes.node.isRequired,
+};
+
 RoleBasedRoute.propTypes = {
     children: PropTypes.node.isRequired,
     allowedRoles: PropTypes.arrayOf(PropTypes.string).isRequired,

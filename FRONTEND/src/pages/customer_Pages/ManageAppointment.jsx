@@ -378,7 +378,7 @@ const ManageAppointment = () => {
                 Chờ thanh toán tiền dịch vụ
               </option>
               <option value="Thanh toán tiền dịch vụ thành công">
-                Thanh toán tiền dịch vụ thành cng
+                Thanh toán tiền dịch vụ thành công
               </option>
               <option value="Hoàn thành">Hoàn thành</option>
               <option value="Đã đánh giá">Đã đánh giá</option>

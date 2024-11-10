@@ -30,7 +30,6 @@ const useDoctorWork = () => {
                     };
                 });
 
-                console.log('Formatted Appointments:', formattedAppointments); // Log để debug
                 setAppointments(formattedAppointments);
                 setLoading(false);
             } catch (err) {

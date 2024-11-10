@@ -66,7 +66,6 @@ export const useAccountInfo = () => {
     const createAccount = async (accountData) => {
         try {
             const response = await axiosInstance.post('/admin/createAccount', accountData);
-            console.log('API Response:', response.data);
             await fetchAllAccounts();
             return response.data;
         } catch (error) {

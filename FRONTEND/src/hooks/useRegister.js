@@ -57,7 +57,7 @@ export const useRegister = () => {
 
         try {
             const response = await register(username, email, password, confirmPassword);
-            console.log('Đăng ký thành công:', response);
+            console.log('Đăng ký thành công:');
             window.location.href = '/login';
         } catch (error) {
             // Lấy message lỗi trực tiếp từ response của backend

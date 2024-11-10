@@ -11,7 +11,6 @@ const useFeedback = () => {
                 }
             );
 
-            console.log('Response from API:', response.data);
 
             if (response.data) {
                 return response.data;

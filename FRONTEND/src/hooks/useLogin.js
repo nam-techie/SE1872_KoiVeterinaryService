@@ -14,7 +14,7 @@ export const useLogin = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();  // Ngăn chặn hành vi mặc định của form
-        console.log("Form submitted with:", { username, password });  // Log kiểm tra form
+      
 
         setLoading(true);
         setError('');  // Reset lỗi trước khi thực hiện đăng nhập
@@ -22,7 +22,7 @@ export const useLogin = () => {
         try {
             // Gọi API đăng nhập thực sự
             const response = await login(username, password);  // Gọi API từ apiLogin.js
-            console.log('Đăng nhập thành công:', response);  // Hiển thị dữ liệu trả về từ server
+
 
             // Lưu thông tin đăng nhập
             localStorage.setItem('authToken', response.token);
@@ -74,16 +74,11 @@ export const useTokenHandler = () => {
         const username = params.get('username'); // Lấy username từ query string
         const role = params.get('role'); // Lấy role từ query string
 
-        console.log("Query String:", location.search);
-        console.log("Token:", token);
-        console.log("Username:", username);
-        console.log("Role:", role);
 
         if (username && localStorage.getItem('username') !== username) {
             // Chỉ lưu username nếu nó chưa tồn tại trong localStorage
             localStorage.setItem('username', username);
 
-            console.log("Username được lưu:", username);
         }
 
         if (role) {

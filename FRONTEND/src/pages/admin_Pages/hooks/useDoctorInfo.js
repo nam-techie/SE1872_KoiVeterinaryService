@@ -51,7 +51,6 @@ export const useDoctorInfo = () => {
 
     const getDoctorDetail = async (doctorId) => {
         try {
-            console.log('doctorId:', doctorId);
             const response = await axiosInstance.get(`/admin/getInfoDoctor/${doctorId}`);
             return response.data;
         } catch (err) {

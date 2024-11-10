@@ -1,16 +1,9 @@
 
-import {axiosInstance} from "./apiRequest.js";
+import { axiosInstance } from "./apiRequest.js";
 
 export const postBookingData = async (bookingData) => {
     try {
-        // Thêm log để kiểm tra dữ liệu trước khi gửi
-        console.log('Dữ liệu gửi đi:', bookingData);
-        
         const response = await axiosInstance.post('/customer/createAppointment', bookingData);
-        
-        // Thêm log để kiểm tra response
-        console.log('Response từ server:', response);
-        
         return response;
     } catch (error) {
         console.error("Error posting data: ", error);
@@ -18,11 +11,11 @@ export const postBookingData = async (bookingData) => {
     }
 };
 
-export const getAppointmentInformation = async () =>{
-    try{
+export const getAppointmentInformation = async () => {
+    try {
         const response = await axiosInstance.get('');
         return response.data;
-    }catch (error) {
+    } catch (error) {
         console.error("Error fetching data: ", error)
     }
 }
