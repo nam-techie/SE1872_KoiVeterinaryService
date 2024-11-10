@@ -1,0 +1,574 @@
+.container {
+    margin-top: 90px;
+    padding: 20px;
+    background-color: #FFFFFF;
+    min-height: 100vh;
+}
+
+.header {
+    margin-bottom: 20px;
+}
+
+.header h1 {
+    font-size: 24px;
+    color: #333;
+    float: left;
+}
+
+.searchContainer {
+    float: right;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    width: 60%;
+    justify-content: flex-end;
+    padding-bottom: 10px;
+}
+
+.searchBox {
+    position: relative;
+    flex: 1;
+    margin-right: 20px;
+}
+
+.searchInput {
+    width: 100%;
+    padding: 8px 30px 8px 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.dateInput {
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    width: 150px;
+}
+
+.sortSelect {
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    width: 180px;
+}
+
+.headerWrapper {
+    overflow: hidden;
+    margin-bottom: 20px;
+    background-color: #EEEEEE;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.tableWrapper {
+    background-color: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.appointmentTable {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.appointmentTable th,
+.appointmentTable td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.appointmentTable th {
+    background-color: #f8f9fa;
+    font-weight: 600;
+    color: #333;
+}
+
+.appointmentTable tr:last-child td {
+    border-bottom: none;
+}
+
+.status {
+    padding: 8px 12px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 500;
+    display: inline-block;
+}
+
+/* Status = 1: Chờ bác sĩ xác nhận */
+.status1 {
+    background-color: #FFF3E0;
+    color: #FF9800;
+    border: 1px solid #FF9800;
+}
+
+/* Status = 2: Đã xác nhận */
+.status2 {
+    background-color: #E8F5E9;
+    color: #4CAF50;
+    border: 1px solid #4CAF50;
+}
+
+/* Status = 3: Chờ thanh toán tiền dịch vụ */
+.status3 {
+    background-color: #FCE4EC;
+    color: #E91E63;
+    border: 1px solid #E91E63;
+}
+
+/* Status = 4: Thanh toán tiền dịch vụ thành công */
+.status4 {
+    background-color: #F3E5F5;
+    color: #9C27B0;
+    border: 1px solid #9C27B0;
+}
+
+/* Status = 5: Đang cung cấp dịch vụ */
+.status5 {
+    background-color: #E3F2FD;
+    color: #2196F3;
+    border: 1px solid #2196F3;
+}
+
+/* Status = 6: Thực hiện xong dịch vụ */
+.status6 {
+    background-color: #E1F5FE;
+    color: #03A9F4;
+    border: 1px solid #03A9F4;
+}
+
+/* Status = 7: Chờ thanh toán phí phát sinh */
+.status7 {
+    background-color: #EDE7F6;
+    color: #673AB7;
+    border: 1px solid #673AB7;
+}
+
+/* Status = 8: Hoàn thành */
+.status8 {
+    background-color: #E8F5E9;
+    color: #4CAF50;
+    border: 1px solid #4CAF50;
+}
+
+/* Status = 9: Đã đánh giá */
+.status9 {
+    background-color: #F5F5F5;
+    color: #607D8B;
+    border: 1px solid #607D8B;
+}
+
+/* Status = 10: Đã hủy lịch */
+.status10 {
+    background-color: #FFEBEE;
+    color: #F44336;
+    border: 1px solid #F44336;
+}
+
+.detailButton {
+    padding: 8px 12px;
+    background-color: #2196F3;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+    transition: all 0.3s ease;
+}
+
+.detailButton:hover {
+    opacity: 0.9;
+    transform: translateY(-2px);
+}
+
+.cancelButton {
+    padding: 8px 16px;
+    background-color: #ff4d4d;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.cancelButton:hover {
+    background-color: #ff3333;
+}
+
+.paymentButton {
+    padding: 8px 16px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.paymentButton:hover {
+    background-color: #218838;
+}
+
+.statusSelect {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: white;
+    font-size: 14px;
+    min-width: 200px;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+.statusSelect:hover {
+    border-color: #999;
+}
+
+.statusSelect:focus {
+    outline: none;
+    border-color: #0066cc;
+    box-shadow: 0 0 0 2px rgba(0,102,204,0.2);
+}
+
+.paginationWrapper {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+/* Styles cho các nút phân trang */
+:global(.pagination) {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+:global(.page-btn) {
+    padding: 8px 16px;
+    border: 1px solid #ddd;
+    background-color: white;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+:global(.page-btn:hover) {
+    background-color: #f0f0f0;
+}
+
+:global(.page-btn:disabled) {
+    background-color: #f5f5f5;
+    cursor: not-allowed;
+    color: #999;
+}
+
+:global(.page-info) {
+    padding: 8px 16px;
+    background-color: #f0f0f0;
+    border-radius: 4px;
+}
+
+.ratingButton {
+    padding: 8px 16px;
+    background-color: #ffd700; /* Màu vàng */
+    color: #000;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.ratingButton:hover {
+    background-color: #ffcd00;
+    transform: translateY(-1px);
+}
+
+.ratingButton:active {
+    transform: translateY(0);
+}
+
+.modalFooter {
+    padding-top: 15px;
+    margin-top: 15px;
+    border-top: 1px solid #eee;
+    text-align: right;
+}
+
+.modalCloseBtn {
+    padding: 8px 20px;
+    background-color: #6c757d;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.modalCloseBtn:hover {
+    background-color: #5a6268;
+}
+
+/* Thêm các styles mới cho form hủy lịch */
+.cancelFormTitle {
+    color: #333;
+    margin: 0;
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #dee2e6;
+    font-size: 1.25rem;
+    font-weight: 500;
+}
+
+.cancelFormContent {
+    padding: 20px;
+}
+
+.cancelTextArea {
+    width: 100%;
+    min-height: 120px;
+    padding: 12px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    font-size: 1rem;
+    resize: vertical;
+    transition: border-color 0.15s ease-in-out;
+    font-family: inherit;
+}
+
+.cancelTextArea:focus {
+    border-color: #80bdff;
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+}
+
+.cancelFormActions {
+    padding: 16px 20px;
+    background-color: #f8f9fa;
+    border-top: 1px solid #dee2e6;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.cancelFormButton {
+    padding: 8px 16px;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.cancelFormButtonSecondary {
+    background-color: #fff;
+    border: 1px solid #6c757d;
+    color: #6c757d;
+}
+
+.cancelFormButtonSecondary:hover {
+    background-color: #6c757d;
+    color: #fff;
+}
+
+.cancelFormButtonPrimary {
+    background-color: #dc3545;
+    border: 1px solid #dc3545;
+    color: #fff;
+}
+
+.cancelFormButtonPrimary:hover {
+    background-color: #c82333;
+    border-color: #bd2130;
+}
+
+.cancelFormError {
+    color: #dc3545;
+    font-size: 0.875rem;
+    margin-top: 8px;
+}
+
+/* Form Container */
+.cancelFormContainer {
+    padding: 0;
+    background: #fff;
+}
+
+/* Header */
+.cancelFormHeader {
+    background: linear-gradient(135deg, #ff4b2b 0%, #ff416c 100%);
+    color: white;
+    padding: 20px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.cancelFormHeader h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+.closeButton {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+    padding: 0;
+    opacity: 0.8;
+    transition: opacity 0.2s;
+}
+
+.closeButton:hover {
+    opacity: 1;
+}
+
+/* Body */
+.cancelFormBody {
+    padding: 0 50px 20px 24px;
+}
+
+.formGroup {
+    margin-bottom: 20px;
+}
+
+.formLabel {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: #333;
+}
+
+.required {
+    color: #ff416c;
+    margin-right: 4px;
+}
+
+.formTextArea {
+    width: 100%;
+    min-height: 120px;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    resize: vertical;
+    font-size: 14px;
+    line-height: 1.5;
+    transition: border-color 0.2s;
+}
+
+.formTextArea:focus {
+    outline: none;
+    border-color: #ff416c;
+    box-shadow: 0 0 0 2px rgba(255, 65, 108, 0.1);
+}
+
+.charCount {
+    text-align: right;
+    color: #666;
+    font-size: 12px;
+    margin-top: 4px;
+}
+
+.errorMessage {
+    color: #dc3545;
+    font-size: 13px;
+    margin-top: 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.errorMessage i {
+    font-size: 14px;
+}
+
+.cancelFormFooter {
+    padding: 16px 24px;
+    background: #f8f9fa;
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    border-top: 1px solid #eee;
+}
+
+.cancelBtn,
+.confirmBtn {
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s;
+}
+
+.cancelBtn {
+    background: #fff;
+    border: 1px solid #ddd;
+    color: #666;
+}
+
+.cancelBtn:hover {
+    background: #f8f9fa;
+    border-color: #c8c8c8;
+}
+
+.confirmBtn {
+    background: #ff416c;
+    border: none;
+    color: white;
+}
+
+.confirmBtn:hover {
+    background: #ff2d55;
+}
+
+.cancelBtn i,
+.confirmBtn i {
+    font-size: 14px;
+}
+
+/* Thêm styles cho phần cancel note */
+.cancelNoteSection {
+    margin: 20px 0;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.cancelNoteHeader {
+    color: #d32f2f;
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #ffcdd2;
+}
+
+.cancelNoteContent {
+    background-color: #fff3f3;
+    border: 1px solid #ffcdd2;
+    border-radius: 6px;
+    padding: 16px;
+    color: #d32f2f;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.cancelNoteLabel {
+    font-weight: 500;
+    color: #666;
+    margin-bottom: 8px;
+    display: block;
+} 

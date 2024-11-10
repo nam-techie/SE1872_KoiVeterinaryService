@@ -1,0 +1,1941 @@
+.appointment-dashboard {
+    background-color: #EEEEEE;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-left: 40px;
+    font-size: 14px;
+}
+
+.content-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+}
+
+.content-header h2 {
+    flex: 0 0 20%;
+    font-size: 1.8rem;
+    margin: 0;
+    white-space: nowrap;
+}
+
+.search-filter {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    background-color: #fff;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.search-input,
+.filter-select {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    width: 200px;
+}
+
+.appointment-table {
+    background-color: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.appointment-table th{
+    font-size: 0.9rem;
+    white-space: nowrap;
+}
+
+table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+th, td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+th {
+    background-color: #f8f9fa;
+    font-weight: 600;
+    color: #333;
+    cursor: pointer;
+}
+
+th:hover {
+    background-color: #e9ecef;
+}
+
+tr:last-child td {
+    border-bottom: none;
+}
+
+.status {
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 600;
+    display: inline-block;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+/* Chờ bác sĩ xác nhận */
+.status[data-status="Chờ bác sĩ xác nhận"] {
+    background-color: #FFF3CD;
+    color: #997404;
+    border: 2px solid #FFE69C;
+}
+
+/* Đã xác nhận */
+.status[data-status="Đã xác nhận"] {
+    background-color: #CCE5FF;
+    color: #0A58CA;
+    border: 2px solid #9EC5FE;
+}
+
+/* Đang cung cấp dịch vụ */
+.status[data-status="Đang cung cấp dịch vụ"] {
+    background-color: #CFF4FC;
+    color: #055160;
+    border: 2px solid #9EEAF9;
+}
+
+/* Thực hiện xong dịch vụ */
+.status[data-status="Thực hiện xong dịch vụ"] {
+    background-color: #DFF5E8;
+    color: #146C43;
+    border: 2px solid #75B798;
+}
+
+/* Chờ thanh toán tiền dịch vụ */
+.status[data-status="Chờ thanh toán tiền dịch vụ"] {
+    background-color: #FFE5D0;
+    color: #B94700;
+    border: 2px solid #FFCD92;
+}
+
+/* Thanh toán tiền dịch vụ thành công */
+.status[data-status="Thanh toán tiền dịch vụ thành công"] {
+    background-color: #E8F5E9;
+    color: #2E7D32;
+    border: 2px solid #A5D6A7;
+}
+
+/* Hoàn thành */
+.status[data-status="Hoàn thành"] {
+    background-color: #198754;
+    color: white;
+    border: 2px solid #146C43;
+    font-weight: 700;
+}
+
+/* Đã hủy lịch */
+.status[data-status="Đã hủy lịch"] {
+    background-color: #F8D7DA;
+    color: #842029;
+    border: 2px solid #F5C2C7;
+    font-weight: 600;
+}
+
+.action-th{
+    text-align: center;
+}
+.action-btn {
+    padding: 4px 12px;
+    margin: 0 4px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    transition: background-color 0.3s ease, transform 0.1s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    position: relative;
+}
+
+.action-btn:hover {
+    transform: translateY(-2px);
+}
+
+.action-btn:active {
+    transform: translateY(0);
+}
+
+.action-btn.view {
+    background-color: #2196F3;
+    color: white;
+}
+
+.action-btn.edit {
+    background-color: #ffc107;
+    color: black;
+}
+
+.action-btn.delete {
+    background-color: #f44336;
+    color: white;
+}
+.action-btn:hover {
+    opacity: 0.9;
+}
+
+.search-container {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.search-input {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    min-width: 200px;
+}
+
+.sort-select-appointment{
+    padding: 8px 13px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: white;
+    cursor: pointer;
+}
+
+.sort-select, .direction-select {
+    padding: 8px 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: white;
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+.sort-select:hover, .direction-select:hover {
+    border-color: #0d6efd;
+}
+
+.search-input:focus, .sort-select:focus, .direction-select:focus {
+    outline: none;
+    border-color: #0d6efd;
+    box-shadow: 0 0 0 2px rgba(13, 110, 253, 0.25);
+}
+.action-column{
+    text-align: center;
+}
+.search-button {
+    padding: 8px 16px;
+    background-color: #0d6efd;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.sort-controls {
+    display: flex;
+    gap: 10px;
+}
+
+.sort-button {
+    padding: 8px 16px;
+    background-color: #f8f9fa;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.sort-button.active {
+    background-color: #e9ecef;
+    border-color: #0d6efd;
+    color: #0d6efd;
+}
+
+.sort-button:hover {
+    background-color: #e9ecef;
+}
+
+/* Styles cho bảng và các nút thao tác giữ nguyên */
+
+.search-sort-container {
+    flex: 0 0 75%;
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.search-box {
+    position: relative;
+    flex: 0 1 300px; /* Thay đổi flex: 1 thành flex: 0 1 300px */
+    max-width: 200px; /* Thêm max-width để giới hạn độ rộng tối đa */
+}
+
+.search-icon {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #666;
+}
+
+.sort-box {
+    min-width: 200px;
+}
+
+.sort-select {
+    width: 100%;
+    padding: 8px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+}
+
+.sort-order-btn {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 6px 12px; /* Giảm padding */
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background: white;
+    cursor: pointer;
+    height: 35px; /* Chiều cao cố định */
+    font-size: 0.9rem;
+    min-width: 150px; /* Thêm chiều rộng tối thiểu */
+    justify-content: center; /* Canh giữa nội dung */
+}
+
+
+
+.sort-order-btn:hover {
+    background: #f5f5f5;
+}
+
+.date-search-box {
+    margin: 0 10px;
+}
+
+.date-input {
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    margin-left: 10px;
+}
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background: white;
+    padding: 30px;
+    border-radius: 8px;
+    width: 700px;
+    max-width: 90%;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.modal-content h3 {
+    color: #dc3545;  /* Màu đỏ cho modal hủy */
+    font-size: 24px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.modal-content h3.payment-title {
+    color: #28a745;  /* Màu xanh cho modal thanh toán */
+}
+
+.modal-content p {
+    font-size: 16px;
+    line-height: 1.5;
+    margin-bottom: 15px;
+    text-align: center;
+    white-space: nowrap;
+}
+
+.modal-content .warning-text {
+    color: #dc3545;
+    font-size: 16px;
+    font-style: italic;
+    margin: 20px 0;
+    text-align: center;
+    white-space: nowrap;
+}
+
+.modal-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 25px;
+}
+
+.modal-btn {
+    padding: 10px 25px;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    border: none;
+    transition: all 0.3s ease;
+}
+
+.modal-btn.cancel {
+    background-color: #6c757d;
+    color: white;
+}
+
+.modal-btn.cancel:hover {
+    background-color: #5a6268;
+}
+
+.modal-btn.confirm {
+    background-color: #28a745;
+    color: white;
+}
+
+.modal-btn.confirm:hover {
+    background-color: #218838;
+}
+
+.modal-btn.delete {
+    background-color: #dc3545;
+    color: white;
+}
+
+.modal-btn.delete:hover {
+    background-color: #c82333;
+}
+
+.success-message {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background-color: #4CAF50;
+    color: white;
+    padding: 15px 25px;
+    border-radius: 4px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    z-index: 1000;
+    animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* Styles cho pagination */
+.pagination {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 15px;
+    margin-top: 20px;
+    padding: 20px;
+    font-size: 0.9rem;
+}
+
+.page-btn {
+    padding: 8px 16px;
+    border: 1px solid #ddd;
+    background-color: white;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    min-width: 100px;
+}
+
+.page-btn:hover {
+    background-color: #f0f0f0;
+}
+
+.page-btn:disabled {
+    background-color: #f5f5f5;
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+.page-info {
+    font-size: 14px;
+    color: #666;
+}
+
+/* Thêm styles cho table để đảm bảo chiều cao nhất quán */
+.appointment-table table {
+    min-height: 600px;
+}
+
+.appointment-table tbody tr {
+    height: 60px;
+}
+
+/* Responsive */
+@media screen and (max-width: 768px) {
+    .pagination {
+        justify-content: center;
+    }
+    
+    .page-btn {
+        min-width: 80px;
+        padding: 6px 12px;
+    }
+}
+
+/* Modal View Styles */
+.view-modal-content {
+    background: white;
+    padding: 2rem;
+    border-radius: 8px;
+    width: 80%;
+    max-width: 1000px;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+.detail-section {
+    margin-bottom: 2rem;
+}
+
+.detail-section h3 {
+    color: #333;
+    margin-bottom: 1rem;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 0.5rem;
+}
+
+.detail-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1rem;
+}
+
+.detail-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.detail-item label {
+    font-weight: bold;
+    color: #666;
+}
+
+.detail-item span {
+    color: #333;
+}
+
+.customer-info-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+}
+
+.appointment-search-sort-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    padding: 15px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    width: 95%;
+    margin: 0 auto;
+}
+
+/* Hàng đầu tiên */
+.top-row {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    width: 100%;
+}
+
+.appointment-search-box {
+    flex: 3;
+    position: relative;
+    max-width: 600px;
+    margin-right: 10px;
+}
+
+.appointment-status-filter {
+    flex: 2;
+    min-width: 250px;
+}
+
+/* Hàng thứ hai */
+.bottom-row {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    width: 100%;
+}
+
+.appointment-date-box {
+    flex: 1;
+    min-width: 200px;
+}
+
+.appointment-sort-box {
+    flex: 4;
+    display: flex;
+    gap: 15px;
+    margin: 0 0 0 20px;
+}
+
+.appointment-search-input {
+    width: 100%;
+    padding: 10px 35px 10px 15px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+.appointment-search-icon {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #666;
+}
+
+.appointment-date-input {
+    width: 100%;
+    padding: 9px 15px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+.appointment-status-filter {
+    min-width: 200px;
+}
+
+.appointment-status-select {
+    width: 100%;
+    padding: 9px 15px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 14px;
+    background-color: white;
+}
+
+.appointment-sort-box {
+    display: flex;
+    gap: 10px;
+    min-width: 300px;
+}
+
+.appointment-sort-select {
+    flex: 2;
+    padding: 9px 15px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 14px;
+    background-color: white;
+}
+
+.appointment-sort-order-btn {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 9px 15px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    background-color: #f8f9fa;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.appointment-sort-order-btn:hover {
+    background-color: #e9ecef;
+}
+
+.appointment-sort-icon {
+    font-size: 12px;
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+    .appointment-search-sort-container {
+        gap: 15px;
+    }
+    
+    .appointment-sort-box {
+        min-width: 250px;
+    }
+}
+
+@media (max-width: 768px) {
+    .appointment-search-sort-container {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .appointment-search-box,
+    .appointment-date-box,
+    .appointment-status-filter,
+    .appointment-sort-box {
+        width: 100%;
+    }
+}
+
+/* Status Timeline */
+.status-timeline {
+    margin: 20px 0;
+    padding: 20px 40px;
+    background: #f8fafc;
+    border-radius: 8px;
+}
+
+.timeline-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    padding: 20px 0;
+}
+
+/* Phần line xanh và đỏ sẽ được tính toán động trong React component */
+.timeline-container::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: var(--progress-width); /* Sẽ được set động từ React */
+    height: 2px;
+    background: #22C55E;
+    z-index: 1;
+}
+
+.timeline-container::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: var(--progress-width); /* Bắt đầu từ điểm kết thúc của line xanh */
+    right: 0;
+    height: 2px;
+    background: #dc3545;
+    z-index: 1;
+}
+
+/* Style cho 5 dots đầu (xanh) */
+.timeline-item:nth-child(-n+5) .timeline-dot {
+    border: 2px solid #22C55E;
+    background: #22C55E;
+}
+
+.timeline-item:nth-child(-n+5) .timeline-dot i {
+    color: white;
+}
+
+/* Style cho 4 dots còn lại (đỏ) */
+.timeline-item:nth-child(n+6) .timeline-dot {
+    border: 2px solid #dc3545;
+    background: white;
+}
+
+.timeline-item:nth-child(n+6) .timeline-dot i {
+    color: #dc3545;
+}
+
+.timeline-dot {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    z-index: 2;
+}
+
+.timeline-item.active .timeline-dot,
+.timeline-item.past .timeline-dot {
+    background: #22C55E;
+}
+
+.timeline-item.active .timeline-dot i,
+.timeline-item.past .timeline-dot i {
+    color: white;
+}
+
+/* Hiển thị trạng thái hiện tại */
+.current-status {
+    text-align: center;
+    margin-top: 1.5rem;
+    font-size: 1rem;
+    color: #4b5563;
+}
+
+.status-text {
+    font-weight: 600;
+    color: #22C55E;
+    margin-left: 0.5rem;
+}
+
+/* Thêm style cho trạng thái đã hủy */
+.status-text[data-status="Đã hủy lịch"],
+.status-text.cancelled {
+    color: #dc3545 !important; /* Màu đỏ */
+}
+
+
+
+/* Tooltip khi hover */
+.timeline-dot:hover::after {
+    content: attr(title);
+    position: absolute;
+    bottom: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 12px;
+    white-space: nowrap;
+    z-index: 10;
+}
+
+.timeline-content {
+    text-align: center;
+    width: 120px;
+    position: absolute;
+    top: calc(100% + 15px);
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.timeline-content span {
+    font-size: 12px;
+    color: #64748b;
+    display: block;
+    line-height: 1.2;
+}
+
+.timeline-dot i {
+    font-size: 16px;
+    color: #22C55E;
+}
+
+.timeline-item.active .timeline-dot {
+    background: #22C55E;
+}
+
+.timeline-item.active .timeline-dot i,
+.timeline-item.past .timeline-dot i {
+    color: white;
+}
+
+.timeline-item.past .timeline-dot {
+    background: #22C55E;
+}
+
+@media (max-width: 768px) {
+    .timeline-container {
+        overflow-x: auto;
+        justify-content: flex-start;
+        padding: 20px 10px;
+    }
+    
+    .timeline-item {
+        min-width: 120px;
+    }
+}
+
+/* Chi tiết thanh toán */
+.payment-details-section {
+    margin: 2rem;
+    padding: 2rem;
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 2px 20px rgba(0,0,0,0.08);
+}
+
+.payment-details-section h3 {
+    color: #2c3e50;
+    font-size: 1.5rem;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid #eef2f7;
+}
+
+/* Bảng chi tiết */
+.payment-table {
+    margin-bottom: 2rem;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+}
+
+.payment-table table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    background: white;
+}
+
+.payment-table th {
+    background: #f8fafc;
+    padding: 1.2rem 1.5rem;
+    font-weight: 600;
+    color: #2c3e50;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 0.5px;
+}
+
+.payment-table td {
+    padding: 1.2rem 1.5rem;
+    border-bottom: 1px solid #eef2f7;
+    color: #2c3e50;
+}
+
+/* Tổng quan thanh toán */
+.payment-summary-container {
+    background: #f8fafc;
+    padding: 2rem;
+    border-radius: 12px;
+    margin-top: 2rem;
+}
+
+.payment-method-box {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+    border-left: 4px solid #3498db;
+}
+
+.method-label {
+    color: #64748b;
+    font-weight: 500;
+    margin-right: 1rem;
+}
+
+.method-value {
+    color: #2c3e50;
+    font-weight: 600;
+}
+
+.payment-summary-boxes {
+    display: flex;
+    gap: 1.5rem;
+    justify-content: space-between;
+}
+
+.summary-box {
+    flex: 1;
+    background: white;
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+    text-align: center;
+    transition: transform 0.2s ease;
+}
+
+.summary-box:hover {
+    transform: translateY(-3px);
+}
+
+.summary-box.paid {
+    border-left: 4px solid #27ae60;
+}
+
+.summary-box.unpaid {
+    border-left: 4px solid #e74c3c;
+}
+
+.summary-box.total {
+    border-left: 4px solid #2c3e50;
+}
+
+.summary-label {
+    display: block;
+    color: #64748b;
+    font-size: 0.9rem;
+    margin-bottom: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.summary-value {
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+.summary-box.paid .summary-value {
+    color: #27ae60;
+}
+
+.summary-box.unpaid .summary-value {
+    color: #e74c3c;
+}
+
+.summary-box.total .summary-value {
+    color: #2c3e50;
+}
+
+/* Status badges */
+.payment-status {
+    display: inline-block;
+    padding: 0.6rem 1.2rem;
+    border-radius: 30px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    text-align: center;
+    min-width: 140px;
+}
+
+.payment-status.paid {
+    background: #dcfce7;
+    color: #166534;
+}
+
+.payment-status.unpaid {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+    .payment-summary-boxes {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .summary-box {
+        width: 100%;
+    }
+}
+
+.info-section {
+    margin: 20px 0;
+    padding: 20px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.info-section h3 {
+    color: #2c3e50;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #e0e0e0;
+}
+
+.info-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+.info-table th,
+.info-table td {
+    padding: 12px;
+    text-align: left;
+    border: 1px solid #e0e0e0;
+}
+
+.info-table th {
+    background-color: #f8f9fa;
+    color: #2c3e50;
+    font-weight: 600;
+    width: 150px;
+}
+
+.info-table td {
+    color: #2c3e50;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .info-table {
+        display: block;
+        overflow-x: auto;
+    }
+    
+    .info-table tbody {
+        display: table;
+        width: 100%;
+    }
+    
+    .info-table th {
+        white-space: nowrap;
+    }
+}
+
+/* Style cho header */
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    border-bottom: 2px solid #e0e0e0;
+}
+
+.modal-header h2 {
+    color: #2c3e50;
+    margin: 0;
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    font-size: 24px;
+    color: #666;
+    cursor: pointer;
+}
+
+.close-btn:hover {
+    color: #333;
+}
+
+.info-sections {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.info-section {
+    background: white;
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    margin: 20px 0;
+}
+
+.info-section h3 {
+    color: #2c3e50;
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid #eef2f7;
+    font-weight: 600;
+}
+
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    background: #f8fafc;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+.info-item {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-height: 100px; /* Đặt chiều cao tối thiểu */
+}
+
+.info-item label {
+    color: #64748b;
+    font-size: 0.95rem;
+    font-weight: 500;
+    margin-bottom: 5px;
+}
+
+.info-item span {
+    color: #1e293b;
+    font-size: 1rem;
+    font-weight: 500;
+    padding: 12px 16px;
+    background: white;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+    flex: 1;
+    min-height: 60px; /* Chiều cao tối thiểu cho nội dung */
+    display: flex;
+    align-items: center;
+}
+
+/* Đảm bảo các ô trong cùng một hàng có chiều cao bằng nhau */
+.info-grid {
+    align-items: stretch;
+}
+
+.info-item {
+    height: 100%;
+}
+
+/* Xử lý văn bn dài */
+.info-item span {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    line-height: 1.5;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .info-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .info-item {
+        min-height: auto;
+    }
+}
+
+/* Hover effect */
+.info-item:hover span {
+    border-color: #94a3b8;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+    .customer-info,
+    .pet-info,
+    .appointment-info {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 640px) {
+    .customer-info,
+    .pet-info,
+    .appointment-info {
+        grid-template-columns: 1fr;
+    }
+    
+    .info-section {
+        padding: 16px;
+    }
+}
+
+/* Animation */
+.info-section {
+    transition: all 0.3s ease;
+}
+
+.info-section:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+/* Custom scrollbar */
+.info-sections {
+    scrollbar-width: thin;
+    scrollbar-color: #cbd5e1 #f1f5f9;
+}
+
+.info-sections::-webkit-scrollbar {
+    width: 6px;
+}
+
+.info-sections::-webkit-scrollbar-track {
+    background: #f1f5f9;
+}
+
+.info-sections::-webkit-scrollbar-thumb {
+    background-color: #cbd5e1;
+    border-radius: 3px;
+}
+
+.feedback-section {
+    margin-top: 30px;
+    padding: 24px;
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.feedback-section h3 {
+    color: #2c3e50;
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid #eef2f7;
+    font-weight: 600;
+}
+
+.feedback-content {
+    background: #f8fafc;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+.rating, .comment {
+    margin-bottom: 16px;
+}
+
+.rating label, .comment label {
+    color: #64748b;
+    font-size: 0.95rem;
+    font-weight: 500;
+    margin-bottom: 8px;
+    display: block;
+}
+
+.stars {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.stars i {
+    color: #fbbf24; /* Màu vàng cho sao */
+    font-size: 1.2rem;
+}
+
+.rating-number {
+    margin-left: 8px;
+    color: #64748b;
+    font-weight: 500;
+}
+
+.comment p {
+    background: white;
+    padding: 16px;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+    color: #1e293b;
+    margin: 0;
+    min-height: 60px;
+    line-height: 1.5;
+}
+
+/* Hover effect */
+.feedback-section:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    transition: all 0.3s ease;
+}
+
+/* Thêm tooltip khi hover */
+.timeline-dot:hover::after {
+    content: attr(title);
+    position: absolute;
+    bottom: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 12px;
+    white-space: nowrap;
+    z-index: 10;
+}
+
+/* Phương thức thanh toán */
+.payment-info {
+    background: #fff;
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 24px;
+}
+
+.payment-method {
+    display: flex;
+    align-items: center;
+    background: #f8fafc;
+    padding: 16px 24px;
+    border-radius: 8px;
+    border-left: 4px solid #3b82f6;
+    margin-bottom: 24px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.payment-method .label {
+    font-weight: 600;
+    color: #475569;
+    margin-right: 12px;
+    min-width: 180px;
+}
+
+.payment-method .value {
+    color: #1e293b;
+    font-weight: 500;
+    background: #fff;
+    padding: 8px 16px;
+    border-radius: 6px;
+    border: 1px solid #e2e8f0;
+}
+
+.payment-summary-boxes {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+.summary-box {
+    background: #fff;
+    padding: 24px;
+    border-radius: 12px;
+    text-align: center;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+}
+
+.summary-box::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+}
+
+.summary-box.paid::before {
+    background: #22c55e;
+}
+
+.summary-box.unpaid::before {
+    background: #ef4444; 
+}
+
+.summary-box.total::before {
+    background: #3b82f6;
+}
+
+.summary-label {
+    color: #64748b;
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 12px;
+}
+
+.summary-value {
+    font-size: 1.75rem;
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+.summary-box.paid .summary-value {
+    color: #15803d;
+}
+
+.summary-box.unpaid .summary-value {
+    color: #b91c1c;
+}
+
+.summary-box.total .summary-value {
+    color: #1e40af;
+}
+
+.summary-box:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 12px rgba(0,0,0,0.1);
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+    .payment-summary-boxes {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 640px) {
+    .payment-summary-boxes {
+        grid-template-columns: 1fr;
+    }
+    
+    .payment-method {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+    
+    .payment-method .label {
+        margin-right: 0;
+        margin-bottom: 8px;
+    }
+}
+
+/* Style cho ô phân công bác sĩ */
+.assign-type {
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-weight: 500 !important;
+    position: relative;
+}
+
+.assign-type::before {
+    content: '';
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    margin-right: 8px;
+}
+
+.assign-type.customer-choice {
+    color: #0891b2 !important;
+    background-color: #ecfeff !important;
+    border: 1px solid #22d3ee !important;
+}
+
+.assign-type.customer-choice::before {
+    background-color: #0891b2;
+}
+
+.assign-type.center-assign {
+    color: #9333ea !important;
+    background-color: #faf5ff !important;
+    border: 1px solid #d946ef !important;
+}
+
+.assign-type.center-assign::before {
+    background-color: #9333ea;
+}
+
+/* Điều chỉnh grid để hiển thị 6 ô cân đối */
+.info-grid.appointment-info {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+    .info-grid.appointment-info {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 640px) {
+    .info-grid.appointment-info {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Thêm style cho trạng thái "Đã đánh giá" */
+.status[data-status="Đã đánh giá"] {
+  background-color: #8B5CF6; /* Màu tím */
+  color: white;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 500;
+  display: inline-block;
+}
+
+/* Đảm bảo hover effect giống các status khác nếu có */
+.status[data-status="Đã đánh giá"]:hover {
+  opacity: 0.9;
+}
+
+/* Style cho phần ghi chú của bác sĩ */
+.info-grid.doctor-note {
+    display: grid;
+    gap: 20px;
+}
+
+.info-grid.doctor-note .info-item.full-width {
+    grid-column: 1 / -1;
+}
+
+.doctor-note-content {
+    min-height: 100px !important;
+    white-space: pre-wrap;
+    line-height: 1.6 !important;
+    padding: 16px !important;
+    background: #f8fafc;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+}
+
+/* Style cho mức độ ưu tiên */
+.priority-level {
+    font-weight: 600 !important;
+    text-align: center !important;
+}
+
+.priority-level.high {
+    color: #dc2626 !important;
+    background-color: #fee2e2 !important;
+    border-color: #fecaca !important;
+}
+
+.priority-level.medium {
+    color: #d97706 !important;
+    background-color: #fef3c7 !important;
+    border-color: #fde68a !important;
+}
+
+.priority-level.normal {
+    color: #059669 !important;
+    background-color: #d1fae5 !important;
+    border-color: #a7f3d0 !important;
+}
+
+/* Style cho trạng thái theo dõi */
+.follow-up-status {
+    text-align: center !important;
+    font-weight: 600 !important;
+}
+
+.follow-up-status.yes {
+    color: #0284c7 !important;
+    background-color: #e0f2fe !important;
+    border-color: #bae6fd !important;
+}
+
+.follow-up-status.no {
+    color: #64748b !important;
+    background-color: #f1f5f9 !important;
+    border-color: #e2e8f0 !important;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .info-grid.doctor-note {
+        grid-template-columns: 1fr;
+    }
+    
+    .info-grid.doctor-note .info-item.full-width {
+        grid-column: auto;
+    }
+}
+
+/* Loading state */
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.loading-spinner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.loading-spinner i {
+  font-size: 2rem;
+  color: #0d6efd;
+}
+
+/* No data state */
+.no-data {
+  text-align: center;
+  padding: 40px !important;
+  color: #6c757d;
+}
+
+.no-data i {
+  font-size: 2rem;
+  margin-bottom: 10px;
+}
+
+.no-data p {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.error-message {
+  text-align: center;
+  padding: 20px;
+  background: #f8d7da;
+  color: #842029;
+  border-radius: 8px;
+  margin: 20px 0;
+}
+
+.error-message i {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+}
+
+.error-message button {
+  margin-top: 10px;
+  padding: 8px 16px;
+  background: #842029;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.error-message button:hover {
+  background: #6c1a21;
+}
+
+/* Modal animation */
+.modal-overlay {
+  animation: fadeIn 0.2s ease-out;
+}
+
+.modal-content {
+  animation: slideIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.action-btn::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 5px 10px;
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  border-radius: 4px;
+  font-size: 12px;
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.2s ease;
+}
+
+.action-btn:hover::after {
+  opacity: 1;
+  visibility: visible;
+}
+
+@media (max-width: 768px) {
+  .appointment-search-sort-container {
+    flex-direction: column;
+  }
+  
+  .top-row, .bottom-row {
+    flex-direction: column;
+  }
+  
+  .appointment-search-box,
+  .appointment-status-filter,
+  .appointment-date-box,
+  .appointment-sort-box {
+    width: 100%;
+  }
+  
+  .action-buttons {
+    flex-direction: column;
+    gap: 5px;
+  }
+  
+  .action-btn {
+    width: 100%;
+  }
+}
+
+/* Thêm styles cho phần hiển thị lý do hủy lịch */
+.cancel-note-section {
+  margin-top: 20px;
+  padding: 20px;
+  background-color: #fff5f5;
+  border-radius: 8px;
+  border: 1px solid #ffcccc;
+}
+
+.cancel-note-section h3 {
+  color: #dc3545;
+  margin-bottom: 15px;
+  font-size: 1.1rem;
+}
+
+.cancel-note-content {
+  padding: 15px;
+  background-color: white;
+  border-radius: 6px;
+  border: 1px solid #ffcccc;
+  color: #666;
+  line-height: 1.5;
+}
+
+.info-item.full-width {
+  grid-column: 1 / -1;
+}
+
+/* Styles cho phần lưu ý của bác sĩ */
+.doctor-note {
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  padding: 15px;
+}
+
+.doctor-note-content {
+  display: block;
+  padding: 15px;
+  background-color: white;
+  border-radius: 6px;
+  border: 1px solid #dee2e6;
+  color: #495057;
+  line-height: 1.5;
+  min-height: 80px;
+}
+
+/* Styles cho phần lý do hủy lịch */
+.cancel-note-section {
+  margin-top: 20px;
+  padding: 20px;
+  background-color: #fff5f5;
+  border-radius: 8px;
+  border: 1px solid #ffcccc;
+}
+
+.cancel-note-section h3 {
+  color: #dc3545;
+  margin-bottom: 15px;
+  font-size: 1.1rem;
+}
+
+.cancel-note-content {
+  padding: 15px;
+  background-color: white;
+  border-radius: 6px;
+  border: 1px solid #ffcccc;
+  color: #666;
+  line-height: 1.5;
+  font-style: italic;
+}
+
+.info-item.full-width {
+  grid-column: 1 / -1;
+}
+
+/* Styles cho form hủy lịch */
+.cancel-form {
+  margin: 20px 0;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+  color: #333;
+}
+
+.form-group textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  resize: vertical;
+  font-family: inherit;
+  font-size: 14px;
+}
+
+.form-group textarea.error {
+  border-color: #dc3545;
+}
+
+.error-message {
+  color: #dc3545;
+  font-size: 12px;
+  margin-top: 5px;
+}
+
+.warning-text {
+  color: #dc3545;
+  font-size: 14px;
+  font-style: italic;
+  margin: 10px 0;
+}
+
+.modal-content {
+  max-width: 500px;
+  width: 90%;
+}
+
+.modal-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.modal-btn {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.modal-btn.cancel {
+  background-color: #6c757d;
+  color: white;
+}
+
+.modal-btn.delete {
+  background-color: #dc3545;
+  color: white;
+}
+
+.modal-btn:hover {
+  opacity: 0.9;
+}

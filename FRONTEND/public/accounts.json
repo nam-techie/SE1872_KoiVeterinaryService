@@ -1,0 +1,30 @@
+[
+    {
+      "id": 1,
+      "username": "doctor01",
+      "password": "pass123",
+      "email": "doctor01@example.com",
+      "role": 1,
+      "is_active": true,
+      "created_date": "2024-01-01T10:00:00"
+    },
+    {
+      "id": 2,
+      "username": "customer01",
+      "password": "pass123",
+      "email": "customer01@example.com",
+      "role": 2,
+      "is_active": true,
+      "created_date": "2024-01-02T11:00:00"
+    },
+    {
+      "id": 3,
+      "username": "staff01",
+      "password": "pass123",
+      "email": "staff01@example.com",
+      "role": 3,
+      "is_active": true,
+      "created_date": "2024-01-03T12:00:00"
+    }
+  ]
+  

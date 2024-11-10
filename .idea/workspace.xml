@@ -1,0 +1,459 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="d2cec660-9bd4-4c6d-9559-8cd458d3cf90" name="Changes" comment="fix update doctor img">
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/controller/AdminController.java" beforeDir="false" afterPath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/controller/AdminController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/entity/Customers.java" beforeDir="false" afterPath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/entity/Customers.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/model/response/AppointmentResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/model/response/AppointmentResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/repository/AppointmentInfoRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/repository/AppointmentInfoRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/repository/AppointmentStatusRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/repository/AppointmentStatusRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/repository/CustomerRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/repository/CustomerRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/repository/DoctorRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/repository/DoctorRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/repository/ServiceTypeRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/repository/ServiceTypeRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/repository/ZoneRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/repository/ZoneRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/service/AppointmentService.java" beforeDir="false" afterPath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/service/AppointmentService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/service/AuthenticationService.java" beforeDir="false" afterPath="$PROJECT_DIR$/BACKEND/src/main/java/com/namtechie/org/service/AuthenticationService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FRONTEND/src/pages/admin_Pages/Dashboard.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/FRONTEND/src/pages/admin_Pages/Dashboard.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FRONTEND/src/pages/admin_Pages/DoctorDetailInfo.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/FRONTEND/src/pages/admin_Pages/DoctorDetailInfo.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FRONTEND/src/pages/admin_Pages/UpdateDoctor.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/FRONTEND/src/pages/admin_Pages/UpdateDoctor.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FRONTEND/src/pages/admin_Pages/styles/DoctorDetailInfo.css" beforeDir="false" afterPath="$PROJECT_DIR$/FRONTEND/src/pages/admin_Pages/styles/DoctorDetailInfo.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FRONTEND/src/pages/admin_Pages/styles/ServiceDashboard.css" beforeDir="false" afterPath="$PROJECT_DIR$/FRONTEND/src/pages/admin_Pages/styles/ServiceDashboard.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FRONTEND/src/pages/admin_Pages/styles/UpdateDoctor.css" beforeDir="false" afterPath="$PROJECT_DIR$/FRONTEND/src/pages/admin_Pages/styles/UpdateDoctor.css" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Exception" />
+        <option value="TypeScript File" />
+        <option value="CSS File" />
+        <option value="JSX File" />
+        <option value="JavaScript File" />
+        <option value="Interface" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="ricon" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;nam-techie&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/nam-techie/Group03_SE1872_KoiVeterinaryServiceCenter.git&quot;,
+    &quot;accountId&quot;: &quot;1ddcab4d-9cbe-47ed-9803-b6305e329a4b&quot;
+  }
+}</component>
+  <component name="KubernetesApiPersistence">{}</component>
+  <component name="KubernetesApiProvider">{
+  &quot;isMigrated&quot;: true
+}</component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="mavenHomeTypeForPersistence" value="WRAPPER" />
+      </MavenGeneralSettings>
+    </option>
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 1
+}</component>
+  <component name="ProjectId" id="2nC3Z4R5Qhhk94hOTObX7T7AeSu" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="1" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_MARK_IGNORED_FILES_AS_EXCLUDED&quot;: &quot;true&quot;,
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;Spring Boot.KoiVeterinaryServiceCenterApplication.executor&quot;: &quot;Run&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;nam&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Phuong Nam/Desktop/SWP391/DEMO&quot;,
+    &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;advanced.settings&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2024.2.1\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  },
+  &quot;keyToStringList&quot;: {
+    &quot;DatabaseDriversLRU&quot;: [
+      &quot;sqlserver&quot;
+    ]
+  }
+}</component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Phuong Nam\Desktop\SWP391\Group03_SE1872_KoiVeterinaryServiceCenter\.idea" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Phuong Nam\Desktop\SWP391\DEMO\Group03_SE1872_KoiVeterinaryServiceCenter\FRONTEND\src" />
+      <recent name="C:\Users\Phuong Nam\Desktop\SWP391\DEMO\Group03_SE1872_KoiVeterinaryServiceCenter\FRONTEND\src\styles" />
+      <recent name="C:\Users\Phuong Nam\Desktop\SWP391\DEMO\Group03_SE1872_KoiVeterinaryServiceCenter\FRONTEND\src\public_pages\dashboard" />
+      <recent name="C:\Users\Phuong Nam\Desktop\SWP391\Group03_SE1872_KoiVeterinaryServiceCenter\.idea" />
+      <recent name="C:\Users\Phuong Nam\Desktop\SWP391\Group03_SE1872_KoiVeterinaryServiceCenter" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.namtechie.org.entity" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="KoiVeterinaryServiceCenterApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <option name="ALTERNATIVE_JRE_PATH" value="$PROJECT_DIR$/../../../../../../Program Files/Java/jdk-21" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
+      <module name="KoiVeterinaryServiceCenter" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.namtechie.org.KoiVeterinaryServiceCenterApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9823dce3aa75-b114ca120d71-intellij.indexing.shared.core-IU-242.21829.142" />
+        <option value="bundled-js-predefined-d6986cc7102b-7c0b70fcd90d-JavaScript-IU-242.21829.142" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="d2cec660-9bd4-4c6d-9559-8cd458d3cf90" name="Changes" comment="" />
+      <created>1728568308126</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1728568308126</updated>
+      <workItem from="1728568315617" duration="8919000" />
+      <workItem from="1728605162020" duration="10337000" />
+      <workItem from="1728691569022" duration="9578000" />
+      <workItem from="1728735479717" duration="7657000" />
+      <workItem from="1728902718685" duration="1396000" />
+      <workItem from="1729218095908" duration="1953000" />
+      <workItem from="1729256619124" duration="65501000" />
+      <workItem from="1729555305578" duration="18499000" />
+      <workItem from="1729642261982" duration="21591000" />
+      <workItem from="1729694397114" duration="4664000" />
+      <workItem from="1729815555199" duration="7613000" />
+      <workItem from="1729902269534" duration="608000" />
+      <workItem from="1729906299174" duration="1696000" />
+      <workItem from="1729932099399" duration="56000" />
+      <workItem from="1729932173837" duration="10491000" />
+      <workItem from="1729958495379" duration="226000" />
+      <workItem from="1729959021848" duration="1222000" />
+      <workItem from="1729960275279" duration="504000" />
+      <workItem from="1729960940964" duration="1217000" />
+      <workItem from="1729962211704" duration="28000" />
+      <workItem from="1729990021290" duration="36080000" />
+      <workItem from="1730087917243" duration="6839000" />
+    </task>
+    <task id="LOCAL-00001" summary="push all because forgot">
+      <option name="closed" value="true" />
+      <created>1728708357027</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1728708357027</updated>
+    </task>
+    <task id="LOCAL-00002" summary="update">
+      <option name="closed" value="true" />
+      <created>1728788339161</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1728788339161</updated>
+    </task>
+    <task id="LOCAL-00003" summary="update view username when login success">
+      <option name="closed" value="true" />
+      <created>1728916092055</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1728916092055</updated>
+    </task>
+    <task id="LOCAL-00004" summary="done view profile">
+      <option name="closed" value="true" />
+      <created>1728996319116</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1728996319116</updated>
+    </task>
+    <task id="LOCAL-00005" summary="done update profile">
+      <option name="closed" value="true" />
+      <created>1729000950165</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1729000950165</updated>
+    </task>
+    <task id="LOCAL-00006" summary="update view css">
+      <option name="closed" value="true" />
+      <created>1729091000455</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1729091000456</updated>
+    </task>
+    <task id="LOCAL-00007" summary="done demo dashboard and view profile and update profile for admin">
+      <option name="closed" value="true" />
+      <created>1729103147148</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1729103147148</updated>
+    </task>
+    <task id="LOCAL-00008" summary="update new of clas">
+      <option name="closed" value="true" />
+      <created>1729257213237</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1729257213237</updated>
+    </task>
+    <task id="LOCAL-00009" summary="search account and sort them">
+      <option name="closed" value="true" />
+      <created>1729271133898</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1729271133898</updated>
+    </task>
+    <task id="LOCAL-00010" summary="done status in view account for admin">
+      <option name="closed" value="true" />
+      <created>1729272536351</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1729272536351</updated>
+    </task>
+    <task id="LOCAL-00011" summary="done create account for ever role when adim want and create account for veterianry">
+      <option name="closed" value="true" />
+      <created>1729340602436</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1729340602436</updated>
+    </task>
+    <task id="LOCAL-00012" summary="done dashboard for manage account">
+      <option name="closed" value="true" />
+      <created>1729344508152</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1729344508152</updated>
+    </task>
+    <task id="LOCAL-00013" summary="update two class entity">
+      <option name="closed" value="true" />
+      <created>1729439796974</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1729439796974</updated>
+    </task>
+    <task id="LOCAL-00014" summary="done dashboard for manage and change information account of user in web">
+      <option name="closed" value="true" />
+      <created>1729522425398</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1729522425398</updated>
+    </task>
+    <task id="LOCAL-00015" summary="update css of dashboard account">
+      <option name="closed" value="true" />
+      <created>1729525960726</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1729525960726</updated>
+    </task>
+    <task id="LOCAL-00016" summary="change some off css of AccountDashboard.css and change the register (turn off send email)">
+      <option name="closed" value="true" />
+      <created>1729528726248</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1729528726248</updated>
+    </task>
+    <task id="LOCAL-00017" summary="done first of dashboard for veterinary">
+      <option name="closed" value="true" />
+      <created>1729530342021</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1729530342021</updated>
+    </task>
+    <task id="LOCAL-00018" summary="done update information for doctor">
+      <option name="closed" value="true" />
+      <created>1729617600949</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1729617600949</updated>
+    </task>
+    <task id="LOCAL-00019" summary="update entity and more file">
+      <option name="closed" value="true" />
+      <created>1729686138891</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1729686138891</updated>
+    </task>
+    <task id="LOCAL-00020" summary="update entity customer">
+      <option name="closed" value="true" />
+      <created>1729688804963</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1729688804963</updated>
+    </task>
+    <task id="LOCAL-00021" summary="update some of file">
+      <option name="closed" value="true" />
+      <created>1729817517033</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1729817517033</updated>
+    </task>
+    <task id="LOCAL-00022" summary="update all entity">
+      <option name="closed" value="true" />
+      <created>1729871056546</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1729871056546</updated>
+    </task>
+    <task id="LOCAL-00023" summary="merge code thanglh and fix apiRequest for profitable my code">
+      <option name="closed" value="true" />
+      <created>1729935206791</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1729935206791</updated>
+    </task>
+    <task id="LOCAL-00024" summary="done dashboard to manage serviceType">
+      <option name="closed" value="true" />
+      <created>1730003687095</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1730003687096</updated>
+    </task>
+    <task id="LOCAL-00025" summary="done dashboard to manage serviceType part2">
+      <option name="closed" value="true" />
+      <created>1730016853023</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1730016853023</updated>
+    </task>
+    <task id="LOCAL-00026" summary="done dashboard to manage info fish">
+      <option name="closed" value="true" />
+      <created>1730027366942</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1730027366942</updated>
+    </task>
+    <task id="LOCAL-00027" summary="done FindDoctor Front end">
+      <option name="closed" value="true" />
+      <created>1730040005762</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1730040005762</updated>
+    </task>
+    <task id="LOCAL-00028" summary="done FindDoctor Front end part2">
+      <option name="closed" value="true" />
+      <created>1730041311806</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1730041311806</updated>
+    </task>
+    <task id="LOCAL-00029" summary="fix update doctor img">
+      <option name="closed" value="true" />
+      <created>1730044853102</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1730044853102</updated>
+    </task>
+    <option name="localTasksCounter" value="30" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="done update profile" />
+    <MESSAGE value="update view css" />
+    <MESSAGE value="done demo dashboard and view profile and update profile for admin" />
+    <MESSAGE value="update new of clas" />
+    <MESSAGE value="search account and sort them" />
+    <MESSAGE value="done status in view account for admin" />
+    <MESSAGE value="done create account for ever role when adim want and create account for veterianry" />
+    <MESSAGE value="done dashboard for manage account" />
+    <MESSAGE value="update two class entity" />
+    <MESSAGE value="done dashboard for manage and change information account of user in web" />
+    <MESSAGE value="update css of dashboard account" />
+    <MESSAGE value="change some off css of AccountDashboard.css and change the register (turn off send email)" />
+    <MESSAGE value="done first of dashboard for veterinary" />
+    <MESSAGE value="done update information for doctor" />
+    <MESSAGE value="update entity and more file" />
+    <MESSAGE value="update entity customer" />
+    <MESSAGE value="update some of file" />
+    <MESSAGE value="update all entity" />
+    <MESSAGE value="merge code thanglh and fix apiRequest for profitable my code" />
+    <MESSAGE value="done dashboard to manage serviceType" />
+    <MESSAGE value="done dashboard to manage serviceType part2" />
+    <MESSAGE value="done dashboard to manage info fish" />
+    <MESSAGE value="done FindDoctor Front end" />
+    <MESSAGE value="done FindDoctor Front end part2" />
+    <MESSAGE value="fix update doctor img" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix update doctor img" />
+  </component>
+</project>

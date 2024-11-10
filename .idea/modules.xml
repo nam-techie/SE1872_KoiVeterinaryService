@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/Group03_SE1872_KoiVeterinaryServiceCenter.iml" filepath="$PROJECT_DIR$/.idea/Group03_SE1872_KoiVeterinaryServiceCenter.iml" />
+      <module fileurl="file://$PROJECT_DIR$/BACKEND/KoiVeterinaryServiceCenter.iml" filepath="$PROJECT_DIR$/BACKEND/KoiVeterinaryServiceCenter.iml" />
+    </modules>
+  </component>
+</project>
