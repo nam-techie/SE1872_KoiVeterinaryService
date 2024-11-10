@@ -249,10 +249,20 @@ public class AppointmentController {
     }
 
     @PutMapping("/updateInfoCustomer")
-    public ResponseEntity updateInfoCustomer(@RequestBody CustomerInfoRequest customerInfo) {
-        CustomerInfoRequest newUpdate = customerService.updateCustomerInfo(customerInfo);
-        return ResponseEntity.ok(newUpdate);
+    public ResponseEntity<?> updateInfoCustomer(@RequestBody CustomerInfoRequest customerInfo) {
+        try {
+            CustomerInfoRequest newUpdate = customerService.updateCustomerInfo(customerInfo);
+            return ResponseEntity.ok(newUpdate);
+        } catch (DuplicateEntity e) {
+            // Bắt lỗi số điện thoại bị trùng
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Đã xảy ra lỗi trong quá trình cập nhật thông tin khách hàng.");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Đã xảy ra lỗi không mong muốn.");
+        }
     }
+
 
     @PostMapping("/confirmPayment/{appointmentId}")
     public ResponseEntity<String> confirmPayment(@PathVariable long appointmentId) {

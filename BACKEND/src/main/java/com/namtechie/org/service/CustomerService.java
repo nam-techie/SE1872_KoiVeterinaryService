@@ -2,6 +2,7 @@ package com.namtechie.org.service;
 
 import com.namtechie.org.entity.Account;
 import com.namtechie.org.entity.Customers;
+import com.namtechie.org.exception.DuplicateEntity;
 import com.namtechie.org.model.request.CustomerInfoRequest;
 import com.namtechie.org.model.response.CustomerProfileUpdateResponse;
 import com.namtechie.org.model.response.InfoCustomerResponse;
@@ -84,6 +85,8 @@ public class CustomerService {
 
                 if (customerInfo.getPhoneNumber().equals(customer.getPhone()) || !customerRepository.existsByPhone(customerInfo.getPhoneNumber())) {
                     customer.setPhone(customerInfo.getPhoneNumber());
+                }else{
+                    throw new DuplicateEntity("Số điện thoại đã được sử dụng.");
                 }
 
                 // Cập nhật các giá trị khác

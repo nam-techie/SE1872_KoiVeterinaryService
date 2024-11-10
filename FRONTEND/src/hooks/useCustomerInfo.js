@@ -42,8 +42,8 @@ export const useCustomerInfo = () => {
             await fetchCustomerInfo(); // Refresh user data after update
             return response.data;
         } catch (error) {
-            console.error('Lỗi khi cập nhật thông tin khách hàng:', error);
-            throw error;
+            const errorMessage = error.response?.data;
+            throw errorMessage;
         }
     };
 
