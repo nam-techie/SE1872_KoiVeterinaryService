@@ -346,19 +346,10 @@ const ManageAppointment = () => {
             <div className={styles.searchBox}>
               <input
                 type="text"
-                placeholder="Tìm kiếm theo ID, dịch vụ, ngày (DD/MM/YYYY), thời gian, trạng thái..."
+                placeholder="Tìm kiếm..."
                 className={styles.searchInput}
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-              />
-              <FaSearch
-                style={{
-                  position: "absolute",
-                  right: "10px",
-                  top: "50%",
-                  transform: "translateY(-50%)",
-                  color: "#666",
-                }}
               />
             </div>
 
