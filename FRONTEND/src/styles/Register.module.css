@@ -1,0 +1,93 @@
+/* Đảm bảo container có chiều cao 100vh và căn giữa */
+.registerContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: calc(100vh - 80px);
+    background-color: #f8f8f8;
+    padding: 20px 0 20px;
+    margin-top: 80px;
+    font-family: Arial, sans-serif;
+    box-sizing: border-box;
+}
+
+.registerForm {
+    background-color: white;
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    width: 100%;
+}
+
+.registerForm h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.formGroup {
+    margin-bottom: 15px;
+}
+
+.formGroup label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.formGroup input {
+    width: 100%;
+    padding: 10px; /* Khoảng cách bên trong input */
+    border-radius: 4px; /* Làm bo tròn góc */
+    border: 1px solid #ddd; /* Viền mặc định */
+    font-size: 16px;
+    outline: none; /* Xóa khung viền mặc định khi focus */
+    margin-top: 10px;
+}
+
+.errorInput {
+    border: 2px solid red; /* Viền đỏ khi có lỗi */
+}
+
+.validInput {
+    border: 2px solid green; /* Viền xanh khi hợp lệ */
+}
+
+.registerButton {
+    background-color: #f58220;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    width: 100%;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.registerButton:hover {
+    background-color: #e0730f;
+}
+
+.login {
+    text-align: center;
+    margin-top: 15px;
+}
+
+.errorMessage {
+    display: flex;
+    align-items: center;
+    color: #721c24; /* Màu chữ đỏ */
+    background-color: #f8d7da; /* Nền hồng nhạt */
+    border: 1px solid #f5c6cb; /* Viền đỏ nhạt */
+    padding: 10px;
+    border-radius: 8px; /* Bo tròn viền */
+    font-size: 16px; /* Kích thước chữ */
+    margin-bottom: 20px;
+}
+
+.errorIcon {
+    width: 24px;
+    height: 24px;
+    color: #721c24; /* Màu biểu tượng */
+    margin-right: 10px; /* Khoảng cách giữa biểu tượng và văn bản */
+}

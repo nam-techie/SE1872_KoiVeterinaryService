@@ -1,0 +1,244 @@
+.aboutMeContainer{
+    font-family: Arial, Helvetica, sans-serif;
+    padding: 120px 20px 20px; /* padding-top, padding-left/right, padding-bottom */
+    width: 100%;
+    max-width: 1300px;
+    margin: 0 auto; /* Căn giữa */
+    position: relative;
+}
+
+.breadCrumb {
+    display: flex; /* Sử dụng flexbox cho breadcrumb */
+    align-items: center; /* Căn giữa biểu tượng và văn bản */
+    padding-left: 20px;
+}
+
+.breadCrumb a { /* Xóa gạch chân cho link */
+ /* Màu sắc cho chữ */
+    margin-right: 5px; /* Khoảng cách giữa link và biểu tượng */
+    text-decoration: underline;
+    color: purple;
+}
+
+.breadCrumb span{
+    color: darkorange;
+}
+
+.aboutMeFirst {
+    padding-top: 20px;
+    width: 100%; /* Đảm bảo container chiếm toàn bộ chiều rộng */
+}
+
+.aboutMeFirstContent {
+    display: flex;
+    width: 100%;
+    gap: 40px; /* Thêm khoảng cách giữa các phần */
+    align-items: stretch;
+    background: linear-gradient(135deg, #fff6e9, #ffe4c4); /* Gradient background */
+    border-radius: 20px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.aboutMeFirstContentLeft {
+    flex: 1;
+    padding: 40px;
+    background: transparent; /* Xóa background cũ */
+}
+
+.aboutMeFirstContentLeft h2 {
+    font-size: 2.5rem;
+    color: #FF6B35;
+    margin-bottom: 25px;
+    position: relative;
+    margin-top: 0;
+}
+
+.aboutMeFirstContentLeft h2::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: #FF6B35;
+}
+
+.aboutMeFirstContentLeft h3 {
+    font-size: 1.8rem;
+    color: #FF8C42;
+    margin: 30px 0 15px;
+}
+
+.aboutMeFirstContentLeft p {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: #555;
+    margin-bottom: 20px;
+    text-align: justify;
+}
+
+/* Animation cho text khi scroll */
+.fadeInSection {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.6s ease-out;
+}
+
+.fadeInSection.isVisible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.aboutMeFirstContentRight {
+    flex: 0 0 50%; /* Đặt phần hình ảnh chiếm 50% chiều rộng */
+    display: flex; /* Để căn giữa hình ảnh */
+    justify-content: center; /* Căn giữa hình ảnh theo chiều ngang */
+    align-items: center; /* Căn giữa hình ảnh theo chiều dọc */
+    color: #FF8C00;
+}
+
+.aboutMeFirstContentRight img {
+    max-width: 100%; /* Đảm bảo hình ảnh không vượt quá chiều rộng của container */
+    height: auto;
+    padding-left: 120px/* Để hình ảnh duy trì tỷ lệ khung hình */
+}
+
+.aboutMeSecond{
+    padding-top: 20px;
+    font-size: 1.2rem;
+}
+
+.aboutMeCardContent {
+    display: flex; /* Sử dụng flexbox để căn giữa các thẻ */
+    justify-content: space-between; /* Căn giữa các thẻ */
+    gap: 20px; /* Khoảng cách giữa các thẻ */
+    padding: 20px; /* Padding cho các phần */
+    font-family: Arial, sans-serif; /* Font chữ chung */
+}
+
+.aboutmeCard {
+    background-color: #fff; /* Màu nền cho thẻ */
+    border-radius: 15px; /* Bo tròn góc */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Bóng đổ cho thẻ */
+    padding: 20px; /* Padding cho thẻ */
+    width: 30%; /* Chiếm 30% chiều rộng */
+    transition: transform 0.3s ease-in-out; /* Hiệu ứng khi hover */
+}
+
+.aboutmeCard:hover {
+    transform: translateY(-10px); /* Nâng thẻ lên khi hover */
+}
+
+.aboutmeCardTitle {
+    font-size: 18px; /* Kích thước chữ cho tiêu đề */
+    font-weight: bold; /* Chữ đậm */
+    margin-bottom: 10px; /* Khoảng cách dưới tiêu đề */
+}
+
+.aboutmeCardText {
+    font-size: 16px; /* Kích thước chữ cho văn bản */
+    line-height: 1.6; /* Khoảng cách giữa các dòng */
+    color: #333; /* Màu chữ */
+}
+
+.aboutmeCard h3{
+    color: #ff9966; /* Màu cho tiêu đề thẻ thứ hai */
+}
+
+.aboutmeThird {
+    display: flex;
+    gap: 50px;
+    align-items: center;
+    padding: 45px;
+    margin: 40px auto;
+    max-width: 1100px;
+    background: linear-gradient(135deg, #f8fbff, #f5f8ff); /* Màu nền nhạt hơn */
+    border-radius: 30px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.03);
+}
+
+.aboutmeThirdLeft {
+    flex: 1;
+    position: relative;
+}
+
+.aboutmeThirdLeft h2 {
+    font-size: 2.2rem;
+    color: #333;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+/* Style mới cho các đoạn văn bản */
+.aboutmeThirdLeft p {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: #555;
+    margin-bottom: 25px;
+    padding: 20px 25px;
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 15px;
+    border-left: 4px solid #FF6B35;
+    transition: all 0.3s ease;
+}
+
+.aboutmeThirdLeft p:hover {
+    background: rgba(255, 255, 255, 0.9);
+    transform: translateX(10px);
+    box-shadow: 0 5px 15px rgba(255, 107, 53, 0.1);
+}
+
+.aboutmeThirdRight {
+    flex: 0 0 350px; /* Tăng kích thước */
+    height: 350px;
+    position: relative;
+    animation: float 3s ease-in-out infinite;
+    margin-right: 20px;
+    filter: drop-shadow(0 10px 20px rgba(255, 107, 53, 0.2));
+}
+
+.aboutmeThirdRight img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+@keyframes float {
+    0% {
+        transform: translateY(0px) rotate(0deg);
+    }
+    50% {
+        transform: translateY(-15px) rotate(2deg);
+    }
+    100% {
+        transform: translateY(0px) rotate(0deg);
+    }
+}
+
+/* Responsive */
+@media (max-width: 968px) {
+    .aboutmeThird {
+        flex-direction: column;
+        padding: 30px;
+    }
+    
+    .aboutmeThirdRight {
+        width: 250px;
+        height: 250px;
+        margin: 20px auto;
+    }
+    
+    .aboutmeThirdLeft p {
+        padding: 15px 20px;
+    }
+}
+
+.aboutMeSecond h1 {
+    text-align: center;  /* Căn giữa text */
+    font-size: 2.5rem;   /* Kích thước chữ */
+    color: #FF6B35;      /* Màu chữ */
+    margin: 40px 0;      /* Khoảng cách trên dưới */
+    font-weight: bold;
+}
+

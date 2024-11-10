@@ -1,0 +1,114 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    overflow-x: hidden; /* Ẩn cuộn ngang */
+}
+
+/* Footer Container */
+.footerContainer {
+    background-color: #1c1c1c;
+    color: white;
+    padding: 20px 0;
+    font-family: Arial, sans-serif;
+    width: 100vw;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+/* Footer Content Layout */
+.footerContent {
+    display: flex;
+    justify-content: space-around; /* Tạo khoảng cách cân đối giữa các phần */
+    flex-wrap: wrap;
+    gap: 20px; /* Điều chỉnh khoảng cách giữa các phần */
+    max-width: 1200px; /* Giới hạn chiều rộng nội dung */
+    margin: 0 auto;
+    padding: 0 15px;
+}
+
+/* Footer Section */
+.footerSection {
+    flex: 1;
+    margin: 10px;
+    min-width: 200px; /* Tăng min-width để các phần có kích thước đều hơn */
+}
+
+/* Title for each section */
+.footerSectionTitle {
+    font-size: 20px;
+    margin-bottom: 15px;
+    font-weight: bold;
+    color: #f5a623;
+}
+
+/* Unordered List Styling */
+.footerList {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.footerListItem {
+    margin-bottom: 8px;
+}
+
+.footerLink {
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 16px;
+    transition: color 0.3s ease;
+}
+
+.footerLink:hover {
+    color: #f5a623;
+}
+
+/* Contact Section */
+.contactSectionIcon {
+    margin-right: 8px;
+}
+
+/* Map Section */
+.mapSection {
+    margin-top: 20px;
+    padding-left: 20px; /* Tạo khoảng cách giữa mục liên hệ và bản đồ */
+}
+
+/* Social Media Icons */
+.socialMedia {
+    display: flex;
+    justify-content: center;
+    margin: 10px 0;
+}
+
+.socialIcon {
+    background-color: white;
+    color: #333;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 8px;
+    text-decoration: none;
+    font-size: 16px;
+    transition: all 0.3s ease;
+}
+
+.socialIcon:hover {
+    background-color: #f5a623;
+    color: white;
+}
+
+/* Footer Bottom Section */
+.footerBottom {
+    text-align: center;
+    border-top: 1px solid #333;
+    font-size: 13px;
+    color: #aaa;
+    width: 100%;
+    margin: 0 auto;
+    box-sizing: border-box;
+}

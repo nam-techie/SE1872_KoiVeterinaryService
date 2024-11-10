@@ -1,0 +1,266 @@
+/* Existing CSS, untouched */
+.serviceIntroContainer {
+    font-family: Arial, Helvetica, sans-serif;
+    padding: 150px 20px 20px;
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+    position: relative;
+}
+
+
+.breadCrumb {
+    display: flex;
+    align-items: center;
+    padding-left: 20px;
+    margin-bottom: 20px; /* Khoảng cách giữa breadcrumb và tiêu đề */
+}
+
+
+.breadCrumb a {
+    margin-right: 5px;
+    text-decoration: underline;
+    color: purple;
+}
+
+
+.breadCrumb span {
+    color: darkorange;
+}
+
+
+.orangeLine {
+    width: 40%;
+    height: 0;
+    border: 0.1rem solid orangered;
+    margin-top: 10px;
+    margin-bottom: 30px;
+}
+
+
+.serviceIntroFist {
+    display: flex;
+    flex-direction: column;
+
+
+    text-align: left;
+}
+
+
+.serviceIntroFist h1 {
+    font-size: 28px;
+    color: black;
+}
+
+
+.serviceIntroSecond {
+    margin-top: 30px;
+}
+
+
+.serviceIntroSecondCard {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 10px; /* Giảm padding để form nhỏ lại */
+    background-color: white;
+    border-radius: 10px;
+    text-align: center;
+    width: 80%; /* Giảm width để thẻ nhỏ hơn */
+    margin: 5px auto; /* Cân giữa thẻ và thêm khoảng cách đều giữa các thẻ */
+}
+
+
+.serviceIntroSecondCard h4 {
+    margin-top: 10px; /* Giảm khoảng cách giữa icon và title */
+    margin-bottom: 10px;
+    font-size: 16px; /* Kích thước chữ */
+    font-weight: bold;
+}
+
+
+.scheduleButton {
+    padding: 8px 16px; /* Kích thước nút */
+    background-color: orange;
+    color: white;
+    border: 2px solid orange;
+    border-radius: 5px;
+    font-size: 14px; /* Kích thước chữ trên nút */
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+    text-decoration: none; /* Xóa gạch chân của link */
+    display: inline-block; /* Để a hoạt động như button */
+}
+
+
+.scheduleButton:hover {
+    background-color: white;
+    color: orange; /* Đổi chữ thành cam */
+    border: 2px solid orange; /* Đổi viền thành cam */
+}
+
+
+/* New CSS for detailed service section */
+
+
+.serviceIntroThird {
+    margin-top: 50px;
+}
+
+
+.serviceDetailsGrid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    margin-top: 30px;
+}
+
+
+.serviceCard {
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 20px;
+    text-align: left;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+
+.serviceCard h3 {
+    margin-top: 10px;
+    color: orange;
+    font-size: 20px;
+}
+
+
+.serviceCard p {
+    margin-top: 10px;
+    color: #333;
+    font-size: 16px;
+}
+
+
+.serviceTable {
+    width: 80%;
+    margin: 40px auto;
+    border-collapse: collapse;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    overflow: hidden;
+    table-layout: fixed;
+}
+
+
+.serviceTable th, .serviceTable td {
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+
+.serviceTable th {
+    background-color: #f0a500;
+    color: white;
+    text-transform: uppercase;
+    font-weight: 600;
+}
+
+
+.serviceTable td {
+    background-color: #fff;
+}
+
+
+.serviceTable tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+
+.serviceTable tr:hover {
+    background-color: #f0f0f0; /* Màu nền khi hover */
+}
+
+
+.serviceTable th:first-child,
+.serviceTable td:first-child {
+    width: 25%;
+    white-space: normal;
+    overflow: visible;
+    text-overflow: initial;
+    word-wrap: break-word;
+    min-width: 200px;
+}
+
+
+.serviceTable th:nth-child(2),
+.serviceTable td:nth-child(2) {
+    width: 15%;
+    white-space: nowrap;
+    text-align: right;
+    padding-right: 20px;
+}
+
+
+.serviceTable th:last-child,
+.serviceTable td:last-child {
+    width: 60%;
+    white-space: normal;
+    word-wrap: break-word;
+}
+
+
+.serviceTable td {
+    padding: 15px;
+    line-height: 1.4;
+    vertical-align: top;
+}
+
+
+/* Thêm styles mới cho bảng giá di chuyển */
+.transportPriceGrid {
+    width: 80%;
+    margin: 40px auto;
+}
+
+.transportTable {
+    width: 100%;
+    border-collapse: collapse;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.transportTable td {
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    text-align: left;
+    background-color: #fff;
+    width: 16.66%; /* Chia đều cho 6 cột */
+}
+
+.transportTable tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.transportTable tr:hover {
+    background-color: #f0f0f0;
+}
+
+/* Style cho các ô chứa tên quận */
+.transportTable td:nth-child(odd) {
+    font-weight: 600;
+    background-color: #f8f8f8;
+}
+
+/* Style cho các ô chứa giá */
+.transportTable td:nth-child(even) {
+    color: #e67e22;
+    font-weight: 500;
+}
+
+
+
+
+
+
+

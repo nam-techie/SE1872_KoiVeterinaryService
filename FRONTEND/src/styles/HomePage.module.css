@@ -1,0 +1,308 @@
+.homePageContainer {
+    font-family: Arial, Helvetica, sans-serif;
+    padding: 150px 20px 20px; /* padding-top, padding-left/right, padding-bottom */
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto; /* Căn giữa */
+    position: relative;
+}
+
+.sliderItem {
+    position: relative;
+}
+
+.sliderImage {
+    width: 100%;
+    height: 400px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.homePageFirstContent {
+    position: relative;
+}
+
+.homePageFirstContent::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3));
+    border-radius: 10px;
+    z-index: 1;
+}
+
+.buttonsContainer {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    z-index: 10;
+    width: 50%;
+    color: white;
+}
+
+.homePageFirstContent h1 {
+    position: relative;
+    z-index: 2;
+    color: white;
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.homePageFirstContent span {
+    position: relative;
+    z-index: 2;
+    padding-top: 20px;
+    color: white;
+    font-size: 1.2rem;
+}
+
+.myMasonryGrid {
+    display: flex;
+    width: 100%;
+}
+
+.myMasonryGridColumn {
+    padding: 10px;
+}
+
+.functionButton {
+    display: flex;
+    align-items: center;
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 10px 15px;
+    margin-right: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    color: #FF8C00;
+    font-weight: bold;
+    text-align: left;
+    width: auto;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+.functionButton:hover {
+    background-color: #ea8045;
+}
+.functionButton:hover h4{
+    color: white;
+}
+
+.functionIcon {
+    color: #FF8C00;
+    margin-right: 10px;
+}
+
+.functionButton h4 {
+    margin: 0;
+    color: #FF8C00;
+}
+
+/* Cấu trúc cho phần thứ hai */
+.homePageSecond {
+    padding: 40px 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.orangeLine{
+  width: 40%;
+  height: 0;
+  border: 0.1rem solid orangered;
+  margin-top: 20px;
+  margin-bottom: 30px;
+}
+
+.homePageSecondTitle {
+    margin-bottom: 40px;
+    padding-left: 0;
+}
+
+.homePageSecondTitle h1 .homePageThird h1 .homePageFourth h1{
+    text-align: left;
+    font-size: 2.5rem;
+    color: #333;
+    margin: 0;
+}
+
+.homePageSecondContent {
+    display: flex;
+    justify-content: space-between;
+    gap: 40px;
+    padding: 40px 20px;
+    text-align: left;
+}
+
+/* Phần bên phải chia 4 ô */
+.homePageSecordRightPart {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    height: 100%;
+    width: 100%;
+}
+
+.homePageSecordRightPart > div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.hPSRPIcon {
+    color: #FF4500;
+    font-size: 40px;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.homePageSecordRightPart h2 {
+    font-size: 24px;
+    color: #FF4500;
+    margin-bottom: 15px;
+    text-align: center;
+    width: 100%;
+    white-space: nowrap;
+    font-weight: 600;
+}
+
+.hPSRPContent {
+    font-size: 15px;
+    color: #666;
+    line-height: 1.6;
+    text-align: justify; /* Căn đều 2 bên */
+    margin: 0;
+    width: 100%;
+    padding: 0 10px;
+    min-height: 80px; /* Đảm bảo các box có chiều cao tương đương */
+}
+
+.homePageSecondRight {
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    justify-content: center;
+    max-width: 800px;
+}
+
+.doctorCard {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: white;
+    border-radius: 10px;
+    padding: 20px;
+    margin: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    min-height: 300px; /* Đặt chiều cao tối thiểu */
+    height: 100%;     /* Đảm bảo tất cả card có chiều cao bằng nhau */
+    position: relative; /* Để định vị các phần tử con */
+}
+
+.doctorImageContainer {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin-bottom: 15px;
+}
+
+.doctorImage {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.doctorCard h3 {
+    margin: 10px 0;
+    font-size: 1.2rem;
+    text-align: center;
+    color: #333;
+}
+
+.doctorCard p {
+    margin: 5px 0;
+    text-align: center;
+    color: #666;
+    /* Giới hạn số dòng cho phần text */
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* Số dòng tối đa */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Thêm style cho slider container */
+.slick-slide > div {
+    height: 100%;
+    padding: 10px;
+}
+
+.slick-track {
+    display: flex !important;
+    align-items: stretch;
+}
+
+.slick-slide {
+    height: auto !important;
+}
+
+/* Đảm bảo các card trong slider có chiều cao bằng nhau */
+.slick-slide > div {
+    height: 100%;
+}
+
+.slick-slide > div > div {
+    height: 100%;
+}
+
+.homePageFourth{
+    padding-top: 30px;
+}
+
+.myMansoryGrid2{
+    display: flex;
+    justify-content: center;
+    margin: 0 auto;
+    padding: 0 20px;
+    width: 100%;
+    max-width: 1200px;
+}
+ .MansoryGrid2Colum{
+     padding-left: 10px;
+     background-clip: padding-box;
+ }
+
+ .myMansoryGrid2 img{
+     width: 100%;
+     display: block;
+     border-radius: 10px;
+     object-fit: cover;
+     max-height: 150px;
+     margin-bottom: 10px;
+ }
+
+@media (max-width: 768px) {
+    .homePageSecordRightPart h2 {
+        font-size: 20px;
+    }
+    
+    .hPSRPContent {
+        font-size: 14px;
+        min-height: auto;
+    }
+    
+    .homePageSecondRight {
+        grid-template-columns: 1fr;
+    }
+}

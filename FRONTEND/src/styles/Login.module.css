@@ -1,0 +1,146 @@
+/* Đảm bảo container có chiều cao 100vh và căn giữa */
+.loginContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: calc(100vh - 80px);
+    background-color: #f8f8f8;
+    padding: 10px 0 10px;
+    margin-top: 80px;
+    font-family: Arial, sans-serif;
+    box-sizing: border-box;
+}
+
+
+.loginForm {
+    background-color: white;
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    width: 100%;
+}
+
+
+.loginForm h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+
+.formGroup {
+    margin-bottom: 20px; /* Tăng khoảng cách giữa các form-group */
+}
+
+
+.formGroup label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+
+.formGroup input {
+    width: 100%;
+    padding: 12px; /* Tăng khoảng cách padding cho đều */
+    border-radius: 4px;
+    border: 1px solid #ddd;
+    font-size: 16px;
+    box-sizing: border-box; /* Đảm bảo padding không ảnh hưởng đến kích thước */
+    margin-top: 10px;
+}
+
+
+.forgotPassword {
+    color: #f58220;
+    text-decoration: none;
+}
+
+
+.loginButton {
+    background-color: #f58220;
+    color: white;
+    padding: 12px; /* Đồng nhất padding với input */
+    border: none;
+    border-radius: 4px;
+    width: 100%;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 10px; /* Thêm khoảng cách giữa input và nút */
+}
+
+
+.loginButton:hover {
+    background-color: #e0730f;
+}
+
+
+.register {
+    text-align: center;
+    margin-top: 15px;
+}
+
+
+.orLoginWith {
+    text-align: center;
+    margin-top: 20px;
+    color: #999;
+}
+
+
+.googleButton {
+    display: flex; /* Sử dụng Flexbox để căn giữa nội dung */
+    justify-content: center; /* Căn giữa theo chiều ngang */
+    align-items: center; /* Căn giữa theo chiều dọc */
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 100%; /* Đảm bảo nút có chiều rộng đầy đủ */
+    font-size: 16px;
+    padding: 12px; /* Đảm bảo padding đều cho nút */
+    transition: background-color 0.3s; /* Hiệu ứng chuyển tiếp màu nền */
+}
+
+
+.googleButton:hover {
+    background-color: #f1f1f1; /* Màu nền khi hover */
+}
+
+
+.errorMessage {
+    background-color: #fde8e8;
+    border: 1px solid #fca5a5;
+    color: #dc2626;
+    padding: 12px 16px;
+    border-radius: 6px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    animation: slideIn 0.3s ease-in-out;
+}
+
+
+.errorMessage svg {
+    width: 20px;
+    height: 20px;
+    margin-right: 8px;
+    flex-shrink: 0;
+}
+
+
+.errorMessage span {
+    flex: 1;
+}
+
+
+@keyframes slideIn {
+    from {
+        transform: translateY(-10px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
