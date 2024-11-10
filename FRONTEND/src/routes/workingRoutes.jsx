@@ -51,16 +51,13 @@ export const RestrictedRoute = ({ children }) => {
     return children;
 };
 
-// PrivateRoute: Yêu cầu token để truy cập
-export const PrivateRoute = ({ children }) => {
-    const token = localStorage.getItem('authToken');
-    return token ? children : <Navigate to="/login" />;
-};
+
 
 // RoleBasedRoute: Yêu cầu token và vai trò phù hợp để truy cập
 export const RoleBasedRoute = ({ children, allowedRoles }) => {
     const token = localStorage.getItem('authToken');
     const tokenRole = getRoleFromToken();
+    console.log(tokenRole);
 
     if (!token) {
         return <Navigate to="/login" />;
@@ -74,6 +71,8 @@ export const RoleBasedRoute = ({ children, allowedRoles }) => {
         } else if (tokenRole === 'CUSTOMER') {
             return <Navigate to="/homepage" />;
         } else {
+            console.log("looix");
+
             return <Navigate to="/login" />;
         }
     }
@@ -90,9 +89,7 @@ RestrictedRoute.propTypes = {
     children: PropTypes.node.isRequired,
 };
 
-PrivateRoute.propTypes = {
-    children: PropTypes.node.isRequired,
-};
+
 
 RoleBasedRoute.propTypes = {
     children: PropTypes.node.isRequired,
