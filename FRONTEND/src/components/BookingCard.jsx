@@ -27,11 +27,17 @@ export function PhoneInput({ phoneNumber, setPhoneNumber, error }) {
         <div className={styles.formGroup}>
             <label className={styles.label}>Số điện thoại:</label>
             <input
-                type="number"
+                type="text"
                 value={phoneNumber}
-                onChange={(e) => setPhoneNumber(e.target.value)}
+                onChange={(e) => {
+                    const value = e.target.value.replace(/\D/g, '');
+                    if (value.length <= 10) {
+                        setPhoneNumber(value);
+                    }
+                }}
                 className={styles.input}
-                maxLength="11"
+                pattern="[0-9]*"
+                inputMode="numeric"
                 placeholder="Nhập số điện thoại"
             />
             {error && <span className={styles.errorMessage}>{error}</span>}

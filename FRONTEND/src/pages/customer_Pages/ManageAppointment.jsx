@@ -210,14 +210,23 @@ const ManageAppointment = () => {
   const filteredAndSortedAppointments = appointments
     .filter((appointment) => {
       const searchLower = searchTerm.toLowerCase();
-      const matchesSearch =
-        appointment.appointmentId?.toString().includes(searchLower) ||
-        appointment.serviceType?.toLowerCase().includes(searchLower);
+      
+      // Tìm kiếm theo nhiều tiêu chí
+      const matchesSearch = 
+        // Tìm theo ID
+        appointment.appointmentId?.toString().toLowerCase().includes(searchLower) ||
+        // Tìm theo loại dịch vụ
+        appointment.serviceType?.toLowerCase().includes(searchLower) ||
+        // Tìm theo ngày (format: DD/MM/YYYY)
+        appointment.appointmentDate?.toLowerCase().includes(searchLower) ||
+        // Tìm theo trạng thái
+        appointment.appointmentStatus?.toLowerCase().includes(searchLower);
 
       const matchesStatus =
         statusFilter === "all" ||
         appointment.appointmentStatus === statusFilter;
 
+      // Tìm kiếm theo ngày cụ thể nếu có
       if (dateSearch) {
         return (
           matchesSearch &&
@@ -337,7 +346,7 @@ const ManageAppointment = () => {
             <div className={styles.searchBox}>
               <input
                 type="text"
-                placeholder="Tìm kiếm..."
+                placeholder="Tìm kiếm theo ID, dịch vụ, ngày (DD/MM/YYYY), thời gian, trạng thái..."
                 className={styles.searchInput}
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
