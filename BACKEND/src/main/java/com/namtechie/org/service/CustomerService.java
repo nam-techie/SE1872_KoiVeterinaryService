@@ -85,7 +85,7 @@ public class CustomerService {
 
                 if (customerInfo.getPhoneNumber().equals(customer.getPhone()) || !customerRepository.existsByPhone(customerInfo.getPhoneNumber())) {
                     customer.setPhone(customerInfo.getPhoneNumber());
-                }else{
+                } else {
                     throw new DuplicateEntity("Số điện thoại đã được sử dụng.");
                 }
 
@@ -103,6 +103,8 @@ public class CustomerService {
             // Lưu thông tin cập nhật vào database
             accountRepository.save(curruntAccount);
             return modelMapper.map(customer, CustomerInfoRequest.class);
+        } catch (DuplicateEntity e) {
+            throw new DuplicateEntity(e.getMessage());
         } catch (RuntimeException e) {
             e.printStackTrace();
             throw new RuntimeException("Đã xảy ra lỗi trong quá trình cập nhật thông tin khách hàng.");
