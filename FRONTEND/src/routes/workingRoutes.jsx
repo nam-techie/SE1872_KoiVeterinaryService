@@ -1,6 +1,6 @@
 import { Navigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import jwt_decode from 'jwt-decode';
+import jwtDecode from 'jwt-decode';
 
 // Hàm helper để lấy role từ token
 const getRoleFromToken = () => {
@@ -8,7 +8,7 @@ const getRoleFromToken = () => {
   if (!token) return null;
   
   try {
-    const decoded = jwt_decode(token);
+    const decoded = jwtDecode(token);
     return decoded.role;
   } catch (error) {
     return null;
