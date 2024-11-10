@@ -155,7 +155,6 @@ public class AppointmentService {
             AppointmentInfo appointmentInfo = new AppointmentInfo();
             appointmentInfo.setAppointment(appointment);
             appointmentInfo.setAddress(appointmentRequest.getAddress());
-            customer.setAddress(appointmentRequest.getAddress());
             customersRepository.save(customer);
 
             Zone zone = null;
@@ -861,6 +860,8 @@ public class AppointmentService {
                 status.setNotes("Lịch đặt bị hủy vì quá thời hạn thanh toán tiền cho trung tâm!");
                 appointmentStatusRepository.save(status);
 
+                appointment.setCancel(true);
+                appointmentRepository.save(appointment);
             }
         } else if (latestStatus != null &&
                 (latestStatus.getStatus().equals("Chờ bác sĩ xác nhận"))) {
@@ -875,7 +876,11 @@ public class AppointmentService {
                 status.setStatus("Đã hủy lịch");
                 status.setNotes("Lịch đặt bị hủy vì bác sĩ xác nhận quá thời gian cho phép!");
                 appointmentStatusRepository.save(status);
+                appointment.setCancel(true);
+                appointmentRepository.save(appointment);
+
             }
+
         }
         return latestStatus;
     }
@@ -886,6 +891,7 @@ public class AppointmentService {
 
         Appointment appointment = appointmentRepository.findAppointmentById(appointmentId);
 
+        AppointmentInfo appointmentInfo = appointmentInfoRepository.findByAppointmentId(appointmentId);
         // Set Info appointmentId
         infoResponse.setAppointmentId(appointmentId);
 
@@ -894,7 +900,7 @@ public class AppointmentService {
         Customers infoCus = appointment.getCustomers();
         if (infoCus != null) {
             infoCusResponse.setFullName(infoCus.getFullName());
-            infoCusResponse.setAddress(infoCus.getAddress());
+            infoCusResponse.setAddress(appointmentInfo.getAddress());
             infoCusResponse.setPhone(appointment.getPhone());
         } else {
             infoCusResponse.setFullName(null);
@@ -920,7 +926,6 @@ public class AppointmentService {
 
         // Set Info Appointment Response
         InfoAppointmentResponse infoAppointmentResponse = new InfoAppointmentResponse();
-        AppointmentInfo appointmentInfo = appointmentInfoRepository.findByAppointmentId(appointmentId);
         if (appointmentInfo != null) {
             infoAppointmentResponse.setAppointmentTime(appointmentInfo.getCreatedDate());
             infoAppointmentResponse.setAppointmentDate(appointmentInfo.getAppointmentBookingDate());
