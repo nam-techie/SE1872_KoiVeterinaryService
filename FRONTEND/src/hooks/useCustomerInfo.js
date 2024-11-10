@@ -42,8 +42,7 @@ export const useCustomerInfo = () => {
             await fetchCustomerInfo(); // Refresh user data after update
             return response.data;
         } catch (error) {
-            const errorMessage = error.response?.data;
-            throw errorMessage;
+            throw error.response?.data || 'Đã xảy ra lỗi';
         }
     };
 

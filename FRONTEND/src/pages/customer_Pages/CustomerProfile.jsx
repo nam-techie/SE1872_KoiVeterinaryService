@@ -75,7 +75,7 @@ const CustomerProfile = () => {
             setShowEditForm(false);
             alert('Cập nhật thông tin thành công!');
         } catch (error) {
-            alert('Có lỗi xảy ra khi cập nhật thông tin: ' + (error.response?.data?.message || error.message));
+            alert(error);
         }
     };
 
@@ -183,7 +183,7 @@ const CustomerProfile = () => {
                                         name="email"
                                         value={formData.email}
                                         onChange={handleInputChange}
-                                        required
+                                        disabled
                                     />
                                 </div>
                                 <div className={styles.modalButtons}>

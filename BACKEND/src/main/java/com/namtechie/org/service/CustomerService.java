@@ -103,7 +103,7 @@ public class CustomerService {
             // Lưu thông tin cập nhật vào database
             accountRepository.save(curruntAccount);
             return modelMapper.map(customer, CustomerInfoRequest.class);
-        } catch (Exception e) {
+        } catch (RuntimeException e) {
             e.printStackTrace();
             throw new RuntimeException("Đã xảy ra lỗi trong quá trình cập nhật thông tin khách hàng.");
         }
