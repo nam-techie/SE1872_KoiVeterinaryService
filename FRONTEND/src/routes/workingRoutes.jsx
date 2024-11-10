@@ -1,19 +1,21 @@
 import { Navigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { decode as jwt_decode } from 'jwt-decode';
 
 // Hàm helper để lấy role từ token
-const getRoleFromToken = () => {
+const getRoleFromToken = async () => {
   const token = localStorage.getItem('authToken');
   if (!token) return null;
   
   try {
+    const jwt_decode = (await import('jwt-decode')).default; // Dynamically import jwt-decode
     const decoded = jwt_decode(token);
     return decoded.role;
   } catch (error) {
+    console.error("Failed to decode token", error);
     return null;
   }
 };
+
 
 // PublicRoute: Không cho phép bác sĩ truy cập trang công khai
 export const PublicRoute = ({ children }) => {
