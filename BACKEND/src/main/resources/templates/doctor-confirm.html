@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Appointment Confirmation</title>
+</head>
+<body>
+<div class="body-wrap"
+     style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; background-color: #f6f6f6; margin: 0; padding: 20px;">
+    <table class="container" width="600"
+           style="margin: 0 auto; max-width: 600px; background-color: #ffffff; border: 1px solid #e9e9e9;">
+        <tr>
+            <td style="background-color: #ff6600; color: #fff; text-align: center; padding: 20px;">
+                <h2>Koi Kung Center</h2>
+                <p>Lịch hẹn của bạn đã được xác nhận!</p>
+            </td>
+        </tr>
+        <tr>
+            <td style="padding: 20px;">
+                <p>Xin chào <strong>[[${name}]]</strong>,</p>
+                <p>Bác sĩ thú y đã xác nhận lịch hẹn của bạn. Vui lòng kiểm tra lại thông tin chi tiết lịch hẹn và xác
+                    nhận thanh toán để hoàn tất.</p>
+                <p><strong>Chi tiết lịch hẹn:</strong></p>
+                <ul>
+                    <li>Ngày hẹn: [[${appointmentDate}]]</li>
+                    <li>Giờ hẹn: [[${appointmentTime}]]</li>
+                    <li>Địa điểm: Koi Kung Center</li>
+                </ul>
+                <a th:href="${paymentLink}"
+                   style="background-color: #ff6600; color: #ffffff; padding: 10px 20px; text-decoration: none; border-radius: 5px;">Xác
+                    nhận thanh toán</a>
+            </td>
+        </tr>
+        <tr>
+            <td style="padding: 20px; text-align: center; color: #999;">
+                <p>Cảm ơn bạn đã chọn Koi Kung Center!</p>
+            </td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>

@@ -76,5 +76,38 @@ public class EmailService {
             System.out.println("LỖI: Không thể gửi email!");
         }
     }
+
+
+    public void sendAppointmentConfirmationEmail(EmailDetail emailDetail) {
+        try {
+            Context context = new Context();
+            context.setVariable("name", emailDetail.getReceiver().getEmail());
+            context.setVariable("button", "Quay lại hồ sơ lịch hẹn");
+            context.setVariable("link", emailDetail.getLink()); // Link to the appointment details page
+
+
+            // Process the appointment confirmation template
+            String template = templateEngine.process("doctor-confirm", context);
+
+
+            // Creating the MIME message for sending
+            MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+            MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, "UTF-8");
+
+
+            // Setting up email details
+            mimeMessageHelper.setFrom("namdpse180259@fpt.edu.vn");
+            mimeMessageHelper.setTo(emailDetail.getReceiver().getEmail());
+            mimeMessageHelper.setText(template, true); // Enable HTML
+            mimeMessageHelper.setSubject("Xác nhận lịch hẹn tại Koi Kung Center");
+
+
+            // Send the email
+            javaMailSender.send(mimeMessage);
+        } catch (MessagingException e) {
+            System.out.println("ERROR: Unable to send appointment confirmation email!");
+        }
+    }
+
 }
 

@@ -539,10 +539,14 @@ public class AppointmentService {
     @Autowired
     PaymentService paymentService;
 
+    @Autowired
+    EmailService emailService;
 
     public AppointmentStatus confirmDoctorAppointment(long appointmentId) {
         try {
             Appointment appointment = appointmentRepository.findAppointmentById(appointmentId);
+
+
 
 
             AppointmentStatus status = new AppointmentStatus();
@@ -550,10 +554,12 @@ public class AppointmentService {
             status.setNotes("Bác sĩ chấp nhận");
             status.setStatus("Đã xác nhận");
 
+
             ServiceType serviceType = appointment.getServiceType();
             if (serviceType == null) {
                 throw new IllegalArgumentException("Không tìm thấy loại dịch vụ cho cuộc hẹn với ID: " + appointmentId);
             }
+
 
             // Lấy giá tiền đặt cọc từ loại dịch vụ
             long depositPrice = serviceType.getBase_price();
@@ -561,13 +567,26 @@ public class AppointmentService {
             paymentDepositResponse.setAppointmentId(appointmentId);
             paymentDepositResponse.setDepositPrice(depositPrice);
 
+
+            // Gửi email thông báo đăng kí thành công
+            EmailDetail emailDetail = new EmailDetail();
+            Customers customers = appointment.getCustomers();
+            Account account = customers.getAccount();
+            emailDetail.setReceiver(account);
+            emailDetail.setSubject("Welcome to KoiKung Center!");
+            emailDetail.setLink("https://se-1872-koi-veterinary-service.vercel.app/customer/manage-appointment");
+            emailService.sendAppointmentConfirmationEmail(emailDetail);
+
+
             // Nếu chưa có, tạo bản ghi mới
             Payment paymentTotal = new Payment();
             paymentTotal.setAppointment(appointment);
             paymentTotal.setTotalFee(serviceType.getBase_price());
             paymentRepository.save(paymentTotal);  // Lưu Payment mới
 
+
             paymentService.generateTransactionRecords(appointmentId, paymentTotal, depositPrice, serviceType.getName());
+
 
             return appointmentStatusRepository.save(status);
         } catch (Exception e) {
@@ -575,6 +594,7 @@ public class AppointmentService {
             throw new RuntimeException(e);
         }
     }
+
 
     public void cancelAppointmentByCustomer(CancelRequest cancelRequest) {
         Account account = (Account) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
