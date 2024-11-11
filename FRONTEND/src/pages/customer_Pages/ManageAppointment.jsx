@@ -329,7 +329,7 @@ const ManageAppointment = () => {
         throw new Error("Không nhận được URL thanh toán");
       }
     } catch (error) {
-      alert("Có lỗi xảy ra khi tạo đường dẫnn thanh toán: " + error.message);
+      alert("Có lỗi xảy ra khi tạo đường dẫn thanh toán: " + error.message);
     }
   };
 

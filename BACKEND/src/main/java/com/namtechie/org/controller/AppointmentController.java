@@ -209,7 +209,10 @@ public class AppointmentController {
             Appointment appointment = appointmentRepository.findAppointmentById(appointmentId);
             ServiceType type = appointment.getServiceType();
             if (type.getId() == 1) {
-                AppointmentStatus appointmentStatus = appointmentService.confirmDoctorAppointment(appointmentId);
+                AppointmentStatus status = appointmentService.getNewStatus(appointment);
+                if(status.getStatus().equals("Chờ bác sĩ xác nhận")){
+                    appointmentService.confirmDoctorAppointment(appointmentId);
+                }
             }
             String paymentUrl = paymentService.returnUrlPayment(appointmentId);
             return ResponseEntity.ok(paymentUrl);
