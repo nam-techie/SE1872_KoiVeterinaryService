@@ -14,6 +14,7 @@ import com.namtechie.org.repository.CustomerRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -43,7 +44,8 @@ public class AuthenticationService implements UserDetailsService {
     PasswordEncoder passwordEncoder;
 
     @Autowired
-    ModelMapper modelMapper;
+    @Lazy
+    private ModelMapper modelMapper;
 
     @Autowired
     AuthenticationManager authenticationManager;
