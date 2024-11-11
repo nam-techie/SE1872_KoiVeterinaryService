@@ -547,8 +547,6 @@ public class AppointmentService {
             Appointment appointment = appointmentRepository.findAppointmentById(appointmentId);
 
 
-
-
             AppointmentStatus status = new AppointmentStatus();
             status.setAppointment(appointment);
             status.setNotes("Bác sĩ chấp nhận");
@@ -864,9 +862,7 @@ public class AppointmentService {
                 latestStatus = status;
             }
         }
-        if (latestStatus != null &&
-                (latestStatus.getStatus().equals("Đã xác nhận") ||
-                        (latestStatus.getStatus().equals("Chờ thanh toán tiền dịch vụ")))) {
+        if (latestStatus != null && (latestStatus.getStatus().equals("Chờ thanh toán tiền dịch vụ"))) {
 
             LocalDateTime createDatePlusOneMinutes = latestStatus.getCreate_date().toLocalDateTime().plusMinutes(15);
             LocalDateTime currentDateTime = LocalDateTime.now();
