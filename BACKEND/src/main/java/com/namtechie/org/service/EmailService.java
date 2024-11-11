@@ -88,7 +88,7 @@ public class EmailService {
             context.setVariable("paymentLink", emailConfirmDoctor.getLink());
 
 
-            String template = templateEngine.process("appointment-confirmation", context);
+            String template = templateEngine.process("doctor-confirm", context);
 
 
             MimeMessage mimeMessage = javaMailSender.createMimeMessage();
@@ -103,7 +103,7 @@ public class EmailService {
 
             javaMailSender.send(mimeMessage);
         } catch (MessagingException e) {
-            System.out.println("ERROR: Unable to send appointment confirmation email!");
+            System.out.println("LỖI: Không thể gửi email!");
         }
     }
 
