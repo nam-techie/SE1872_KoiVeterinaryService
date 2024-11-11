@@ -1,5 +1,6 @@
 package com.namtechie.org.service;
 
+import com.namtechie.org.model.EmailConfirmDoctor;
 import com.namtechie.org.model.EmailDetail;
 import com.namtechie.org.model.EmailResetPass;
 import jakarta.mail.MessagingException;
@@ -78,36 +79,34 @@ public class EmailService {
     }
 
 
-    public void sendAppointmentConfirmationEmail(EmailDetail emailDetail) {
+    public void sendAppointmentConfirmationEmail(EmailConfirmDoctor emailConfirmDoctor) {
         try {
             Context context = new Context();
-            context.setVariable("name", emailDetail.getReceiver().getEmail());
-            context.setVariable("button", "Quay lại hồ sơ lịch hẹn");
-            context.setVariable("link", emailDetail.getLink()); // Link to the appointment details page
+            context.setVariable("name", emailConfirmDoctor.getReceiver().getEmail());
+            context.setVariable("appointmentDate", emailConfirmDoctor.getAppointmentDate());
+            context.setVariable("appointmentTime", emailConfirmDoctor.getAppointmentTime());
+            context.setVariable("paymentLink", emailConfirmDoctor.getLink());
 
 
-            // Process the appointment confirmation template
-            String template = templateEngine.process("doctor-confirm", context);
+            String template = templateEngine.process("appointment-confirmation", context);
 
 
-            // Creating the MIME message for sending
             MimeMessage mimeMessage = javaMailSender.createMimeMessage();
             MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, "UTF-8");
 
 
-            // Setting up email details
-            mimeMessageHelper.setFrom("namdpse180259@fpt.edu.vn");
-            mimeMessageHelper.setTo(emailDetail.getReceiver().getEmail());
-            mimeMessageHelper.setText(template, true); // Enable HTML
-            mimeMessageHelper.setSubject("Xác nhận lịch hẹn tại Koi Kung Center");
+            mimeMessageHelper.setFrom("your_email@example.com");
+            mimeMessageHelper.setTo(emailConfirmDoctor.getReceiver().getEmail());
+            mimeMessageHelper.setText(template, true);
+            mimeMessageHelper.setSubject("Xác nhận lịch hẹn và thanh toán tại Koi Kung Center");
 
 
-            // Send the email
             javaMailSender.send(mimeMessage);
         } catch (MessagingException e) {
             System.out.println("ERROR: Unable to send appointment confirmation email!");
         }
     }
+
 
 }
 

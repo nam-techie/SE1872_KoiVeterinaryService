@@ -547,6 +547,8 @@ public class AppointmentService {
             Appointment appointment = appointmentRepository.findAppointmentById(appointmentId);
 
 
+
+
             AppointmentStatus status = new AppointmentStatus();
             status.setAppointment(appointment);
             status.setNotes("Bác sĩ chấp nhận");
@@ -566,12 +568,20 @@ public class AppointmentService {
             paymentDepositResponse.setDepositPrice(depositPrice);
 
 
-            // Gửi email thông báo đăng kí thành công
-            EmailDetail emailDetail = new EmailDetail();
+            // Gửi email thông báo
+            EmailConfirmDoctor emailDetail = new EmailConfirmDoctor();
             Customers customers = appointment.getCustomers();
             Account account = customers.getAccount();
+
+
+            AppointmentInfo appointmentInfo = appointment.getAppointmentInfo();
+            Date date = appointmentInfo.getAppointmentBookingDate();
+            Time time = appointmentInfo.getAppointmentBookingTime();
+
+
             emailDetail.setReceiver(account);
-            emailDetail.setSubject("Welcome to KoiKung Center!");
+            emailDetail.setAppointmentDate(date);
+            emailDetail.setAppointmentTime(time);
             emailDetail.setLink("https://se-1872-koi-veterinary-service.vercel.app/customer/manage-appointment");
             emailService.sendAppointmentConfirmationEmail(emailDetail);
 
@@ -592,6 +602,7 @@ public class AppointmentService {
             throw new RuntimeException(e);
         }
     }
+
 
 
     public void cancelAppointmentByCustomer(CancelRequest cancelRequest) {
