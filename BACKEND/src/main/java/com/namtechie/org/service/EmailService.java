@@ -95,7 +95,7 @@ public class EmailService {
             MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, "UTF-8");
 
 
-            mimeMessageHelper.setFrom("your_email@example.com");
+            mimeMessageHelper.setFrom("namdpse180259@fpt.edu.vn");
             mimeMessageHelper.setTo(emailConfirmDoctor.getReceiver().getEmail());
             mimeMessageHelper.setText(template, true);
             mimeMessageHelper.setSubject("Xác nhận lịch hẹn và thanh toán tại Koi Kung Center");
