@@ -582,7 +582,6 @@ public class AppointmentService {
             emailDetail.setReceiver(account);
             emailDetail.setAppointmentDate(date);
             emailDetail.setAppointmentTime(time);
-            emailDetail.setLink("https://se-1872-koi-veterinary-service.vercel.app/customer/manage-appointment");
             emailService.sendAppointmentConfirmationEmail(emailDetail);
 
 

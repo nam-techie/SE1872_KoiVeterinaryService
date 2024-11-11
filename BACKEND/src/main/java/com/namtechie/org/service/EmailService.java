@@ -85,7 +85,6 @@ public class EmailService {
             context.setVariable("name", emailConfirmDoctor.getReceiver().getEmail());
             context.setVariable("appointmentDate", emailConfirmDoctor.getAppointmentDate());
             context.setVariable("appointmentTime", emailConfirmDoctor.getAppointmentTime());
-            context.setVariable("paymentLink", emailConfirmDoctor.getLink());
 
 
             String template = templateEngine.process("doctor-confirm", context);

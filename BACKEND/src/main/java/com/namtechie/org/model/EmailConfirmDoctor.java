@@ -14,5 +14,5 @@ public class EmailConfirmDoctor {
     Account receiver;
     Date appointmentDate;
     Time appointmentTime;
-    String link;
+
 }
