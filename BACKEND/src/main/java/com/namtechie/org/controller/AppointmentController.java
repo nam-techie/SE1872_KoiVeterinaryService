@@ -206,14 +206,6 @@ public class AppointmentController {
     @PostMapping("/sendUrlPayment/{appointmentId}")
     public ResponseEntity<String> createPaymentTotalUrl(@PathVariable long appointmentId) {
         try {
-            Appointment appointment = appointmentRepository.findAppointmentById(appointmentId);
-            ServiceType type = appointment.getServiceType();
-            if (type.getId() == 1) {
-                AppointmentStatus status = appointmentService.getNewStatus(appointment);
-                if(status.getStatus().equals("Chờ bác sĩ xác nhận")){
-                    appointmentService.confirmDoctorAppointment(appointmentId);
-                }
-            }
             String paymentUrl = paymentService.returnUrlPayment(appointmentId);
             return ResponseEntity.ok(paymentUrl);
         } catch (IllegalArgumentException e) {
