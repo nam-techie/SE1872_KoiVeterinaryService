@@ -178,13 +178,20 @@ public class PaymentService {
         long depositPrice = serviceType.getBase_price();
 
         // Gọi hàm createUrl để tạo URL thanh toán và trả về chuỗi đó
+        List<AppointmentStatus> status = appointmentStatusRepository.findByAppointment(appointment);
+        boolean checkStatus = false;
+        for (AppointmentStatus stat : status) {
+            if ((stat.getStatus().equals("Chờ thanh toán tiền dịch vụ"))) {
+                checkStatus = true;
+            }
+        }
+        if (!checkStatus) {
+            AppointmentStatus appointmentStatus = new AppointmentStatus();
+            appointmentStatus.setAppointment(appointment);
+            appointmentStatus.setStatus("Chờ thanh toán tiền dịch vụ");
+            appointmentStatusRepository.save(appointmentStatus);
+        }
         String urlToPayment = createUrl(appointmentId, depositPrice);
-        AppointmentStatus appointmentStatus = new AppointmentStatus();
-        appointmentStatus.setAppointment(appointment);
-        appointmentStatus.setStatus("Chờ thanh toán tiền dịch vụ");
-
-        appointmentStatusRepository.save(appointmentStatus);
-
         return urlToPayment; // Trả về URL thanh toán
     }
 
@@ -387,16 +394,22 @@ public class PaymentService {
         if (serviceType == null) {
             throw new IllegalArgumentException("Không tìm thấy loại dịch vụ cho cuộc hẹn với ID: " + appointmentId);
         }
-
+        // Gọi hàm createUrl để tạo URL thanh toán và trả về chuỗi đó
+        List<AppointmentStatus> status = appointmentStatusRepository.findByAppointment(appointment);
+        boolean checkStatus = false;
+        for (AppointmentStatus stat : status) {
+            if ((stat.getStatus().equals("Chờ thanh toán tổng tiền"))) {
+                checkStatus = true;
+            }
+        }
+        if (!checkStatus) {
+            AppointmentStatus appointmentStatus = new AppointmentStatus();
+            appointmentStatus.setAppointment(appointment);
+            appointmentStatus.setStatus("Chờ thanh toán tổng tiền");
+            appointmentStatusRepository.save(appointmentStatus);
+        }
         // Gọi hàm createUrl để tạo URL thanh toán và trả về chuỗi đó
         String urlToPayment = createUrl(appointmentId, totalPrice);
-        AppointmentStatus appointmentStatus = new AppointmentStatus();
-        appointmentStatus.setAppointment(appointment);
-        appointmentStatus.setStatus("Chờ thanh toán tổng tiền");
-
-
-        appointmentStatusRepository.save(appointmentStatus);
-//        appointmentStatusRepository.save(doneWorking);
         return urlToPayment;
 
     }
