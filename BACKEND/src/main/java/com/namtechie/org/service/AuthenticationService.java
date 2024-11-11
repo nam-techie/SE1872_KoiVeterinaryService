@@ -14,7 +14,6 @@ import com.namtechie.org.repository.CustomerRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -44,8 +43,7 @@ public class AuthenticationService implements UserDetailsService {
     PasswordEncoder passwordEncoder;
 
     @Autowired
-    @Lazy
-    private ModelMapper modelMapper;
+    ModelMapper modelMapper;
 
     @Autowired
     AuthenticationManager authenticationManager;
@@ -55,9 +53,6 @@ public class AuthenticationService implements UserDetailsService {
 
     @Autowired
     EmailService emailService;
-
-    @Autowired
-    private CustomerService customerService;
 
     @Autowired
     private CustomerRepository customerRepository;
@@ -76,7 +71,6 @@ public class AuthenticationService implements UserDetailsService {
             throw new DuplicateEntity("Mật khẩu mới và xác nhận mật khẩu không trùng!!!");
         }
 
-        
         // In ra thông tin để kiểm tra
         System.out.println("Mật khẩu cũ: " + account.getPassword());
         System.out.println("Mật khẩu mới: " + changePasswordRequest.getNewPassword());

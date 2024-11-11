@@ -10,6 +10,7 @@ import com.namtechie.org.repository.AccountRepository;
 import com.namtechie.org.repository.CustomerRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,8 +22,6 @@ public class CustomerService {
     @Autowired
     CustomerRepository customerRepository;
 
-    @Autowired
-    AuthenticationService authenticationService;
 
     @Autowired
     AccountRepository accountRepository;
@@ -34,10 +33,10 @@ public class CustomerService {
     public InfoCustomerResponse getInfoCustomer() {
         try {
             // Lấy tài khoản hiện tại
-            Account currentAccount = authenticationService.getCurrentAccount();
+            Account account = (Account) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
             // Tìm khách hàng dựa trên tài khoản
-            Customers currentCustomer = customerRepository.findByAccountId(currentAccount.getId());
+            Customers currentCustomer = customerRepository.findByAccountId(account.getId());
 
             // Kiểm tra nếu không tìm thấy khách hàng
             if (currentCustomer == null) {
@@ -45,8 +44,8 @@ public class CustomerService {
             }
 
             InfoCustomerResponse response = new InfoCustomerResponse();
-            response.setUsername(currentAccount.getUsername());
-            response.setEmail(currentAccount.getEmail());
+            response.setUsername(account.getUsername());
+            response.setEmail(account.getEmail());
             response.setPhone(currentCustomer.getPhone());
             response.setFullName(currentCustomer.getFullName());
             response.setAddress(currentCustomer.getAddress());
@@ -67,13 +66,13 @@ public class CustomerService {
     public CustomerInfoRequest updateCustomerInfo(CustomerInfoRequest customerInfo) {
         try {
             // Lấy tài khoản hiện tại của người dùng đã xác thực
-            Account curruntAccount = authenticationService.getCurrentAccount();
-            if (customerInfo.getEmail().equals(curruntAccount.getEmail()) || !accountRepository.existsByEmail(customerInfo.getEmail())) {
-                curruntAccount.setEmail(customerInfo.getEmail());
+            Account account = (Account) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            if (customerInfo.getEmail().equals(account.getEmail()) || !accountRepository.existsByEmail(customerInfo.getEmail())) {
+                account.setEmail(customerInfo.getEmail());
             }
 
             // Kiểm tra xem khách hàng có tồn tại không, nếu không thì khởi tạo mới
-            Customers customer = customerRepository.findByAccountId(curruntAccount.getId());
+            Customers customer = customerRepository.findByAccountId(account.getId());
             if (customer == null) {
                 Customers newCustomer = new Customers();
                 newCustomer.setPhone(customerInfo.getPhoneNumber());
@@ -101,7 +100,7 @@ public class CustomerService {
 
 
             // Lưu thông tin cập nhật vào database
-            accountRepository.save(curruntAccount);
+            accountRepository.save(account);
             return modelMapper.map(customer, CustomerInfoRequest.class);
         } catch (DuplicateEntity e) {
             throw new DuplicateEntity(e.getMessage());
