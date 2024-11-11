@@ -74,6 +74,7 @@ public class AuthenticationService implements UserDetailsService {
             throw new DuplicateEntity("Mật khẩu mới và xác nhận mật khẩu không trùng!!!");
         }
 
+        
         // In ra thông tin để kiểm tra
         System.out.println("Mật khẩu cũ: " + account.getPassword());
         System.out.println("Mật khẩu mới: " + changePasswordRequest.getNewPassword());
